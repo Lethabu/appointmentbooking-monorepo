@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase';
-import { fetchInstagramMedia } from '@/services/social/instagram';
+import { createClient } from '../../../lib/supabase';
+import { fetchInstagramMedia } from '../../../services/social/instagram';
 
 export async function POST(request: NextRequest) {
   const supabase = createClient();

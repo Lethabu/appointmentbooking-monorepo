@@ -4,7 +4,8 @@
   "private": true,
   "exports": {
     "./button": "./src/Button.tsx",
-    "./utils": "./src/utils.ts"
+    "./utils": "./src/utils.ts",
+    "./analytics": "./src/analytics.ts"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",

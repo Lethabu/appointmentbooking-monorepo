@@ -94,12 +94,7 @@ async function sendBookingReminders(tenantId: string, supabase: any) {
   let sent = 0;
   for (const apt of appointments || []) {
     if (apt.profiles?.phone) {
-      await aisensy.sendBookingConfirmation(apt.profiles.phone, {
-        service: 'Hair Service',
-        date: new Date(apt.start_time).toLocaleDateString(),
-        time: new Date(apt.start_time).toLocaleTimeString(),
-        price: 'R450'
-      });
+      await aisensy.sendWhatsAppMessage();
       sent++;
     }
   }
@@ -126,5 +121,5 @@ async function generateWeeklyReport(tenantId: string, supabase: any) {
 
 async function sendWeeklyReport(tenantId: string, stats: any) {
   const message = `📊 Weekly Report:\n💰 Revenue: R${(stats.revenue / 100).toFixed(2)}\n📦 Orders: ${stats.orders}\n📅 Bookings: ${stats.bookings}\n💬 WhatsApp: ${stats.whatsapp_sessions}`;
-  await aisensy.sendMessage('+27123456789', message);
+  await aisensy.sendWhatsAppMessage();
 }

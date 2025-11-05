@@ -8,8 +8,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
-import { getRateLimit } from '@/lib/rate-limit';
-import { getTenantContext } from '@/lib/supabase-server';
+import { getRateLimit } from '../../../lib/rate-limit';
+import { getTenantContext } from '../../../lib/supabase-server';
 
 // ========================================================================
 // Rate Limiting (In-memory fallback)

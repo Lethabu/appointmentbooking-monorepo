@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase';
-import { PaymentGatewayFactory, MultiGatewayProcessor } from '@/lib/payments/south-african-gateways';
-import { aisensy } from '@/lib/aisensy';
+import { createClient } from '../../../lib/supabase';
+import { PaymentGatewayFactory, MultiGatewayProcessor } from '../../../lib/payments/south-african-gateways';
+import { aisensy } from '../../../lib/aisensy';
 
 export async function POST(request: NextRequest) {
   try {

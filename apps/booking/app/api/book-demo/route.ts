@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/firebase';
+import { db } from '../../../lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { validateAndSanitize, demoRequestSchema } from '@/lib/validation';
-import { trackDemoRequest, trackError } from '@/lib/monitoring';
+import { validateAndSanitize, demoRequestSchema } from '../../../lib/validation';
+import { trackDemoRequest, trackError } from '../../../lib/monitoring';
 
 export async function POST(request: NextRequest) {
   try {

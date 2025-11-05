@@ -1,5 +1,8 @@
 const nextConfig = { 
-  images: { unoptimized: true }, 
+  images: { unoptimized: true },
+  experimental: {
+    workerThreads: false
+  }
 } 
  
 module.exports = nextConfig

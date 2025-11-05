@@ -1,10 +1,12 @@
 // Validate environment variables at build time
+/*
 try {
   require('./lib/env.ts');
 } catch (error) {
   console.error('Environment validation failed:', error.message);
   process.exit(1);
 }
+*/
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

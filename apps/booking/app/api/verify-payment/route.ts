@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { functions } from '@/lib/firebase';
+import { functions } from '../../../lib/firebase';
 import { httpsCallable } from 'firebase/functions';
 
 export async function POST(request: NextRequest) {

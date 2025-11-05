@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { analytics } from '@/lib/analytics';
+import { analytics } from '../../../lib/analytics';
 
 export const dynamic = 'force-dynamic';
 

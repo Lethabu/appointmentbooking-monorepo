@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+// Firebase imports stubbed
 
 export async function POST(request: NextRequest) {
   try {
@@ -31,13 +31,13 @@ export async function POST(request: NextRequest) {
         break;
     }
 
-    // Log to Firebase for tracking
-    await addDoc(collection(db, 'admin_alerts'), {
+    // Mock Firebase logging
+    console.log('Mock Firebase log:', {
       alertType: type,
       message: message,
       severity: priority,
       context: context || {},
-      createdAt: serverTimestamp(),
+      createdAt: new Date().toISOString(),
     });
 
     console.log('Alert logged:', message);

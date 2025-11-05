@@ -1,12 +1,14 @@
 {
   "name": "appointmentbooking-monorepo",
   "private": true,
+  "packageManager": "npm@11.4.2",
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "scripts": {
     "build": "turbo run build",
+    "build:sequential": "npm run build --workspace=booking && npm run build --workspace=dashboard && npm run build --workspace=marketing",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
@@ -15,6 +17,10 @@
     "@types/node": "^20.10.0",
     "eslint": "^8.53.0",
     "prettier": "^3.0.0",
-    "turbo": "^1.11.0"
+    "turbo": "^2.6.0"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^1.5.0",
+    "node-fetch": "^3.3.2"
   }
 }

@@ -1,0 +1,31 @@
+
+> dashboard@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.33
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/4) ...
+ ⚠ Sending SIGTERM signal to Next.js build worker due to timeout of 60 seconds. Subsequent errors may be a result of the worker exiting.
+ ⚠ Sending SIGTERM signal to Next.js build worker due to timeout of 60 seconds. Subsequent errors may be a result of the worker exiting.
+ ⨯ Next.js build worker exited with code: null and signal: SIGTERM
+ ⨯ Next.js build worker exited with code: null and signal: SIGTERM
+ ⨯ Next.js build worker exited with code: null and signal: SIGTERM
+ ⨯ Next.js build worker exited with code: null and signal: SIGTERM
+ ⨯ Next.js build worker exited with code: null and signal: SIGTERM
+ ⚠ Restarted static page generation for /404 because it took more than 60 seconds
+ ⚠ See more info here https://nextjs.org/docs/messages/static-page-generation-timeout
+ ⚠ Restarted static page generation for /500 because it took more than 60 seconds
+ ⨯ Next.js build worker exited with code: null and signal: SIGTERM
+ ⚠ Restarted static page generation for / because it took more than 60 seconds
+ ⚠ See more info here https://nextjs.org/docs/messages/static-page-generation-timeout
+ ⚠ Restarted static page generation for /_not-found because it took more than 60 seconds
+   Generating static pages (1/4) 
+   Generating static pages (2/4) 
+   Generating static pages (3/4) 
+ ✓ Generating static pages (4/4)
+   Finalizing page optimization ...
+   Collecting build traces ...

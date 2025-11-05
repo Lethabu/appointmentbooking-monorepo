@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
-import { getSessionAndSalon } from '@/app/lib/api-helpers';
+import { getSessionAndSalon } from '../../../lib/api-helpers';
 
 export async function GET() {
   try {

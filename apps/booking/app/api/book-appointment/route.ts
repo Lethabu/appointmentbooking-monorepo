@@ -132,13 +132,7 @@ export async function POST(request: NextRequest) {
     if (paymentMethod === 'paystack' && !paymentReference) {
       const payment = await createPaystackPayment(
         service.price,
-        clientEmail,
-        `apt_${appointment.id}`,
-        {
-          appointment_id: appointment.id,
-          tenant: tenant,
-          service: service.name
-        }
+        clientEmail
       )
 
       paymentData = payment
@@ -155,7 +149,7 @@ export async function POST(request: NextRequest) {
       success: true,
       appointment,
       payment: paymentData,
-      nextUrl: paymentData ? paymentData.authorization_url : `/book/${tenant}/success?appointmentId=${appointment.id}`
+      nextUrl: paymentData ? paymentData.url : `/book/${tenant}/success?appointmentId=${appointment.id}`
     })
   } catch (error) {
     console.error('Booking error:', error)

@@ -1,0 +1,25 @@
+
+> booking@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.33
+  - Environments: .env
+  - Experiments (use with caution):
+    · scrollRestoration
+
+   Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOSPC: no space left on device, write
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOSPC: no space left on device, write
+Failed to compile.
+
+Error: ENOSPC: no space left on device, write
+
+
+> Build failed because of webpack errors
+npm error Lifecycle script `build` failed with error:
+npm error code 1
+npm error path C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking
+npm error workspace booking@0.1.0
+npm error location C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c next build

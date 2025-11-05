@@ -1,4 +1,4 @@
-import { getStaticFirestoreData } from '@/lib/firebase-static';
+import { getStaticFirestoreData } from '../../lib/firebase-static';
 
 export async function generateStaticParams() {
   // Return empty array to prevent build errors
