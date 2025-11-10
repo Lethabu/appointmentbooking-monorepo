@@ -1,0 +1,23 @@
+{
+  "name": "@repo/auth",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "private": true,
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "next-auth": "^4.24.7",
+    "@auth/drizzle-adapter": "^1.4.2",
+    "@repo/db": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.9.2"
+  }
+}

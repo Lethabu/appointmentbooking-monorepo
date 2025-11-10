@@ -11,13 +11,20 @@
     "build:sequential": "npm run build --workspace=booking && npm run build --workspace=dashboard && npm run build --workspace=marketing",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "deploy": "wrangler pages deploy",
+    "cf-typegen": "wrangler types"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
+    "drizzle-kit": "^0.24.2",
     "eslint": "^8.53.0",
     "prettier": "^3.0.0",
-    "turbo": "^2.6.0"
+    "turbo": "^2.6.0",
+    "wrangler": "^3.22.4"
   },
   "dependencies": {
     "@vercel/analytics": "^1.5.0",

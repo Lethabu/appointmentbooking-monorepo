@@ -1,112 +1,71 @@
-// @ts-nocheck
-import { clerkMiddleware } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
 
 // ============================================================================
-// ROUTER UNIFICATION FIX: App Router Optimized Middleware
+// CLOUDFLARE MIGRATION: Multi-Tenant Middleware with NextAuth
 // File: middleware.ts
-// Purpose: Resolve routing conflicts and enable multi-tenant functionality
+// Purpose: Handle tenant routing and authentication for Cloudflare deployment
 // ============================================================================
 
-// Prefer fetching tenant routing from Vercel Edge Config for ultra-fast lookups.
-// If Edge Config is not available at runtime, fall back to a local map to
-// preserve existing behavior (useful for local dev and CI).
-async function resolveTenantFromEdgeConfig(hostname: string) {
-  try {
-    // Dynamically import edge-config helpers to keep dev environment flexible
-    // The `get` function is available from '@vercel/edge-config' in Edge runtime.
-    // We'll attempt to use it; if it fails (not deployed on Vercel), we ignore it.
-    // Note: In some environments this import may throw, hence wrapped in try/catch.
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const { get } = await import('@vercel/edge-config');
-    const tenantsRaw = await get('tenants');
-    if (!tenantsRaw) return undefined;
-    // Expecting tenantsRaw to be a JSON object mapping host -> tenantSlug
-    const normalizedHost = hostname.replace(/^www\./, '');
-    return tenantsRaw[normalizedHost] || undefined;
-  } catch (err) {
-    // Edge Config not available — caller will use fallback map
-    return undefined;
-  }
+// Cloudflare KV or D1 based tenant resolution
+// For now using static mapping, but can be extended to use D1 database
+const TENANT_MAPPING: Record<string, string> = {
+  'www.instylehairboutique.co.za': 'instylehairboutique',
+  'instylehairboutique.co.za': 'instylehairboutique',
+  'instyle-hair-boutique.co.za': 'instylehairboutique',
+  'www.instyle-hair-boutique.co.za': 'instylehairboutique',
+  // Add more tenant mappings as needed
+};
+
+async function resolveTenant(hostname: string): Promise<string | null> {
+  const normalizedHost = hostname.replace(/^www\./, '');
+  return TENANT_MAPPING[normalizedHost] || null;
 }
 
-// Annotate params to satisfy TS and avoid implicit any errors in linters.
-// Keep `clerkMiddleware` usage the same to preserve existing auth behavior.
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export default clerkMiddleware(async (auth: any, request: NextRequest) => {
+export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
   const hostname = request.headers.get('host') || '';
 
-  // Add a cache-control header for downstream services (can be adjusted later)
-  request.headers.set('x-middleware-cache', 'no-cache');
-
-  // CRITICAL: Bypass all internal, asset, and API paths
+  // CRITICAL: Bypass all internal, asset, and NextAuth API paths
   if (
     url.pathname.startsWith('/_next') ||
-    url.pathname.startsWith('/api') ||
+    url.pathname.startsWith('/api/auth') ||
     url.pathname.includes('.')
   ) {
     return NextResponse.next();
   }
 
-  // Try Edge Config first (fast, global), fallback to local map
-  const tenantFromEdge = await resolveTenantFromEdgeConfig(hostname);
-  const tenantsFallback: Record<string, string> = {
-    'www.instylehairboutique.co.za': 'instylehairboutique',
-    'instylehairboutique.co.za': 'instylehairboutique',
-    'instyle-hair-boutique.co.za': 'instylehairboutique',
-    'www.instyle-hair-boutique.co.za': 'instylehairboutique',
-  };
-
-  const normalizedHost = hostname.replace(/^www\./, '');
-  const tenantSlug = tenantFromEdge || tenantsFallback[normalizedHost];
+  // Handle tenant routing for multi-tenant domains
+  const tenantSlug = await resolveTenant(hostname);
 
   if (tenantSlug) {
-    // Rewrite to the App Router dynamic segment path
-    const rewriteUrl = new URL(`/${tenantSlug}${url.pathname}`, request.url);
-    const response = NextResponse.rewrite(rewriteUrl);
-    response.headers.set('x-forwarded-host', hostname);
+    // Add tenant information to headers for downstream use
+    const response = NextResponse.next();
+    response.headers.set('x-tenant-id', tenantSlug);
+    response.headers.set('x-tenant-host', hostname);
+
+    // For tenant-specific routes, rewrite to dynamic segment
+    if (!url.pathname.startsWith('/api')) {
+      const rewriteUrl = new URL(`/${tenantSlug}${url.pathname}`, request.url);
+      const rewriteResponse = NextResponse.rewrite(rewriteUrl);
+      rewriteResponse.headers.set('x-tenant-id', tenantSlug);
+      rewriteResponse.headers.set('x-tenant-host', hostname);
+      return rewriteResponse;
+    }
+
     return response;
   }
 
-  // For the main domain, ensure it resolves to the platform pages
+  // For main platform domain, continue normally
   if (
     hostname === 'www.appointmentbooking.co.za' ||
     hostname === 'appointmentbooking.co.za'
   ) {
-    // Route to platform pages in (main) route group
     return NextResponse.next();
   }
 
+  // Default: continue with request
   return NextResponse.next();
-});
-
-// Test route to verify Edge Config directly
-export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  // Special test route for Edge Config
-  if (pathname === '/api/edge-config-test') {
-    try {
-      const { get } = await import('@vercel/edge-config');
-      const tenants = await get('tenants');
-      return NextResponse.json({ 
-        success: true, 
-        tenants,
-        message: 'Edge Config is working!' 
-      });
-    } catch (error) {
-      return NextResponse.json({ 
-        success: false, 
-        error: error.message 
-      }, { status: 500 });
-    }
-  }
-
-  // Continue with existing middleware
-  return clerkMiddleware(request);
 }
 
 export const config = {

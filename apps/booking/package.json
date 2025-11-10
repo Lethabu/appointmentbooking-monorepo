@@ -18,7 +18,8 @@
   "dependencies": {
     "@ai-sdk/google": "^2.0.16",
     "@auth/prisma-adapter": "^1.0.0",
-    "@clerk/nextjs": "^4.29.9",
+    "@repo/auth": "workspace:*",
+    "@repo/db": "workspace:*",
     "@google/generative-ai": "^0.24.1",
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
