@@ -17,15 +17,14 @@ const nextConfig = {
     optimizeCss: false,
     scrollRestoration: true,
   },
-  output: 'standalone', // Force server-side rendering and prevent API route static analysis
+  output: 'export', // Static export for Cloudflare Pages
+  trailingSlash: true,
+  skipTrailingSlashRedirect: true,
   images: {
     domains: [
       'images.unsplash.com',
-      'cdn-instyle',
       'instylehairboutique.co.za',
       'www.instylehairboutique.co.za',
-      'appointmentbooking.co.za',
-      'localhost',
       'fonts.gstatic.com',
       'fonts.googleapis.com'
     ],
@@ -51,18 +50,10 @@ const nextConfig = {
         source: '/tenants/:tenant/:asset*',
         destination: '/tenants/:tenant/:asset*'
       },
-      // Legacy tenant redirects to unified [tenant] route
+      // API routes redirect to Cloudflare Worker
       {
-        source: '/instylehairboutique/:path*',
-        destination: '/instyle/:path*'
-      },
-      {
-        source: '/instyle-hair-boutique/:path*',
-        destination: '/instyle/:path*'
-      },
-      {
-        source: '/instyle/:path*',
-        destination: '/instyle/:path*'
+        source: '/api/:path*',
+        destination: 'https://www.instylehairboutique.co.za/api/:path*'
       }
     ];
   },

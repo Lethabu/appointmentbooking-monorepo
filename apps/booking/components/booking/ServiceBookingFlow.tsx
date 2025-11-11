@@ -35,7 +35,7 @@ export default function ServiceBookingFlow() {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch('/api/tenant?slug=instylehairboutique');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/tenant?slug=instylehairboutique`);
         if (response.ok) {
           const data = await response.json();
           setServices(data.services || []);
@@ -65,6 +65,30 @@ export default function ServiceBookingFlow() {
     setIsProcessing(true);
 
     try {
+      // First create the booking
+      const bookingResponse = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/book`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tenantId: 'ccb12b4d-ade6-467d-a614-7c9d198ddc70',
+          name: customerDetails.name,
+          email: customerDetails.email,
+          phone: customerDetails.phone,
+          serviceId: selectedService.id,
+          scheduledTime: `${selectedDate}T${selectedTime}:00Z`,
+          notes: `Booking for ${selectedService.name}`,
+        }),
+      });
+
+      const bookingData = await bookingResponse.json();
+      
+      if (!bookingData.success) {
+        throw new Error('Failed to create booking');
+      }
+
+      // Then create PayStack payment
       const response = await fetch('/api/paystack/create', {
         method: 'POST',
         headers: {
@@ -74,6 +98,7 @@ export default function ServiceBookingFlow() {
           amount: selectedService.price || selectedService.price_cents || 0,
           email: customerDetails.email,
           phone: customerDetails.phone,
+          appointmentId: bookingData.appointmentId,
           items: [
             {
               id: selectedService.id,

@@ -1,0 +1,11 @@
+# Cloudflare Pages Redirects Configuration
+
+# API routes redirect to Cloudflare Worker
+/api/* https://www.instylehairboutique.co.za/api/:splat 200
+
+# Legacy tenant routes
+/instylehairboutique/* /instyle/:splat 301
+/instyle-hair-boutique/* /instyle/:splat 301
+
+# Root redirect to main tenant
+/ /instyle 301

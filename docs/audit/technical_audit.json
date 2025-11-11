@@ -1,0 +1,30 @@
+{
+  "domain": "www.instylehairboutique.co.za",
+  "fetched_at": "2025-11-11T06:40:00+02:00",
+  "http_status": 200,
+  "server_header": "cloudflare",
+  "has_viewport_meta": true,
+  "has_canonical": false,
+  "has_og_image": false,
+  "service_load_state": "server-rendered",
+  "contact": "+27 123 456 789 | bookings@instylehairboutique.co.za",
+  "stack": "cloudflare_worker_d1",
+  "cloudflare_metrics": {
+    "d1_database_id": "59c06cd2-8bd2-45cf-ab62-84d7a4919e11",
+    "worker_url": "appointmentbooking-monorepo.houseofgr8ness.workers.dev",
+    "custom_domain": "www.instylehairboutique.co.za",
+    "total_appointments": 5,
+    "total_revenue": 1550
+  },
+  "acceptance": {
+    "performance_ge_90": "PENDING",
+    "seo_ge_95": "PENDING",
+    "lcp_lt_2500ms": "PENDING"
+  },
+  "next_steps": [
+    "Add SEO meta tags to Worker HTML response",
+    "Implement structured data for services", 
+    "Add favicon and og:image",
+    "Set up Cloudflare Analytics"
+  ]
+}

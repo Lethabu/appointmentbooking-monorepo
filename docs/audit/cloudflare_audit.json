@@ -1,0 +1,38 @@
+{
+  "timestamp": "2025-11-11T11:56:05.699Z",
+  "domain": "https://www.instylehairboutique.co.za",
+  "tests": {
+    "homepage": {
+      "status": 200,
+      "hasHtml": true,
+      "hasCanonical": true,
+      "hasStructuredData": true,
+      "pass": true
+    },
+    "tenant_api": {
+      "status": 200,
+      "servicesCount": 6,
+      "hasTenant": true,
+      "pass": true
+    },
+    "dashboard_api": {
+      "status": 200,
+      "totalAppointments": 7,
+      "totalRevenue": 2450,
+      "pass": {
+        "totalAppointments": 7,
+        "confirmedAppointments": 7,
+        "pendingAppointments": 0,
+        "totalRevenue": 2450
+      }
+    },
+    "booking_api": {
+      "status": 200,
+      "success": true,
+      "appointmentId": "31dede50-2e3e-4a9f-a7f7-36e57e741aee",
+      "pass": true
+    }
+  },
+  "score": 100,
+  "pass": true
+}

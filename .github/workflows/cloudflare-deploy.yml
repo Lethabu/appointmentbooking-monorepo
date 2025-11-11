@@ -1,0 +1,37 @@
+name: Cloudflare Deploy & Audit
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  audit-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Install Wrangler
+        run: npm install -g wrangler
+        
+      - name: Deploy Cloudflare Worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: wrangler deploy
+        
+      - name: Run System Audit
+        run: |
+          sleep 10
+          node scripts/cloudflare-audit.js
+          
+      - name: Upload Audit Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloudflare-audit-results
+          path: ./docs/audit/cloudflare_audit.json

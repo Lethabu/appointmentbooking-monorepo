@@ -11,7 +11,7 @@ type Props = {
 
 async function fetchTenantData(slug: string) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/tenant?slug=${slug}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/tenant?slug=${slug}`, {
       cache: 'no-store' // Ensure fresh data for ISR
     });
 
