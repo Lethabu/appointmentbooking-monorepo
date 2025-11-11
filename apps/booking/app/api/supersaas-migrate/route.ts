@@ -1,60 +1,69 @@
-import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { getDb } from '@/packages/db/src';
+import { users, appointments } from '@/packages/db/src/schema';
+import { eq } from 'drizzle-orm';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
-export async function POST() {
+export async function POST(request: Request) {
   try {
     // Fetch existing bookings from SuperSaaS
     const response = await fetch(
-      `https://www.supersaas.com/api/bookings.json?api_key=${process.env.SUPERSAAS_API_KEY}&from=2024-01-01`,
+      `https://www.supersaas.com/api/bookings.json?api_key=5ciPW7IzfQRQy1wqdTsH6g&from=2024-01-01`,
       { headers: { Accept: 'application/json' } }
     );
 
     if (!response.ok) {
-      return NextResponse.json({ error: 'SuperSaaS API error' }, { status: 500 });
+      return Response.json({ error: 'SuperSaaS API error' }, { status: 500 });
     }
 
     const { bookings } = await response.json();
-    
-    // Migrate bookings to our system
-    const migratedBookings = bookings?.map((booking: any) => ({
-      supersaas_id: booking.id,
-      client_name: booking.full_name || booking.name,
-      client_phone: booking.phone,
-      client_email: booking.email,
-      service_name: booking.resource_name || 'Hair Service',
-      scheduled_time: booking.start,
-      status: booking.status === 'confirmed' ? 'confirmed' : 'pending',
-      tenant_id: 'instyle',
-      notes: booking.description,
-      created_at: booking.created_on,
-    })) || [];
+    const db = getDb((request as any).env as { DB: any });
 
-    if (migratedBookings.length > 0) {
-      const { data, error } = await supabase
-        .from('appointments')
-        .upsert(migratedBookings, { onConflict: 'supersaas_id' })
-        .select();
+    // Migrate bookings to our D1 system
+    const migratedBookings = [];
+    const tenantId = 'ccb12b4d-ade6-467d-a614-7c9d198ddc70'; // Instyle Hair Boutique
 
-      if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    for (const booking of bookings || []) {
+      try {
+        // Find or create user
+        let user = await db.select().from(users).where(eq(users.email, booking.email)).limit(1);
+
+        if (user.length === 0) {
+          // Create new user
+          const newUser = await db.insert(users).values({
+            email: booking.email,
+            name: booking.full_name || booking.name,
+            tenantId: tenantId,
+          }).returning();
+          user = newUser;
+        }
+
+        // Create appointment
+        const scheduledTime = new Date(booking.start);
+        const appointmentData = {
+          userId: user[0].id,
+          serviceId: 'service_hair_treatment', // Default service, can be mapped better
+          tenantId: tenantId,
+          scheduledTime: Math.floor(scheduledTime.getTime() / 1000),
+          status: booking.status === 'confirmed' ? 'confirmed' : 'pending',
+          notes: `Migrated from SuperSaaS - ${booking.description || ''}`,
+        };
+
+        const newAppointment = await db.insert(appointments).values(appointmentData).returning();
+        migratedBookings.push(newAppointment[0]);
+
+      } catch (bookingError) {
+        console.error(`Error migrating booking ${booking.id}:`, bookingError);
+        // Continue with other bookings
       }
-
-      return NextResponse.json({ 
-        message: `Migrated ${data?.length || 0} bookings from SuperSaaS`,
-        bookings: data 
-      });
     }
 
-    return NextResponse.json({ message: 'No bookings to migrate' });
+    return Response.json({
+      message: `Migrated ${migratedBookings.length} bookings from SuperSaaS`,
+      bookings: migratedBookings
+    });
 
   } catch (error) {
-    return NextResponse.json({ 
-      error: error instanceof Error ? error.message : 'Migration failed' 
+    return Response.json({
+      error: error instanceof Error ? error.message : 'Migration failed'
     }, { status: 500 });
   }
 }

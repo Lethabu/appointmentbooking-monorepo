@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase';
+import { getDb } from '@/packages/db/src';
+import { users, appointments } from '@/packages/db/src/schema';
+import { eq } from 'drizzle-orm';
+import axios from 'axios';
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,34 +15,60 @@ export async function POST(request: NextRequest) {
       tenantId
     } = await request.json();
 
-    if (!serviceId || !bookingDate || !customerName || !customerEmail || !payment_reference) {
+    if (!serviceId || !bookingDate || !customerName || !customerEmail || !payment_reference || !tenantId) {
       return NextResponse.json({ error: 'Missing required booking information.' }, { status: 400 });
     }
 
-    const supabase = createClient();
+    // Get D1 database from environment
+    const db = getDb(request.env as { DB: D1Database });
 
-    const bookingData = {
-      service_id: serviceId,
-      booking_date: bookingDate,
-      customer_name: customerName,
-      customer_email: customerEmail,
-      payment_reference: payment_reference,
-      status: 'confirmed',
-      tenant_id: tenantId, // For whitelabel
-    };
+    // Find or create user
+    let user = await db.select().from(users).where(eq(users.email, customerEmail)).limit(1);
 
-    const { data, error } = await supabase
-      .from('bookings')
-      .insert([bookingData])
-      .select()
-      .single();
+    if (user.length === 0) {
+      // Create new user
+      const newUser = await db.insert(users).values({
+        email: customerEmail,
+        name: customerName,
+        tenantId: tenantId,
+      }).returning();
 
-    if (error) {
-      console.error('Supabase booking error:', error);
-      throw new Error('Failed to create booking in database.');
+      user = newUser;
     }
 
-    return NextResponse.json({ success: true, booking: data });
+    // Create appointment
+    const scheduledTime = new Date(bookingDate);
+    const appointmentData = {
+      userId: user[0].id,
+      serviceId: serviceId,
+      tenantId: tenantId,
+      scheduledTime: Math.floor(scheduledTime.getTime() / 1000), // Unix timestamp
+      status: 'confirmed',
+      notes: `Payment Reference: ${payment_reference}`,
+    };
+
+    const newAppointment = await db.insert(appointments).values(appointmentData).returning();
+
+    // Sync to SuperSaaS
+    try {
+      await axios.post('https://www.supersaas.com/api/bookings.json', {
+        schedule_id: 'Instyle Hair Boutique',
+        full_name: customerName,
+        email: customerEmail,
+        start: scheduledTime.toISOString(),
+        description: `Service ID: ${serviceId} - Payment: ${payment_reference}`
+      }, {
+        auth: {
+          username: '5ciPW7IzfQRQy1wqdTsH6g',
+          password: 'x'
+        }
+      });
+    } catch (syncError) {
+      console.error('SuperSaaS sync error:', syncError);
+      // Don't fail the booking if SuperSaaS sync fails
+    }
+
+    return NextResponse.json({ success: true, booking: newAppointment[0] });
 
   } catch (error) {
     console.error('Booking API error:', error);

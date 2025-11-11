@@ -1,38 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 
-const services = [
-  {
-    id: 'service_1',
-    name: 'Middle & Side Installation',
-    price_cents: 45000, // R450
-    duration: 60,
-    description: 'Professional installation of middle and side part weaves',
-  },
-  {
-    id: 'service_2',
-    name: 'Maphondo & Lines Installation',
-    price_cents: 60000, // R600
-    duration: 90,
-    description: 'Intricate Maphondo and lines installation',
-  },
-  {
-    id: 'service_3',
-    name: 'Hair Treatment',
-    price_cents: 25000, // R250
-    duration: 30,
-    description: 'Rejuvenating hair treatment for healthy hair',
-  },
-];
+interface Service {
+  id: string;
+  name: string;
+  durationMinutes: number;
+  price: number; // in cents
+  isActive: boolean;
+  price_cents?: number; // For compatibility
+  duration?: number; // For compatibility
+  description?: string; // For compatibility
+}
 
 export default function ServiceBookingFlow() {
-  const [selectedService, setSelectedService] = useState<any>(null);
-  const [customerDetails, setCustomerDetails] = useState<any>({
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [customerDetails, setCustomerDetails] = useState({
     name: '',
     email: '',
     phone: '',
@@ -43,13 +32,23 @@ export default function ServiceBookingFlow() {
 
   const formatPrice = (cents: number) => `R${(cents / 100).toFixed(0)}`;
 
-  interface Service {
-    id: string;
-    name: string;
-    price_cents: number;
-    duration: number;
-    description: string;
-  }
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await fetch('/api/tenant?slug=instylehairboutique');
+        if (response.ok) {
+          const data = await response.json();
+          setServices(data.services || []);
+        }
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
 
   const handleBookingPayment = async () => {
     if (
@@ -72,14 +71,14 @@ export default function ServiceBookingFlow() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          amount: selectedService.price_cents,
+          amount: selectedService.price || selectedService.price_cents || 0,
           email: customerDetails.email,
           phone: customerDetails.phone,
           items: [
             {
               id: selectedService.id,
               name: selectedService.name,
-              price_cents: selectedService.price_cents,
+              price_cents: selectedService.price || selectedService.price_cents || 0,
               quantity: 1,
               type: 'service',
             },
@@ -140,12 +139,12 @@ export default function ServiceBookingFlow() {
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="font-semibold">{service.name}</h3>
-                  <p className="text-sm text-gray-600">{service.description}</p>
-                  <Badge variant="outline">{service.duration} minutes</Badge>
+                  <p className="text-sm text-gray-600">{service.description || 'Professional hair service'}</p>
+                  <Badge variant="outline">{service.durationMinutes || service.duration || 60} minutes</Badge>
                 </div>
                 <div className="text-right">
                   <p className="text-xl font-bold text-purple-600">
-                    {formatPrice(service.price_cents)}
+                    {formatPrice(service.price || service.price_cents || 0)}
                   </p>
                 </div>
               </div>
@@ -248,7 +247,7 @@ export default function ServiceBookingFlow() {
               <div className="flex justify-between font-bold text-lg border-t pt-2">
                 <span>Total:</span>
                 <span className="text-purple-600">
-                  {formatPrice(selectedService.price_cents)}
+                  {formatPrice(selectedService.price || selectedService.price_cents || 0)}
                 </span>
               </div>
             </div>
@@ -260,7 +259,7 @@ export default function ServiceBookingFlow() {
             >
               {isProcessing
                 ? 'Processing...'
-                : `Pay ${formatPrice(selectedService.price_cents)} with PayStack`}
+                : `Pay ${formatPrice(selectedService.price || selectedService.price_cents || 0)} with PayStack`}
             </Button>
           </CardContent>
         </Card>
