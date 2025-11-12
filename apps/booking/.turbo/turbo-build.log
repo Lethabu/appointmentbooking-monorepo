@@ -1,25 +1,407 @@
 
-> booking@0.1.0 build
+> booking@0.1.0 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking
 > next build
 
+ ⚠ Specified "rewrites" will not automatically work with "output: export". See more info here: https://nextjs.org/docs/messages/export-no-custom-routes
+ ⚠ Specified "headers" will not automatically work with "output: export". See more info here: https://nextjs.org/docs/messages/export-no-custom-routes
+ ⚠ Specified "rewrites" will not automatically work with "output: export". See more info here: https://nextjs.org/docs/messages/export-no-custom-routes
+ ⚠ Specified "headers" will not automatically work with "output: export". See more info here: https://nextjs.org/docs/messages/export-no-custom-routes
   ▲ Next.js 14.2.33
   - Environments: .env
   - Experiments (use with caution):
+    · optimizeCss
     · scrollRestoration
+    · webpackBuildWorker
 
    Creating an optimized production build ...
-<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOSPC: no space left on device, write
-<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOSPC: no space left on device, write
+ ⚠ Specified "rewrites" will not automatically work with "output: export". See more info here: https://nextjs.org/docs/messages/export-no-custom-routes
+ ⚠ Specified "headers" will not automatically work with "output: export". See more info here: https://nextjs.org/docs/messages/export-no-custom-routes
+ ⚠ Compiled with warnings
+
+asset size limit: The following asset(s) exceed the recommended size limit (500 KiB).
+This can impact web performance.
+Assets: 
+  ../vendors.js (1.57 MiB)
+
+entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (500 KiB). This can impact web performance.
+Entrypoints:
+  pages/_app (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../pages/_app.js
+  pages/_error (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../pages/_error.js
+  app/_not-found/page (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/_not-found/page.js
+  app/api/agent/instyle/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/agent/instyle/route.js
+  app/api/alert-admin/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/alert-admin/route.js
+  app/api/agent/route (1.58 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/agent/route.js
+  app/api/appointments/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/appointments/route.js
+  app/api/auth/[...nextauth]/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/auth/[...nextauth]/route.js
+  app/api/analytics/ecommerce/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/analytics/ecommerce/route.js
+  app/api/automation/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/automation/route.js
+  app/api/analytics/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/analytics/route.js
+  app/api/auth/verify-token/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/auth/verify-token/route.js
+  app/api/book-demo/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/book-demo/route.js
+  app/api/book-appointment/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/book-appointment/route.js
+  app/api/bookings/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/bookings/route.js
+  app/api/checkout/paystack/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/checkout/paystack/route.js
+  app/api/checkout/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/checkout/route.js
+  app/api/book/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/book/route.js
+  app/api/consent/record/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/consent/record/route.js
+  app/api/conversational-commerce/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/conversational-commerce/route.js
+  app/api/dashboard/marketing/[id]/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/dashboard/marketing/[id]/route.js
+  app/api/dashboard/clients/[id]/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/dashboard/clients/[id]/route.js
+  app/api/dashboard/clients/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/dashboard/clients/route.js
+  app/api/dashboard/marketing/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/dashboard/marketing/route.js
+  app/api/chat/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/chat/route.js
+  app/api/dashboard/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/dashboard/route.js
+  app/api/emergency-booking/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/emergency-booking/route.js
+  app/api/health/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/health/route.js
+  app/api/generate-component/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/generate-component/route.js
+  app/api/monitoring/health/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/monitoring/health/route.js
+  app/api/inventory/sync/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/inventory/sync/route.js
+  app/api/mood/post/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/mood/post/route.js
+  app/api/orders/[orderId]/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/orders/[orderId]/route.js
+  app/api/onboarding/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/onboarding/route.js
+  app/api/payments/paystack/create/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/payments/paystack/create/route.js
+  app/api/payments/netcash/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/payments/netcash/route.js
+  app/api/payments/payflex/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/payments/payflex/route.js
+  app/api/paystack/create/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/paystack/create/route.js
+  app/api/paystack/webhook/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/paystack/webhook/route.js
+  app/api/products/ai-recommendations/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/products/ai-recommendations/route.js
+  app/api/public/services/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/public/services/route.js
+  app/api/payments/create/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/payments/create/route.js
+  app/api/robots/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/robots/route.js
+  app/api/public/products/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/public/products/route.js
+  app/api/products/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/products/route.js
+  app/api/social-commerce/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/social-commerce/route.js
+  app/api/supersaas-migrate/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/supersaas-migrate/route.js
+  app/api/social-sync/tiktok/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/social-sync/tiktok/route.js
+  app/api/social-sync/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/social-sync/route.js
+  app/api/supersaas-sync/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/supersaas-sync/route.js
+  app/api/tenant/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/tenant/route.js
+  app/api/verify-payment/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/verify-payment/route.js
+  app/api/tenant-health/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/tenant-health/route.js
+  app/api/tiktok/viral/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/tiktok/viral/route.js
+  app/api/tenant-resolver/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/tenant-resolver/route.js
+  app/api/webhooks/ozow/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/webhooks/ozow/route.js
+  app/api/webhooks/automation/abandoned-cart/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/webhooks/automation/abandoned-cart/route.js
+  app/api/webhooks/payfast/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/webhooks/payfast/route.js
+  app/api/webhooks/social-post/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/webhooks/social-post/route.js
+  app/api/webhooks/paystack/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/webhooks/paystack/route.js
+  app/api/webhooks/yoco/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/webhooks/yoco/route.js
+  app/api/webhooks/typebot/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/webhooks/typebot/route.js
+  app/api/whatsapp/catalog/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/whatsapp/catalog/route.js
+  app/page (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/page.js
+  app/api/whatsapp/reminder/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/whatsapp/reminder/route.js
+  app/api/dashboard/products/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/dashboard/products/route.js
+  app/api/dashboard/services/[id]/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/dashboard/services/[id]/route.js
+  app/api/dashboard-stats/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/dashboard-stats/route.js
+  app/api/metrics/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/metrics/route.js
+  app/api/dashboard/services/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/dashboard/services/route.js
+  app/api/dashboard/settings/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/dashboard/settings/route.js
+  app/api/orders/route (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/api/orders/route.js
+  pages/_document (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../pages/_document.js
+  app/status/page (1.58 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/status/page.js
+  app/admin/dashboard/page (1.58 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/admin/dashboard/page.js
+  app/order-success/page (1.58 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/order-success/page.js
+  app/[tenant]/page (1.58 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/[tenant]/page.js
+  app/book/instylehairboutique/page (1.58 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/book/instylehairboutique/page.js
+  app/services/page (1.57 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/services/page.js
+  app/(/dashboard)/dashboard/page (1.58 MiB)
+      ../webpack-runtime.js
+      ../vendors.js
+      ../app/(/dashboard)/dashboard/page.js
+
+webpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+
+ ⚠ Specified "rewrites" will not automatically work with "output: export". See more info here: https://nextjs.org/docs/messages/export-no-custom-routes
+ ⚠ Specified "headers" will not automatically work with "output: export". See more info here: https://nextjs.org/docs/messages/export-no-custom-routes
+ ⚠ Specified "rewrites" will not automatically work with "output: export". See more info here: https://nextjs.org/docs/messages/export-no-custom-routes
+ ⚠ Specified "headers" will not automatically work with "output: export". See more info here: https://nextjs.org/docs/messages/export-no-custom-routes
+ ⚠ Compiled with warnings
+
+asset size limit: The following asset(s) exceed the recommended size limit (500 KiB).
+This can impact web performance.
+Assets: 
+  static/chunks/vendors-005f9f76e225ce1b.js (683 KiB)
+
+entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (500 KiB). This can impact web performance.
+Entrypoints:
+  main (820 KiB)
+      static/chunks/webpack-45a6c04c93b72730.js
+      static/chunks/react-vendor-e259b8f5b8ae02f1.js
+      static/chunks/vendors-005f9f76e225ce1b.js
+      static/chunks/main-18f38d8745ae3cae.js
+  main-app (687 KiB)
+      static/chunks/webpack-45a6c04c93b72730.js
+      static/chunks/vendors-005f9f76e225ce1b.js
+      static/chunks/main-app-96140043604c1190.js
+  app/not-found (683 KiB)
+      static/chunks/vendors-005f9f76e225ce1b.js
+      static/chunks/app/not-found-6e69d5b4d4d68ede.js
+  app/layout (685 KiB)
+      static/css/e909fea940309f79.css
+      static/chunks/vendors-005f9f76e225ce1b.js
+      static/chunks/app/layout-0e7b03c8b02619af.js
+  app/status/page (691 KiB)
+      static/chunks/vendors-005f9f76e225ce1b.js
+      static/chunks/app/status/page-c5c53e1759622aad.js
+  app/order-success/page (688 KiB)
+      static/chunks/vendors-005f9f76e225ce1b.js
+      static/chunks/app/order-success/page-9140fd6a684b55af.js
+  app/[tenant]/page (688 KiB)
+      static/chunks/vendors-005f9f76e225ce1b.js
+      static/chunks/app/[tenant]/page-31727084a79a0396.js
+
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
 Failed to compile.
 
-Error: ENOSPC: no space left on device, write
+./app/api/bookings/route.ts:17:19
+Type error: Expected 1 arguments, but got 0.
 
-
-> Build failed because of webpack errors
-npm error Lifecycle script `build` failed with error:
-npm error code 1
-npm error path C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking
-npm error workspace booking@0.1.0
-npm error location C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking
-npm error command failed
-npm error command C:\WINDOWS\system32\cmd.exe /d /s /c next build
+[0m [90m 15 |[39m [90m// Rate Limiting (In-memory fallback)[39m[0m
+[0m [90m 16 |[39m [90m// ========================================================================[39m[0m
+[0m[31m[1m>[22m[39m[90m 17 |[39m [36mconst[39m ratelimit [33m=[39m getRateLimit()[33m;[39m[0m
+[0m [90m    |[39m                   [31m[1m^[22m[39m[0m
+[0m [90m 18 |[39m[0m
+[0m [90m 19 |[39m [90m// ========================================================================[39m[0m
+[0m [90m 20 |[39m [90m// Input Validation Schema (Prevents Injection)[39m[0m
+Next.js build worker exited with code: 1 and signal: null
+ ELIFECYCLE  Command failed with exit code 1.

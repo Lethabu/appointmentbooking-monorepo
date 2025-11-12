@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb } from '@/packages/db/src';
-import { tenants, services } from '@/packages/db/src/schema';
+import { getDb } from '@repo/db';
+import { tenants, services } from '@repo/db';
 import { eq } from 'drizzle-orm';
 
 export async function GET(request: NextRequest) {

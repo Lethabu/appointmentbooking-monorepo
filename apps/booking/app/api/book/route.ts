@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb } from '@/packages/db/src';
-import { users, appointments } from '@/packages/db/src/schema';
+import { getDb } from '@repo/db';
+import { users, appointments } from '@repo/db';
 import { eq } from 'drizzle-orm';
 import axios from 'axios';
 
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get D1 database from environment
-    const db = getDb(request.env as { DB: D1Database });
+    const db = getDb(process.env as any);
 
     // Find or create user
     let user = await db.select().from(users).where(eq(users.email, customerEmail)).limit(1);
@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
     if (user.length === 0) {
       // Create new user
       const newUser = await db.insert(users).values({
+        id: crypto.randomUUID(),
         email: customerEmail,
         name: customerName,
         tenantId: tenantId,
@@ -39,10 +40,11 @@ export async function POST(request: NextRequest) {
     // Create appointment
     const scheduledTime = new Date(bookingDate);
     const appointmentData = {
+      id: crypto.randomUUID(),
       userId: user[0].id,
       serviceId: serviceId,
       tenantId: tenantId,
-      scheduledTime: Math.floor(scheduledTime.getTime() / 1000), // Unix timestamp
+      scheduledTime: scheduledTime,
       status: 'confirmed',
       notes: `Payment Reference: ${payment_reference}`,
     };

@@ -1,0 +1,1610 @@
+{
+  "services": [
+    {
+      "id": 302873,
+      "name": "Middle & Side Installation",
+      "duration": 180,
+      "price": 800,
+      "category": "Hair Installation",
+      "description": "Professional middle & side installation service"
+    },
+    {
+      "id": 302874,
+      "name": "Maphondo & Lines Installation",
+      "duration": 180,
+      "price": 800,
+      "category": "Hair Installation",
+      "description": "Professional maphondo & lines installation service"
+    },
+    {
+      "id": 337555,
+      "name": "Soft Glam Makeup",
+      "duration": 60,
+      "price": 300,
+      "category": "Makeup",
+      "description": "Professional soft glam makeup service"
+    },
+    {
+      "id": 337556,
+      "name": "Gel Maphondo Styling",
+      "duration": 90,
+      "price": 250,
+      "category": "Hair Styling",
+      "description": "Professional gel maphondo styling service"
+    },
+    {
+      "id": 337557,
+      "name": "Frontal Ponytail Installation",
+      "duration": 180,
+      "price": 800,
+      "category": "Hair Installation",
+      "description": "Professional frontal ponytail installation service"
+    }
+  ],
+  "clients": [
+    {
+      "id": 13807011,
+      "name": "Olerato ",
+      "email": "aobakwe.modise@icloud.com",
+      "phone": "Modise",
+      "address": "4582 Block B Mabopane \r\nPretoria\r\n0190",
+      "createdAt": "2025-04-25T19:53:38Z",
+      "lastLogin": "2025-08-15T18:13:11Z",
+      "isActive": true
+    },
+    {
+      "id": 14289469,
+      "name": "Princess ",
+      "email": "boipeloprincess19@gmail.com",
+      "phone": "0679481928",
+      "address": "1153 block g soshanguve ",
+      "createdAt": "2025-10-28T20:13:19Z",
+      "lastLogin": "2025-10-28T20:13:19Z",
+      "isActive": true
+    },
+    {
+      "id": 13744322,
+      "name": "Lethabo",
+      "email": "booysenlethabo@icloud.com",
+      "phone": "0691524569",
+      "address": "Soshanguve, block L",
+      "createdAt": "2025-03-31T06:02:36Z",
+      "lastLogin": "2025-09-26T06:02:55Z",
+      "isActive": true
+    },
+    {
+      "id": 14175552,
+      "name": "Dineo",
+      "email": "dineombewe21@gmail.com",
+      "phone": "+27671960347",
+      "address": "723 Block LL Soshanguve",
+      "createdAt": "2025-09-18T15:05:00Z",
+      "lastLogin": "2025-09-18T15:05:00Z",
+      "isActive": true
+    },
+    {
+      "id": 13866942,
+      "name": "Kopano Selepe ",
+      "email": "faithselepe333@gmail.com",
+      "phone": "081 546 8520 ",
+      "address": "827 Marothodi streets block k soshanguve ",
+      "createdAt": "2025-05-22T11:17:45Z",
+      "lastLogin": "2025-05-22T11:17:45Z",
+      "isActive": false
+    },
+    {
+      "id": 14201217,
+      "name": "Naledi Happy Tsawani",
+      "email": "happy122999@gmail.com",
+      "phone": "0609568056",
+      "address": "House no. 16134\r\nExtension 12\r\nSoshanguve South \r\n0152",
+      "createdAt": "2025-09-27T18:34:09Z",
+      "lastLogin": "2025-09-27T18:34:09Z",
+      "isActive": true
+    },
+    {
+      "id": 13629951,
+      "name": "motlalethabo Gloria ",
+      "email": "hlomotlalethabo@gmail.com",
+      "phone": "0660178779",
+      "address": "906 dithabaneng street K Soshanguve 0152",
+      "createdAt": "2025-02-13T11:52:59Z",
+      "lastLogin": "2025-04-24T06:26:42Z",
+      "isActive": false
+    },
+    {
+      "id": 13633464,
+      "name": "sinethmba Queen maphanga ",
+      "email": "indoniswati@gmail.com",
+      "phone": "+27764492790",
+      "address": "890 block BB Soshanguve ",
+      "createdAt": "2025-02-14T16:00:39Z",
+      "lastLogin": "2025-04-24T10:11:13Z",
+      "isActive": false
+    },
+    {
+      "id": 13941539,
+      "name": "Oratilwe Kamogelo",
+      "email": "kamogelooratilwe03@gmail.com",
+      "phone": "0614144983",
+      "address": "8022 Nakedi Street \r\nMabopane",
+      "createdAt": "2025-06-26T08:09:29Z",
+      "lastLogin": "2025-09-25T04:50:08Z",
+      "isActive": true
+    },
+    {
+      "id": 13739227,
+      "name": "Karabelo Motaung",
+      "email": "karabelolbmotaung02@gmail.com",
+      "phone": "+27665972425",
+      "address": "6609 Dithabaneng soshanguve block K",
+      "createdAt": "2025-03-28T10:26:04Z",
+      "lastLogin": "2025-03-28T10:26:04Z",
+      "isActive": false
+    },
+    {
+      "id": 14000241,
+      "name": "Karabo",
+      "email": "karabosehwana@gmail.com",
+      "phone": "0636598615",
+      "address": "1904 Block L Soshanguve ",
+      "createdAt": "2025-07-20T08:01:40Z",
+      "lastLogin": "2025-08-24T13:39:57Z",
+      "isActive": true
+    },
+    {
+      "id": 13891577,
+      "name": "catherine",
+      "email": "katarinacatherine11@gmail.com",
+      "phone": "+27608172144",
+      "address": "732 block h",
+      "createdAt": "2025-06-02T22:28:13Z",
+      "lastLogin": "2025-06-02T22:28:13Z",
+      "isActive": false
+    },
+    {
+      "id": 14114496,
+      "name": "Nthabiseng",
+      "email": "keamogetselebese@gmail.com",
+      "phone": "0615159341",
+      "address": "738 block m",
+      "createdAt": "2025-09-01T16:02:54Z",
+      "lastLogin": "2025-09-01T16:02:54Z",
+      "isActive": true
+    },
+    {
+      "id": 13986056,
+      "name": "Keneilwe ",
+      "email": "Keneilwemakena5@gmail.com",
+      "phone": "0790206920",
+      "address": "607Block F West ",
+      "createdAt": "2025-07-15T16:02:01Z",
+      "lastLogin": "2025-07-15T16:02:23Z",
+      "isActive": false
+    },
+    {
+      "id": 14192940,
+      "name": "khanyisile",
+      "email": "Khanyibabedi1115@gmail.com",
+      "phone": "0720825412",
+      "address": "761 Block M\r\nsoshanguve \r\n0152",
+      "createdAt": "2025-09-24T13:50:55Z",
+      "lastLogin": "2025-09-24T13:50:55Z",
+      "isActive": true
+    },
+    {
+      "id": 13895881,
+      "name": "Khethiwe Khethiwe",
+      "email": "khethi.naomi@gmail.com",
+      "phone": "+27836936515",
+      "address": "334 Block L",
+      "createdAt": "2025-06-04T14:24:22Z",
+      "lastLogin": "2025-10-15T06:37:42Z",
+      "isActive": true
+    },
+    {
+      "id": 13959328,
+      "name": "koketso",
+      "email": "koketso.lucky@icloud.com",
+      "phone": "0793050383",
+      "address": "1709 block gg phaphamang street ",
+      "createdAt": "2025-07-03T06:44:23Z",
+      "lastLogin": "2025-07-03T06:44:23Z",
+      "isActive": false
+    },
+    {
+      "id": 13832702,
+      "name": "Refilwe Makua ",
+      "email": "kutwanemakua@gmail.com",
+      "phone": "0721878267",
+      "address": "TUT",
+      "createdAt": "2025-05-07T18:45:05Z",
+      "lastLogin": "2025-05-07T18:45:05Z",
+      "isActive": false
+    },
+    {
+      "id": 14301804,
+      "name": "Lebogang Manenzhe",
+      "email": "lebogangmanenzhe@gmail.com",
+      "phone": "0635140229",
+      "address": "TuT Soshanguve north campus ",
+      "createdAt": "2025-11-03T11:30:36Z",
+      "lastLogin": "2025-11-03T11:30:36Z",
+      "isActive": true
+    },
+    {
+      "id": 14131264,
+      "name": "Lesego Malatji",
+      "email": "lesegowhopie@gmail.com",
+      "phone": "0603635739",
+      "address": "Central hostel block H",
+      "createdAt": "2025-09-06T19:55:21Z",
+      "lastLogin": "2025-09-15T18:02:16Z",
+      "isActive": true
+    },
+    {
+      "id": 13792396,
+      "name": "lungile Nkabinde ",
+      "email": "lungilenkabi03@gmail.com",
+      "phone": "0727053879",
+      "address": "TUT",
+      "createdAt": "2025-04-18T15:48:41Z",
+      "lastLogin": "2025-05-07T18:38:05Z",
+      "isActive": false
+    },
+    {
+      "id": 13809837,
+      "name": "Thandolwethu",
+      "email": "lungilethandolwethu9@gmail.com",
+      "phone": "0762951095",
+      "address": "6837 Bontle Street ",
+      "createdAt": "2025-04-27T21:32:33Z",
+      "lastLogin": "2025-04-27T21:32:33Z",
+      "isActive": false
+    },
+    {
+      "id": 13793126,
+      "name": "Buhle Mabena ",
+      "email": "mabenabuhle17@gmail.com",
+      "phone": "0769317937 ",
+      "address": "Duduzani street block Dd soshanguve ",
+      "createdAt": "2025-04-19T06:28:03Z",
+      "lastLogin": "2025-04-19T15:54:24Z",
+      "isActive": false
+    },
+    {
+      "id": 13837146,
+      "name": "Palesa",
+      "email": "magagulapalesa20@gmail.com",
+      "phone": "0648431190",
+      "address": "1076 Block MM",
+      "createdAt": "2025-05-09T16:19:35Z",
+      "lastLogin": "2025-05-09T16:19:35Z",
+      "isActive": false
+    },
+    {
+      "id": 14201145,
+      "name": "Mandisa Sibanyoni",
+      "email": "mandisasibanyoni93@gmail.com",
+      "phone": "0849276493",
+      "address": "1943 Block R\r\nSoshanguve \r\n0152",
+      "createdAt": "2025-09-27T17:38:06Z",
+      "lastLogin": "2025-09-27T17:38:06Z",
+      "isActive": true
+    },
+    {
+      "id": 14291479,
+      "name": "Marvelin Manganye",
+      "email": "manganyemarvelin@gmail.com",
+      "phone": "+27712562097",
+      "address": "1781 Block H ,soshanguve,0152",
+      "createdAt": "2025-10-29T14:41:10Z",
+      "lastLogin": "2025-10-29T14:42:10Z",
+      "isActive": true
+    },
+    {
+      "id": 13950048,
+      "name": "Ditebogo Mashia Gwagwa",
+      "email": "mashiagwagwa13@gmail.com",
+      "phone": "0820727761",
+      "address": "2047 block h Soshanguve o152",
+      "createdAt": "2025-06-30T18:29:51Z",
+      "lastLogin": "2025-06-30T18:29:51Z",
+      "isActive": false
+    },
+    {
+      "id": 14218406,
+      "name": "matlhodi matjane",
+      "email": "matlhodimatjane8@gmail.com",
+      "phone": "0725552245",
+      "address": "3rd avenue akasia place",
+      "createdAt": "2025-10-03T13:27:51Z",
+      "lastLogin": "2025-10-03T13:27:51Z",
+      "isActive": true
+    },
+    {
+      "id": 14262707,
+      "name": "alenda",
+      "email": "Matshidishomiki@gmail.com",
+      "phone": "0823192026",
+      "address": "7143 Amajuba street \r\nWindmill Park \r\nBoksburg ",
+      "createdAt": "2025-10-19T11:11:43Z",
+      "lastLogin": "2025-10-26T05:48:04Z",
+      "isActive": true
+    },
+    {
+      "id": 13737294,
+      "name": "Tinyiko Mdluli",
+      "email": "mdlulitinyiko7@gmail.com",
+      "phone": "0647026719",
+      "address": "",
+      "createdAt": "2025-03-27T14:07:47Z",
+      "lastLogin": "2025-06-24T10:33:39Z",
+      "isActive": false
+    },
+    {
+      "id": 13852790,
+      "name": "khanyisa madaure",
+      "email": "mkhanyisa@gmail.com",
+      "phone": "+27793544710",
+      "address": "972 Block L",
+      "createdAt": "2025-05-16T09:22:01Z",
+      "lastLogin": "2025-05-16T09:22:01Z",
+      "isActive": false
+    },
+    {
+      "id": 13817485,
+      "name": "Noluthando Mndebele ",
+      "email": "mndebelenoluthando07@gmail.com",
+      "phone": "0791187560",
+      "address": "Soshanguve\r\nBlock K 189",
+      "createdAt": "2025-04-30T16:10:39Z",
+      "lastLogin": "2025-05-08T12:09:10Z",
+      "isActive": false
+    },
+    {
+      "id": 13763889,
+      "name": "constance ",
+      "email": "mojelaconny5@gmail.com",
+      "phone": "0761834308",
+      "address": "2670 phase8",
+      "createdAt": "2025-04-07T13:17:26Z",
+      "lastLogin": "2025-04-07T13:17:26Z",
+      "isActive": false
+    },
+    {
+      "id": 14201644,
+      "name": "Didintle",
+      "email": "motsepedidintle26@gmail.com",
+      "phone": "0635341679",
+      "address": "910 Ubhatata street block xx",
+      "createdAt": "2025-09-28T06:53:49Z",
+      "lastLogin": "2025-09-28T17:11:20Z",
+      "isActive": true
+    },
+    {
+      "id": 14290258,
+      "name": "Matshidiso Makope",
+      "email": "msmakope@gmail.com",
+      "phone": "0832050555",
+      "address": "",
+      "createdAt": "2025-10-29T07:41:55Z",
+      "lastLogin": "2025-10-29T07:41:55Z",
+      "isActive": true
+    },
+    {
+      "id": 13504986,
+      "name": "Naledi Malele",
+      "email": "naledijenica551@gmail.com",
+      "phone": "0664202529",
+      "address": "",
+      "createdAt": "2024-12-28T18:53:59Z",
+      "lastLogin": "2025-09-01T10:36:23Z",
+      "isActive": true
+    },
+    {
+      "id": 14002040,
+      "name": "khensani Nkanyane ",
+      "email": "nkanyane.khensani4@gmail.com",
+      "phone": "0790543631",
+      "address": "1240 block bb soshanguve ",
+      "createdAt": "2025-07-21T10:07:16Z",
+      "lastLogin": "2025-07-21T10:07:16Z",
+      "isActive": false
+    },
+    {
+      "id": 14241410,
+      "name": "Nkhensani Mabunda",
+      "email": "Nkhensani289@gmail.com",
+      "phone": "0693556933",
+      "address": "Shaka residences",
+      "createdAt": "2025-10-11T16:17:25Z",
+      "lastLogin": "2025-10-11T16:17:25Z",
+      "isActive": true
+    },
+    {
+      "id": 13887952,
+      "name": "nokuthula ",
+      "email": "nokuthulazandy21@gmail.com",
+      "phone": "0697816866",
+      "address": "Block L",
+      "createdAt": "2025-06-01T13:35:21Z",
+      "lastLogin": "2025-06-01T13:35:21Z",
+      "isActive": false
+    },
+    {
+      "id": 12387997,
+      "name": "Nomalungelo",
+      "email": "NOMALUNGELOLANGA@GMAIL.COM",
+      "phone": "0797627293",
+      "address": "797 block L \r\nSoshanguve \r\nAubrey mathlala street \r\n0152 ",
+      "createdAt": "2023-10-11T14:28:09Z",
+      "lastLogin": "2025-11-11T16:44:49Z",
+      "isActive": true
+    },
+    {
+      "id": 13772323,
+      "name": "Nomthadazo ",
+      "email": "nomthandazomorobe@gmail.com",
+      "phone": "0769055224",
+      "address": "18230 Soshanguve south ",
+      "createdAt": "2025-04-10T11:01:53Z",
+      "lastLogin": "2025-06-13T17:22:42Z",
+      "isActive": false
+    },
+    {
+      "id": 13898419,
+      "name": "NONJABULO SHEREES THABETHE ",
+      "email": "nsherees@gmail.com",
+      "phone": "0679029583",
+      "address": "Mobopane section D near zungu",
+      "createdAt": "2025-06-05T12:58:27Z",
+      "lastLogin": "2025-06-05T12:58:27Z",
+      "isActive": false
+    },
+    {
+      "id": 14031701,
+      "name": "Nthabiseng ",
+      "email": "nthabimokhutswane@gmail.com",
+      "phone": "0796270563",
+      "address": "500 block gg\r\nSoshanguve\r\n0152",
+      "createdAt": "2025-07-31T07:49:33Z",
+      "lastLogin": "2025-07-31T07:49:33Z",
+      "isActive": false
+    },
+    {
+      "id": 14291663,
+      "name": "Nthabiseng ",
+      "email": "nthabisengmoukangoe@gmail.com",
+      "phone": "0713288390",
+      "address": "13 G6 Block k-ext Soshanguve 0152",
+      "createdAt": "2025-10-29T15:29:34Z",
+      "lastLogin": "2025-10-29T15:29:34Z",
+      "isActive": true
+    },
+    {
+      "id": 14094921,
+      "name": "Nyeleti selma",
+      "email": "Nyeletiselma26@gmail.com",
+      "phone": "0722697158",
+      "address": "6513 Nguba street sihle residence Soshanguve vv ext 4",
+      "createdAt": "2025-08-27T07:34:48Z",
+      "lastLogin": "2025-08-27T07:48:31Z",
+      "isActive": true
+    },
+    {
+      "id": 13784173,
+      "name": "Olebogeng",
+      "email": "olebogengfmadiba@icloud.com",
+      "phone": "+27664223408",
+      "address": "543 Block Uu Soshanguve ",
+      "createdAt": "2025-04-15T14:50:40Z",
+      "lastLogin": "2025-04-15T14:50:40Z",
+      "isActive": false
+    },
+    {
+      "id": 14103867,
+      "name": "tsholo",
+      "email": "omphemetse.seloane@icloud.com",
+      "phone": "0605206393",
+      "address": "9070 chenille street \r\nPretoria townlands",
+      "createdAt": "2025-08-29T08:14:02Z",
+      "lastLogin": "2025-08-29T08:14:02Z",
+      "isActive": true
+    },
+    {
+      "id": 13771956,
+      "name": "Oratilwe ",
+      "email": "oratilwemogoba05@gmail.com",
+      "phone": "0716724800",
+      "address": "839 block L soshanguve",
+      "createdAt": "2025-04-10T08:41:59Z",
+      "lastLogin": "2025-06-15T06:11:48Z",
+      "isActive": false
+    },
+    {
+      "id": 13987862,
+      "name": "Phillipine Masela",
+      "email": "phillipine4@gmail.com",
+      "phone": "0722842199",
+      "address": "696\r\nMaboine",
+      "createdAt": "2025-07-16T02:30:44Z",
+      "lastLogin": "2025-07-16T02:30:44Z",
+      "isActive": false
+    },
+    {
+      "id": 13779304,
+      "name": "Phionah Montwedi ",
+      "email": "Phionah.moshibudi@gmail.com",
+      "phone": "0695616919 ",
+      "address": "133 block s soshanguve nyathi street 0152\r\n",
+      "createdAt": "2025-04-13T16:29:16Z",
+      "lastLogin": "2025-04-13T16:29:16Z",
+      "isActive": false
+    },
+    {
+      "id": 13778016,
+      "name": "PraiseGod Francina",
+      "email": "praisegodnjosi@gmail.com",
+      "phone": "0646868184",
+      "address": "",
+      "createdAt": "2025-04-12T17:57:01Z",
+      "lastLogin": "2025-04-12T17:57:01Z",
+      "isActive": false
+    },
+    {
+      "id": 14106358,
+      "name": "Dimakatso precious",
+      "email": "preciousdimakatso58@gmail.com",
+      "phone": "0798077079",
+      "address": "1129 block pp soshanguve",
+      "createdAt": "2025-08-30T09:03:00Z",
+      "lastLogin": "2025-08-30T09:04:01Z",
+      "isActive": true
+    },
+    {
+      "id": 14076349,
+      "name": "Prudencekgaugelo051@gmail.com",
+      "email": "Prudencekgaugelo051@gmail.com",
+      "phone": "",
+      "address": "",
+      "createdAt": "2025-08-20T15:28:42Z",
+      "lastLogin": "2025-10-21T11:40:16Z",
+      "isActive": true
+    },
+    {
+      "id": 13755843,
+      "name": "nkateko Rasemana",
+      "email": "rasemanankateko@gmail.com",
+      "phone": "+27715849487",
+      "address": "Soshanguve block L\r\nPretoria",
+      "createdAt": "2025-04-03T18:07:41Z",
+      "lastLogin": "2025-07-23T15:08:08Z",
+      "isActive": false
+    },
+    {
+      "id": 13999823,
+      "name": "Reagoboka Moila",
+      "email": "reagobokamichell@gmail.com",
+      "phone": "0659004952",
+      "address": "",
+      "createdAt": "2025-07-19T19:54:56Z",
+      "lastLogin": "2025-07-19T19:56:05Z",
+      "isActive": false
+    },
+    {
+      "id": 13864549,
+      "name": "Vivian ",
+      "email": "refbooysen@gmail.com",
+      "phone": "072 937 0177 ",
+      "address": "435 Block L Soshanguve ",
+      "createdAt": "2025-05-21T14:00:37Z",
+      "lastLogin": "2025-09-22T12:05:22Z",
+      "isActive": true
+    },
+    {
+      "id": 13742856,
+      "name": "rethabile",
+      "email": "rethakhoza@icloud.com",
+      "phone": "0712615340",
+      "address": "",
+      "createdAt": "2025-03-30T10:30:44Z",
+      "lastLogin": "2025-04-01T08:07:02Z",
+      "isActive": false
+    },
+    {
+      "id": 13741534,
+      "name": "Reitumetse ",
+      "email": "rmatsoha@gmail.com",
+      "phone": "Matsoha ",
+      "address": "",
+      "createdAt": "2025-03-29T13:28:38Z",
+      "lastLogin": "2025-03-29T13:28:38Z",
+      "isActive": false
+    },
+    {
+      "id": 13914857,
+      "name": "Rorisang Malahlela ",
+      "email": "rorisangroro90@gmail.com",
+      "phone": "+27813656918",
+      "address": "131 Block Bb\r\nSoshanguve \r\nAtamelang street",
+      "createdAt": "2025-06-12T20:51:00Z",
+      "lastLogin": "2025-06-12T20:51:00Z",
+      "isActive": false
+    },
+    {
+      "id": 13979005,
+      "name": "Kelebogile",
+      "email": "seanekelebogile20@gmail.com",
+      "phone": "+27679184606",
+      "address": "220 Madiba Street\r\nPretoria central",
+      "createdAt": "2025-07-12T18:12:07Z",
+      "lastLogin": "2025-07-12T18:12:07Z",
+      "isActive": false
+    },
+    {
+      "id": 14026338,
+      "name": "Sibongile Fortunate Mahlangu",
+      "email": "sibongilemahlangu080@gmail.com",
+      "phone": "0764675907",
+      "address": "465 Block Aa\r\nSoshanguve \r\n0152\r\n",
+      "createdAt": "2025-07-29T07:05:57Z",
+      "lastLogin": "2025-07-29T07:05:57Z",
+      "isActive": false
+    },
+    {
+      "id": 13882303,
+      "name": "sisipho",
+      "email": "sisiphomakade@gmail.com",
+      "phone": "0632515828",
+      "address": "6645 joel gumede street",
+      "createdAt": "2025-05-29T06:04:40Z",
+      "lastLogin": "2025-05-29T06:04:40Z",
+      "isActive": false
+    },
+    {
+      "id": 13999734,
+      "name": "Tebogo Matlou",
+      "email": "tebogokarabomatlou@gmail.com",
+      "phone": "0762969755",
+      "address": "1643 block GG Soshanguve 0152",
+      "createdAt": "2025-07-19T18:21:33Z",
+      "lastLogin": "2025-07-19T18:21:33Z",
+      "isActive": false
+    },
+    {
+      "id": 13668408,
+      "name": "thandazile",
+      "email": "thandazilesilinda40@gmail.com",
+      "phone": "0764816919",
+      "address": "147 Johnston street",
+      "createdAt": "2025-02-28T20:33:11Z",
+      "lastLogin": "2025-04-12T19:13:50Z",
+      "isActive": false
+    },
+    {
+      "id": 14158920,
+      "name": "Thato Mmapitso ",
+      "email": "thatomapitso@gmail.com",
+      "phone": "0789027360",
+      "address": "13882 ext 13 soshanguve ",
+      "createdAt": "2025-09-15T15:06:18Z",
+      "lastLogin": "2025-09-16T09:58:26Z",
+      "isActive": true
+    },
+    {
+      "id": 14192195,
+      "name": "thoriso",
+      "email": "thorisokamogelo6@gmail.com",
+      "phone": "0637519588",
+      "address": "",
+      "createdAt": "2025-09-24T10:31:30Z",
+      "lastLogin": "2025-09-25T03:00:41Z",
+      "isActive": true
+    },
+    {
+      "id": 13875089,
+      "name": " Nhlalala Tibane ",
+      "email": "Tibanenhlalala@gmail.com",
+      "phone": "0765274139",
+      "address": "Telkom residence soshanguve block H ",
+      "createdAt": "2025-05-26T16:21:04Z",
+      "lastLogin": "2025-08-05T21:06:10Z",
+      "isActive": false
+    },
+    {
+      "id": 13747576,
+      "name": "tshegofatso",
+      "email": "tshegofatsonozipho@gmail.com",
+      "phone": "+27681728486",
+      "address": "",
+      "createdAt": "2025-04-01T07:59:26Z",
+      "lastLogin": "2025-09-18T21:54:02Z",
+      "isActive": true
+    },
+    {
+      "id": 13995720,
+      "name": "Tshegofatso ",
+      "email": "tshegohutang@hotmail.com",
+      "phone": "0735264207",
+      "address": "",
+      "createdAt": "2025-07-17T19:59:33Z",
+      "lastLogin": "2025-10-27T08:20:53Z",
+      "isActive": true
+    },
+    {
+      "id": 14202278,
+      "name": "Aunticle Tshenolo",
+      "email": "tshenolodanti@gmail.com",
+      "phone": "0713055987",
+      "address": "tshenolodanti@gmail.com",
+      "createdAt": "2025-09-28T14:06:18Z",
+      "lastLogin": "2025-09-28T14:06:18Z",
+      "isActive": true
+    },
+    {
+      "id": 13758805,
+      "name": "Tshepiso ",
+      "email": "Tshepisokmanamela@gmail.com",
+      "phone": "0760984210 ",
+      "address": "Tshepisokmanamela@gmail.com ",
+      "createdAt": "2025-04-04T19:50:05Z",
+      "lastLogin": "2025-04-04T19:50:05Z",
+      "isActive": false
+    },
+    {
+      "id": 14021938,
+      "name": "Mmathapelo ",
+      "email": "tswaimmathapelo@gmail.com",
+      "phone": "0619260360",
+      "address": "1397 block A mabopane",
+      "createdAt": "2025-07-27T16:01:08Z",
+      "lastLogin": "2025-07-27T16:01:08Z",
+      "isActive": false
+    },
+    {
+      "id": 14211829,
+      "name": "ursula nukeri",
+      "email": "ursularolani@icloud.com",
+      "phone": "0719357108",
+      "address": "Dikwakwetla",
+      "createdAt": "2025-10-01T10:35:13Z",
+      "lastLogin": "2025-10-01T10:35:13Z",
+      "isActive": true
+    },
+    {
+      "id": 14112811,
+      "name": "vuyisile",
+      "email": "vuyisile.queen@gmail.com",
+      "phone": "0760421513",
+      "address": "166 Block G",
+      "createdAt": "2025-09-01T13:15:23Z",
+      "lastLogin": "2025-09-09T19:51:02Z",
+      "isActive": true
+    },
+    {
+      "id": 14255046,
+      "name": "Busi Kgalane",
+      "email": "wbmgidi@gmail.com",
+      "phone": "+27824922687",
+      "address": "1218 block aa soshanguve ",
+      "createdAt": "2025-10-16T08:26:39Z",
+      "lastLogin": "2025-10-23T05:06:35Z",
+      "isActive": true
+    }
+  ],
+  "appointments": [
+    {
+      "id": 9400818,
+      "clientId": 13482758,
+      "startTime": "2024-12-21T10:00",
+      "endTime": "2024-12-21T11:00",
+      "status": 121,
+      "createdAt": "2024-12-13T10:10:56Z"
+    },
+    {
+      "id": 9412351,
+      "clientId": null,
+      "startTime": "2024-12-21T11:00",
+      "endTime": "2024-12-21T12:00",
+      "status": 121,
+      "createdAt": "2024-12-18T09:16:39Z"
+    },
+    {
+      "id": 9415851,
+      "clientId": null,
+      "startTime": "2024-12-21T13:00",
+      "endTime": "2024-12-21T14:00",
+      "status": 121,
+      "createdAt": "2024-12-19T13:08:25Z"
+    },
+    {
+      "id": 9414104,
+      "clientId": null,
+      "startTime": "2024-12-21T14:00",
+      "endTime": "2024-12-21T15:00",
+      "status": 121,
+      "createdAt": "2024-12-18T17:09:21Z"
+    },
+    {
+      "id": 9413058,
+      "clientId": null,
+      "startTime": "2024-12-21T15:00",
+      "endTime": "2024-12-21T16:00",
+      "status": 121,
+      "createdAt": "2024-12-18T12:33:25Z"
+    },
+    {
+      "id": 9417526,
+      "clientId": null,
+      "startTime": "2024-12-22T09:00",
+      "endTime": "2024-12-22T10:00",
+      "status": 121,
+      "createdAt": "2024-12-20T05:53:54Z"
+    },
+    {
+      "id": 9412780,
+      "clientId": null,
+      "startTime": "2024-12-22T11:00",
+      "endTime": "2024-12-22T12:00",
+      "status": 121,
+      "createdAt": "2024-12-18T11:14:16Z"
+    },
+    {
+      "id": 9406190,
+      "clientId": null,
+      "startTime": "2024-12-22T12:00",
+      "endTime": "2024-12-22T13:00",
+      "status": 121,
+      "createdAt": "2024-12-16T14:36:41Z"
+    },
+    {
+      "id": 9419978,
+      "clientId": null,
+      "startTime": "2024-12-23T09:00",
+      "endTime": "2024-12-23T10:00",
+      "status": 121,
+      "createdAt": "2024-12-21T12:19:09Z"
+    },
+    {
+      "id": 9420621,
+      "clientId": null,
+      "startTime": "2024-12-23T10:00",
+      "endTime": "2024-12-23T11:00",
+      "status": 121,
+      "createdAt": "2024-12-22T08:34:18Z"
+    },
+    {
+      "id": 9335352,
+      "clientId": null,
+      "startTime": "2024-12-23T11:00",
+      "endTime": "2024-12-23T12:00",
+      "status": 121,
+      "createdAt": "2024-11-19T07:40:45Z"
+    },
+    {
+      "id": 9362499,
+      "clientId": null,
+      "startTime": "2024-12-23T13:00",
+      "endTime": "2024-12-23T14:00",
+      "status": 121,
+      "createdAt": "2024-11-28T19:58:49Z"
+    },
+    {
+      "id": 9418521,
+      "clientId": null,
+      "startTime": "2024-12-23T14:00",
+      "endTime": "2024-12-23T15:00",
+      "status": 121,
+      "createdAt": "2024-12-20T14:53:00Z"
+    },
+    {
+      "id": 9417484,
+      "clientId": null,
+      "startTime": "2024-12-23T15:00",
+      "endTime": "2024-12-23T16:00",
+      "status": 121,
+      "createdAt": "2024-12-20T04:24:14Z"
+    },
+    {
+      "id": 9400254,
+      "clientId": null,
+      "startTime": "2024-12-24T09:00",
+      "endTime": "2024-12-24T10:00",
+      "status": 121,
+      "createdAt": "2024-12-13T05:58:33Z"
+    },
+    {
+      "id": 9418035,
+      "clientId": 13494827,
+      "startTime": "2024-12-24T10:00",
+      "endTime": "2024-12-24T11:00",
+      "status": 121,
+      "createdAt": "2024-12-20T10:38:18Z"
+    },
+    {
+      "id": 9401768,
+      "clientId": null,
+      "startTime": "2024-12-24T11:00",
+      "endTime": "2024-12-24T12:00",
+      "status": 121,
+      "createdAt": "2024-12-13T16:29:36Z"
+    },
+    {
+      "id": 9414946,
+      "clientId": null,
+      "startTime": "2024-12-24T12:00",
+      "endTime": "2024-12-24T13:00",
+      "status": 121,
+      "createdAt": "2024-12-19T05:08:01Z"
+    },
+    {
+      "id": 9419884,
+      "clientId": null,
+      "startTime": "2024-12-24T13:00",
+      "endTime": "2024-12-24T14:00",
+      "status": 121,
+      "createdAt": "2024-12-21T10:40:41Z"
+    },
+    {
+      "id": 9400599,
+      "clientId": null,
+      "startTime": "2024-12-24T14:00",
+      "endTime": "2024-12-24T15:00",
+      "status": 121,
+      "createdAt": "2024-12-13T08:45:42Z"
+    },
+    {
+      "id": 9400314,
+      "clientId": null,
+      "startTime": "2024-12-24T15:00",
+      "endTime": "2024-12-24T16:00",
+      "status": 121,
+      "createdAt": "2024-12-13T06:44:00Z"
+    },
+    {
+      "id": 9411882,
+      "clientId": null,
+      "startTime": "2024-12-27T09:00",
+      "endTime": "2024-12-27T10:00",
+      "status": 121,
+      "createdAt": "2024-12-18T05:16:24Z"
+    },
+    {
+      "id": 9423322,
+      "clientId": null,
+      "startTime": "2024-12-27T10:00",
+      "endTime": "2024-12-27T11:00",
+      "status": 121,
+      "createdAt": "2024-12-24T07:41:50Z"
+    },
+    {
+      "id": 9420629,
+      "clientId": null,
+      "startTime": "2024-12-27T11:00",
+      "endTime": "2024-12-27T12:00",
+      "status": 121,
+      "createdAt": "2024-12-22T08:45:43Z"
+    },
+    {
+      "id": 9423535,
+      "clientId": null,
+      "startTime": "2024-12-27T13:00",
+      "endTime": "2024-12-27T14:00",
+      "status": 121,
+      "createdAt": "2024-12-24T11:32:49Z"
+    },
+    {
+      "id": 9423242,
+      "clientId": null,
+      "startTime": "2024-12-27T15:00",
+      "endTime": "2024-12-27T16:00",
+      "status": 121,
+      "createdAt": "2024-12-24T04:18:49Z"
+    },
+    {
+      "id": 9400834,
+      "clientId": null,
+      "startTime": "2024-12-28T10:00",
+      "endTime": "2024-12-28T11:00",
+      "status": 121,
+      "createdAt": "2024-12-13T10:16:49Z"
+    },
+    {
+      "id": 9400849,
+      "clientId": null,
+      "startTime": "2024-12-28T11:00",
+      "endTime": "2024-12-28T12:00",
+      "status": 121,
+      "createdAt": "2024-12-13T10:24:05Z"
+    },
+    {
+      "id": 9415168,
+      "clientId": null,
+      "startTime": "2024-12-28T13:00",
+      "endTime": "2024-12-28T14:00",
+      "status": 121,
+      "createdAt": "2024-12-19T08:11:52Z"
+    },
+    {
+      "id": 9422273,
+      "clientId": null,
+      "startTime": "2024-12-29T09:00",
+      "endTime": "2024-12-29T10:00",
+      "status": 121,
+      "createdAt": "2024-12-23T13:51:45Z"
+    },
+    {
+      "id": 9421841,
+      "clientId": null,
+      "startTime": "2024-12-29T11:00",
+      "endTime": "2024-12-29T12:00",
+      "status": 121,
+      "createdAt": "2024-12-23T09:47:07Z"
+    },
+    {
+      "id": 9391439,
+      "clientId": null,
+      "startTime": "2024-12-29T12:00",
+      "endTime": "2024-12-29T13:00",
+      "status": 121,
+      "createdAt": "2024-12-10T11:52:38Z"
+    },
+    {
+      "id": 9456658,
+      "clientId": null,
+      "startTime": "2025-01-10T15:00",
+      "endTime": "2025-01-10T16:00",
+      "status": 121,
+      "createdAt": "2025-01-09T15:07:35Z"
+    },
+    {
+      "id": 9457206,
+      "clientId": null,
+      "startTime": "2025-01-11T11:00",
+      "endTime": "2025-01-11T12:00",
+      "status": 121,
+      "createdAt": "2025-01-09T17:34:10Z"
+    },
+    {
+      "id": 9457187,
+      "clientId": null,
+      "startTime": "2025-01-11T14:00",
+      "endTime": "2025-01-11T15:00",
+      "status": 121,
+      "createdAt": "2025-01-09T17:28:07Z"
+    },
+    {
+      "id": 9458877,
+      "clientId": null,
+      "startTime": "2025-01-12T09:00",
+      "endTime": "2025-01-12T10:00",
+      "status": 121,
+      "createdAt": "2025-01-10T07:31:36Z"
+    },
+    {
+      "id": 9462486,
+      "clientId": null,
+      "startTime": "2025-01-12T11:00",
+      "endTime": "2025-01-12T12:00",
+      "status": 121,
+      "createdAt": "2025-01-11T19:46:24Z"
+    },
+    {
+      "id": 9476881,
+      "clientId": null,
+      "startTime": "2025-01-16T10:00",
+      "endTime": "2025-01-16T11:00",
+      "status": 121,
+      "createdAt": "2025-01-16T06:19:37Z"
+    },
+    {
+      "id": 9469093,
+      "clientId": null,
+      "startTime": "2025-01-16T14:00",
+      "endTime": "2025-01-16T15:00",
+      "status": 121,
+      "createdAt": "2025-01-14T09:32:49Z"
+    },
+    {
+      "id": 9469918,
+      "clientId": null,
+      "startTime": "2025-01-17T09:00",
+      "endTime": "2025-01-17T10:00",
+      "status": 121,
+      "createdAt": "2025-01-14T12:18:24Z"
+    },
+    {
+      "id": 9476033,
+      "clientId": null,
+      "startTime": "2025-01-17T10:00",
+      "endTime": "2025-01-17T11:00",
+      "status": 121,
+      "createdAt": "2025-01-15T19:57:35Z"
+    },
+    {
+      "id": 9479453,
+      "clientId": null,
+      "startTime": "2025-01-17T11:00",
+      "endTime": "2025-01-17T12:00",
+      "status": 121,
+      "createdAt": "2025-01-16T19:52:25Z"
+    },
+    {
+      "id": 9480742,
+      "clientId": null,
+      "startTime": "2025-01-17T13:00",
+      "endTime": "2025-01-17T14:00",
+      "status": 121,
+      "createdAt": "2025-01-17T09:51:38Z"
+    },
+    {
+      "id": 9478048,
+      "clientId": null,
+      "startTime": "2025-01-17T15:00",
+      "endTime": "2025-01-17T16:00",
+      "status": 121,
+      "createdAt": "2025-01-16T11:51:10Z"
+    },
+    {
+      "id": 9465359,
+      "clientId": null,
+      "startTime": "2025-01-19T09:00",
+      "endTime": "2025-01-19T10:00",
+      "status": 121,
+      "createdAt": "2025-01-13T10:58:29Z"
+    },
+    {
+      "id": 9501063,
+      "clientId": null,
+      "startTime": "2025-01-25T10:00",
+      "endTime": "2025-01-25T11:00",
+      "status": 121,
+      "createdAt": "2025-01-24T13:32:57Z"
+    },
+    {
+      "id": 9500171,
+      "clientId": null,
+      "startTime": "2025-01-25T11:00",
+      "endTime": "2025-01-25T12:00",
+      "status": 121,
+      "createdAt": "2025-01-24T08:40:42Z"
+    },
+    {
+      "id": 9502689,
+      "clientId": null,
+      "startTime": "2025-01-25T15:00",
+      "endTime": "2025-01-25T16:00",
+      "status": 121,
+      "createdAt": "2025-01-25T08:57:03Z"
+    },
+    {
+      "id": 9500757,
+      "clientId": null,
+      "startTime": "2025-01-26T09:00",
+      "endTime": "2025-01-26T10:00",
+      "status": 121,
+      "createdAt": "2025-01-24T12:00:57Z"
+    },
+    {
+      "id": 9503469,
+      "clientId": null,
+      "startTime": "2025-01-26T11:00",
+      "endTime": "2025-01-26T12:00",
+      "status": 121,
+      "createdAt": "2025-01-25T19:03:07Z"
+    },
+    {
+      "id": 9503825,
+      "clientId": null,
+      "startTime": "2025-01-26T12:00",
+      "endTime": "2025-01-26T13:00",
+      "status": 121,
+      "createdAt": "2025-01-26T09:00:05Z"
+    },
+    {
+      "id": 9507381,
+      "clientId": null,
+      "startTime": "2025-01-30T10:00",
+      "endTime": "2025-01-30T11:00",
+      "status": 121,
+      "createdAt": "2025-01-27T16:50:33Z"
+    },
+    {
+      "id": 9509208,
+      "clientId": null,
+      "startTime": "2025-01-31T09:00",
+      "endTime": "2025-01-31T10:00",
+      "status": 121,
+      "createdAt": "2025-01-28T08:29:02Z"
+    },
+    {
+      "id": 9513595,
+      "clientId": null,
+      "startTime": "2025-02-01T11:00",
+      "endTime": "2025-02-01T12:00",
+      "status": 121,
+      "createdAt": "2025-01-29T10:17:08Z"
+    },
+    {
+      "id": 9519576,
+      "clientId": null,
+      "startTime": "2025-02-01T13:00",
+      "endTime": "2025-02-01T14:00",
+      "status": 121,
+      "createdAt": "2025-01-31T05:09:59Z"
+    },
+    {
+      "id": 9521574,
+      "clientId": null,
+      "startTime": "2025-02-01T14:00",
+      "endTime": "2025-02-01T15:00",
+      "status": 121,
+      "createdAt": "2025-01-31T20:23:31Z"
+    },
+    {
+      "id": 9522225,
+      "clientId": null,
+      "startTime": "2025-02-01T15:00",
+      "endTime": "2025-02-01T16:00",
+      "status": 121,
+      "createdAt": "2025-02-01T09:33:52Z"
+    },
+    {
+      "id": 9523323,
+      "clientId": null,
+      "startTime": "2025-02-02T11:00",
+      "endTime": "2025-02-02T12:00",
+      "status": 121,
+      "createdAt": "2025-02-02T08:28:37Z"
+    },
+    {
+      "id": 9522246,
+      "clientId": null,
+      "startTime": "2025-02-02T12:00",
+      "endTime": "2025-02-02T13:00",
+      "status": 121,
+      "createdAt": "2025-02-01T09:53:02Z"
+    },
+    {
+      "id": 9537672,
+      "clientId": null,
+      "startTime": "2025-02-07T09:00",
+      "endTime": "2025-02-07T10:00",
+      "status": 121,
+      "createdAt": "2025-02-06T11:26:09Z"
+    },
+    {
+      "id": 9524928,
+      "clientId": null,
+      "startTime": "2025-02-07T14:00",
+      "endTime": "2025-02-07T15:00",
+      "status": 121,
+      "createdAt": "2025-02-03T04:49:22Z"
+    },
+    {
+      "id": 9534784,
+      "clientId": null,
+      "startTime": "2025-02-07T15:00",
+      "endTime": "2025-02-07T16:00",
+      "status": 121,
+      "createdAt": "2025-02-05T14:50:18Z"
+    },
+    {
+      "id": 9542479,
+      "clientId": null,
+      "startTime": "2025-02-08T13:00",
+      "endTime": "2025-02-08T14:00",
+      "status": 121,
+      "createdAt": "2025-02-08T07:29:51Z"
+    },
+    {
+      "id": 9538017,
+      "clientId": null,
+      "startTime": "2025-02-13T09:00",
+      "endTime": "2025-02-13T10:00",
+      "status": 121,
+      "createdAt": "2025-02-06T13:28:31Z"
+    },
+    {
+      "id": 9554714,
+      "clientId": null,
+      "startTime": "2025-02-13T11:00",
+      "endTime": "2025-02-13T12:00",
+      "status": 121,
+      "createdAt": "2025-02-12T15:23:42Z"
+    },
+    {
+      "id": 9556512,
+      "clientId": null,
+      "startTime": "2025-02-13T13:00",
+      "endTime": "2025-02-13T14:00",
+      "status": 121,
+      "createdAt": "2025-02-13T08:14:12Z"
+    },
+    {
+      "id": 9538940,
+      "clientId": null,
+      "startTime": "2025-02-13T14:00",
+      "endTime": "2025-02-13T15:00",
+      "status": 121,
+      "createdAt": "2025-02-06T18:40:38Z"
+    },
+    {
+      "id": 9526312,
+      "clientId": null,
+      "startTime": "2025-02-13T15:00",
+      "endTime": "2025-02-13T16:00",
+      "status": 121,
+      "createdAt": "2025-02-03T11:15:47Z"
+    },
+    {
+      "id": 9552105,
+      "clientId": null,
+      "startTime": "2025-02-14T09:00",
+      "endTime": "2025-02-14T10:00",
+      "status": 121,
+      "createdAt": "2025-02-11T20:08:27Z"
+    },
+    {
+      "id": 9545354,
+      "clientId": null,
+      "startTime": "2025-02-14T10:00",
+      "endTime": "2025-02-14T11:00",
+      "status": 121,
+      "createdAt": "2025-02-10T08:13:47Z"
+    },
+    {
+      "id": 9524093,
+      "clientId": 13504986,
+      "startTime": "2025-02-14T11:00",
+      "endTime": "2025-02-14T12:00",
+      "status": 121,
+      "createdAt": "2025-02-02T18:57:38Z"
+    },
+    {
+      "id": 9556814,
+      "clientId": null,
+      "startTime": "2025-02-14T13:00",
+      "endTime": "2025-02-14T14:00",
+      "status": 121,
+      "createdAt": "2025-02-13T09:45:28Z"
+    },
+    {
+      "id": 9557804,
+      "clientId": null,
+      "startTime": "2025-02-14T14:00",
+      "endTime": "2025-02-14T15:00",
+      "status": 121,
+      "createdAt": "2025-02-13T14:55:18Z"
+    },
+    {
+      "id": 9515191,
+      "clientId": null,
+      "startTime": "2025-02-14T15:00",
+      "endTime": "2025-02-14T16:00",
+      "status": 121,
+      "createdAt": "2025-01-29T18:28:50Z"
+    },
+    {
+      "id": 9546046,
+      "clientId": 13621000,
+      "startTime": "2025-02-15T10:00",
+      "endTime": "2025-02-15T11:00",
+      "status": 121,
+      "createdAt": "2025-02-10T11:09:56Z"
+    },
+    {
+      "id": 9521204,
+      "clientId": null,
+      "startTime": "2025-02-15T11:00",
+      "endTime": "2025-02-15T12:00",
+      "status": 121,
+      "createdAt": "2025-01-31T16:55:41Z"
+    },
+    {
+      "id": 9560757,
+      "clientId": null,
+      "startTime": "2025-02-15T13:00",
+      "endTime": "2025-02-15T14:00",
+      "status": 121,
+      "createdAt": "2025-02-14T14:29:18Z"
+    },
+    {
+      "id": 9549980,
+      "clientId": null,
+      "startTime": "2025-02-15T14:00",
+      "endTime": "2025-02-15T15:00",
+      "status": 121,
+      "createdAt": "2025-02-11T12:33:46Z"
+    },
+    {
+      "id": 9554863,
+      "clientId": null,
+      "startTime": "2025-02-15T15:00",
+      "endTime": "2025-02-15T16:00",
+      "status": 121,
+      "createdAt": "2025-02-12T16:06:00Z"
+    },
+    {
+      "id": 9558329,
+      "clientId": null,
+      "startTime": "2025-02-16T09:00",
+      "endTime": "2025-02-16T10:00",
+      "status": 121,
+      "createdAt": "2025-02-13T18:02:09Z"
+    },
+    {
+      "id": 9544232,
+      "clientId": null,
+      "startTime": "2025-02-16T11:00",
+      "endTime": "2025-02-16T12:00",
+      "status": 121,
+      "createdAt": "2025-02-09T16:43:17Z"
+    },
+    {
+      "id": 9553127,
+      "clientId": null,
+      "startTime": "2025-02-16T12:00",
+      "endTime": "2025-02-16T13:00",
+      "status": 121,
+      "createdAt": "2025-02-12T07:59:57Z"
+    },
+    {
+      "id": 9564487,
+      "clientId": null,
+      "startTime": "2025-02-17T14:00",
+      "endTime": "2025-02-17T15:00",
+      "status": 121,
+      "createdAt": "2025-02-17T03:56:31Z"
+    },
+    {
+      "id": 9560708,
+      "clientId": null,
+      "startTime": "2025-02-20T09:00",
+      "endTime": "2025-02-20T10:00",
+      "status": 121,
+      "createdAt": "2025-02-14T14:06:15Z"
+    },
+    {
+      "id": 9561232,
+      "clientId": null,
+      "startTime": "2025-02-20T13:00",
+      "endTime": "2025-02-20T14:00",
+      "status": 121,
+      "createdAt": "2025-02-14T17:39:51Z"
+    },
+    {
+      "id": 9577299,
+      "clientId": null,
+      "startTime": "2025-02-21T09:00",
+      "endTime": "2025-02-21T10:00",
+      "status": 121,
+      "createdAt": "2025-02-20T15:39:53Z"
+    },
+    {
+      "id": 9577771,
+      "clientId": null,
+      "startTime": "2025-02-21T10:00",
+      "endTime": "2025-02-21T11:00",
+      "status": 121,
+      "createdAt": "2025-02-20T18:28:57Z"
+    },
+    {
+      "id": 9577891,
+      "clientId": null,
+      "startTime": "2025-02-21T13:00",
+      "endTime": "2025-02-21T14:00",
+      "status": 121,
+      "createdAt": "2025-02-20T19:14:13Z"
+    },
+    {
+      "id": 9581441,
+      "clientId": null,
+      "startTime": "2025-02-22T11:00",
+      "endTime": "2025-02-22T12:00",
+      "status": 121,
+      "createdAt": "2025-02-22T08:36:42Z"
+    },
+    {
+      "id": 9581230,
+      "clientId": null,
+      "startTime": "2025-02-23T12:00",
+      "endTime": "2025-02-23T13:00",
+      "status": 121,
+      "createdAt": "2025-02-22T01:48:48Z"
+    },
+    {
+      "id": 9592415,
+      "clientId": null,
+      "startTime": "2025-02-27T09:00",
+      "endTime": "2025-02-27T10:00",
+      "status": 121,
+      "createdAt": "2025-02-26T03:09:48Z"
+    },
+    {
+      "id": 9585174,
+      "clientId": null,
+      "startTime": "2025-02-27T15:00",
+      "endTime": "2025-02-27T16:00",
+      "status": 121,
+      "createdAt": "2025-02-24T10:24:50Z"
+    },
+    {
+      "id": 9597073,
+      "clientId": null,
+      "startTime": "2025-02-28T09:00",
+      "endTime": "2025-02-28T10:00",
+      "status": 121,
+      "createdAt": "2025-02-27T11:11:57Z"
+    },
+    {
+      "id": 9597175,
+      "clientId": null,
+      "startTime": "2025-02-28T10:00",
+      "endTime": "2025-02-28T11:00",
+      "status": 121,
+      "createdAt": "2025-02-27T11:47:19Z"
+    },
+    {
+      "id": 9596022,
+      "clientId": null,
+      "startTime": "2025-02-28T11:00",
+      "endTime": "2025-02-28T12:00",
+      "status": 121,
+      "createdAt": "2025-02-27T03:03:12Z"
+    },
+    {
+      "id": 9592555,
+      "clientId": null,
+      "startTime": "2025-02-28T13:00",
+      "endTime": "2025-02-28T14:00",
+      "status": 121,
+      "createdAt": "2025-02-26T05:58:18Z"
+    },
+    {
+      "id": 9590915,
+      "clientId": null,
+      "startTime": "2025-02-28T14:00",
+      "endTime": "2025-02-28T15:00",
+      "status": 121,
+      "createdAt": "2025-02-25T18:50:35Z"
+    },
+    {
+      "id": 9572134,
+      "clientId": null,
+      "startTime": "2025-02-28T15:00",
+      "endTime": "2025-02-28T16:00",
+      "status": 121,
+      "createdAt": "2025-02-19T09:13:03Z"
+    },
+    {
+      "id": 9584373,
+      "clientId": null,
+      "startTime": "2025-03-01T10:00",
+      "endTime": "2025-03-01T11:00",
+      "status": 121,
+      "createdAt": "2025-02-24T07:33:12Z"
+    },
+    {
+      "id": 9597526,
+      "clientId": null,
+      "startTime": "2025-03-01T11:00",
+      "endTime": "2025-03-01T12:00",
+      "status": 121,
+      "createdAt": "2025-02-27T13:51:40Z"
+    }
+  ],
+  "stats": {
+    "totalServices": 5,
+    "totalClients": 75,
+    "totalAppointments": 100,
+    "activeClients": 35,
+    "clientLocations": {
+      "mabopane": 3,
+      "soshanguve": 34,
+      "other": 25,
+      "pretoria": 2
+    }
+  }
+}

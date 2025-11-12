@@ -29,5 +29,10 @@
   "dependencies": {
     "@vercel/analytics": "^1.5.0",
     "node-fetch": "^3.3.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "drizzle-orm": "0.44.7"
+    }
   }
 }

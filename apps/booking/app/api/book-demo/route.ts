@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '../../../lib/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db, addDoc, collection, serverTimestamp } from '../../../lib/firebase';
 import { validateAndSanitize, demoRequestSchema } from '../../../lib/validation';
 import { trackDemoRequest, trackError } from '../../../lib/monitoring';
 

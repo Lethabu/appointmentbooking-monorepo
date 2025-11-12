@@ -1,5 +1,5 @@
-import { getDb } from '@/packages/db/src';
-import { users, appointments } from '@/packages/db/src/schema';
+import { getDb } from '@repo/db';
+import { users, appointments } from '@repo/db';
 import { eq } from 'drizzle-orm';
 
 export async function POST(request: Request) {
@@ -29,6 +29,7 @@ export async function POST(request: Request) {
         if (user.length === 0) {
           // Create new user
           const newUser = await db.insert(users).values({
+            id: crypto.randomUUID(),
             email: booking.email,
             name: booking.full_name || booking.name,
             tenantId: tenantId,
@@ -39,10 +40,11 @@ export async function POST(request: Request) {
         // Create appointment
         const scheduledTime = new Date(booking.start);
         const appointmentData = {
+          id: crypto.randomUUID(),
           userId: user[0].id,
           serviceId: 'service_hair_treatment', // Default service, can be mapped better
           tenantId: tenantId,
-          scheduledTime: Math.floor(scheduledTime.getTime() / 1000),
+          scheduledTime: scheduledTime,
           status: booking.status === 'confirmed' ? 'confirmed' : 'pending',
           notes: `Migrated from SuperSaaS - ${booking.description || ''}`,
         };

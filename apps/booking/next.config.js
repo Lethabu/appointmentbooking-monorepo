@@ -8,20 +8,23 @@ try {
 }
 */
 
+// Bundle analyzer configuration
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   compress: true,
   trailingSlash: false,
+  poweredByHeader: false, // Remove X-Powered-By header for security
   experimental: {
-    optimizeCss: false,
+    optimizeCss: true, // Enable CSS optimization
     scrollRestoration: true,
+    // Enable webpack build worker for faster builds
+    webpackBuildWorker: true,
   },
-  output: 'export', // Static export for Cloudflare Pages
-  trailingSlash: true,
-  skipTrailingSlashRedirect: true,
-  images: {
-    domains: [
       'images.unsplash.com',
       'instylehairboutique.co.za',
       'www.instylehairboutique.co.za',
@@ -71,7 +74,61 @@ const nextConfig = {
 
 module.exports = nextConfig;
 
-nextConfig.webpack = (config, { isServer }) => {
+nextConfig.webpack = (config, { isServer, dev }) => {
+  // Production optimizations
+  if (!dev) {
+    // Enable webpack optimizations for better tree shaking
+    config.optimization = {
+      ...config.optimization,
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          // Separate vendor chunks for better caching
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10,
+          },
+          // Separate React and related libraries
+          react: {
+            test: /[\\/]node_modules[\\/](react|react-dom|@react|@radix-ui)[\\/]/,
+            name: 'react-vendor',
+            chunks: 'all',
+            priority: 20,
+          },
+          // Separate UI libraries
+          ui: {
+            test: /[\\/]node_modules[\\/](@headlessui|@heroicons|lucide-react|framer-motion)[\\/]/,
+            name: 'ui-vendor',
+            chunks: 'all',
+            priority: 15,
+          },
+          // Separate large libraries
+          heavy: {
+            test: /[\\/]node_modules[\\/](recharts|firebase|convex|ai|@google)[\\/]/,
+            name: 'heavy-vendor',
+            chunks: 'all',
+            priority: 5,
+          },
+        },
+      },
+      // Minimize bundle size
+      minimize: true,
+      // Remove unused exports
+      usedExports: true,
+      // Enable side effects optimization
+      sideEffects: true,
+    };
+
+    // Add performance hints
+    config.performance = {
+      hints: 'warning',
+      maxEntrypointSize: 512000, // 512KB
+      maxAssetSize: 512000, // 512KB
+    };
+  }
+
   if (isServer) {
     config.ignoreWarnings = [
       /Critical dependency: the request of a dependency is an expression/,
@@ -80,5 +137,6 @@ nextConfig.webpack = (config, { isServer }) => {
       /A Node.js API is used \(process.version at line: 24\) which is not supported in the Edge Runtime/,
     ];
   }
+
   return config;
 };

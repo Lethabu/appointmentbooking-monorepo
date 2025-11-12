@@ -6,8 +6,8 @@ account_id = "9e96c83268cae3e0f27168ed50c92033"
 
 [vars]
 NODE_ENV = "production"
-SUPERSAAS_API_KEY = "5ciPW7IzfQRQy1wqdTsH6g"
-SUPERSAAS_SCHEDULE_ID = "Instyle Hair Boutique"
+SUPERSAAS_API_KEY = "pVq0j8Sm2jAaLW6BrBkI5Q"
+SUPERSAAS_SCHEDULE_ID = "695384"
 
 [[d1_databases]]
 binding = "DB"

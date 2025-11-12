@@ -100,6 +100,7 @@ export async function POST(request: NextRequest) {
     const newAppointment = await db
       .insert(appointments)
       .values({
+        id: crypto.randomUUID(),
         userId: user[0].id,
         serviceId,
         tenantId,

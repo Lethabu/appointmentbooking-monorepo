@@ -86,11 +86,10 @@ INSERT OR IGNORE INTO tenants (
   'ccb12b4d-ade6-467d-a614-7c9d198ddc70'
 );
 
--- Insert services for Instyle Hair Boutique
+-- Insert services for Instyle Hair Boutique (matching SuperSaaS exactly)
 INSERT OR IGNORE INTO services (tenant_id, name, description, price, duration_minutes) VALUES
-('ccb12b4d-ade6-467d-a614-7c9d198ddc70', 'Middle & Side Installation', 'Professional hair installation service for middle and side parts', 45000, 180),
-('ccb12b4d-ade6-467d-a614-7c9d198ddc70', 'Maphondo & Lines', 'Traditional African hairstyling with intricate patterns', 35000, 120),
-('ccb12b4d-ade6-467d-a614-7c9d198ddc70', 'Hair Treatment', 'Deep conditioning and nourishing hair treatment', 25000, 90),
-('ccb12b4d-ade6-467d-a614-7c9d198ddc70', 'Hair Coloring', 'Professional hair coloring and highlighting services', 55000, 150),
-('ccb12b4d-ade6-467d-a614-7c9d198ddc70', 'Hair Extensions', 'Premium hair extension installation and styling', 65000, 240),
-('ccb12b4d-ade6-467d-a614-7c9d198ddc70', 'Wash & Style', 'Complete hair wash, conditioning, and styling service', 15000, 60);
+('ccb12b4d-ade6-467d-a614-7c9d198ddc70', 'Middle & Side Installation', 'Professional hair installation service', 30000, 60),
+('ccb12b4d-ade6-467d-a614-7c9d198ddc70', 'Maphondo & Lines Installation', 'Traditional African hairstyling with intricate patterns', 35000, 60),
+('ccb12b4d-ade6-467d-a614-7c9d198ddc70', 'Soft Glam Makeup', 'Professional makeup application service', 45000, 120),
+('ccb12b4d-ade6-467d-a614-7c9d198ddc70', 'Gel Maphondo Styling', 'Gel-based traditional styling service', 35000, 120),
+('ccb12b4d-ade6-467d-a614-7c9d198ddc70', 'Frontal Ponytail Installation', 'Premium frontal ponytail installation service', 95000, 120);

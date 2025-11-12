@@ -1,5 +1,5 @@
-import { getDb } from '@/packages/db/src';
-import { appointments, users, services } from '@/packages/db/src/schema';
+import { getDb } from '@repo/db';
+import { appointments, users, services } from '@repo/db';
 import { eq, gte, desc } from 'drizzle-orm';
 
 export async function GET(request: Request) {
