@@ -1,7 +1,11 @@
 'use client';
 
-import { trackEvent } from '@repo/ui/analytics';
 import { useEffect } from 'react';
+
+// Mock analytics function
+const trackEvent = (event: string, data: any) => {
+  console.log('Analytics:', event, data);
+};
 
 export default function RealtimeDashboard() {
   useEffect(() => {

@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     timestamp: new Date().toISOString(),
     responseTime: 0,
     services: {} as Record<string, any>,
-    error: undefined as string | undefined
+    error: null as string | null
   }
 
   try {
@@ -315,3 +315,4 @@ async function checkRegionalHealth() {
     }
   }
 }
+

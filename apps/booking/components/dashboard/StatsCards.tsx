@@ -1,13 +1,15 @@
+import type { Appointment } from '@/types';
+
 interface StatsCardsProps {
-  bookings: Booking[]; // Replace 'any' with a proper Booking type later
+  bookings: Appointment[];
 }
 
 export const StatsCards: React.FC<StatsCardsProps> = ({ bookings }) => {
-  // Dummy data for demonstration
+  // Calculate stats from appointments
   const totalBookings = bookings ? bookings.length : 0;
   const revenue = bookings
     ? bookings.reduce(
-        (sum: number, booking: Booking) => sum + (booking.amount || 0),
+        (sum: number, booking: Appointment) => sum + (booking.price || 0),
         0,
       )
     : 0;
@@ -34,8 +36,3 @@ export const StatsCards: React.FC<StatsCardsProps> = ({ bookings }) => {
     </div>
   );
 };
-
-interface Booking {
-  amount?: number; // Assuming amount is a number and optional
-  // Add other properties as they are used in the component
-}

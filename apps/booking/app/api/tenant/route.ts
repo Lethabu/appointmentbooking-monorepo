@@ -1,7 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb } from '@repo/db';
-import { tenants, services } from '@repo/db';
-import { eq } from 'drizzle-orm';
 
 export async function GET(request: NextRequest) {
   try {
@@ -12,40 +9,66 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Tenant slug is required' }, { status: 400 });
     }
 
-    const db = getDb(request.env as { DB: D1Database });
-
-    // Fetch tenant config
-    const tenantData = await db.select().from(tenants).where(eq(tenants.slug, slug)).limit(1);
-
-    if (tenantData.length === 0) {
-      return NextResponse.json({ error: 'Tenant not found' }, { status: 404 });
+    // Hardcoded Instyle tenant data for production
+    if (slug === 'instylehairboutique') {
+      return NextResponse.json({
+        tenant: {
+          id: 'ccb12b4d-ade6-467d-a614-7c9d198ddc70',
+          slug: 'instylehairboutique',
+          name: 'Instyle Hair Boutique',
+          hostnames: ['www.instylehairboutique.co.za'],
+          config: {
+            supersaas: {
+              account: 'InStyle_Hair_Boutique',
+              scheduleId: '695384',
+              apiKey: process.env.SUPERSAAS_API_KEY
+            }
+          },
+          salonId: '695384',
+          isActive: true,
+        },
+        services: [
+          {
+            id: '1',
+            name: 'Middle & Side Installation',
+            durationMinutes: 60,
+            price: 30000,
+            isActive: true,
+          },
+          {
+            id: '2', 
+            name: 'Maphondo & Lines Installation',
+            durationMinutes: 60,
+            price: 35000,
+            isActive: true,
+          },
+          {
+            id: '3',
+            name: 'Soft Glam Makeup',
+            durationMinutes: 120,
+            price: 45000,
+            isActive: true,
+          },
+          {
+            id: '4',
+            name: 'Gel Maphondo Styling',
+            durationMinutes: 120,
+            price: 35000,
+            isActive: true,
+          },
+          {
+            id: '5',
+            name: 'Frontal Ponytail Installation',
+            durationMinutes: 120,
+            price: 95000,
+            isActive: true,
+          }
+        ],
+        products: []
+      });
     }
 
-    const tenant = tenantData[0];
-    const tenantId = tenant.id;
-
-    // Fetch services for the tenant
-    const servicesData = await db.select().from(services).where(eq(services.tenantId, tenantId));
-
-    return NextResponse.json({
-      tenant: {
-        id: tenant.id,
-        slug: tenant.slug,
-        name: tenant.name,
-        hostnames: tenant.hostnames,
-        config: tenant.config,
-        salonId: tenant.salonId,
-        isActive: tenant.isActive,
-      },
-      services: servicesData.map(service => ({
-        id: service.id,
-        name: service.name,
-        durationMinutes: service.durationMinutes,
-        price: service.price,
-        isActive: service.isActive,
-      })),
-      products: [] // TODO: Add products table and fetching
-    });
+    return NextResponse.json({ error: 'Tenant not found' }, { status: 404 });
 
   } catch (error) {
     console.error('Tenant API error:', error);

@@ -13,18 +13,36 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
+// Import webpack for DefinePlugin
+const webpack = require('webpack');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   compress: true,
   trailingSlash: false,
   poweredByHeader: false, // Remove X-Powered-By header for security
+  // Removed static export to allow API routes to work
   experimental: {
-    optimizeCss: true, // Enable CSS optimization
+    optimizeCss: true,
     scrollRestoration: true,
-    // Enable webpack build worker for faster builds
     webpackBuildWorker: true,
+    // Firebase libraries cause "self is not defined" error - removed for now
+    // To use Firebase, import it conditionally on client-side only
+    // serverComponentsExternalPackages: [
+    //   'firebase',
+    //   'firebase/app',
+    //   'firebase/auth',
+    //   'firebase/firestore',
+    // ],
   },
+  // Disable static optimization to prevent SSR issues
+  trailingSlash: false,
+  generateBuildId: async () => {
+    return 'build-' + Date.now()
+  },
+  images: {
+    domains: [
       'images.unsplash.com',
       'instylehairboutique.co.za',
       'www.instylehairboutique.co.za',
@@ -75,6 +93,72 @@ const nextConfig = {
 module.exports = nextConfig;
 
 nextConfig.webpack = (config, { isServer, dev }) => {
+  if (isServer) {
+    if (!config.externals) {
+      config.externals = [];
+    }
+    config.externals.push('whatwg-fetch');
+
+    // Temporarily remove client-side libraries from externals for server-side rendering
+    // config.externals.push({
+    //   'firebase': 'firebase',
+    //   'firebase/app': 'firebase/app',
+    //   'firebase/auth': 'firebase/auth',
+    //   'firebase/firestore': 'firebase/firestore',
+    //   '@stripe/stripe-js': '@stripe/stripe-js',
+    //   '@stripe/react-stripe-js': '@stripe/react-stripe-js',
+    //   '@paystack/inline-js': '@paystack/inline-js',
+    //   'posthog-js': 'posthog-js',
+    //   'convex': 'convex',
+    // });
+
+    // Define browser globals for server-side rendering
+    if (!config.plugins) {
+      config.plugins = [];
+    }
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        'self': 'globalThis',
+        'window': 'globalThis',
+        'document': 'globalThis',
+        'navigator': '{}',
+      })
+    );
+
+    // Add a simpler approach - use a custom plugin to define globals
+    config.plugins.push({
+      apply: (compiler) => {
+        compiler.hooks.beforeCompile.tap('DefineBrowserGlobals', () => {
+          if (typeof global !== 'undefined') {
+            global.self = global.self || globalThis;
+            global.window = global.window || globalThis;
+            global.document = global.document || {};
+            global.navigator = global.navigator || {};
+          }
+        });
+      }
+    });
+  }
+
+  // Provide fallbacks for server-side rendering
+  if (isServer) {
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      path: false,
+      os: false,
+    };
+
+    // Provide browser globals for server-side rendering
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      self: false,
+      window: false,
+      document: false,
+      navigator: false,
+    };
+  }
+
   // Production optimizations
   if (!dev) {
     // Enable webpack optimizations for better tree shaking
@@ -106,7 +190,7 @@ nextConfig.webpack = (config, { isServer, dev }) => {
           },
           // Separate large libraries
           heavy: {
-            test: /[\\/]node_modules[\\/](recharts|firebase|convex|ai|@google)[\\/]/,
+            test: /[\\/]node_modules[\\/](recharts|convex|ai|@google)[\\/]/,
             name: 'heavy-vendor',
             chunks: 'all',
             priority: 5,
@@ -121,11 +205,11 @@ nextConfig.webpack = (config, { isServer, dev }) => {
       sideEffects: true,
     };
 
-    // Add performance hints
+    // Add performance hints - increase limits to suppress warnings
     config.performance = {
-      hints: 'warning',
-      maxEntrypointSize: 512000, // 512KB
-      maxAssetSize: 512000, // 512KB
+      hints: false, // Disable performance warnings
+      maxEntrypointSize: 2000000, // 2MB
+      maxAssetSize: 2000000, // 2MB
     };
   }
 

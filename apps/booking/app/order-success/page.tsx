@@ -45,9 +45,9 @@ function OrderSuccessContent() {
             </CardHeader>
             <CardContent>
               <div className="flex gap-4 pt-4">
-                <Button asChild className="flex-1">
-                  <Link href="/instylehairboutique">Back to Home</Link>
-                </Button>
+                <Link href="/instylehairboutique" className="flex-1">
+                  <Button className="w-full">Back to Home</Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
@@ -107,12 +107,12 @@ function OrderSuccessContent() {
               </>
             )}
             <div className="flex gap-4 pt-4">
-              <Button asChild className="flex-1">
-                <Link href="/instylehairboutique">Back to Home</Link>
-              </Button>
-              <Button variant="outline" asChild className="flex-1">
-                <Link href="/instylehairboutique/shop">Continue Shopping</Link>
-              </Button>
+              <Link href="/instylehairboutique" className="flex-1">
+                <Button className="w-full">Back to Home</Button>
+              </Link>
+              <Link href="/instylehairboutique/shop" className="flex-1">
+                <Button variant="outline" className="w-full">Continue Shopping</Button>
+              </Link>
             </div>
           </CardContent>
         </Card>

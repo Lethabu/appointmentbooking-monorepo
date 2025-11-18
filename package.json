@@ -15,8 +15,11 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "deploy": "wrangler pages deploy",
-    "cf-typegen": "wrangler types"
+    "deploy": "wrangler deploy",
+    "cf-typegen": "wrangler types",
+    "go-live": "node scripts/go-live-checklist.js",
+    "verify-api": "node scripts/verify-production-api.js",
+    "migrate-db": "wrangler d1 execute appointmentbooking-db --remote --file=scripts/migrations/004-safe-instyle-sync.sql"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

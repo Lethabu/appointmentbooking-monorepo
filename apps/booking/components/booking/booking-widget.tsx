@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@repo/ui'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
@@ -29,6 +29,7 @@ function BookingWidget({ tenantId, services, branding }: BookingWidgetProps) {
     email: '',
     phone: ''
   })
+  const [redirectUrl, setRedirectUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
   const handleServiceSelect = (service: Service) => {
@@ -63,8 +64,7 @@ function BookingWidget({ tenantId, services, branding }: BookingWidgetProps) {
       const result = await response.json()
       
       if (result.success) {
-        // Redirect to payment
-        window.location.href = result.paymentUrl
+        setRedirectUrl(result.paymentUrl)
       } else {
         alert('Booking failed: ' + result.error)
       }
@@ -74,6 +74,13 @@ function BookingWidget({ tenantId, services, branding }: BookingWidgetProps) {
       setLoading(false)
     }
   }
+
+  // Redirect when redirectUrl changes
+  useEffect(() => {
+    if (redirectUrl) {
+      window.location.href = redirectUrl;
+    }
+  }, [redirectUrl]);
 
   return (
     <div className="space-y-6">

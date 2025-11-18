@@ -1,5 +1,5 @@
 // AISensy stub
-export const sendWhatsAppMessage = () => Promise.resolve({ success: true });
+export const sendWhatsAppMessage = (phone: string, message: string) => Promise.resolve({ success: true });
 export const createAutomation = () => Promise.resolve({ id: 'test' });
 
 export const syncCatalog = (items: any[]) => Promise.resolve({ success: true, synced: items.length });

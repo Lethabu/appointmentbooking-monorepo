@@ -78,9 +78,9 @@ export default function SmartProductShowcase({
       {cart.items.length > 0 && (
         <div className="bg-purple-100 p-4 rounded-lg flex justify-between items-center">
           <span>{cart.items.length} items in cart</span>
-          <Button asChild>
-            <a href="/instylehairboutique/checkout">Checkout</a>
-          </Button>
+          <a href="/instylehairboutique/checkout">
+            <Button>Checkout</Button>
+          </a>
         </div>
       )}
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { aisensy } from '@/lib/aisensy';
+import { messaging } from '@/lib/messaging';
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
@@ -103,9 +103,24 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Appointment creation failed' }, { status: 500 });
     }
 
-    // Send a dynamic confirmation message
-    const message = `🎉 Booking confirmed!\n\nService: ${service}\nDate: ${new Date(date).toLocaleDateString('en-ZA')}\nPrice: R${(serviceData.price / 100).toFixed(2)}\n\nSee you soon! - ${tenantData.name}`;
-    await aisensy.sendMessage(customerPhone, message);
+    // Send booking confirmation via multi-channel messaging
+    const bookingNotification = {
+      service,
+      date: new Date(date).toLocaleDateString('en-ZA'),
+      time: new Date(date).toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' }),
+      price: serviceData.price,
+      businessName: tenantData.name,
+      bookingId: appointment.id,
+      customerName
+    };
+
+    const customerContact = {
+      phone: customerPhone,
+      // TODO: Add telegramChatId if customer has linked Telegram
+      preferredChannel: 'whatsapp' as const
+    };
+
+    await messaging.sendBookingConfirmation(customerContact, bookingNotification);
 
     return NextResponse.json({
       success: true,

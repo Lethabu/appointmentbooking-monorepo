@@ -8,24 +8,24 @@ export async function POST(request: NextRequest) {
     const { tenantId } = await request.json();
 
     // Fetch Instagram media
-    const igMedia = await fetchInstagramMedia(tenantId);
+    const igMedia = await fetchInstagramMedia();
 
     // Store in database
-    for (const media of igMedia) {
+    for (const media of igMedia.media || []) {
       await supabase.from('social_media_posts').upsert({
         tenant_id: tenantId,
         platform: 'instagram',
-        external_id: media.id,
-        caption: media.caption,
-        media_url: media.mediaUrl,
-        permalink: media.permalink,
+        external_id: (media as any).id || 'unknown',
+        caption: (media as any).caption || '',
+        media_url: (media as any).mediaUrl || '',
+        permalink: (media as any).permalink || '',
         created_at: new Date().toISOString(),
       });
     }
 
     return NextResponse.json({
       success: true,
-      synced: igMedia.length,
+      synced: igMedia.media?.length || 0,
     });
   } catch (error) {
     return NextResponse.json(

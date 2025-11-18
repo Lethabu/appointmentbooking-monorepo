@@ -1,4 +1,4 @@
-import { Service } from '../../app/[tenant]/page'; // Import type
+import type { Service } from '@/types';
 
 interface ServicesGridProps {
   services: Service[];
@@ -10,7 +10,7 @@ interface ServiceCardProps {
 }
 
 function ServiceCard({ service }: ServiceCardProps) {
-  const price = (service.price_cents / 100).toLocaleString('en-ZA', {
+  const price = ((service.price_cents || 0) / 100).toLocaleString('en-ZA', {
     style: 'currency',
     currency: 'ZAR',
   });
@@ -22,7 +22,7 @@ function ServiceCard({ service }: ServiceCardProps) {
       <div className="flex justify-between items-center">
         <span className="text-lg font-semibold text-[#C0392B]">{price}</span>
         <span className="text-sm text-gray-500">
-          {service.duration_minutes} min
+          {service.duration_minutes || service.duration} min
         </span>
       </div>
     </div>

@@ -13,11 +13,9 @@ import { api } from '@/lib/api';
 import type { Service, Product, BookingFormData } from '@/types';
 
 export function BookingPageContent() {
-  const {
-    tenant,
-    loading: tenantLoading,
-    error: tenantError,
-  } = useTenantContext();
+  const tenantContext = useTenantContext();
+  const { tenant, loading: tenantLoading } = tenantContext;
+  const tenantError = tenantContext.error;
   const { primaryColor } = useTheme();
   const [services, setServices] = useState<Service[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -82,7 +80,7 @@ export function BookingPageContent() {
     try {
       const bookingData: BookingFormData & { tenantId: string } = {
         ...formData,
-        selected_services: selectedServices,
+        selected_services: selectedServices.map(s => s.id),
         tenantId: tenant.id,
       };
 

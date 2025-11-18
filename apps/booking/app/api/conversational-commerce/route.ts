@@ -101,10 +101,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Send WhatsApp confirmation
-        await aisensy.sendTemplate(customerPhone, 'cart_updated', [
-          product.name,
-          `R${(product.price / 100).toFixed(2)}`
-        ]);
+        await aisensy.sendWhatsAppMessage(customerPhone, 'Cart updated successfully');
 
         return NextResponse.json({ success: true, cart_id: cart.id });
 
@@ -128,11 +125,7 @@ export async function POST(request: NextRequest) {
             .eq('id', cart.id);
 
           // Send recovery message
-          const topItem = cart.items[0];
-          await aisensy.sendTemplate(cart.customer_phone, 'abandoned_cart_recovery', [
-            topItem.name,
-            `R${(cart.total_amount / 100).toFixed(2)}`
-          ]);
+          await aisensy.sendWhatsAppMessage(cart.customer_phone, 'Complete your purchase');
         }
 
         return NextResponse.json({ 
@@ -161,9 +154,7 @@ export async function POST(request: NextRequest) {
 
         if (hasWig) {
           // Suggest care products
-          await aisensy.sendTemplate(order.customer_phone, 'wig_care_upsell', [
-            order.customer_name || 'Valued Customer'
-          ]);
+          await aisensy.sendWhatsAppMessage(order.customer_phone, 'Check out our care products');
         }
 
         return NextResponse.json({ success: true });

@@ -11,9 +11,9 @@ export function BookingHeader({ tenant }: BookingHeaderProps) {
       <div className="container mx-auto px-4 py-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            {tenant.config?.branding?.logo_url && (
+            {tenant.branding?.logo_url && (
               <Image
-                src={tenant.config.branding.logo_url || '/placeholder.svg'}
+                src={tenant.branding.logo_url || '/placeholder.svg'}
                 alt={`${tenant.name} logo`}
                 width={200}
                 height={60}

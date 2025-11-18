@@ -30,13 +30,14 @@ export async function POST(request: NextRequest) {
 
       // Sync with AiSensy
       const syncResult = await aisensy.syncCatalog(catalogItems);
+      const catalogId = `catalog_${tenantId}_${Date.now()}`;
 
       // Update catalog record
       await supabase
         .from('whatsapp_catalogs')
         .upsert({
           tenant_id: tenantId,
-          catalog_id: syncResult.catalog_id,
+          catalog_id: catalogId,
           name: 'InStyle Hair Boutique Catalog',
           product_count: catalogItems.length,
           last_synced_at: new Date().toISOString()
@@ -44,8 +45,8 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({ 
         success: true, 
-        catalog_id: syncResult.catalog_id,
-        products_synced: catalogItems.length 
+        catalog_id: catalogId,
+        products_synced: syncResult.synced 
       });
     }
 

@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
       }
 
       if (appointment.customer?.phone) {
-        await aisensy.sendMessage(
+        await aisensy.sendWhatsAppMessage(
           appointment.customer.phone,
           `✅ Payment confirmed! Your ${appointment.service.name} appointment is booked for ${new Date(appointment.datetime).toLocaleDateString('en-ZA')}. See you soon! - ${appointment.tenant.name}`
         );

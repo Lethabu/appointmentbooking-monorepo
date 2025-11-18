@@ -1,12 +1,22 @@
 'use client';
 
-import { trackEvent } from '@repo/ui/analytics';
+// Mock analytics function
+const trackEvent = (event: string, data: any) => {
+  console.log('Analytics:', event, data);
+};
 
-export default function BookingWidget() {
+interface BookingWidgetProps {
+  tenant: string;
+  salonId: string;
+}
+
+export default function BookingWidget({ tenant, salonId }: BookingWidgetProps) {
   const handleBookingClick = () => {
     trackEvent('BookingCreated', { 
       timestamp: new Date().toISOString(),
-      source: 'booking_widget'
+      source: 'booking_widget',
+      tenant,
+      salonId,
     });
   };
 

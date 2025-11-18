@@ -65,7 +65,7 @@ export function AIChat() {
     // Initialize with welcome message when agent changes
     const welcomeMessage: ChatMessage = {
       id: `welcome-${selectedAgent}-${Date.now()}`,
-      content: `Hello! I'm ${currentAgent?.name}, your ${currentAgent?.description.toLowerCase()}. How can I help you grow your salon business today?`,
+      content: `Hello! I'm ${currentAgent?.name}, your ${currentAgent?.description?.toLowerCase() || 'assistant'}. How can I help you grow your salon business today?`,
       sender: 'ai',
       agent_id: selectedAgent,
       timestamp: new Date(),
@@ -211,7 +211,7 @@ export function AIChat() {
                     {message.content}
                   </p>
                   <p className="text-xs opacity-70 mt-1">
-                    {message.timestamp.toLocaleTimeString()}
+                    {message.timestamp ? (typeof message.timestamp === 'string' ? new Date(message.timestamp).toLocaleTimeString() : message.timestamp.toLocaleTimeString()) : ''}
                   </p>
                 </div>
 

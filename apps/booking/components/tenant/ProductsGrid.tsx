@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Product } from '../../app/[tenant]/page'; // Import type
+import type { Product } from '@/types';
 
 interface ProductsGridProps {
   products: Product[];
@@ -10,7 +10,7 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product }: ProductCardProps) {
-  const price = (product.price_cents / 100).toLocaleString('en-ZA', {
+  const price = ((product.price_cents || 0) / 100).toLocaleString('en-ZA', {
     style: 'currency',
     currency: 'ZAR',
   });
@@ -18,7 +18,7 @@ function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="bg-white rounded-xl shadow overflow-hidden">
       <Image
-        src={product.image_url || '/placeholder.jpg'}
+        src={product.image_url || product.image_urls?.[0] || '/placeholder.jpg'}
         alt={product.name}
         width={600}
         height={400}

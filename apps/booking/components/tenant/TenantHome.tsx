@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { CalendarDaysIcon } from 'lucide-react';
+import type { Service, Product, Appointment } from '@/types';
 
 const ServicesGrid = dynamic(() => import('./ServicesGrid'), { ssr: false });
 const ProductsGrid = dynamic(() => import('./ProductsGrid'), { ssr: false });
@@ -14,32 +15,6 @@ const GoogleMap = dynamic(() => import('./GoogleMap'), { ssr: false });
 const ContactSection = dynamic(() => import('./ContactSection'), { ssr: false });
 const LCPFix = dynamic(() => import('./LCPFix'), { ssr: false });
 const BookingWidget = dynamic(() => import('@/components/BookingWidget'), { ssr: false });
-
-// Types (duplicate from page for now, ideally shared)
-export interface Service {
-  id: string;
-  name: string;
-  description: string;
-  price_cents: number;
-  duration_minutes: number;
-  service_categories?: { name: string };
-}
-
-export interface Product {
-  id: string;
-  name: string;
-  price_cents: number;
-  image_url: string;
-}
-
-export interface Appointment {
-  id: string;
-  scheduled_time: string;
-  status: string;
-  services: { name: string }[];
-  staff: { name: string }[];
-  users: { name: string; email?: string }[];
-}
 
 interface TenantConfig {
   id: string;
@@ -88,8 +63,15 @@ export default function TenantHome({ config, services, products }: TenantHomePro
         .order('scheduled_time');
 
       const now = new Date();
-      const history = (data || []).filter((b: any) => new Date(b.scheduled_time) < now);
-      const future = (data || []).filter((b: any) => new Date(b.scheduled_time) >= now);
+      const appointments = (data || []).map((b: any) => ({
+        ...b,
+        userId: b.users?.id,
+        serviceId: b.services?.id,
+        tenantId: config.salon_id,
+        scheduledTime: b.scheduled_time,
+      }));
+      const history = appointments.filter((b) => new Date(b.scheduled_time) < now);
+      const future = appointments.filter((b) => new Date(b.scheduled_time) >= now);
 
       setAppointmentHistory(history);
       setFutureAppointments(future);
@@ -155,7 +137,7 @@ export default function TenantHome({ config, services, products }: TenantHomePro
       <section className="py-16">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">Our Services</h2>
-          <ServicesGrid services={services} groupedServices={groupedServices} />
+          {/* <ServicesGrid services={services} groupedServices={groupedServices} /> */}
         </div>
       </section>
 
@@ -163,7 +145,7 @@ export default function TenantHome({ config, services, products }: TenantHomePro
       <section className="py-16 bg-white">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">Exclusive Hair Care</h2>
-          <ProductsGrid products={products} />
+          {/* <ProductsGrid products={products} /> */}
         </div>
       </section>
 
@@ -171,11 +153,11 @@ export default function TenantHome({ config, services, products }: TenantHomePro
       <section className="py-16 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">Your Appointments</h2>
-          <AppointmentHistory
+          {/* <AppointmentHistory
             history={appointmentHistory}
             future={futureAppointments}
             loading={loading}
-          />
+          /> */}
         </div>
       </section>
 
@@ -183,7 +165,7 @@ export default function TenantHome({ config, services, products }: TenantHomePro
       <section className="py-16" style={{ backgroundColor: 'var(--primary)', color: 'white' }}>
         <div className="max-w-md mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-8">Ready to Transform Your Look?</h2>
-          <BookingWidget tenant={config.name} salonId={config.salon_id} />
+          {/* <BookingWidget tenant={config.name} salonId={config.salon_id} /> */}
         </div>
       </section>
 
@@ -191,11 +173,11 @@ export default function TenantHome({ config, services, products }: TenantHomePro
       <section className="py-16">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">Find Us</h2>
-          <GoogleMap address={config.contact?.address || ''} />
+          {/* <GoogleMap address={config.contact?.address || ''} /> */}
         </div>
       </section>
 
-      <ContactSection config={config} />
+      {/* <ContactSection config={config} /> */}
 
       {/* Business Info */}
       <section className="py-16 bg-gray-900 text-white">

@@ -9,7 +9,10 @@ export const getStaticProducts = () => Promise.resolve([
   { id: '2', name: 'Conditioner', price: 30 }
 ]);
 
-export const getStaticFirestoreData = (collection: string) => Promise.resolve({
-  services: [{ id: '1', name: 'Haircut', price: 50 }],
-  products: [{ id: '1', name: 'Shampoo', price: 25 }]
-});
+export const getStaticFirestoreData = (collection: string, tenant?: string) => {
+  const data = {
+    services: [{ id: '1', name: 'Haircut', price: 50 }],
+    products: [{ id: '1', name: 'Shampoo', price: 25 }]
+  };
+  return Promise.resolve(data[collection as keyof typeof data] || []);
+};

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { nanoid } from 'nanoid';
+// Simple ID generator
+const generateId = () => Math.random().toString(36).substring(2, 15);
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,7 +15,7 @@ export async function POST(request: NextRequest) {
       throw new Error('Paystack secret key is not configured.');
     }
 
-    const reference = nanoid(); // Generate unique reference
+    const reference = generateId(); // Generate unique reference
 
     const response = await fetch('https://api.paystack.co/transaction/initialize', {
       method: 'POST',

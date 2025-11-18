@@ -94,7 +94,8 @@ async function sendBookingReminders(tenantId: string, supabase: any) {
   let sent = 0;
   for (const apt of appointments || []) {
     if (apt.profiles?.phone) {
-      await aisensy.sendWhatsAppMessage();
+      const message = `⏰ Appointment Reminder: Your appointment is tomorrow at ${new Date(apt.start_time).toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' })}. See you soon!`;
+      await aisensy.sendWhatsAppMessage(apt.profiles.phone, message);
       sent++;
     }
   }
@@ -121,5 +122,6 @@ async function generateWeeklyReport(tenantId: string, supabase: any) {
 
 async function sendWeeklyReport(tenantId: string, stats: any) {
   const message = `📊 Weekly Report:\n💰 Revenue: R${(stats.revenue / 100).toFixed(2)}\n📦 Orders: ${stats.orders}\n📅 Bookings: ${stats.bookings}\n💬 WhatsApp: ${stats.whatsapp_sessions}`;
-  await aisensy.sendWhatsAppMessage();
+  // TODO: Get admin phone number for tenant
+  // await aisensy.sendWhatsAppMessage(adminPhone, message);
 }

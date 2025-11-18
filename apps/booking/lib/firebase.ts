@@ -20,5 +20,8 @@ export const addDoc = (collectionRef: any, data: any) => Promise.resolve({ id: '
 export const serverTimestamp = () => new Date(); // Mock serverTimestamp
 
 export const functions = {
-  httpsCallable: (name: string) => () => Promise.resolve({ data: {} })
+  httpsCallable: (name: string) => () => Promise.resolve({ data: {} }),
+  app: {},
+  region: 'us-central1',
+  customDomain: null
 };

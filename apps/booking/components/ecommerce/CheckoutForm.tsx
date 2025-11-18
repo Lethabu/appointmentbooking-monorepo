@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,6 +23,7 @@ export default function CheckoutForm({ tenantId }: CheckoutFormProps) {
     phone: '',
     address: '',
   });
+  const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const cart = useCartStore();
 
@@ -48,7 +49,7 @@ export default function CheckoutForm({ tenantId }: CheckoutFormProps) {
       const result = await response.json();
 
       if (result.success) {
-        window.location.href = result.authorization_url;
+        setRedirectUrl(result.authorization_url);
       }
     } catch (error) {
       console.error('Checkout error:', error);
@@ -61,6 +62,13 @@ export default function CheckoutForm({ tenantId }: CheckoutFormProps) {
     (sum: number, item: CartItem) => sum + item.price,
     0,
   );
+
+  // Redirect when redirectUrl changes
+  useEffect(() => {
+    if (redirectUrl) {
+      window.location.href = redirectUrl;
+    }
+  }, [redirectUrl]);
 
   return (
     <Card>

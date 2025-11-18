@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
   try {
     const { productId, newStock, tenantId } = await request.json();
 
-    if (productId === undefined || newStock === undefined || !tenantId) {
+    if (productId === null || newStock === null || !tenantId) {
       return NextResponse.json({ error: 'ProductId, newStock, and tenantId are required.' }, { status: 400 });
     }
 

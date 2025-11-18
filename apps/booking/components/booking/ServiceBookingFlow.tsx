@@ -29,6 +29,7 @@ export default function ServiceBookingFlow() {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
 
   const formatPrice = (cents: number) => `R${(cents / 100).toFixed(0)}`;
 
@@ -121,8 +122,7 @@ export default function ServiceBookingFlow() {
       const data = await response.json();
 
       if (data.url) {
-        // Redirect to PayStack
-        window.location.href = data.url;
+        setRedirectUrl(data.url);
       } else {
         throw new Error('Failed to create payment');
       }
@@ -133,6 +133,13 @@ export default function ServiceBookingFlow() {
       setIsProcessing(false);
     }
   };
+
+  // Redirect when redirectUrl changes
+  useEffect(() => {
+    if (redirectUrl) {
+      window.location.href = redirectUrl;
+    }
+  }, [redirectUrl]);
 
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-6">

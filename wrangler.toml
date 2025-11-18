@@ -20,9 +20,12 @@ binding = "AI"
 [observability]
 enabled = true
 
-# Custom domain routes
+# Custom domain routes - Fixed for multi-worker deployment
+# These routes direct traffic to specific workers based on domains
+
 [[routes]]
 pattern = "www.instylehairboutique.co.za/*"
 zone_name = "instylehairboutique.co.za"
 
-
+# Note: Custom domains require specific Cloudflare Pages setup
+# The actual domains will be configured in Cloudflare dashboard after deployment

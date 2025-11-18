@@ -1,14 +1,8 @@
-// Supabase server client stub
-export const createServerClient = () => ({
-  from: (table: string) => ({
-    select: () => ({ data: [], error: null }),
-    insert: () => ({ data: null, error: null }),
-    update: () => ({ data: null, error: null }),
-    delete: () => ({ data: null, error: null })
-  }),
-  auth: {
-    getUser: () => Promise.resolve({ data: { user: null }, error: null })
-  }
-});
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 
-export const getTenantContext = (req: any) => Promise.resolve({ tenant: 'default', user: null });
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+export const createClient = () => {
+  return createSupabaseClient(supabaseUrl, supabaseAnonKey);
+};

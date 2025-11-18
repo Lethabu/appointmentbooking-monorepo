@@ -27,20 +27,16 @@ export function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: jsonLd({
-            '@context': 'https://schema.org',
-            '@type': 'WebSite',
+          __html: JSON.stringify(jsonLd.generate('WebSite', {
             name: 'The Platform',
             url: 'https://your-platform-domain.com',
-          } as WithContext<WebSite>),
+          })),
         }}
       />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: jsonLd({
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
+          __html: JSON.stringify(jsonLd.generate('FAQPage', {
             mainEntity: faqQuestions.map((item) => ({
               '@type': 'Question',
               name: item.question,
@@ -49,7 +45,7 @@ export function HomePage() {
                 text: item.answer,
               },
             })),
-          } as WithContext<FAQPage>),
+          })),
         }}
       />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">

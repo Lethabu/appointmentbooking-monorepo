@@ -1,22 +1,14 @@
 'use client';
 
 import { CalendarDaysIcon, CheckCircleIcon, XCircleIcon } from 'lucide-react';
-
-interface Appointment {
-  id: string;
-  scheduled_time: string;
-  status: string;
-  services: { name: string }[];
-  staff: { name: string }[];
-  users: { name: string; email?: string }[];
-}
+import type { Appointment } from '@/types';
 
 interface AppointmentCardProps {
   appointment: Appointment;
 }
 
 function AppointmentCard({ appointment }: AppointmentCardProps) {
-  const scheduledTime = new Date(appointment.scheduled_time);
+  const scheduledTime = new Date(appointment.scheduledTime);
   const formattedDate = scheduledTime.toLocaleDateString('en-ZA', {
     year: 'numeric',
     month: 'long',
@@ -36,13 +28,13 @@ function AppointmentCard({ appointment }: AppointmentCardProps) {
         </div>
         <div>
 <h4 className="text-lg font-bold">
-  {appointment.services[0]?.name || 'N/A'}
+  {appointment.service_name || 'Service'}
 </h4>
 <p className="text-sm text-gray-500">
-  With {appointment.staff[0]?.name || 'N/A'}
+  {appointment.notes || 'No additional notes'}
 </p>
 <p className="text-sm text-gray-500">
-  Booked by: {appointment.users[0]?.name || appointment.users[0]?.email || 'N/A'}
+  Client: {appointment.client_name || 'N/A'}
 </p>
         </div>
       </div>

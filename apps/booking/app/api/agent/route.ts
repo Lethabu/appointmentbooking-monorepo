@@ -1,5 +1,5 @@
 import OpenAI from 'openai'
-import { createClient } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase-server'
 
 // Define the structure of the request body for type safety
 interface AgentRequestBody {
@@ -167,7 +167,7 @@ export async function POST(request: Request) {
 
     return Response.json({
       error: 'Failed to process request. Please try again.',
-      details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+      details: process.env.NODE_ENV === 'development' ? errorMessage : null
     }, { status: 500 })
   }
 }
@@ -290,3 +290,5 @@ async function triggerWhatsAppNotification(userMessage: string, agentReply: stri
     // Don't throw - notification failures shouldn't break the main flow
   }
 }
+
+  

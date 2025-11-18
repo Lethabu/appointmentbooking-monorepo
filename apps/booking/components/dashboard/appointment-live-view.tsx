@@ -23,59 +23,67 @@ interface AppointmentLiveViewProps {
 const mockAppointments: Appointment[] = [
   {
     id: '1',
+    userId: 'user-1',
+    serviceId: '1',
+    tenantId: '1',
+    scheduledTime: '2024-01-16T09:00:00.000Z',
     client_name: 'Sarah Johnson',
     client_phone: '(021) 123-4567',
     service_name: 'Signature Cut & Style',
     datetime: '2024-01-16T09:00:00',
     time: '09:00',
     status: 'confirmed',
-    tenant_id: '1',
-    service_id: '1',
     price: 100,
-    created_at: '2024-01-16T09:00:00',
-    updated_at: '2024-01-16T09:00:00',
+    createdAt: '2024-01-16T09:00:00',
+    updatedAt: '2024-01-16T09:00:00',
   },
   {
     id: '2',
+    userId: 'user-2',
+    serviceId: '1',
+    tenantId: '1',
+    scheduledTime: '2024-01-16T10:30:00.000Z',
     client_name: 'Emma Wilson',
     client_phone: '(021) 234-5678',
     service_name: 'Full Color Transformation',
     datetime: '2024-01-16T10:30:00',
     time: '10:30',
     status: 'pending',
-    tenant_id: '1',
-    service_id: '1',
     price: 100,
-    created_at: '2024-01-16T10:30:00',
-    updated_at: '2024-01-16T10:30:00',
+    createdAt: '2024-01-16T10:30:00',
+    updatedAt: '2024-01-16T10:30:00',
   },
   {
     id: '3',
+    userId: 'user-3',
+    serviceId: '1',
+    tenantId: '1',
+    scheduledTime: '2024-01-16T14:00:00.000Z',
     client_name: 'Lisa Chen',
     client_phone: '(021) 345-6789',
     service_name: 'Luxury Blowout',
     datetime: '2024-01-16T14:00:00',
     time: '14:00',
     status: 'confirmed',
-    tenant_id: '1',
-    service_id: '1',
     price: 100,
-    created_at: '2024-01-16T14:00:00',
-    updated_at: '2024-01-16T14:00:00',
+    createdAt: '2024-01-16T14:00:00',
+    updatedAt: '2024-01-16T14:00:00',
   },
   {
     id: '4',
+    userId: 'user-4',
+    serviceId: '1',
+    tenantId: '1',
+    scheduledTime: '2024-01-17T09:30:00.000Z',
     client_name: 'Maria Garcia',
     client_phone: '(021) 456-7890',
     service_name: 'Keratin Treatment',
     datetime: '2024-01-17T09:30:00',
     time: '09:30',
     status: 'pending',
-    tenant_id: '1',
-    service_id: '1',
     price: 100,
-    created_at: '2024-01-17T09:30:00',
-    updated_at: '2024-01-17T09:30:00',
+    createdAt: '2024-01-17T09:30:00',
+    updatedAt: '2024-01-17T09:30:00',
   },
 ];
 
@@ -162,6 +170,9 @@ export function AppointmentLiveView({ tenantId }: AppointmentLiveViewProps) {
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
     return appointments.filter((appointment) => {
+      if (!appointment.datetime) {
+        return false;
+      }
       const appointmentDate = new Date(appointment.datetime);
 
       switch (period) {
