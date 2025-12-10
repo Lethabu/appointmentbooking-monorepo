@@ -119,7 +119,7 @@ export default function TenantHome({ config, services, products }: TenantHomePro
         <h1 className="text-4xl md:text-5xl font-extrabold">Where Style is Perfected</h1>
         <p className="mt-4 max-w-2xl mx-auto text-lg opacity-90">{config.description}</p>
         <div className="mt-8 flex justify-center gap-4">
-          {Object.entries(config.socials).map(([platform, url]) => (
+          {config.socials && Object.entries(config.socials).map(([platform, url]) => (
             <Link
               key={platform}
               href={url}
@@ -190,7 +190,7 @@ export default function TenantHome({ config, services, products }: TenantHomePro
             <div>
               <h3 className="text-xl font-bold mb-4">🕐 Opening Hours</h3>
               <ul>
-                {config.openingHours.map((hours, i) => (
+                {config.openingHours && config.openingHours.map((hours, i) => (
                   <li key={i}>{hours}</li>
                 ))}
               </ul>

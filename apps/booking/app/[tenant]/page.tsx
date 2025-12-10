@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 import TenantHome from '../../components/tenant/TenantHome';
+import InStyleLandingPage from '../../components/landing/InStyleLandingPage';
 
 // ISR: revalidate every 60 seconds
 export const revalidate = 60;
@@ -32,6 +33,11 @@ export default async function TenantPage({ params }: Props) {
   const { tenant, services, products } = await fetchTenantData(slug);
 
   if (!tenant) return <div className="p-8">Tenant not found.</div>;
+
+  // Use InStyleLandingPage for instylehairboutique, TenantHome for others
+  if (slug === 'instylehairboutique') {
+    return <InStyleLandingPage />;
+  }
 
   return <TenantHome config={tenant} services={services} products={products} />;
 }

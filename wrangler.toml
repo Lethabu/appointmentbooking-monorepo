@@ -4,10 +4,9 @@ compatibility_date = "2024-01-15"
 compatibility_flags = ["nodejs_compat"]
 account_id = "9e96c83268cae3e0f27168ed50c92033"
 
+
 [vars]
 NODE_ENV = "production"
-SUPERSAAS_API_KEY = "pVq0j8Sm2jAaLW6BrBkI5Q"
-SUPERSAAS_SCHEDULE_ID = "695384"
 
 [[d1_databases]]
 binding = "DB"
@@ -22,6 +21,10 @@ enabled = true
 
 # Custom domain routes - Fixed for multi-worker deployment
 # These routes direct traffic to specific workers based on domains
+
+[[routes]]
+pattern = "instylehairboutique.co.za/*"
+zone_name = "instylehairboutique.co.za"
 
 [[routes]]
 pattern = "www.instylehairboutique.co.za/*"

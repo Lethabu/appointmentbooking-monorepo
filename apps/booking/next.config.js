@@ -65,6 +65,15 @@ const nextConfig = {
       }
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/instylehairboutique',
+        permanent: false,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
@@ -90,55 +99,19 @@ const nextConfig = {
   }
 };
 
-module.exports = nextConfig;
+// Setup Cloudflare Pages development platform
+if (process.env.NODE_ENV === 'development') {
+  const { setupDevPlatform } = require('@cloudflare/next-on-pages/next-dev');
+  setupDevPlatform();
+}
+
+module.exports = withBundleAnalyzer(nextConfig);
 
 nextConfig.webpack = (config, { isServer, dev }) => {
-  if (isServer) {
-    if (!config.externals) {
-      config.externals = [];
-    }
-    config.externals.push('whatwg-fetch');
-
-    // Temporarily remove client-side libraries from externals for server-side rendering
-    // config.externals.push({
-    //   'firebase': 'firebase',
-    //   'firebase/app': 'firebase/app',
-    //   'firebase/auth': 'firebase/auth',
-    //   'firebase/firestore': 'firebase/firestore',
-    //   '@stripe/stripe-js': '@stripe/stripe-js',
-    //   '@stripe/react-stripe-js': '@stripe/react-stripe-js',
-    //   '@paystack/inline-js': '@paystack/inline-js',
-    //   'posthog-js': 'posthog-js',
-    //   'convex': 'convex',
-    // });
-
-    // Define browser globals for server-side rendering
-    if (!config.plugins) {
-      config.plugins = [];
-    }
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        'self': 'globalThis',
-        'window': 'globalThis',
-        'document': 'globalThis',
-        'navigator': '{}',
-      })
-    );
-
-    // Add a simpler approach - use a custom plugin to define globals
-    config.plugins.push({
-      apply: (compiler) => {
-        compiler.hooks.beforeCompile.tap('DefineBrowserGlobals', () => {
-          if (typeof global !== 'undefined') {
-            global.self = global.self || globalThis;
-            global.window = global.window || globalThis;
-            global.document = global.document || {};
-            global.navigator = global.navigator || {};
-          }
-        });
-      }
-    });
+  if (!config.externals) {
+    config.externals = [];
   }
+  config.externals.push('whatwg-fetch');
 
   // Provide fallbacks for server-side rendering
   if (isServer) {
@@ -148,15 +121,6 @@ nextConfig.webpack = (config, { isServer, dev }) => {
       path: false,
       os: false,
     };
-
-    // Provide browser globals for server-side rendering
-    config.resolve.fallback = {
-      ...config.resolve.fallback,
-      self: false,
-      window: false,
-      document: false,
-      navigator: false,
-    };
   }
 
   // Production optimizations
@@ -164,39 +128,39 @@ nextConfig.webpack = (config, { isServer, dev }) => {
     // Enable webpack optimizations for better tree shaking
     config.optimization = {
       ...config.optimization,
-      splitChunks: {
-        chunks: 'all',
-        cacheGroups: {
-          // Separate vendor chunks for better caching
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-            priority: 10,
-          },
-          // Separate React and related libraries
-          react: {
-            test: /[\\/]node_modules[\\/](react|react-dom|@react|@radix-ui)[\\/]/,
-            name: 'react-vendor',
-            chunks: 'all',
-            priority: 20,
-          },
-          // Separate UI libraries
-          ui: {
-            test: /[\\/]node_modules[\\/](@headlessui|@heroicons|lucide-react|framer-motion)[\\/]/,
-            name: 'ui-vendor',
-            chunks: 'all',
-            priority: 15,
-          },
-          // Separate large libraries
-          heavy: {
-            test: /[\\/]node_modules[\\/](recharts|convex|ai|@google)[\\/]/,
-            name: 'heavy-vendor',
-            chunks: 'all',
-            priority: 5,
-          },
-        },
-      },
+      // splitChunks: {
+      //   chunks: 'all',
+      //   cacheGroups: {
+      //     // Separate vendor chunks for better caching
+      //     vendor: {
+      //       test: /[\\/]node_modules[\\/]/,
+      //       name: 'vendors',
+      //       chunks: 'all',
+      //       priority: 10,
+      //     },
+      //     // Separate React and related libraries
+      //     react: {
+      //       test: /[\\/]node_modules[\\/](react|react-dom|@react|@radix-ui)[\\/]/,
+      //       name: 'react-vendor',
+      //       chunks: 'all',
+      //       priority: 20,
+      //     },
+      //     // Separate UI libraries
+      //     ui: {
+      //       test: /[\\/]node_modules[\\/](@headlessui|@heroicons|lucide-react|framer-motion)[\\/]/,
+      //       name: 'ui-vendor',
+      //       chunks: 'all',
+      //       priority: 15,
+      //     },
+      //     // Separate large libraries
+      //     heavy: {
+      //       test: /[\\/]node_modules[\\/](recharts|convex|ai|@google)[\\/]/,
+      //       name: 'heavy-vendor',
+      //       chunks: 'all',
+      //       priority: 5,
+      //     },
+      //   },
+      // },
       // Minimize bundle size
       minimize: true,
       // Remove unused exports

@@ -15,11 +15,25 @@ export interface AuthEnv {
 export function getAuthOptions(env: AuthEnv): NextAuthOptions {
   const db = getDb({ DB: env.DB });
 
+  // Helper function to extract tenant from request (simplified for build compatibility)
+  function getTenantFromRequest(): string | null {
+    // TODO: Implement tenant detection when needed
+    return null;
+  }
+
   return {
     providers: [
       GoogleProvider({
         clientId: env.GOOGLE_CLIENT_ID,
         clientSecret: env.GOOGLE_CLIENT_SECRET,
+        authorization: {
+          params: {
+            prompt: "consent",
+            access_type: "offline",
+            response_type: "code",
+            scope: "openid https://www.googleapis.com/auth/calendar",
+          },
+        },
       }),
     ],
     callbacks: {
@@ -27,10 +41,14 @@ export function getAuthOptions(env: AuthEnv): NextAuthOptions {
         if (token.tenantId && session.user) {
           (session.user as any).tenantId = token.tenantId;
         }
+        (session as any).accessToken = token.accessToken;
         return session;
       },
       async jwt({ token, user, account, profile }) {
-        if (user) {
+        if (user && account) {
+          // This is the first sign-in
+          token.accessToken = account.access_token;
+
           // Get tenant from request headers or subdomain
           const tenantId = getTenantFromRequest();
 
@@ -39,11 +57,12 @@ export function getAuthOptions(env: AuthEnv): NextAuthOptions {
             const tenant = await db
               .select()
               .from(tenants)
-              .where(eq(tenants.id, tenantId))
+              .where(eq(tenants.slug, tenantId)) // Match by slug
               .limit(1);
 
             if (tenant.length > 0) {
-              token.tenantId = tenantId;
+              const tenantRecord = tenant[0];
+              token.tenantId = tenantRecord.id;
 
               // Ensure user exists in our database with tenant association
               const existingUser = await db
@@ -58,8 +77,21 @@ export function getAuthOptions(env: AuthEnv): NextAuthOptions {
                   id: user.id,
                   email: user.email!,
                   name: user.name,
-                  tenantId: tenantId,
+                  tenantId: tenantRecord.id,
+                  google_access_token: account.access_token,
+                  google_refresh_token: account.refresh_token,
+                  google_token_expires_at: new Date(account.expires_at as number * 1000),
                 });
+              } else {
+                // Update user with new tokens
+                await db
+                  .update(users)
+                  .set({
+                    google_access_token: account.access_token,
+                    google_refresh_token: account.refresh_token,
+                    google_token_expires_at: new Date(account.expires_at as number * 1000),
+                  })
+                  .where(eq(users.id, existingUser[0].id));
               }
             }
           }
@@ -75,12 +107,4 @@ export function getAuthOptions(env: AuthEnv): NextAuthOptions {
       strategy: "jwt",
     },
   };
-}
-
-// Helper function to extract tenant from request
-// This will be called from middleware or API routes
-function getTenantFromRequest(): string | null {
-  // This is a placeholder - actual implementation will be in middleware
-  // For now, we'll return null and handle tenant detection in middleware
-  return null;
 }

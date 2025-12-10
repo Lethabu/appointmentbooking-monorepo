@@ -21,7 +21,7 @@ const CHECKLIST = [
     id: 'db_migration',
     name: 'Database Migration',
     description: 'Execute final Instyle services sync',
-    command: 'npx wrangler d1 execute appointmentbooking-db --remote --file=scripts/migrations/003-final-instyle-sync.sql',
+    command: 'npx wrangler d1 execute appointmentbooking-db --remote --file=scripts/migrations/004-safe-instyle-sync.sql',
     required: true
   },
   {
@@ -50,18 +50,16 @@ const CHECKLIST = [
 function executeCommand(command, description) {
   console.log(`\n🔄 ${description}...`);
   console.log(`📝 Command: ${command}`);
-  
+
   try {
-    const output = execSync(command, { 
+    const output = execSync(command, {
       cwd: process.cwd(),
       encoding: 'utf8',
-      stdio: 'pipe'
+      stdio: 'inherit'
     });
-    
+
     console.log('✅ Success');
-    if (output.trim()) {
-      console.log('📄 Output:', output.trim().substring(0, 200) + (output.length > 200 ? '...' : ''));
-    }
+    // Output is already printed to console
     return true;
   } catch (error) {
     console.error('❌ Failed');
@@ -82,17 +80,17 @@ function checkFileExists(filePath) {
 
 async function runGoLiveChecklist() {
   console.log('🚀 APPOINTMENT BOOKING PLATFORM - GO-LIVE CHECKLIST');
-  console.log('=' .repeat(60));
-  
+  console.log('='.repeat(60));
+
   // Pre-flight checks
   console.log('\n📋 Pre-flight Checks:');
-  
+
   const requiredFiles = [
     'wrangler.toml',
-    'scripts/migrations/003-final-instyle-sync.sql',
+    'scripts/migrations/004-safe-instyle-sync.sql',
     'package.json'
   ];
-  
+
   for (const file of requiredFiles) {
     const exists = checkFileExists(file);
     console.log(`${exists ? '✅' : '❌'} ${file}`);
@@ -101,17 +99,17 @@ async function runGoLiveChecklist() {
       process.exit(1);
     }
   }
-  
+
   // Execute checklist
   console.log('\n🎯 Executing Go-Live Steps:');
   let successCount = 0;
-  
+
   for (const [index, item] of CHECKLIST.entries()) {
     console.log(`\n[${index + 1}/${CHECKLIST.length}] ${item.name}`);
     console.log(`📝 ${item.description}`);
-    
+
     const success = executeCommand(item.command, item.description);
-    
+
     if (success) {
       successCount++;
       console.log(`✅ Step ${index + 1} completed successfully`);
@@ -123,13 +121,13 @@ async function runGoLiveChecklist() {
       }
     }
   }
-  
+
   // Final report
   console.log('\n' + '='.repeat(60));
   console.log('📊 GO-LIVE SUMMARY');
   console.log('='.repeat(60));
   console.log(`✅ Completed: ${successCount}/${CHECKLIST.length} steps`);
-  
+
   if (successCount === CHECKLIST.length) {
     console.log('\n🎉 SUCCESS: Platform is ready for production!');
     console.log('\n📋 Manual Steps Required:');
@@ -138,7 +136,7 @@ async function runGoLiveChecklist() {
     console.log('3. Test booking flow on instylehairboutique.co.za');
     console.log('4. Verify marketing site at appointmentbooking.co.za');
     console.log('5. Verify dashboard at dashboard.appointmentbooking.co.za');
-    
+
     return true;
   } else {
     console.log('\n❌ INCOMPLETE: Some steps failed. Review errors above.');

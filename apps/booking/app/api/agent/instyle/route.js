@@ -1,13 +1,12 @@
 import OpenAI from 'openai'
-import { createClient } from '@supabase/supabase-js' // Corrected import
+import { createClient } from '@supabase/supabase-js'
 
-// Initialize OpenAI
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+export const dynamic = 'force-dynamic';
 
 // Initialize Supabase
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder'
 )
 
 // Agent personality profiles
@@ -69,32 +68,35 @@ Your personality:
 Provide structured advice with clear action steps. Focus on sustainable growth and profitability. Use chart emoji 📈 to emphasize growth opportunities.`
 }
 
-export async function POST(req, res) { // Changed from handler to POST
+export async function POST(req, res) {
   // Only allow POST requests
   if (req.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 }); // Changed to Next.js App Router Response
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405 });
   }
 
   try {
-    const { agent, input, userId, tenantId } = await req.json(); // Changed to req.json() for App Router
+    // Initialize OpenAI lazily inside the handler
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+
+    const { agent, input, userId, tenantId } = await req.json();
 
     // Validate required fields
     if (!agent || !input) {
-      return new Response(JSON.stringify({ 
-        error: 'Missing required fields: agent and input are required' 
+      return new Response(JSON.stringify({
+        error: 'Missing required fields: agent and input are required'
       }), { status: 400 });
     }
 
     // Validate agent exists
     if (!AGENT_PROFILES[agent]) {
-      return new Response(JSON.stringify({ 
-        error: 'Invalid agent. Must be: Nia, Blaze, or Nova' 
+      return new Response(JSON.stringify({
+        error: 'Invalid agent. Must be: Nia, Blaze, or Nova'
       }), { status: 400 });
     }
 
     // --- STEP 1: Fetch user context (memory) ---
     let memoryContext = ''
-    
+
     if (userId && tenantId) {
       try {
         // Get user's last appointment for context
@@ -185,7 +187,7 @@ export async function POST(req, res) { // Changed from handler to POST
     if (agent === 'Nia' && userId && tenantId) {
       // Check if message is booking-related
       const bookingKeywords = ['book', 'appointment', 'schedule', 'confirm', 'reserve']
-      const isBookingRelated = bookingKeywords.some(keyword => 
+      const isBookingRelated = bookingKeywords.some(keyword =>
         input.toLowerCase().includes(keyword) || reply.toLowerCase().includes(keyword)
       )
 
@@ -200,8 +202,6 @@ export async function POST(req, res) { // Changed from handler to POST
 
           if (profile && profile.phone) {
             // Send WhatsApp notification via Edge Function
-            // Note: This assumes you have a 'send-whatsapp' Edge Function deployed
-            // and configured in your Supabase project.
             await supabase.functions.invoke('send-whatsapp', {
               body: {
                 to: profile.phone,
@@ -217,7 +217,7 @@ export async function POST(req, res) { // Changed from handler to POST
     }
 
     // --- STEP 6: Return response ---
-    return new Response(JSON.stringify({ // Changed to Next.js App Router Response
+    return new Response(JSON.stringify({
       reply,
       agent,
       timestamp: new Date().toISOString()
@@ -225,15 +225,15 @@ export async function POST(req, res) { // Changed from handler to POST
 
   } catch (error) {
     console.error('[Agent API] Error:', error)
-    
+
     // Return appropriate error message
     if (error.message?.includes('API key')) {
-      return new Response(JSON.stringify({ // Changed to Next.js App Router Response
-        error: 'OpenAI API configuration error. Please contact support.' 
+      return new Response(JSON.stringify({
+        error: 'OpenAI API configuration error. Please contact support.'
       }), { status: 500 });
     }
-    
-    return new Response(JSON.stringify({ // Changed to Next.js App Router Response
+
+    return new Response(JSON.stringify({
       error: 'Failed to process request. Please try again.',
       details: process.env.NODE_ENV === 'development' ? error.message : undefined
     }), { status: 500 });

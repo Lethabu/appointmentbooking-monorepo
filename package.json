@@ -30,7 +30,6 @@
     "wrangler": "^3.22.4"
   },
   "dependencies": {
-    "@vercel/analytics": "^1.5.0",
     "node-fetch": "^3.3.2"
   },
   "pnpm": {

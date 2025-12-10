@@ -170,10 +170,18 @@ export function AppointmentLiveView({ tenantId }: AppointmentLiveViewProps) {
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
     return appointments.filter((appointment) => {
-      if (!appointment.datetime) {
+      // Enhanced guard clause for type safety and invalid date prevention
+      if (!appointment.datetime || typeof appointment.datetime !== 'string') {
         return false;
       }
+
       const appointmentDate = new Date(appointment.datetime);
+
+      // Additional validation: check if date string was valid
+      if (isNaN(appointmentDate.getTime())) {
+        console.warn(`Invalid datetime for appointment ${appointment.id}:`, appointment.datetime);
+        return false;
+      }
 
       switch (period) {
         case 'today':

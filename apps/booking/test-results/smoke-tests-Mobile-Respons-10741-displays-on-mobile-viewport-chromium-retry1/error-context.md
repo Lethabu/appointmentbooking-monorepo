@@ -1,0 +1,246 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - img "InStyle Logo" [ref=e7]
+        - generic [ref=e8]:
+          - text: InStyle
+          - text: Hair Boutique
+      - navigation [ref=e9]:
+        - button "Home" [ref=e10]
+        - button "Services" [ref=e11]
+        - button "Products" [ref=e12]
+        - button "Gallery" [ref=e13]
+        - button "Testimonials" [ref=e14]
+        - button "Book Now" [ref=e15]
+      - button [ref=e16]:
+        - img [ref=e17]
+  - generic [ref=e19]:
+    - heading "Transform Your Look With Premium Hair Services" [level=1] [ref=e20]:
+      - text: Transform Your Look With
+      - text: Premium Hair Services
+    - paragraph [ref=e21]: Experience the finest hair treatments, extensions, and styling from South Africa's leading boutique. Where elegance meets expertise.
+    - generic [ref=e22]:
+      - button "Book Appointment" [ref=e23]:
+        - img [ref=e24]
+        - text: Book Appointment
+      - button "Shop Products" [ref=e26]:
+        - img [ref=e27]
+        - text: Shop Products
+      - link "Chat on WhatsApp" [ref=e30] [cursor=pointer]:
+        - /url: https://wa.me/27699171527
+        - img [ref=e31]
+        - text: Chat on WhatsApp
+  - generic [ref=e34]:
+    - generic [ref=e35]:
+      - heading "Our Premium Services" [level=2] [ref=e36]
+      - paragraph [ref=e37]: Professional hair treatments and styling services tailored to your unique needs.
+    - generic [ref=e38]:
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - generic [ref=e41]: Popular
+          - img "Premium Installations" [ref=e42]
+        - generic [ref=e43]:
+          - heading "Premium Installations" [level=3] [ref=e44]
+          - paragraph [ref=e45]: Expert installation for middle & side parts, closures, and frontals.
+          - generic [ref=e46]:
+            - text: From R300
+            - generic [ref=e47]:
+              - img [ref=e48]
+              - text: "5.0"
+          - button "Book Now" [ref=e50]
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - generic [ref=e53]: Signature
+          - img "Traditional Styling" [ref=e54]
+        - generic [ref=e55]:
+          - heading "Traditional Styling" [level=3] [ref=e56]
+          - paragraph [ref=e57]: Maphondo, lines, and intricate traditional patterns with modern flair.
+          - generic [ref=e58]:
+            - text: From R350
+            - generic [ref=e59]:
+              - img [ref=e60]
+              - text: "5.0"
+          - button "Book Now" [ref=e62]
+      - generic [ref=e63]:
+        - generic [ref=e64]:
+          - generic [ref=e65]: New
+          - img "Soft Glam Makeup" [ref=e66]
+        - generic [ref=e67]:
+          - heading "Soft Glam Makeup" [level=3] [ref=e68]
+          - paragraph [ref=e69]: Professional makeup application perfect for any special occasion.
+          - generic [ref=e70]:
+            - text: R450
+            - generic [ref=e71]:
+              - img [ref=e72]
+              - text: "5.0"
+          - button "Book Now" [ref=e74]
+  - generic [ref=e76]:
+    - generic [ref=e77]:
+      - generic [ref=e78]:
+        - heading "Premium Hair Products" [level=2] [ref=e79]
+        - paragraph [ref=e80]: Shop our curated selection of professional hair care.
+      - link "View All Products" [ref=e81] [cursor=pointer]:
+        - /url: /book/instylehairboutique/shop
+        - text: View All Products
+        - img [ref=e82]
+    - generic [ref=e84]:
+      - generic [ref=e85]:
+        - generic [ref=e86]:
+          - img "Luxury Hair Oil" [ref=e87]
+          - button [ref=e88]:
+            - img [ref=e89]
+        - heading "Luxury Hair Oil" [level=3] [ref=e91]
+        - generic [ref=e92]:
+          - text: R150
+          - button [ref=e93]:
+            - img [ref=e94]
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - img "Styling Gel" [ref=e100]
+          - button [ref=e101]:
+            - img [ref=e102]
+        - heading "Styling Gel" [level=3] [ref=e104]
+        - generic [ref=e105]:
+          - text: R85
+          - button [ref=e106]:
+            - img [ref=e107]
+      - generic [ref=e111]:
+        - generic [ref=e112]:
+          - img "Deep Conditioner" [ref=e113]
+          - button [ref=e114]:
+            - img [ref=e115]
+        - heading "Deep Conditioner" [level=3] [ref=e117]
+        - generic [ref=e118]:
+          - text: R110
+          - button [ref=e119]:
+            - img [ref=e120]
+      - generic [ref=e124]:
+        - generic [ref=e125]:
+          - img "Edge Control" [ref=e126]
+          - button [ref=e127]:
+            - img [ref=e128]
+        - heading "Edge Control" [level=3] [ref=e130]
+        - generic [ref=e131]:
+          - text: R75
+          - button [ref=e132]:
+            - img [ref=e133]
+  - generic [ref=e138]:
+    - generic [ref=e139]:
+      - heading "Client Love" [level=2] [ref=e140]
+      - paragraph [ref=e141]: Don't just take our word for it.
+    - generic [ref=e142]:
+      - generic [ref=e143]:
+        - generic [ref=e144]: "\""
+        - paragraph [ref=e145]: The best hair salon experience I've ever had! My extensions look so natural.
+        - generic [ref=e146]:
+          - generic [ref=e147]: S
+          - generic [ref=e148]:
+            - heading "Sarah M." [level=4] [ref=e149]
+            - paragraph [ref=e150]: Regular Client
+      - generic [ref=e151]:
+        - generic [ref=e152]: "\""
+        - paragraph [ref=e153]: I've been coming to Instyle for over a year. Always impressed with the detail.
+        - generic [ref=e154]:
+          - generic [ref=e155]: Z
+          - generic [ref=e156]:
+            - heading "Zoe K." [level=4] [ref=e157]
+            - paragraph [ref=e158]: VIP Client
+      - generic [ref=e159]:
+        - generic [ref=e160]: "\""
+        - paragraph [ref=e161]: The coloring service is exceptional! They created the perfect shade for me.
+        - generic [ref=e162]:
+          - generic [ref=e163]: A
+          - generic [ref=e164]:
+            - heading "Amanda T." [level=4] [ref=e165]
+            - paragraph [ref=e166]: New Client
+  - generic [ref=e168]:
+    - generic [ref=e169]:
+      - heading "Book Your Appointment" [level=2] [ref=e170]
+      - paragraph [ref=e171]: Ready to transform your look? Select your service below.
+    - generic [ref=e176]:
+      - generic [ref=e177]:
+        - generic [ref=e179]: "1"
+        - generic [ref=e181]: "2"
+        - generic [ref=e183]: "3"
+        - generic [ref=e185]: "4"
+      - generic [ref=e186]:
+        - heading "Select Service" [level=2] [ref=e188]
+        - generic [ref=e189]:
+          - button "Back" [disabled] [ref=e190]:
+            - img [ref=e191]
+            - text: Back
+          - button "Continue" [disabled] [ref=e193]:
+            - text: Continue
+            - img [ref=e194]
+  - contentinfo [ref=e196]:
+    - generic [ref=e197]:
+      - generic [ref=e198]:
+        - generic [ref=e199]:
+          - generic [ref=e200]:
+            - img "Logo" [ref=e201]
+            - text: InStyle
+          - paragraph [ref=e202]: Premium hair services and products in South Africa. Transforming looks with expertise and care since 2023.
+          - generic [ref=e203]:
+            - link [ref=e204] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e205]
+            - link [ref=e208] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e209]
+            - link [ref=e211] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e212]
+        - generic [ref=e214]:
+          - heading "Quick Links" [level=3] [ref=e215]
+          - list [ref=e216]:
+            - listitem [ref=e217]:
+              - link "Home" [ref=e218] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e219]:
+              - link "Services" [ref=e220] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e221]:
+              - link "Products" [ref=e222] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e223]:
+              - link "Gallery" [ref=e224] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e225]:
+              - link "Book Now" [ref=e226] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e227]:
+          - heading "Services" [level=3] [ref=e228]
+          - list [ref=e229]:
+            - listitem [ref=e230]:
+              - link "Installations" [ref=e231] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e232]:
+              - link "Styling" [ref=e233] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e234]:
+              - link "Coloring" [ref=e235] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e236]:
+              - link "Treatments" [ref=e237] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e238]:
+              - link "Braiding" [ref=e239] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e240]:
+          - heading "Contact Us" [level=3] [ref=e241]
+          - list [ref=e242]:
+            - listitem [ref=e243]:
+              - img [ref=e244]
+              - text: Cape Town, South Africa
+            - listitem [ref=e247]:
+              - img [ref=e248]
+              - text: +27 69 917 1527
+            - listitem [ref=e250]:
+              - img [ref=e251]
+              - text: info@instylehairboutique.co.za
+      - paragraph [ref=e255]: © 2025 InStyle Hair Boutique. All rights reserved.
+```

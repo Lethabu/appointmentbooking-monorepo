@@ -1,0 +1,143 @@
+
+> appointmentbooking-monorepo@ build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo
+> turbo run build "--filter" "booking"
+
+turbo 2.6.0
+
+• Packages in scope: booking
+• Running build in 1 packages
+• Remote caching disabled
+@repo/db:build: cache hit, replaying logs ed7239fa702c71cb
+@repo/db:build: 
+@repo/db:build: > @repo/db@0.0.1 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\db
+@repo/db:build: > tsc
+@repo/db:build: 
+@repo/auth:build: cache hit, replaying logs c72da5ccc7ba5f97
+@repo/auth:build: 
+@repo/auth:build: > @repo/auth@0.0.1 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\auth
+@repo/auth:build: > tsc
+@repo/auth:build: 
+booking:build: cache miss, executing cd8a00e872d53d4e
+booking:build: 
+booking:build: > booking@0.1.0 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking
+booking:build: > next build
+booking:build: 
+booking:build:   ▲ Next.js 14.2.33
+booking:build:   - Environments: .env
+booking:build:   - Experiments (use with caution):
+booking:build:     · optimizeCss
+booking:build:     · scrollRestoration
+booking:build:     · webpackBuildWorker
+booking:build: 
+booking:build:    Creating an optimized production build ...
+booking:build:  ✓ Compiled successfully
+booking:build:    Linting and checking validity of types ...
+booking:build:    Collecting page data ...
+booking:build:  ⚠ Using edge runtime on a page currently disables static generation for that page
+booking:build:    Generating static pages (0/67) ...
+booking:build:    Generating static pages (16/67) 
+booking:build:    Generating static pages (33/67) 
+booking:build:    Generating static pages (50/67) 
+booking:build: Time 635.2695
+booking:build: Time 660.5295
+booking:build:  ✓ Generating static pages (67/67)
+booking:build:    Finalizing page optimization ...
+booking:build:    Collecting build traces ...
+booking:build: 
+booking:build: Route (app)                                  Size     First Load JS
+booking:build: ┌ ƒ /                                        172 B          87.5 kB
+booking:build: ├ ƒ /_not-found                              172 B          87.5 kB
+booking:build: ├ ƒ /(/dashboard)/dashboard                  727 B          88.1 kB
+booking:build: ├ ƒ /[tenant]                                63.1 kB         159 kB
+booking:build: ├ ƒ /admin/dashboard                         1.17 kB        88.5 kB
+booking:build: ├ ƒ /api/agent                               0 B                0 B
+booking:build: ├ ƒ /api/agent/instyle                       0 B                0 B
+booking:build: ├ ƒ /api/alert-admin                         0 B                0 B
+booking:build: ├ ƒ /api/analytics                           0 B                0 B
+booking:build: ├ ƒ /api/analytics/ecommerce                 0 B                0 B
+booking:build: ├ ƒ /api/appointments                        0 B                0 B
+booking:build: ├ ƒ /api/auth/[...nextauth]                  0 B                0 B
+booking:build: ├ ƒ /api/auth/verify-token                   0 B                0 B
+booking:build: ├ ƒ /api/automation                          0 B                0 B
+booking:build: ├ ƒ /api/availability                        0 B                0 B
+booking:build: ├ ƒ /api/book                                0 B                0 B
+booking:build: ├ ƒ /api/book-appointment                    0 B                0 B
+booking:build: ├ ƒ /api/book-demo                           0 B                0 B
+booking:build: ├ ƒ /api/bookings                            0 B                0 B
+booking:build: ├ ƒ /api/chat                                0 B                0 B
+booking:build: ├ ƒ /api/checkout                            0 B                0 B
+booking:build: ├ ƒ /api/checkout/paystack                   0 B                0 B
+booking:build: ├ ƒ /api/consent/record                      0 B                0 B
+booking:build: ├ ƒ /api/conversational-commerce             0 B                0 B
+booking:build: ├ ƒ /api/dashboard                           0 B                0 B
+booking:build: ├ ƒ /api/dashboard-stats                     0 B                0 B
+booking:build: ├ ƒ /api/dashboard/clients                   0 B                0 B
+booking:build: ├ ƒ /api/dashboard/clients/[id]              0 B                0 B
+booking:build: ├ ƒ /api/dashboard/marketing                 0 B                0 B
+booking:build: ├ ƒ /api/dashboard/marketing/[id]            0 B                0 B
+booking:build: ├ ƒ /api/dashboard/products                  0 B                0 B
+booking:build: ├ ƒ /api/dashboard/services                  0 B                0 B
+booking:build: ├ ƒ /api/dashboard/services/[id]             0 B                0 B
+booking:build: ├ ƒ /api/dashboard/settings                  0 B                0 B
+booking:build: ├ ƒ /api/emergency-booking                   0 B                0 B
+booking:build: ├ ƒ /api/generate-component                  0 B                0 B
+booking:build: ├ ƒ /api/health                              0 B                0 B
+booking:build: ├ ƒ /api/inventory/sync                      0 B                0 B
+booking:build: ├ ƒ /api/metrics                             0 B                0 B
+booking:build: ├ ○ /api/monitoring/health                   0 B                0 B
+booking:build: ├ ƒ /api/mood/post                           0 B                0 B
+booking:build: ├ ƒ /api/onboarding                          0 B                0 B
+booking:build: ├ ƒ /api/orders                              0 B                0 B
+booking:build: ├ ƒ /api/orders/[orderId]                    0 B                0 B
+booking:build: ├ ƒ /api/payments/create                     0 B                0 B
+booking:build: ├ ƒ /api/payments/netcash                    0 B                0 B
+booking:build: ├ ƒ /api/payments/payflex                    0 B                0 B
+booking:build: ├ ƒ /api/payments/paystack/create            0 B                0 B
+booking:build: ├ ƒ /api/paystack/create                     0 B                0 B
+booking:build: ├ ƒ /api/paystack/webhook                    0 B                0 B
+booking:build: ├ ƒ /api/products                            0 B                0 B
+booking:build: ├ ƒ /api/products/ai-recommendations         0 B                0 B
+booking:build: ├ ƒ /api/public/products                     0 B                0 B
+booking:build: ├ ƒ /api/public/services                     0 B                0 B
+booking:build: ├ ○ /api/robots                              0 B                0 B
+booking:build: ├ ƒ /api/social-commerce                     0 B                0 B
+booking:build: ├ ƒ /api/social-sync                         0 B                0 B
+booking:build: ├ ƒ /api/social-sync/tiktok                  0 B                0 B
+booking:build: ├ ƒ /api/supersaas-migrate                   0 B                0 B
+booking:build: ├ ƒ /api/supersaas-sync                      0 B                0 B
+booking:build: ├ ƒ /api/tenant                              0 B                0 B
+booking:build: ├ ƒ /api/tenant-health                       0 B                0 B
+booking:build: ├ ƒ /api/tenant-resolver                     0 B                0 B
+booking:build: ├ ƒ /api/tiktok/viral                        0 B                0 B
+booking:build: ├ ƒ /api/verify-payment                      0 B                0 B
+booking:build: ├ ƒ /api/webhooks/automation/abandoned-cart  0 B                0 B
+booking:build: ├ ƒ /api/webhooks/ozow                       0 B                0 B
+booking:build: ├ ƒ /api/webhooks/payfast                    0 B                0 B
+booking:build: ├ ƒ /api/webhooks/paystack                   0 B                0 B
+booking:build: ├ ƒ /api/webhooks/social-post                0 B                0 B
+booking:build: ├ ƒ /api/webhooks/telegram                   0 B                0 B
+booking:build: ├ ƒ /api/webhooks/typebot                    0 B                0 B
+booking:build: ├ ƒ /api/webhooks/yoco                       0 B                0 B
+booking:build: ├ ƒ /api/whatsapp/catalog                    0 B                0 B
+booking:build: ├ ƒ /api/whatsapp/reminder                   0 B                0 B
+booking:build: ├ ƒ /book/instylehairboutique                2.7 kB         90.1 kB
+booking:build: ├ ƒ /health                                  172 B          87.5 kB
+booking:build: ├ ƒ /order-success                           1.86 kB        97.8 kB
+booking:build: ├ ƒ /services                                172 B          87.5 kB
+booking:build: └ ƒ /status                                  3.12 kB        90.5 kB
+booking:build: + First Load JS shared by all                87.4 kB
+booking:build:   ├ chunks/854-d8130dfed818f7dc.js           31.6 kB
+booking:build:   ├ chunks/ce8598d4-c8537382adb65d39.js      53.6 kB
+booking:build:   └ other shared chunks (total)              2.11 kB
+booking:build: 
+booking:build: 
+booking:build: ƒ Middleware                                 26 kB
+booking:build: 
+booking:build: ○  (Static)   prerendered as static content
+booking:build: ƒ  (Dynamic)  server-rendered on demand
+booking:build: 
+
+ Tasks:    3 successful, 3 total
+Cached:    2 cached, 3 total
+  Time:    21m22.575s 
+

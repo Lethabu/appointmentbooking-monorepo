@@ -1,0 +1,84 @@
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [Desktop Chrome] › e2e\booking-flow.spec.ts:3:5 › booking flow validation
+[1A[2K[Desktop Chrome] › e2e\booking-flow.spec.ts:3:5 › booking flow validation
+Booking API Response: {
+  success: [33mtrue[39m,
+  appointmentId: [32m'85c0a860-60a1-44d9-9ced-144a096b8cd3'[39m,
+  message: [32m'Booking created successfully'[39m
+}
+
+[1A[2K[2/1] (retries) [Desktop Chrome] › e2e\booking-flow.spec.ts:3:5 › booking flow validation (retry #1)
+[1A[2KBooking API Response: {
+  success: [33mtrue[39m,
+  appointmentId: [32m'eb91d3b7-054a-4d83-90b6-7624bebfb4b0'[39m,
+  message: [32m'Booking created successfully'[39m
+}
+
+[1A[2K[3/1] (retries) [Desktop Chrome] › e2e\booking-flow.spec.ts:3:5 › booking flow validation (retry #2)
+[1A[2KBooking API Response: {
+  success: [33mtrue[39m,
+  appointmentId: [32m'30aa3b3e-945e-499f-9601-eb66615afb6d'[39m,
+  message: [32m'Booking created successfully'[39m
+}
+
+[1A[2K  1) [Desktop Chrome] › e2e\booking-flow.spec.ts:3:5 › booking flow validation ─────────────────────
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeDefined[2m()[22m
+
+    Received: [31mundefined[39m
+
+      46 |     // We expect it to fail
+      47 |     expect(response.status()).not.toBe(201);
+    > 48 |     expect(body.error).toBeDefined();
+         |                        ^
+      49 | });
+      50 |
+        at C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\e2e\booking-flow.spec.ts:48:24
+
+    Error Context: test-results\booking-flow-booking-flow-validation-Desktop-Chrome\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeDefined[2m()[22m
+
+    Received: [31mundefined[39m
+
+      46 |     // We expect it to fail
+      47 |     expect(response.status()).not.toBe(201);
+    > 48 |     expect(body.error).toBeDefined();
+         |                        ^
+      49 | });
+      50 |
+        at C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\e2e\booking-flow.spec.ts:48:24
+
+    Error Context: test-results\booking-flow-booking-flow-validation-Desktop-Chrome-retry1\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\booking-flow-booking-flow-validation-Desktop-Chrome-retry1\trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results\booking-flow-booking-flow-validation-Desktop-Chrome-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeDefined[2m()[22m
+
+    Received: [31mundefined[39m
+
+      46 |     // We expect it to fail
+      47 |     expect(response.status()).not.toBe(201);
+    > 48 |     expect(body.error).toBeDefined();
+         |                        ^
+      49 | });
+      50 |
+        at C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\e2e\booking-flow.spec.ts:48:24
+
+    Error Context: test-results\booking-flow-booking-flow-validation-Desktop-Chrome-retry2\error-context.md
+
+
+[1A[2K  1 failed
+    [Desktop Chrome] › e2e\booking-flow.spec.ts:3:5 › booking flow validation ──────────────────────

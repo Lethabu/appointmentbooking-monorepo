@@ -1,0 +1,65 @@
+
+> appointmentbooking-monorepo@ build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo
+> turbo run build "--filter" "booking"
+
+turbo 2.6.0
+
+• Packages in scope: booking
+• Running build in 1 packages
+• Remote caching disabled
+@repo/db:build: cache hit, replaying logs ed7239fa702c71cb
+@repo/db:build: 
+@repo/db:build: > @repo/db@0.0.1 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\db
+@repo/db:build: > tsc
+@repo/db:build: 
+@repo/auth:build: cache hit, replaying logs c72da5ccc7ba5f97
+@repo/auth:build: 
+@repo/auth:build: > @repo/auth@0.0.1 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\auth
+@repo/auth:build: > tsc
+@repo/auth:build: 
+booking:build: cache miss, executing c52f72e7aaeeca06
+booking:build: 
+booking:build: > booking@0.1.0 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking
+booking:build: > next build
+booking:build: 
+booking:build:   ▲ Next.js 14.2.33
+booking:build:   - Environments: .env
+booking:build:   - Experiments (use with caution):
+booking:build:     · optimizeCss
+booking:build:     · scrollRestoration
+booking:build:     · webpackBuildWorker
+booking:build: 
+booking:build:    Creating an optimized production build ...
+booking:build: Failed to compile.
+booking:build: 
+booking:build: ./app/api/agent/instyle/route.js
+booking:build: Error: 
+booking:build:   [31mx[0m Expected ';', '}' or <eof>
+booking:build:    ,-[[36;1;4mC:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\app\api\agent\instyle\route.js[0m:1:1]
+booking:build:  [2m1[0m | Your role:
+booking:build:    : [31;1m^^|^[0m[33;1m ^^^^[0m
+booking:build:    :   [31;1m`-- [31;1mThis is the expression part of an expression statement[0m[0m
+booking:build:  [2m2[0m | - Help clients book appointments with warmth and professionalism
+booking:build:  [2m3[0m |   - Answer questions about salon services, pricing, and availability
+booking:build:  [2m3[0m |     - Make clients feel welcome and valued
+booking:build:    `----
+booking:build: 
+booking:build: Caused by:
+booking:build:     Syntax Error
+booking:build: 
+booking:build: Import trace for requested module:
+booking:build: ./app/api/agent/instyle/route.js
+booking:build: 
+booking:build: 
+booking:build: > Build failed because of webpack errors
+booking:build:  ELIFECYCLE  Command failed with exit code 1.
+booking:build: ERROR: command finished with error: command (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking) C:\Users\Adrin\AppData\Roaming\npm\pnpm.cmd run build exited (1)
+booking#build: command (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking) C:\Users\Adrin\AppData\Roaming\npm\pnpm.cmd run build exited (1)
+
+ Tasks:    2 successful, 3 total
+Cached:    2 cached, 3 total
+  Time:    2m32.03s 
+Failed:    booking#build
+
+ ERROR  run failed: command  exited (1)
+ ELIFECYCLE  Command failed with exit code 1.

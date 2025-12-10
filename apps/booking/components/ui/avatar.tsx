@@ -1,6 +1,6 @@
 import * as React from "react"
 
-interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
   ({ className, ...props }, ref) => {
@@ -19,6 +19,7 @@ const AvatarImage = React.forwardRef<
   HTMLImageElement,
   React.ImgHTMLAttributes<HTMLImageElement>
 >(({ className, ...props }, ref) => (
+  /* eslint-disable-next-line @next/next/no-img-element */
   <img
     ref={ref}
     className={`aspect-square h-full w-full ${className || ''}`}

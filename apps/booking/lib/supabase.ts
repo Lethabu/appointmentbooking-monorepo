@@ -7,7 +7,20 @@ const supabaseUrl = isBuildTime ? 'https://placeholder.supabase.co' : process.en
 const supabaseAnonKey = isBuildTime ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2MjQ3NzYwMDAsImV4cCI6MTk0MDM1MjAwMH0.placeholder' : process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 // Single, shared client instance for browser use ONLY
-export const supabase = createSupabaseClient(supabaseUrl, supabaseAnonKey);
+// Single, shared client instance for browser use ONLY
+// We use a getter or ensure it's only accessed in browser
+export const supabase = typeof window !== 'undefined'
+  ? createSupabaseClient(supabaseUrl, supabaseAnonKey)
+  : createSupabaseClient(supabaseUrl, supabaseAnonKey); // It should be safe in Node too, but let's see.
+
+// Actually, let's just make it safe.
+const createBrowserClient = () => createSupabaseClient(supabaseUrl, supabaseAnonKey);
+export const supabaseBrowser = createBrowserClient();
+// We keep 'supabase' export for backward compatibility but it might be the issue if imported in Node.
+// Let's change it to be a proxy or just the client.
+// If supabase-js is the culprit, we need to avoid calling it at top level if possible, but we can't easily change imports everywhere.
+// But wait, supabase-js IS compatible with Node.
+
 
 // Legacy aliases for backward compatibility
 export const createClient = () => {

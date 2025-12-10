@@ -1,0 +1,29 @@
+
+> appointmentbooking-monorepo@ lint C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo
+> turbo run lint "--filter" "booking"
+
+turbo 2.6.0
+
+• Packages in scope: booking
+• Running lint in 1 packages
+• Remote caching disabled
+booking:lint: cache miss, executing 5e75628f3ceaaf84
+booking:lint: 
+booking:lint: > booking@0.1.0 lint C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking
+booking:lint: > next lint
+booking:lint: 
+booking:lint: ? How would you like to configure ESLint? https://nextjs.org/docs/basic-features/eslint
+booking:lint: [?25l❯  Strict (recommended)
+booking:lint:    Base
+booking:lint:  ⚠ If you set up ESLint yourself, we recommend adding the Next.js ESLint plugin. See https://nextjs.org/docs/basic-features/eslint#migrating-existing-config
+booking:lint:    Cancel ELIFECYCLE  Command failed with exit code 1.
+booking:lint: ERROR: command finished with error: command (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking) C:\Users\Adrin\AppData\Roaming\npm\pnpm.cmd run lint exited (1)
+booking#lint: command (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking) C:\Users\Adrin\AppData\Roaming\npm\pnpm.cmd run lint exited (1)
+
+ Tasks:    0 successful, 1 total
+Cached:    0 cached, 1 total
+  Time:    15.416s 
+Failed:    booking#lint
+
+ ERROR  run failed: command  exited (1)
+ ELIFECYCLE  Command failed with exit code 1.

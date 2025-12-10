@@ -108,28 +108,15 @@ Desktop.ini
 
 # Environment files
 .env*
+.dev.vars
 !.env.example
 
 # Vercel
 .vercel
+.vercel/
 
-# Typescript
-*.tsbuildinfo
-next-env.d.ts
-
-# Turbo
-.turbo
-
-# Local development
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Testing
-coverage/
-.nyc_output/
+# Wrangler
+.wrangler/
 
 # Misc
 *.pem
-+++++++ REPLACE</parameter>

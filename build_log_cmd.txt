@@ -1,0 +1,68 @@
+
+> appointmentbooking-monorepo@ build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo
+> turbo run build "--filter" "@repo/auth"
+
+turbo 2.6.0
+
+• Packages in scope: @repo/auth
+• Running build in 1 packages
+• Remote caching disabled
+@repo/db:build: cache hit, replaying logs 863c3c5eca9acf0c
+@repo/db:build: 
+@repo/db:build: > @repo/db@0.0.1 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\db
+@repo/db:build: > tsc
+@repo/db:build: 
+@repo/auth:build: cache miss, executing d353381622177a0d
+@repo/auth:build: 
+@repo/auth:build: > @repo/auth@0.0.1 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\auth
+@repo/auth:build: > tsc
+@repo/auth:build: 
+@repo/auth:build: src/index.ts(42,22): error TS2345: Argument of type 'SQL<unknown>' is not assignable to parameter of type 'SQL<unknown> | ((aliases: { id: SQLiteColumn<{ name: "id"; tableName: "tenants"; dataType: "string"; columnType: "SQLiteText"; data: string; driverParam: string; notNull: true; hasDefault: false; isPrimaryKey: true; ... 5 more ...; generated: undefined; }, {}, { ...; }>; ... 7 more ...; updatedAt: SQLiteColumn<...>;...'.
+@repo/auth:build:   Type 'import("C:/Users/Adrin/Documents/MyProjects/appointmentbooking-monorepo/node_modules/.pnpm/drizzle-orm@0.44.7_@cloudfl_95e3ae88e229934cd413d438b5a0ec51/node_modules/drizzle-orm/sql/sql").SQL<unknown>' is not assignable to type 'import("C:/Users/Adrin/Documents/MyProjects/appointmentbooking-monorepo/node_modules/.pnpm/drizzle-orm@0.44.7_@cloudfl_2f1b8a1fcdd2fd1e4611c9dc8f89e9f2/node_modules/drizzle-orm/sql/sql").SQL<unknown>'.
+@repo/auth:build:     Types have separate declarations of a private property 'shouldInlineParams'.
+@repo/auth:build: src/index.ts(42,25): error TS2769: No overload matches this call.
+@repo/auth:build:   Overload 1 of 3, '(left: Column<ColumnBaseConfig<ColumnDataType, string>, object, object>, right: unknown): SQL<unknown>', gave the following error.
+@repo/auth:build:     Argument of type 'SQLiteColumn<{ name: "id"; tableName: "tenants"; dataType: "string"; columnType: "SQLiteText"; data: string; driverParam: string; notNull: true; hasDefault: false; isPrimaryKey: true; isAutoincrement: false; ... 4 more ...; generated: undefined; }, {}, { ...; }>' is not assignable to parameter of type 'Column<ColumnBaseConfig<ColumnDataType, string>, object, object>'.
+@repo/auth:build:       The types of 'table._.config.columns' are incompatible between these types.
+@repo/auth:build:         Type 'Record<string, SQLiteColumn<any, {}, {}>>' is not assignable to type 'Record<string, Column<any, object, object>>'.
+@repo/auth:build:           'string' index signatures are incompatible.
+@repo/auth:build:             Type 'SQLiteColumn<any, {}, {}>' is not assignable to type 'Column<any, object, object>'.
+@repo/auth:build:               Property 'config' is protected but type 'Column<T, TRuntimeConfig, TTypeConfig>' is not a class derived from 'Column<T, TRuntimeConfig, TTypeConfig>'.
+@repo/auth:build:   Overload 2 of 3, '(left: Aliased<string>, right: string | SQLWrapper): SQL<unknown>', gave the following error.
+@repo/auth:build:     Argument of type 'SQLiteColumn<{ name: "id"; tableName: "tenants"; dataType: "string"; columnType: "SQLiteText"; data: string; driverParam: string; notNull: true; hasDefault: false; isPrimaryKey: true; isAutoincrement: false; ... 4 more ...; generated: undefined; }, {}, { ...; }>' is not assignable to parameter of type 'Aliased<string>'.
+@repo/auth:build:       Type 'SQLiteColumn<{ name: "id"; tableName: "tenants"; dataType: "string"; columnType: "SQLiteText"; data: string; driverParam: string; notNull: true; hasDefault: false; isPrimaryKey: true; isAutoincrement: false; ... 4 more ...; generated: undefined; }, {}, { ...; }>' is missing the following properties from type 'Aliased<string>': sql, fieldAlias
+@repo/auth:build:   Overload 3 of 3, '(left: SQLWrapper, right: unknown): SQL<unknown>', gave the following error.
+@repo/auth:build:     Argument of type 'SQLiteColumn<{ name: "id"; tableName: "tenants"; dataType: "string"; columnType: "SQLiteText"; data: string; driverParam: string; notNull: true; hasDefault: false; isPrimaryKey: true; isAutoincrement: false; ... 4 more ...; generated: undefined; }, {}, { ...; }>' is not assignable to parameter of type 'SQLWrapper'.
+@repo/auth:build:       The types returned by 'getSQL()' are incompatible between these types.
+@repo/auth:build:         Type 'import("C:/Users/Adrin/Documents/MyProjects/appointmentbooking-monorepo/node_modules/.pnpm/drizzle-orm@0.44.7_@cloudfl_2f1b8a1fcdd2fd1e4611c9dc8f89e9f2/node_modules/drizzle-orm/sql/sql").SQL<unknown>' is not assignable to type 'import("C:/Users/Adrin/Documents/MyProjects/appointmentbooking-monorepo/node_modules/.pnpm/drizzle-orm@0.44.7_@cloudfl_95e3ae88e229934cd413d438b5a0ec51/node_modules/drizzle-orm/sql/sql").SQL<unknown>'.
+@repo/auth:build:           Types have separate declarations of a private property 'shouldInlineParams'.
+@repo/auth:build: src/index.ts(52,24): error TS2345: Argument of type 'SQL<unknown>' is not assignable to parameter of type 'SQL<unknown> | ((aliases: { id: SQLiteColumn<{ name: "id"; tableName: "users"; dataType: "string"; columnType: "SQLiteText"; data: string; driverParam: string; notNull: true; hasDefault: false; isPrimaryKey: true; ... 5 more ...; generated: undefined; }, {}, { ...; }>; ... 4 more ...; createdAt: SQLiteColumn<...>; }...'.
+@repo/auth:build:   Type 'import("C:/Users/Adrin/Documents/MyProjects/appointmentbooking-monorepo/node_modules/.pnpm/drizzle-orm@0.44.7_@cloudfl_95e3ae88e229934cd413d438b5a0ec51/node_modules/drizzle-orm/sql/sql").SQL<unknown>' is not assignable to type 'import("C:/Users/Adrin/Documents/MyProjects/appointmentbooking-monorepo/node_modules/.pnpm/drizzle-orm@0.44.7_@cloudfl_2f1b8a1fcdd2fd1e4611c9dc8f89e9f2/node_modules/drizzle-orm/sql/sql").SQL<unknown>'.
+@repo/auth:build:     Types have separate declarations of a private property 'shouldInlineParams'.
+@repo/auth:build: src/index.ts(52,27): error TS2769: No overload matches this call.
+@repo/auth:build:   Overload 1 of 3, '(left: Column<ColumnBaseConfig<ColumnDataType, string>, object, object>, right: unknown): SQL<unknown>', gave the following error.
+@repo/auth:build:     Argument of type 'SQLiteColumn<{ name: "email"; tableName: "users"; dataType: "string"; columnType: "SQLiteText"; data: string; driverParam: string; notNull: true; hasDefault: false; isPrimaryKey: false; isAutoincrement: false; ... 4 more ...; generated: undefined; }, {}, { ...; }>' is not assignable to parameter of type 'Column<ColumnBaseConfig<ColumnDataType, string>, object, object>'.
+@repo/auth:build:       The types of 'table._.config.columns' are incompatible between these types.
+@repo/auth:build:         Type 'Record<string, SQLiteColumn<any, {}, {}>>' is not assignable to type 'Record<string, Column<any, object, object>>'.
+@repo/auth:build:           'string' index signatures are incompatible.
+@repo/auth:build:             Type 'SQLiteColumn<any, {}, {}>' is not assignable to type 'Column<any, object, object>'.
+@repo/auth:build:               Property 'config' is protected but type 'Column<T, TRuntimeConfig, TTypeConfig>' is not a class derived from 'Column<T, TRuntimeConfig, TTypeConfig>'.
+@repo/auth:build:   Overload 2 of 3, '(left: Aliased<string>, right: string | SQLWrapper): SQL<unknown>', gave the following error.
+@repo/auth:build:     Argument of type 'SQLiteColumn<{ name: "email"; tableName: "users"; dataType: "string"; columnType: "SQLiteText"; data: string; driverParam: string; notNull: true; hasDefault: false; isPrimaryKey: false; isAutoincrement: false; ... 4 more ...; generated: undefined; }, {}, { ...; }>' is not assignable to parameter of type 'Aliased<string>'.
+@repo/auth:build:       Type 'SQLiteColumn<{ name: "email"; tableName: "users"; dataType: "string"; columnType: "SQLiteText"; data: string; driverParam: string; notNull: true; hasDefault: false; isPrimaryKey: false; isAutoincrement: false; ... 4 more ...; generated: undefined; }, {}, { ...; }>' is missing the following properties from type 'Aliased<string>': sql, fieldAlias
+@repo/auth:build:   Overload 3 of 3, '(left: SQLWrapper, right: unknown): SQL<unknown>', gave the following error.
+@repo/auth:build:     Argument of type 'SQLiteColumn<{ name: "email"; tableName: "users"; dataType: "string"; columnType: "SQLiteText"; data: string; driverParam: string; notNull: true; hasDefault: false; isPrimaryKey: false; isAutoincrement: false; ... 4 more ...; generated: undefined; }, {}, { ...; }>' is not assignable to parameter of type 'SQLWrapper'.
+@repo/auth:build:       The types returned by 'getSQL()' are incompatible between these types.
+@repo/auth:build:         Type 'import("C:/Users/Adrin/Documents/MyProjects/appointmentbooking-monorepo/node_modules/.pnpm/drizzle-orm@0.44.7_@cloudfl_2f1b8a1fcdd2fd1e4611c9dc8f89e9f2/node_modules/drizzle-orm/sql/sql").SQL<unknown>' is not assignable to type 'import("C:/Users/Adrin/Documents/MyProjects/appointmentbooking-monorepo/node_modules/.pnpm/drizzle-orm@0.44.7_@cloudfl_95e3ae88e229934cd413d438b5a0ec51/node_modules/drizzle-orm/sql/sql").SQL<unknown>'.
+@repo/auth:build:           Types have separate declarations of a private property 'shouldInlineParams'.
+@repo/auth:build:  ELIFECYCLE  Command failed with exit code 2.
+@repo/auth:build: ERROR: command finished with error: command (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\auth) C:\Users\Adrin\AppData\Roaming\npm\pnpm.cmd run build exited (2)
+@repo/auth#build: command (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\auth) C:\Users\Adrin\AppData\Roaming\npm\pnpm.cmd run build exited (2)
+
+ Tasks:    1 successful, 2 total
+Cached:    1 cached, 2 total
+  Time:    35.646s 
+Failed:    @repo/auth#build
+
+ ERROR  run failed: command  exited (2)
+ ELIFECYCLE  Command failed with exit code 2.

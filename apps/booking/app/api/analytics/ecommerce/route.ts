@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     const tenantId = request.nextUrl.searchParams.get('tenantId');
@@ -41,9 +43,9 @@ export async function GET(request: NextRequest) {
         })) || [],
       conversion_rate: orders?.length
         ? (
-            (orders.filter((o) => o.status === 'paid').length / orders.length) *
-            100
-          ).toFixed(1)
+          (orders.filter((o) => o.status === 'paid').length / orders.length) *
+          100
+        ).toFixed(1)
         : '0',
     };
 

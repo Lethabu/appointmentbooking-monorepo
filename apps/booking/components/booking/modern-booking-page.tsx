@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from 'react';
 import {
   Calendar,
@@ -107,11 +109,10 @@ export default function ModernBookingPage() {
       {steps.map((step, index) => (
         <div key={step.number} className="flex items-center">
           <div
-            className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${
-              currentStep >= step.number
-                ? 'bg-purple-500 border-purple-500 text-white'
-                : 'border-gray-300 text-gray-400'
-            }`}
+            className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${currentStep >= step.number
+              ? 'bg-purple-500 border-purple-500 text-white'
+              : 'border-gray-300 text-gray-400'
+              }`}
           >
             {currentStep > step.number ? (
               <Check className="w-5 h-5" />
@@ -121,9 +122,8 @@ export default function ModernBookingPage() {
           </div>
           {index < steps.length - 1 && (
             <div
-              className={`w-12 h-0.5 mx-2 transition-all duration-300 ${
-                currentStep > step.number ? 'bg-purple-500' : 'bg-gray-300'
-              }`}
+              className={`w-12 h-0.5 mx-2 transition-all duration-300 ${currentStep > step.number ? 'bg-purple-500' : 'bg-gray-300'
+                }`}
             />
           )}
         </div>
@@ -134,11 +134,10 @@ export default function ModernBookingPage() {
   const ServiceCard = ({ service }: { service: ModernService }) => (
     <div
       onClick={() => setSelectedService(service)}
-      className={`relative p-6 rounded-2xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
-        selectedService?.id === service.id
-          ? 'border-purple-500 bg-purple-50'
-          : 'border-gray-200 hover:border-purple-300'
-      }`}
+      className={`relative p-6 rounded-2xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${selectedService?.id === service.id
+        ? 'border-purple-500 bg-purple-50'
+        : 'border-gray-200 hover:border-purple-300'
+        }`}
     >
       {service.popular && (
         <div className="absolute -top-2 -right-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
@@ -219,11 +218,10 @@ export default function ModernBookingPage() {
                           <button
                             key={time}
                             onClick={() => setSelectedTime(time)}
-                            className={`p-3 rounded-xl border-2 transition-all duration-300 ${
-                              selectedTime === time
-                                ? 'border-purple-500 bg-purple-50 text-purple-700'
-                                : 'border-gray-200 hover:border-purple-300'
-                            }`}
+                            className={`p-3 rounded-xl border-2 transition-all duration-300 ${selectedTime === time
+                              ? 'border-purple-500 bg-purple-50 text-purple-700'
+                              : 'border-gray-200 hover:border-purple-300'
+                              }`}
                           >
                             {time}
                           </button>

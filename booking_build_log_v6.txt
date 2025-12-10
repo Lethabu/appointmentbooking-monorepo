@@ -1,0 +1,64 @@
+
+> appointmentbooking-monorepo@ build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo
+> turbo run build "--filter" "booking"
+
+turbo 2.6.0
+
+• Packages in scope: booking
+• Running build in 1 packages
+• Remote caching disabled
+@repo/db:build: cache hit, replaying logs ed7239fa702c71cb
+@repo/db:build: 
+@repo/db:build: > @repo/db@0.0.1 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\db
+@repo/db:build: > tsc
+@repo/db:build: 
+@repo/auth:build: cache hit, replaying logs c72da5ccc7ba5f97
+@repo/auth:build: 
+@repo/auth:build: > @repo/auth@0.0.1 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\auth
+@repo/auth:build: > tsc
+@repo/auth:build: 
+booking:build: cache miss, executing ac1f789b4b99c104
+booking:build: 
+booking:build: > booking@0.1.0 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking
+booking:build: > next build
+booking:build: 
+booking:build:   ▲ Next.js 14.2.33
+booking:build:   - Environments: .env
+booking:build:   - Experiments (use with caution):
+booking:build:     · optimizeCss
+booking:build:     · scrollRestoration
+booking:build:     · webpackBuildWorker
+booking:build: 
+booking:build:    Creating an optimized production build ...
+booking:build:  ✓ Compiled successfully
+booking:build:    Linting and checking validity of types ...
+booking:build:    Collecting page data ...
+booking:build: eC [Error]: Missing credentials. Please pass an `apiKey`, or set the `OPENAI_API_KEY` environment variable.
+booking:build:     at new nh (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\chunks\38.js:8:44380)
+booking:build:     at 48651 (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\app\api\agent\instyle\route.js:1:510)
+booking:build:     at t (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\webpack-runtime.js:1:128)
+booking:build:     at a (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\app\api\agent\instyle\route.js:58:1920)
+booking:build:     at C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\app\api\agent\instyle\route.js:58:1956
+booking:build:     at t.X (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\webpack-runtime.js:1:1206)
+booking:build:     at C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\app\api\agent\instyle\route.js:58:1933
+booking:build:     at Object.<anonymous> (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\app\api\agent\instyle\route.js:58:1984)
+booking:build:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+booking:build:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+booking:build: 
+booking:build: > Build error occurred
+booking:build: Error: Failed to collect page data for /api/agent/instyle
+booking:build:     at C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\node_modules\.pnpm\next@14.2.33_@babel+core@7._426bac2a5ee22cae0f1acefa3a14c006\node_modules\next\dist\build\utils.js:1269:15
+booking:build:     at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+booking:build:   type: 'Error'
+booking:build: }
+booking:build:  ELIFECYCLE  Command failed with exit code 1.
+booking:build: ERROR: command finished with error: command (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking) C:\Users\Adrin\AppData\Roaming\npm\pnpm.cmd run build exited (1)
+booking#build: command (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking) C:\Users\Adrin\AppData\Roaming\npm\pnpm.cmd run build exited (1)
+
+ Tasks:    2 successful, 3 total
+Cached:    2 cached, 3 total
+  Time:    6m55.22s 
+Failed:    booking#build
+
+ ERROR  run failed: command  exited (1)
+ ELIFECYCLE  Command failed with exit code 1.

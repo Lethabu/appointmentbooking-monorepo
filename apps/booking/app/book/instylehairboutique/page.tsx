@@ -1,15 +1,11 @@
 import { Metadata } from 'next';
-import ServiceBookingFlow from '@/components/booking/ServiceBookingFlow';
+import InStyleLandingPage from '@/components/landing/InStyleLandingPage';
 
 export const metadata: Metadata = {
-  title: 'Book Service - InStyle Hair Boutique',
-  description: 'Book your hair service appointment with secure PayStack payment',
+  title: 'InStyle Hair Boutique | Premium Hair Services',
+  description: 'Book your appointment at InStyle Hair Boutique. Premium hair installations, styling, and products in Cape Town.',
 };
 
-export default function BookInstylePage() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-amber-50">
-      <ServiceBookingFlow />
-    </div>
-  );
+export default function BookInStylePage() {
+  return <InStyleLandingPage />;
 }

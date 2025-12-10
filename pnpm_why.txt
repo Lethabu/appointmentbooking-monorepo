@@ -1,0 +1,31 @@
+Legend: production dependency, optional only, dev only
+
+booking@0.1.0 C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking (PRIVATE)
+
+dependencies:
+@repo/auth link:../../packages/auth
+├─┬ @repo/db link:../../packages/db
+│ └── drizzle-orm 0.44.7
+└── drizzle-orm 0.44.7
+@repo/db link:../../packages/db
+└── drizzle-orm 0.44.7
+drizzle-orm 0.44.7
+
+@repo/auth@0.0.1 C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\auth (PRIVATE)
+
+dependencies:
+@repo/db link:../db
+└── drizzle-orm 0.44.7
+drizzle-orm 0.44.7
+
+@repo/db@0.0.1 C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\db (PRIVATE)
+
+dependencies:
+drizzle-orm 0.44.7
+
+@repo/worker@0.1.0 C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\worker (PRIVATE)
+
+dependencies:
+@repo/db link:../db
+└── drizzle-orm 0.44.7
+drizzle-orm 0.44.7

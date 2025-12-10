@@ -1,0 +1,86 @@
+
+> appointmentbooking-monorepo@ build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo
+> turbo run build "--filter" "booking"
+
+turbo 2.6.0
+
+• Packages in scope: booking
+• Running build in 1 packages
+• Remote caching disabled
+@repo/db:build: cache hit, replaying logs ed7239fa702c71cb
+@repo/db:build: 
+@repo/db:build: > @repo/db@0.0.1 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\db
+@repo/db:build: > tsc
+@repo/db:build: 
+@repo/auth:build: cache hit, replaying logs c72da5ccc7ba5f97
+@repo/auth:build: 
+@repo/auth:build: > @repo/auth@0.0.1 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\auth
+@repo/auth:build: > tsc
+@repo/auth:build: 
+booking:build: cache miss, executing 1dadc449513c0118
+booking:build: 
+booking:build: > booking@0.1.0 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking
+booking:build: > next build
+booking:build: 
+booking:build:   ▲ Next.js 14.2.33
+booking:build:   - Environments: .env
+booking:build:   - Experiments (use with caution):
+booking:build:     · optimizeCss
+booking:build:     · scrollRestoration
+booking:build:     · webpackBuildWorker
+booking:build: 
+booking:build:    Creating an optimized production build ...
+booking:build:  ✓ Compiled successfully
+booking:build:    Linting and checking validity of types ...
+booking:build:    Collecting page data ...
+booking:build: ReferenceError: self is not defined
+booking:build:     at Object.<anonymous> (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\vendors.js:1:1)
+booking:build:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+booking:build:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+booking:build:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+booking:build:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+booking:build:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+booking:build:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+booking:build:     at Module.<anonymous> (node:internal/modules/cjs/loader:1487:12)
+booking:build:     at mod.require (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\node_modules\.pnpm\next@14.2.33_@babel+core@7._426bac2a5ee22cae0f1acefa3a14c006\node_modules\next\dist\server\require-hook.js:65:28)
+booking:build:     at require (node:internal/modules/helpers:135:16)
+booking:build: ReferenceError: self is not defined
+booking:build:     at Object.<anonymous> (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\vendors.js:1:1)
+booking:build:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+booking:build:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+booking:build:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+booking:build:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+booking:build:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+booking:build:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+booking:build:     at Module.<anonymous> (node:internal/modules/cjs/loader:1487:12)
+booking:build:     at mod.require (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\node_modules\.pnpm\next@14.2.33_@babel+core@7._426bac2a5ee22cae0f1acefa3a14c006\node_modules\next\dist\server\require-hook.js:65:28)
+booking:build:     at require (node:internal/modules/helpers:135:16)
+booking:build: ReferenceError: self is not defined
+booking:build:     at Object.<anonymous> (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\vendors.js:1:1)
+booking:build:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+booking:build:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+booking:build:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+booking:build:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+booking:build:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+booking:build:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+booking:build:     at Module.<anonymous> (node:internal/modules/cjs/loader:1487:12)
+booking:build:     at mod.require (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\node_modules\.pnpm\next@14.2.33_@babel+core@7._426bac2a5ee22cae0f1acefa3a14c006\node_modules\next\dist\server\require-hook.js:65:28)
+booking:build:     at require (node:internal/modules/helpers:135:16)
+booking:build: 
+booking:build: > Build error occurred
+booking:build: Error: Failed to collect page data for /api/analytics/ecommerce
+booking:build:     at C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\node_modules\.pnpm\next@14.2.33_@babel+core@7._426bac2a5ee22cae0f1acefa3a14c006\node_modules\next\dist\build\utils.js:1269:15
+booking:build:     at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+booking:build:   type: 'Error'
+booking:build: }
+booking:build:  ELIFECYCLE  Command failed with exit code 1.
+booking:build: ERROR: command finished with error: command (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking) C:\Users\Adrin\AppData\Roaming\npm\pnpm.cmd run build exited (1)
+booking#build: command (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking) C:\Users\Adrin\AppData\Roaming\npm\pnpm.cmd run build exited (1)
+
+ Tasks:    2 successful, 3 total
+Cached:    2 cached, 3 total
+  Time:    11m52.573s 
+Failed:    booking#build
+
+ ERROR  run failed: command  exited (1)
+ ELIFECYCLE  Command failed with exit code 1.
