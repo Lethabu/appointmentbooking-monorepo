@@ -81,7 +81,7 @@ export default {
                 `;
                 }).join('');
 
-                const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Shop — InStyle</title><style>body{font-family:Inter,system-ui,Arial,sans-serif;background:#fff;color:#111} .grid{display:flex;flex-wrap:wrap;gap:12px;max-width:1200px;margin:24px auto;justify-content:flex-start;padding:12px}</style></head><body><header style="padding:20px;text-align:center;background:#fff;border-bottom:1px solid #f0f0f0"><h1 style="margin:0">InStyle Shop</h1><p style="margin:6px 0 0;color:#666">Browse products — booking still available at /book</p></header><main><div class="grid">${productCards}</div></main></body></html>`;
+                const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Shop — InStyle</title><style>body{font-family:Inter,system-ui,Arial,sans-serif;background:#fff;color:#111} .grid{display:flex;flex-wrap:wrap;gap:12px;max-width:1200px;margin:24px auto;justify-content:flex-start;padding:12px}</style></head><body><header style="padding:20px;text-align:center;background:#fff;border-bottom:1px solid #f0f0f0"><h1 style="margin:0">InStyle Shop</h1><h2 style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Shop products</h2><p style="margin:6px 0 0;color:#666">Browse products — booking still available at /book</p></header><main><div class="grid">${productCards}</div></main></body></html>`;
 
                 return new Response(html, { headers: { 'content-type': 'text/html; charset=utf-8' } });
             } catch (err) {

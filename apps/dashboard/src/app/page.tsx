@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -68,6 +68,61 @@ export default function Dashboard() {
 
   const loading = metricsLoading || bookingsLoading;
   const error = metricsError || bookingsError ? (metricsErrorObj ? (metricsErrorObj as Error).message : 'Failed to load dashboard') : null;
+
+  // Listen to SSE stream and update React Query cache live
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.EventSource) return;
+    const src = new EventSource(`/api/dashboard/stream?tenantId=${TENANT_ID}`);
+
+    const handleAppointments = (ev: MessageEvent) => {
+      try {
+        const payload = JSON.parse(ev.data);
+        const rows: Booking[] = payload.rows || [];
+        if (!rows || rows.length === 0) return;
+
+        // Update bookings query: merge by id, newest first
+        queryClient.setQueryData(['dashboard', 'bookings', TENANT_ID], (old: any) => {
+          const prev = (old && old.bookings) || (Array.isArray(old) ? old : []);
+          const map = new Map<string, any>();
+          prev.forEach((b: any) => map.set(b.id, b));
+          rows.forEach((r: any) => map.set(r.id, r));
+          const merged = Array.from(map.values()).sort((a: any, b: any) => (b.scheduled_time || 0) - (a.scheduled_time || 0));
+          return { bookings: merged, count: merged.length };
+        });
+
+        // Update metrics query: merge recentAppointments and adjust counts conservatively
+        queryClient.setQueryData(['dashboard', 'metrics', TENANT_ID], (old: any) => {
+          if (!old) return old;
+          const stats = old.statistics || old;
+          const recent = stats.recentAppointments || [];
+          // prepend new rows (avoid duplicates)
+          const ids = new Set(recent.map((r: any) => r.id));
+          const newRecent = rows.concat(recent.filter((r: any) => !ids.has(r.id))).slice(0, 20);
+          const newStats = {
+            ...stats,
+            recentAppointments: newRecent,
+            totalAppointments: (stats.totalAppointments || 0) + rows.length
+          };
+          return { ...old, statistics: newStats };
+        });
+      } catch (err) {
+        // ignore parse errors
+        // eslint-disable-next-line no-console
+        console.error('SSE parse error', err);
+      }
+    };
+
+    src.addEventListener('appointments', handleAppointments as EventListener);
+    src.addEventListener('error', (e) => {
+      // EventSource will auto-reconnect; log for diagnostics
+      // eslint-disable-next-line no-console
+      console.warn('SSE error', e);
+    });
+
+    return () => {
+      try { src.close(); } catch (e) { /* ignore */ }
+    };
+  }, [queryClient]);
 
   const stats: DashboardStats | null = useMemo(() => {
     // metricsData may contain a 'statistics' key or be the stats directly

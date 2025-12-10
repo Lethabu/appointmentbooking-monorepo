@@ -13,12 +13,20 @@ async function run() {
     process.exit(2);
   }
   const html = await res.text();
-  const dom = new JSDOM(html, { url: BASE + '/shop' });
+  const dom = new JSDOM(html, { url: BASE + '/shop', runScripts: 'dangerously', resources: 'usable' });
   const { window } = dom;
 
-  // inject axe into the window
-  const script = axe.source || axe; // axe-core exposes source in some installs
-  window.eval(script);
+  // Inject axe by loading the minified axe script from the package
+  const fs = require('fs');
+  const path = require('path');
+  const axeMinPath = require.resolve('axe-core/axe.min.js');
+  const axeSource = fs.readFileSync(axeMinPath, 'utf8');
+  // Evaluate axe in the JSDOM window
+  window.eval(axeSource);
+
+  if (!window.axe || typeof window.axe.run !== 'function') {
+    throw new Error('axe not loaded into JSDOM window');
+  }
 
   const results = await window.axe.run(window.document);
   if (results.violations && results.violations.length > 0) {
