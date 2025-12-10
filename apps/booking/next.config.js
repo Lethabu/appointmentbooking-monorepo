@@ -21,27 +21,14 @@ const nextConfig = {
   reactStrictMode: true,
   compress: true,
   trailingSlash: false,
-  poweredByHeader: false, // Remove X-Powered-By header for security
-  // Removed static export to allow API routes to work
+  poweredByHeader: false,
   experimental: {
     optimizeCss: true,
     scrollRestoration: true,
     webpackBuildWorker: true,
-    // Firebase libraries cause "self is not defined" error - removed for now
-    // To use Firebase, import it conditionally on client-side only
-    // serverComponentsExternalPackages: [
-    //   'firebase',
-    //   'firebase/app',
-    //   'firebase/auth',
-    //   'firebase/firestore',
-    // ],
-  },
-  // Disable static optimization to prevent SSR issues
-  trailingSlash: false,
-  generateBuildId: async () => {
-    return 'build-' + Date.now()
   },
   images: {
+    unoptimized: true,
     domains: [
       'images.unsplash.com',
       'instylehairboutique.co.za',
@@ -54,45 +41,9 @@ const nextConfig = {
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;"
   },
-  async headers() {
-    return [
-      {
-        source: '/tenants/:tenant/:asset*',
-        headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-          { key: 'X-Content-Type-Options', value: 'nosniff' }
-        ]
-      }
-    ];
-  },
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/instylehairboutique',
-        permanent: false,
-      },
-    ];
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/tenants/:tenant/:asset*',
-        destination: '/tenants/:tenant/:asset*'
-      },
-      // API routes redirect to Cloudflare Worker
-      {
-        source: '/api/:path*',
-        destination: 'https://www.instylehairboutique.co.za/api/:path*'
-      }
-    ];
-  },
   swcMinify: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production'
-  },
-  typescript: {
-    ignoreBuildErrors: false
   },
   eslint: {
     ignoreDuringBuilds: false

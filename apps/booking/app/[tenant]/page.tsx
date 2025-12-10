@@ -36,7 +36,7 @@ export default async function TenantPage({ params }: Props) {
 
   // Use InStyleLandingPage for instylehairboutique, TenantHome for others
   if (slug === 'instylehairboutique') {
-    return <InStyleLandingPage />;
+    return <InStyleLandingPage services={services} products={products} config={tenant} />;
   }
 
   return <TenantHome config={tenant} services={services} products={products} />;

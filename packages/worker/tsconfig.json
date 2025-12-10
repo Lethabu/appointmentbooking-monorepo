@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "ES2022",
+    "lib": ["ES2022", "ES2020", "DOM", "DOM.Iterable"],
     "module": "ES2022",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,

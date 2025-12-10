@@ -109,3 +109,43 @@ export const calendarSyncEvents = sqliteTable('calendar_sync_events', {
   tenantIdx: index('calendar_sync_events_tenant_idx').on(table.tenantId),
   bookingIdx: index('calendar_sync_events_booking_idx').on(table.bookingId),
 }));
+
+// Analytics Events table for tracking business metrics and user interactions
+export const analyticsEvents = sqliteTable('analytics_events', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull().references(() => tenants.id),
+  eventName: text('event_name').notNull(),
+  properties: text('properties', { mode: 'json' }).$type<Record<string, any>>(),
+  userId: text('user_id'), // Optional: link to authenticated users
+  sessionId: text('session_id'), // For session tracking
+  userAgent: text('user_agent'), // For device/browser tracking
+  ipAddress: text('ip_address'), // For geo-analytics (ensure compliance)
+  timestamp: integer('timestamp', { mode: 'timestamp' }).notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  tenantIdx: index('analytics_events_tenant_idx').on(table.tenantId),
+  eventIdx: index('analytics_events_event_idx').on(table.eventName),
+  timestampIdx: index('analytics_events_timestamp_idx').on(table.timestamp),
+}));
+
+// AI Agent Logs table for tracking AI conversations and performance
+export const aiAgentLogs = sqliteTable('ai_agent_logs', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull().references(() => tenants.id),
+  agentName: text('agent_name').notNull(), // 'Nia', 'AppointmentBot', etc.
+  userId: text('user_id'), // Optional: link to users
+  sessionId: text('session_id').notNull(),
+  query: text('query').notNull(), // User input
+  response: text('response').notNull(), // AI response
+  responseTimeMs: integer('response_time_ms').notNull(), // Response time in ms
+  resolved: integer('resolved', { mode: 'boolean' }).default(false), // Whether user issue was resolved
+  escalated: integer('escalated', { mode: 'boolean' }).default(false), // Whether escalated to human
+  satisfactionScore: integer('satisfaction_score'), // 1-5 scale (if collected)
+  errorMessage: text('error_message'), // If AI failed
+  timestamp: integer('timestamp', { mode: 'timestamp' }).notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  tenantIdx: index('ai_agent_logs_tenant_idx').on(table.tenantId),
+  agentIdx: index('ai_agent_logs_agent_idx').on(table.agentName),
+  timestampIdx: index('ai_agent_logs_timestamp_idx').on(table.timestamp),
+}));

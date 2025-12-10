@@ -25,11 +25,9 @@
 The booking system implements a 5-step flow with WhatsApp confirmation:
 
 ### Step 1: Select Service
-- Display all available services with:
-  - Service name and description
-  - Price (in Rands)
-  - Duration (in minutes)
-  - Visual selection with checkmarks
+- Display all available services (Dynamically fetched from DB)
+- Service name, description, price, and duration
+- Visual selection with checkmarks
 
 ### Step 2: Choose Date & Time
 - Calendar date picker (min: today)
@@ -39,8 +37,6 @@ The booking system implements a 5-step flow with WhatsApp confirmation:
   - **Monday-Friday**: 09:00 - 17:00
   - **Saturday**: 08:00 - 16:00
   - **Sunday**: Closed
-- Booked slots automatically disabled
-- Past time slots automatically disabled
 
 ### Step 3: Customer Details
 - Full name (required)
@@ -71,73 +67,24 @@ The booking system implements a 5-step flow with WhatsApp confirmation:
 - **Supported Methods**: Card, Bank Transfer, USSD
 - **Currency**: ZAR (South African Rand)
 
-### Payment Flow
-1. Customer selects service and time
-2. Enters personal details
-3. Reviews booking summary
-4. Pays booking fee via PayStack
-5. Receives confirmation via WhatsApp
+---
+
+## 🎨 Branding (Updated)
+
+### Colors
+- **Primary**: `#C0392B` (Crimson) - Used for buttons, highlights, and key actions.
+- **Secondary**: `#1B1B1B` (Near-Black) - Used for text, footers, and secondary elements.
+- **Accent**: `#F9F9F9` (Warm Gray) - Used for backgrounds.
+- **Background**: White / Warm Gray
+
+### Design System
+- **Typography**: Sans-serif (Inter/Geist) with Serif headings for "Boutique" feel.
+- **Vibe**: "Crimson Elegance" - Premium, minimal, high-contrast.
+- **Mobile-First**: Optimized for touch interactions.
 
 ---
 
-## 🛍️ E-Commerce Features
-
-### Product Catalog (Coming Soon)
-The platform is configured for e-commerce with the following features:
-
-1. **Product Management**
-   - Product listings with images
-   - Categories and tags
-   - Inventory tracking
-   - Price management
-
-2. **Shopping Cart**
-   - Add/remove products
-   - Quantity management
-   - Price calculations
-   - Checkout flow
-
-3. **Payment Integration**
-   - Multiple payment methods
-   - Secure checkout
-   - Order confirmation
-   - Receipt generation
-
-4. **Order Management**
-   - Order history
-   - Status tracking
-   - Customer notifications
-   - Admin dashboard
-
-### Implementation Status
-- ✅ Database schema ready
-- ✅ Payment gateway configured
-- ✅ Tenant configuration updated
-- 🔄 Product UI components (in progress)
-- 🔄 Shopping cart implementation (in progress)
-
----
-
-## 🗺️ Google Maps Integration
-
-### Features
-- **Embedded Map**: Interactive Google Maps on booking page
-- **Directions Link**: Direct link to Google Maps app
-- **Location Display**: Business address prominently displayed
-
-### Configuration
-```json
-{
-  "contact": {
-    "google_maps_url": "https://maps.google.com/?q=InStyle+Hair+Boutique+Cape+Town",
-    "google_maps_embed": "https://www.google.com/maps/embed?pb=..."
-  }
-}
-```
-
----
-
-## 📊 Services Offered
+## 📊 Services Offered (Synced)
 
 | Service | Price | Duration | Description |
 |---------|-------|----------|-------------|
@@ -152,12 +99,13 @@ The platform is configured for e-commerce with the following features:
 ## 🔧 Technical Implementation
 
 ### Frontend Components
-- **CompleteBookingFlow.tsx**: Main booking interface
-  - Service selection
-  - Date/time picker
-  - Customer form
-  - Payment integration
-  - WhatsApp confirmation
+- **InStyleLandingPage.tsx**: Dynamic landing page.
+  - Accepts `services` and `products` as props from Server Component.
+  - Maps service names to static images (until DB has image support).
+  - Uses Tailwind CSS with `instyle-*` config.
+- **CompleteBookingFlow.tsx**: Main booking interface.
+  - Embedded in the landing page.
+  - Handles the multi-step wizard logic.
 
 ### API Endpoints
 - `/api/public/services` - Fetch available services
@@ -171,39 +119,6 @@ The platform is configured for e-commerce with the following features:
 - `services` - Service catalog
 - `appointments` - Booking records
 - `users` - Customer information
-- `employees` - Staff management
-
-### Configuration
-All tenant-specific settings are stored in the `tenants.config` JSON field:
-```json
-{
-  "branding": {
-    "primary_color": "#8B4513",
-    "secondary_color": "#D2691E"
-  },
-  "contact": {
-    "phone": "+27 69 917 1527",
-    "whatsapp": "+27699171527",
-    "email": "info@instylehairboutique.co.za",
-    "address": "Cape Town, South Africa"
-  },
-  "socials": {
-    "instagram": "https://instagram.com/instylehairboutique",
-    "facebook": "https://facebook.com/instylehairboutique",
-    "tiktok": "https://tiktok.com/@instylehairboutique",
-    "whatsapp": "https://wa.me/27699171527"
-  },
-  "payment": {
-    "booking_fee_percentage": 20,
-    "booking_fee_minimum": 5000
-  },
-  "features": {
-    "whatsapp_confirmation": true,
-    "email_confirmation": true,
-    "ecommerce_enabled": true
-  }
-}
-```
 
 ---
 
@@ -217,71 +132,8 @@ All tenant-specific settings are stored in the `tenants.config` JSON field:
 
 ### Version Information
 - **Worker Version**: 09361b7f-b963-41c5-a8d1-d59132fc0a5d
-- **Last Deployed**: 2025-11-25
+- **Last Deployed**: 2025-11-28
 - **Database**: Cloudflare D1 (appointmentbooking-db)
-
----
-
-## 📱 WhatsApp Integration
-
-### Confirmation Flow
-1. After payment, customer clicks "Confirm on WhatsApp"
-2. Pre-filled message opens in WhatsApp
-3. Message includes:
-   - Service name
-   - Date and time
-   - Customer name and phone
-4. Sent to: +27 69 917 1527
-
-### Message Template
-```
-Hi! I've booked:
-Service: [Service Name]
-Date: [YYYY-MM-DD]
-Time: [HH:MM]
-Name: [Customer Name]
-Phone: [Customer Phone]
-```
-
----
-
-## 🎨 Branding
-
-### Colors
-- **Primary**: #8B4513 (Saddle Brown)
-- **Secondary**: #D2691E (Chocolate)
-- **Accent**: Purple/Pink gradient
-
-### Design System
-- Modern, clean interface
-- Mobile-first responsive design
-- Smooth animations and transitions
-- Accessible color contrast
-- Professional typography
-
----
-
-## 📈 Next Steps
-
-### Immediate Actions
-1. ✅ Update contact details
-2. ✅ Link social media accounts
-3. ✅ Add Google Maps integration
-4. ✅ Implement complete booking flow
-5. ✅ Configure payment system
-6. 🔄 Test booking flow end-to-end
-7. 🔄 Add product catalog for e-commerce
-8. 🔄 Create marketing landing page
-9. 🔄 Set up email notifications
-
-### Future Enhancements
-- Customer reviews and ratings
-- Loyalty program
-- Gift cards
-- Appointment reminders (SMS/Email)
-- Staff scheduling dashboard
-- Analytics and reporting
-- Mobile app (PWA)
 
 ---
 
@@ -290,9 +142,3 @@ Phone: [Customer Phone]
 For technical support or questions:
 - **Email**: info@instylehairboutique.co.za
 - **WhatsApp**: +27 69 917 1527
-- **Business Hours**: Mon-Fri 09:00-17:00, Sat 08:00-16:00
-
----
-
-*Last Updated: 2025-11-25*
-*Platform Version: 1.0.0*

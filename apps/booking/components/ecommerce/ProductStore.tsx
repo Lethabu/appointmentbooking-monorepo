@@ -28,9 +28,10 @@ export default function EcommerceStore() {
     const [showCart, setShowCart] = useState(false);
 
     // InStyle Branding Colors
-    const primaryColor = '#8B4513';   // Saddle Brown
-    const secondaryColor = '#D2691E'; // Chocolate
-    const accentColor = '#F59E0B';    // Amber/Gold
+    // InStyle Branding Colors
+    const primaryColor = '#C0392B';   // Crimson
+    const secondaryColor = '#1B1B1B'; // Near-Black
+    const accentColor = '#F9F9F9';    // Warm Gray
 
     // Mock products - replace with API call
     useEffect(() => {
@@ -148,7 +149,7 @@ export default function EcommerceStore() {
     const cartItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-stone-50">
+        <div className="min-h-screen bg-[#F9F9F9]">
             {/* Header */}
             <div className="bg-white shadow-sm sticky top-0 z-40">
                 <div className="container mx-auto px-4 py-4">
@@ -205,7 +206,7 @@ export default function EcommerceStore() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                     {filteredProducts.map(product => (
                         <div key={product.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                            <div className="relative h-48 bg-gradient-to-br from-orange-100 to-amber-100">
+                            <div className="relative h-48 bg-gray-100">
                                 {/* Placeholder for product image */}
                                 <div className="absolute inset-0 flex items-center justify-center text-gray-400">
                                     <Image
@@ -306,7 +307,7 @@ export default function EcommerceStore() {
                                     <div className="space-y-4 mb-6">
                                         {cart.map(item => (
                                             <div key={item.id} className="flex gap-4 p-4 bg-gray-50 rounded-xl">
-                                                <div className="w-20 h-20 bg-gradient-to-br from-orange-100 to-amber-100 rounded-lg flex items-center justify-center">
+                                                <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center">
                                                     <Image
                                                         src={item.image_url}
                                                         alt={item.name}

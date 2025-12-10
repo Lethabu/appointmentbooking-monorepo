@@ -8,19 +8,43 @@ import {
     Heart, ShoppingCart, Menu, X, Check, ArrowRight, Instagram, Facebook
 } from 'lucide-react';
 import { FaTiktok, FaWhatsapp } from 'react-icons/fa';
-import CompleteBookingFlow from '@/components/booking/CompleteBookingFlow';
+import BookingWizard from '@/components/booking/BookingWizard';
 
-// Brand Colors
+// Brand Colors - Updated to Crimson Palette
 const colors = {
-    primary: '#8B4513',    // Saddle Brown
-    secondary: '#D2691E',  // Chocolate
-    accent: '#F59E0B',     // Amber/Gold
-    dark: '#1F2937',
+    primary: '#C0392B',    // Crimson
+    secondary: '#1B1B1B',  // Near-Black
+    accent: '#F9F9F9',     // Warm Gray
+    dark: '#1B1B1B',
     light: '#FFFFFF',
-    bg: '#FDF8F6'          // Warm off-white
+    bg: '#F9F9F9'          // Warm Gray Background
 };
 
-export default function InStyleLandingPage() {
+interface Service {
+    id: string;
+    name: string;
+    description: string;
+    price: number; // in cents or rands depending on API, usually cents in DB but API might return formatted? 
+    // Looking at BookingWizard, it expects price in cents (divides by 100).
+    duration_minutes: number;
+    category?: string;
+}
+
+interface Product {
+    id: string;
+    name: string;
+    description: string;
+    price: number; // in cents
+    image_url?: string;
+}
+
+interface Props {
+    services?: Service[];
+    products?: Product[];
+    config?: any;
+}
+
+export default function InStyleLandingPage({ services = [], products = [], config }: Props) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
     const [showBooking, setShowBooking] = useState(false);
@@ -39,6 +63,39 @@ export default function InStyleLandingPage() {
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
         setActiveSection(id);
     };
+
+    // Helper to get image for service based on name (since DB might not have images)
+    const getServiceImage = (name: string) => {
+        const lowerName = name.toLowerCase();
+        if (lowerName.includes('install')) return "https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=800&q=80";
+        if (lowerName.includes('maphondo') || lowerName.includes('braid')) return "https://images.unsplash.com/photo-1605497788044-5a32c7078486?auto=format&fit=crop&w=800&q=80";
+        if (lowerName.includes('makeup') || lowerName.includes('glam')) return "https://images.unsplash.com/photo-1487412947132-232984567455?auto=format&fit=crop&w=800&q=80";
+        if (lowerName.includes('ponytail')) return "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=800&q=80";
+        return "https://images.unsplash.com/photo-1560869713-7d0a29430803?auto=format&fit=crop&w=800&q=80"; // Default
+    };
+
+    // Helper to get badge
+    const getServiceBadge = (name: string) => {
+        const lowerName = name.toLowerCase();
+        if (lowerName.includes('middle') || lowerName.includes('side')) return "Popular";
+        if (lowerName.includes('maphondo')) return "Signature";
+        if (lowerName.includes('frontal')) return "Premium";
+        return null;
+    };
+
+    // Use passed services or fallback to a default list if empty (to avoid empty page during dev)
+    const displayServices = services.length > 0 ? services : [
+        { id: '1', name: 'Premium Installations', description: 'Expert installation for middle & side parts.', price: 30000, duration_minutes: 60 },
+        { id: '2', name: 'Traditional Styling', description: 'Maphondo, lines, and intricate patterns.', price: 35000, duration_minutes: 60 },
+        { id: '3', name: 'Soft Glam Makeup', description: 'Professional makeup application.', price: 45000, duration_minutes: 120 }
+    ];
+
+    const displayProducts = products.length > 0 ? products : [
+        { id: 'p1', name: "Luxury Hair Oil", description: "Shine & Health", price: 15000, image_url: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?auto=format&fit=crop&w=500&q=80" },
+        { id: 'p2', name: "Styling Gel", description: "Strong Hold", price: 8500, image_url: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=500&q=80" },
+        { id: 'p3', name: "Deep Conditioner", description: "Repair & Hydrate", price: 11000, image_url: "https://images.unsplash.com/photo-1571781565036-d3f7595ca814?auto=format&fit=crop&w=500&q=80" },
+        { id: 'p4', name: "Edge Control", description: "Sleek Edges", price: 7500, image_url: "https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?auto=format&fit=crop&w=500&q=80" }
+    ];
 
     return (
         <div className="min-h-screen font-sans text-gray-800 overflow-x-hidden" style={{ backgroundColor: colors.bg }}>
@@ -69,7 +126,7 @@ export default function InStyleLandingPage() {
                                 <button
                                     key={item}
                                     onClick={() => scrollToSection(item.toLowerCase())}
-                                    className="text-sm font-medium hover:text-[#8B4513] transition-colors uppercase tracking-wide"
+                                    className="text-sm font-medium hover:text-[#C0392B] transition-colors uppercase tracking-wide"
                                 >
                                     {item}
                                 </button>
@@ -126,7 +183,7 @@ export default function InStyleLandingPage() {
                 <div className="container mx-auto px-4 relative z-10 text-center">
                     <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-serif mb-6 leading-tight text-gray-900">
                         Transform Your Look With <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B4513] to-[#D2691E]">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C0392B] to-[#1B1B1B]">
                             Premium Hair Services
                         </span>
                     </h1>
@@ -146,7 +203,7 @@ export default function InStyleLandingPage() {
                         </button>
                         <button
                             onClick={() => scrollToSection('products')}
-                            className="px-8 py-4 rounded-full font-semibold text-lg border-2 hover:bg-[#8B4513] hover:text-white transition-all flex items-center justify-center gap-2"
+                            className="px-8 py-4 rounded-full font-semibold text-lg border-2 hover:bg-[#C0392B] hover:text-white transition-all flex items-center justify-center gap-2"
                             style={{ borderColor: colors.primary, color: colors.primary }}
                         >
                             <ShoppingBag className="w-5 h-5" />
@@ -174,76 +231,61 @@ export default function InStyleLandingPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {[
-                            {
-                                title: "Premium Installations",
-                                price: "From R300",
-                                desc: "Expert installation for middle & side parts, closures, and frontals.",
-                                image: "https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=800&q=80",
-                                badge: "Popular"
-                            },
-                            {
-                                title: "Traditional Styling",
-                                price: "From R350",
-                                desc: "Maphondo, lines, and intricate traditional patterns with modern flair.",
-                                image: "https://images.unsplash.com/photo-1605497788044-5a32c7078486?auto=format&fit=crop&w=800&q=80",
-                                badge: "Signature"
-                            },
-                            {
-                                title: "Soft Glam Makeup",
-                                price: "R450",
-                                desc: "Professional makeup application perfect for any special occasion.",
-                                image: "https://images.unsplash.com/photo-1487412947132-232984567455?auto=format&fit=crop&w=800&q=80",
-                                badge: "New"
-                            }
-                        ].map((service, i) => (
-                            <div key={i} className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100">
-                                <div className="relative h-64 overflow-hidden">
-                                    <div className="absolute top-4 right-4 z-10 bg-[#D2691E] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                                        {service.badge}
+                        {displayServices.map((service, i) => {
+                            const badge = getServiceBadge(service.name);
+                            return (
+                                <div key={service.id || i} className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100">
+                                    <div className="relative h-64 overflow-hidden">
+                                        {badge && (
+                                            <div className="absolute top-4 right-4 z-10 bg-[#1B1B1B] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                                                {badge}
+                                            </div>
+                                        )}
+                                        <Image
+                                            src={getServiceImage(service.name)}
+                                            alt={service.name}
+                                            width={500}
+                                            height={400}
+                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                        />
                                     </div>
-                                    <Image
-                                        src={service.image}
-                                        alt={service.title}
-                                        width={500}
-                                        height={400}
-                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                    />
-                                </div>
-                                <div className="p-6">
-                                    <h3 className="text-xl font-bold mb-2 text-gray-900">{service.title}</h3>
-                                    <p className="text-gray-600 mb-4 text-sm">{service.desc}</p>
-                                    <div className="flex items-center justify-between mb-6">
-                                        <span className="text-2xl font-bold" style={{ color: colors.primary }}>{service.price}</span>
-                                        <div className="flex items-center gap-1 text-amber-500 text-sm">
-                                            <Star className="w-4 h-4 fill-current" />
-                                            <span className="font-medium">5.0</span>
+                                    <div className="p-6">
+                                        <h3 className="text-xl font-bold mb-2 text-gray-900">{service.name}</h3>
+                                        <p className="text-gray-600 mb-4 text-sm line-clamp-2">{service.description}</p>
+                                        <div className="flex items-center justify-between mb-6">
+                                            <span className="text-2xl font-bold" style={{ color: colors.primary }}>
+                                                R{(service.price / 100).toFixed(0)}
+                                            </span>
+                                            <div className="flex items-center gap-1 text-amber-500 text-sm">
+                                                <Clock className="w-4 h-4" />
+                                                <span className="font-medium">{service.duration_minutes}m</span>
+                                            </div>
                                         </div>
+                                        <button
+                                            onClick={() => scrollToSection('booking')}
+                                            className="w-full py-3 rounded-xl font-semibold border-2 transition-all hover:text-white flex items-center justify-center gap-2"
+                                            style={{ borderColor: colors.primary, color: colors.primary }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.backgroundColor = colors.primary;
+                                                e.currentTarget.style.color = 'white';
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.backgroundColor = 'transparent';
+                                                e.currentTarget.style.color = colors.primary;
+                                            }}
+                                        >
+                                            Book Now
+                                        </button>
                                     </div>
-                                    <button
-                                        onClick={() => scrollToSection('booking')}
-                                        className="w-full py-3 rounded-xl font-semibold border-2 transition-all hover:text-white flex items-center justify-center gap-2"
-                                        style={{ borderColor: colors.primary, color: colors.primary }}
-                                        onMouseEnter={(e) => {
-                                            e.currentTarget.style.backgroundColor = colors.primary;
-                                            e.currentTarget.style.color = 'white';
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            e.currentTarget.style.backgroundColor = 'transparent';
-                                            e.currentTarget.style.color = colors.primary;
-                                        }}
-                                    >
-                                        Book Now
-                                    </button>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </section>
 
             {/* Products Section */}
-            <section id="products" className="py-20 bg-[#FDF8F6]">
+            <section id="products" className="py-20 bg-[#F9F9F9]">
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                         <div>
@@ -252,23 +294,18 @@ export default function InStyleLandingPage() {
                         </div>
                         <Link
                             href="/book/instylehairboutique/shop"
-                            className="text-[#8B4513] font-semibold flex items-center gap-2 hover:gap-3 transition-all"
+                            className="text-[#C0392B] font-semibold flex items-center gap-2 hover:gap-3 transition-all"
                         >
                             View All Products <ArrowRight className="w-5 h-5" />
                         </Link>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {[
-                            { name: "Luxury Hair Oil", price: "R150", img: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?auto=format&fit=crop&w=500&q=80" },
-                            { name: "Styling Gel", price: "R85", img: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=500&q=80" },
-                            { name: "Deep Conditioner", price: "R110", img: "https://images.unsplash.com/photo-1571781565036-d3f7595ca814?auto=format&fit=crop&w=500&q=80" },
-                            { name: "Edge Control", price: "R75", img: "https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?auto=format&fit=crop&w=500&q=80" }
-                        ].map((product, i) => (
-                            <div key={i} className="bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition-all group">
+                        {displayProducts.map((product, i) => (
+                            <div key={product.id || i} className="bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition-all group">
                                 <div className="relative h-48 bg-gray-100 rounded-lg mb-4 overflow-hidden flex items-center justify-center">
                                     <Image
-                                        src={product.img}
+                                        src={product.image_url || "https://images.unsplash.com/photo-1526947425960-945c6e72858f?auto=format&fit=crop&w=500&q=80"}
                                         alt={product.name}
                                         fill
                                         className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -279,8 +316,8 @@ export default function InStyleLandingPage() {
                                 </div>
                                 <h3 className="font-semibold text-gray-900 mb-1">{product.name}</h3>
                                 <div className="flex items-center justify-between">
-                                    <span className="font-bold text-[#8B4513]">{product.price}</span>
-                                    <button className="p-2 rounded-full bg-gray-50 hover:bg-[#8B4513] hover:text-white transition-colors">
+                                    <span className="font-bold text-[#C0392B]">R{(product.price / 100).toFixed(0)}</span>
+                                    <button className="p-2 rounded-full bg-gray-50 hover:bg-[#C0392B] hover:text-white transition-colors">
                                         <ShoppingCart className="w-4 h-4" />
                                     </button>
                                 </div>
@@ -304,11 +341,11 @@ export default function InStyleLandingPage() {
                             { name: "Zoe K.", text: "I've been coming to Instyle for over a year. Always impressed with the detail.", role: "VIP Client" },
                             { name: "Amanda T.", text: "The coloring service is exceptional! They created the perfect shade for me.", role: "New Client" }
                         ].map((t, i) => (
-                            <div key={i} className="bg-[#FDF8F6] p-8 rounded-2xl relative">
-                                <div className="text-6xl text-[#8B4513] opacity-10 absolute top-4 left-4 font-serif">&quot;</div>
+                            <div key={i} className="bg-[#F9F9F9] p-8 rounded-2xl relative">
+                                <div className="text-6xl text-[#C0392B] opacity-10 absolute top-4 left-4 font-serif">&quot;</div>
                                 <p className="text-gray-600 italic mb-6 relative z-10">{t.text}</p>
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center font-bold text-[#8B4513]">
+                                    <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center font-bold text-[#C0392B]">
                                         {t.name[0]}
                                     </div>
                                     <div>
@@ -322,8 +359,8 @@ export default function InStyleLandingPage() {
                 </div>
             </section>
 
-            {/* Booking Section - Embeds CompleteBookingFlow */}
-            <section id="booking" className="py-20 bg-gradient-to-br from-[#8B4513] to-[#5D2E0C] text-white">
+            {/* Booking Section - Embeds BookingWizard */}
+            <section id="booking" className="py-20 bg-gradient-to-br from-[#C0392B] to-[#5D2E0C] text-white">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl md:text-4xl font-bold font-serif mb-4">Book Your Appointment</h2>
@@ -333,14 +370,14 @@ export default function InStyleLandingPage() {
                     <div className="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-5xl mx-auto text-gray-800">
                         {/* We render the booking flow here, but we need to make sure it fits well */}
                         <div className="p-2 md:p-6">
-                            <CompleteBookingFlow embedded={true} />
+                            <BookingWizard />
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Footer */}
-            <footer className="bg-[#1F2937] text-white pt-20 pb-10">
+            <footer className="bg-[#1B1B1B] text-white pt-20 pb-10">
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
                         <div>
@@ -355,7 +392,7 @@ export default function InStyleLandingPage() {
                             </p>
                             <div className="flex gap-4">
                                 {[Instagram, Facebook, FaTiktok].map((Icon, i) => (
-                                    <a key={i} href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#8B4513] transition-colors">
+                                    <a key={i} href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#C0392B] transition-colors">
                                         <Icon className="w-5 h-5" />
                                     </a>
                                 ))}
@@ -366,7 +403,7 @@ export default function InStyleLandingPage() {
                             <h3 className="text-lg font-bold mb-6">Quick Links</h3>
                             <ul className="space-y-3 text-gray-400 text-sm">
                                 {['Home', 'Services', 'Products', 'Gallery', 'Book Now'].map(item => (
-                                    <li key={item}><a href="#" className="hover:text-[#8B4513] transition-colors">{item}</a></li>
+                                    <li key={item}><a href="#" className="hover:text-[#C0392B] transition-colors">{item}</a></li>
                                 ))}
                             </ul>
                         </div>
@@ -375,7 +412,7 @@ export default function InStyleLandingPage() {
                             <h3 className="text-lg font-bold mb-6">Services</h3>
                             <ul className="space-y-3 text-gray-400 text-sm">
                                 {['Installations', 'Styling', 'Coloring', 'Treatments', 'Braiding'].map(item => (
-                                    <li key={item}><a href="#" className="hover:text-[#8B4513] transition-colors">{item}</a></li>
+                                    <li key={item}><a href="#" className="hover:text-[#C0392B] transition-colors">{item}</a></li>
                                 ))}
                             </ul>
                         </div>
@@ -384,15 +421,15 @@ export default function InStyleLandingPage() {
                             <h3 className="text-lg font-bold mb-6">Contact Us</h3>
                             <ul className="space-y-4 text-gray-400 text-sm">
                                 <li className="flex items-start gap-3">
-                                    <MapPin className="w-5 h-5 text-[#8B4513] shrink-0" />
+                                    <MapPin className="w-5 h-5 text-[#C0392B] shrink-0" />
                                     <span>Cape Town, South Africa</span>
                                 </li>
                                 <li className="flex items-center gap-3">
-                                    <Phone className="w-5 h-5 text-[#8B4513] shrink-0" />
+                                    <Phone className="w-5 h-5 text-[#C0392B] shrink-0" />
                                     <span>+27 69 917 1527</span>
                                 </li>
                                 <li className="flex items-center gap-3">
-                                    <Mail className="w-5 h-5 text-[#8B4513] shrink-0" />
+                                    <Mail className="w-5 h-5 text-[#C0392B] shrink-0" />
                                     <span>info@instylehairboutique.co.za</span>
                                 </li>
                             </ul>

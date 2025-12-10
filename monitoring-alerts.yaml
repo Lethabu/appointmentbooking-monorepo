@@ -1,0 +1,176 @@
+# Monitoring Alert Configuration Template
+# This file provides alert templates for various monitoring systems
+# Copy relevant sections to your monitoring dashboard
+
+# ============================================
+# SENTRY ALERTS (Configure in Sentry Dashboard)
+# ============================================
+
+sentry_alerts:
+  error_rate_alert:
+    name: "High Error Rate"
+    conditions:
+      - metric: "error_rate"
+        threshold: 0.01  # 1% error rate
+        time_window: "5m"
+    actions:
+      - type: "email"
+        recipients: ["dev-team@instyle.co.za"]
+      - type: "slack"
+        webhook_url: "${SLACK_WEBHOOK_URL}"
+        channel: "#alerts"
+
+  ai_agent_failures:
+    name: "AI Agent High Failure Rate"
+    conditions:
+      - metric: "ai_response_errors"
+        threshold: 5  # 5 errors per hour
+        time_window: "1h"
+    actions:
+      - type: "slack"
+        webhook_url: "${SLACK_WEBHOOK_URL}"
+        channel: "#ai-support"
+
+# ============================================
+# CLOUDFLARE ALERTS (Configure in Cloudflare Dashboard)
+# ============================================
+
+cloudflare_alerts:
+  high_error_rate:
+    name: "HTTP Error Rate Alert"
+    description: "Alert when 5xx error rate exceeds 1%"
+    condition: "http_response_code_class:5xx > 0.01"
+    notification:
+      type: "email"
+      destination: "dev-team@instyle.co.za"
+    policy:
+      check_frequency: "1m"
+      alert_threshold: "1"
+      recovery_threshold: "0.5"
+
+  traffic_spike:
+    name: "Traffic Spike Detection"
+    description: "Alert when request rate exceeds 1000/min"
+    condition: "http_requests:rate > 1000"
+    notification:
+      type: "slack"
+      destination: "#alerts"
+    policy:
+      check_frequency: "1m"
+      alert_threshold: "1"
+
+  worker_cpu_high:
+    name: "Worker CPU Usage High"
+    description: "Alert when worker CPU time exceeds 50ms P95"
+    condition: "workers:cputime:p95 > 50"
+    notification:
+      type: "email"
+      destination: "dev-team@instyle.co.za"
+    policy:
+      check_frequency: "5m"
+      alert_threshold: "1"
+
+# ============================================
+# CUSTOM BUSINESS ALERTS (Track via Analytics API)
+# ============================================
+
+business_alerts:
+  low_conversion_rate:
+    name: "Booking Conversion Rate Low"
+    description: "Alert when booking conversion drops below 10%"
+    metric: "conversion_rate"
+    threshold: 0.1  # 10%
+    time_window: "24h"
+    severity: "warning"
+    notification:
+      - type: "email"
+        recipients: ["business@instyle.co.za"]
+      - type: "slack"
+        channel: "#business-metrics"
+
+  ai_resolution_rate_low:
+    name: "AI Resolution Rate Declining"
+    description: "Alert when AI resolves fewer than 85% of queries"
+    metric: "ai_success_rate"
+    threshold: 0.85  # 85%
+    time_window: "4h"
+    severity: "warning"
+    notification:
+      - type: "slack"
+        channel: "#ai-support"
+
+  high_booking_cancellations:
+    name: "Booking Cancellation Spike"
+    description: "Alert when booking cancellations exceed 20%"
+    metric: "cancellation_rate"
+    threshold: 0.2  # 20%
+    time_window: "8h"
+    severity: "critical"
+    notification:
+      - type: "email"
+        recipients: ["operations@instyle.co.za"]
+      - type: "slack"
+        channel: "#operations"
+
+# ============================================
+# ALERT THRESHOLDS SUMMARY
+# ============================================
+
+thresholds:
+  uptime: 99.9%     # Target uptime
+  response_time:    # API response time targets
+    p50: 200ms
+    p95: 500ms
+    p99: 1000ms
+  error_rate: 0.1%  # Maximum error rate
+  lighthouse_score:
+    performance: 90
+    accessibility: 90
+    best_practices: 90
+    seo: 90
+  business_metrics:
+    conversion_rate: 15%    # Booking conversion target
+    ai_resolution_rate: 90% # AI success rate target
+    cancellation_rate: 5%   # Maximum cancellation rate
+
+# ============================================
+# MONITORING DASHBOARD CONFIGURATION NOTES
+# ============================================
+
+dashboard_setup_notes:
+  - Configure uptime monitoring on main domain and API endpoints
+  - Set up SSL certificate expiry alerts (30 days warning)
+  - Enable database storage monitoring alerts (80% usage warning)
+  - Configure payment gateway status monitoring
+  - Set up WhatsApp API status monitoring
+  - Enable AI agent performance tracking
+  - Create custom dashboards for:
+    - Real-time business metrics
+    - User journey funnel analysis
+    - AI agent conversation analytics
+    - System performance monitoring
+
+# ============================================
+# MANUAL MONITORING CHECKLISTS
+# ============================================
+
+daily_checks:
+  - Verify Sentry error dashboard for new issues
+  - Check business metrics dashboard for anomalies
+  - Review AI agent performance metrics
+  - Confirm system uptime and response times
+  - Check payment processing status
+
+weekly_checks:
+  - Review Lighthouse performance scores
+  - Analyze user journey conversion funnels
+  - Audit system logs for security issues
+  - Check database performance and optimization
+  - Verify backup completion status
+
+monthly_checks:
+  - Review monitoring configurations and thresholds
+  - Analyze long-term trends and patterns
+  - Update alert rules based on business needs
+  - Audit monitoring tool subscriptions and costs
+  - Check compliance with data retention policies

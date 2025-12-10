@@ -19,18 +19,27 @@
     "cf-typegen": "wrangler types",
     "go-live": "node scripts/go-live-checklist.js",
     "verify-api": "node scripts/verify-production-api.js",
-    "migrate-db": "wrangler d1 execute appointmentbooking-db --remote --file=scripts/migrations/004-safe-instyle-sync.sql"
+    "migrate-db": "wrangler d1 execute appointmentbooking-db --remote --file=scripts/migrations/006-sync-supersaas.sql",
+    "test:integration": "node ./scripts/integration/worker-endpoints.test.js",
+    "test:accessibility": "node ./scripts/integration/accessibility.test.js",
+    "test:e2e": "pnpm run test:integration && pnpm run test:accessibility"
   },
+  
   "devDependencies": {
     "@types/node": "^20.10.0",
     "drizzle-kit": "^0.24.2",
     "eslint": "^8.53.0",
     "prettier": "^3.0.0",
     "turbo": "^2.6.0",
-    "wrangler": "^3.22.4"
+    "wrangler": "^3.22.4",
+    "axe-core": "^4.7.2",
+    "jsdom": "^22.1.0"
   },
   "dependencies": {
-    "node-fetch": "^3.3.2"
+    "@sentry/nextjs": "^10.28.0",
+    "@tanstack/react-query": "^5.90.7",
+    "node-fetch": "^3.3.2",
+    "recharts": "^2.15.4"
   },
   "pnpm": {
     "overrides": {
