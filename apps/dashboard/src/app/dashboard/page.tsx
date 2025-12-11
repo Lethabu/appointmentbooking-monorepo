@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import ModernSalonDashboard from '../../components/modern-salon-dashboard';
 
 interface Booking {
     id: string;

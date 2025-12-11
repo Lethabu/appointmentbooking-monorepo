@@ -12,6 +12,7 @@ interface BookingRequest {
 import { getAvailability } from './availability';
 import { handleDashboardBookings } from './dashboard-endpoint';
 import { handleDashboardSSE } from './dashboard-stream';
+import { handleAiEndpoint } from './ai-endpoint';
 
 // Small helpers used by the lightweight shop renderer
 function escapeHtml(input: any) {
@@ -461,6 +462,11 @@ async function handleApiRoute(request: Request, env: any): Promise<Response> {
     };
 
     try {
+        // AI endpoint - Handle AI conversations and analytics
+        if (path === '/api/ai') {
+            return handleAiEndpoint(request, env);
+        }
+
         // Dashboard SSE stream - real-time updates (polling inside worker)
         if (path === '/api/dashboard/stream') {
             return handleDashboardSSE(request, env, corsHeaders);

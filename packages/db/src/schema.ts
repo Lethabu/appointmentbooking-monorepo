@@ -149,3 +149,93 @@ export const aiAgentLogs = sqliteTable('ai_agent_logs', {
   agentIdx: index('ai_agent_logs_agent_idx').on(table.agentName),
   timestampIdx: index('ai_agent_logs_timestamp_idx').on(table.timestamp),
 }));
+
+// Ecommerce Tables for Salon Product Sales
+
+// Products table for salon merchandise and services
+export const products = sqliteTable('products', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull().references(() => tenants.id),
+  name: text('name').notNull(),
+  description: text('description'),
+  price: integer('price').notNull(), // in cents
+  category: text('category'), // 'merchandise', 'service', 'package'
+  imageUrl: text('image_url'),
+  isActive: integer('is_active', { mode: 'boolean' }).default(true),
+  inventoryCount: integer('inventory_count').default(0),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  tenantIdx: index('products_tenant_idx').on(table.tenantId),
+  categoryIdx: index('products_category_idx').on(table.category),
+}));
+
+// Shopping cart for temporary storage
+export const cartItems = sqliteTable('cart_items', {
+  id: text('id').primaryKey(),
+  userId: text('user_id').notNull().references(() => users.id),
+  tenantId: text('tenant_id').notNull().references(() => tenants.id),
+  productId: text('product_id').notNull().references(() => products.id),
+  quantity: integer('quantity').notNull().default(1),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  userIdx: index('cart_items_user_idx').on(table.userId),
+  tenantIdx: index('cart_items_tenant_idx').on(table.tenantId),
+}));
+
+// Orders table for completed purchases
+export const orders = sqliteTable('orders', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull().references(() => tenants.id),
+  userId: text('user_id').notNull().references(() => users.id),
+  totalAmount: integer('total_amount').notNull(), // in cents
+  status: text('status').default('pending'), // 'pending', 'paid', 'fulfilled', 'cancelled'
+  paymentMethod: text('payment_method'), // 'paystack', 'card', etc.
+  paymentReference: text('payment_reference'),
+  shippingAddress: text('shipping_address', { mode: 'json' }).$type<Record<string, any>>(),
+  orderItems: text('order_items', { mode: 'json' }).$type<Array<{
+    productId: string;
+    quantity: number;
+    price: number;
+    name: string;
+  }>>(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  tenantIdx: index('orders_tenant_idx').on(table.tenantId),
+  userIdx: index('orders_user_idx').on(table.userId),
+  statusIdx: index('orders_status_idx').on(table.status),
+}));
+
+// WhatsApp integration tables
+export const whatsappMessages = sqliteTable('whatsapp_messages', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull().references(() => tenants.id),
+  phoneNumber: text('phone_number').notNull(),
+  messageType: text('message_type').notNull(), // 'incoming', 'outgoing'
+  content: text('content').notNull(),
+  messageId: text('message_id'), // WhatsApp message ID
+  status: text('status').default('sent'), // 'sent', 'delivered', 'read', 'failed'
+  appointmentId: text('appointment_id'), // Link to booking
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  tenantIdx: index('whatsapp_messages_tenant_idx').on(table.tenantId),
+  phoneIdx: index('whatsapp_messages_phone_idx').on(table.phoneNumber),
+  appointmentIdx: index('whatsapp_messages_appointment_idx').on(table.appointmentId),
+}));
+
+// Automated campaigns for marketing
+export const marketingCampaigns = sqliteTable('marketing_campaigns', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull().references(() => tenants.id),
+  name: text('name').notNull(),
+  type: text('type').notNull(), // 'reminder', 'promotion', 'followup'
+  messageTemplate: text('message_template').notNull(),
+  targetAudience: text('target_audience'), // 'all', 'new_clients', 'returning'
+  scheduleType: text('schedule_type'), // 'immediate', 'scheduled', 'recurring'
+  isActive: integer('is_active', { mode: 'boolean' }).default(true),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  tenantIdx: index('marketing_campaigns_tenant_idx').on(table.tenantId),
+  typeIdx: index('marketing_campaigns_type_idx').on(table.type),
+}));

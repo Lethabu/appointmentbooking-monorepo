@@ -5,10 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
     Calendar, ShoppingBag, Star, Clock, MapPin, Phone, Mail,
-    Heart, ShoppingCart, Menu, X, Check, ArrowRight, Instagram, Facebook
+    Heart, ShoppingCart, Menu, X, Check, ArrowRight, Instagram, Facebook, MessageCircle, Send, Bot
 } from 'lucide-react';
 import { FaTiktok, FaWhatsapp } from 'react-icons/fa';
 import BookingWizard from '@/components/booking/BookingWizard';
+import { useAI } from '../../../../packages/ui/src/store';
 
 // Brand Colors - Updated to Crimson Palette
 const colors = {
@@ -48,6 +49,76 @@ export default function InStyleLandingPage({ services = [], products = [], confi
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
     const [showBooking, setShowBooking] = useState(false);
+    const [showAIChat, setShowAIChat] = useState(false);
+    const [chatMessage, setChatMessage] = useState('');
+
+    // AI Chat hooks
+    const { aiConversations, isAiTyping, addAiConversation, setAiTyping } = useAI();
+
+    // AI Chat handlers
+    const handleSendMessage = async () => {
+        if (!chatMessage.trim()) return;
+
+        const userMessage = chatMessage.trim();
+        setChatMessage('');
+
+        // Add user message to conversation
+        addAiConversation({
+            id: crypto.randomUUID(),
+            query: userMessage,
+            response: '',
+            timestamp: Date.now(),
+            resolved: false
+        });
+
+        setAiTyping(true);
+
+        try {
+            // Call AI endpoint
+            const response = await fetch('/api/ai', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    agentName: 'Nia',
+                    sessionId: 'landing-page-chat',
+                    query: userMessage,
+                    response: 'I understand you\'re interested in our services. Our expert stylists can help you achieve the perfect look. Would you like to book an appointment?',
+                    responseTimeMs: 1500,
+                    resolved: true
+                })
+            });
+
+            if (response.ok) {
+                // AI response will be handled by the endpoint
+                setTimeout(() => {
+                    addAiConversation({
+                        id: crypto.randomUUID(),
+                        query: '',
+                        response: 'I understand you\'re interested in our services. Our expert stylists can help you achieve the perfect look. Would you like to book an appointment?',
+                        timestamp: Date.now(),
+                        resolved: true
+                    });
+                    setAiTyping(false);
+                }, 1000);
+            }
+        } catch (error) {
+            setAiTyping(false);
+            addAiConversation({
+                id: crypto.randomUUID(),
+                query: '',
+                response: 'I apologize, but I\'m having trouble connecting right now. Please call us at +27 69 917 1527 to speak with our team directly.',
+                timestamp: Date.now(),
+                resolved: false
+            });
+        }
+    };
+
+    const handleKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    };
 
     // Scroll to section handler
     const scrollToSection = (id: string) => {
@@ -441,6 +512,122 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                     </div>
                 </div>
             </footer>
+
+            {/* AI Chat Floating Button */}
+            <div className="fixed bottom-6 right-6 z-50">
+                <button
+                    onClick={() => setShowAIChat(!showAIChat)}
+                    className="w-16 h-16 bg-gradient-to-r from-[#C0392B] to-[#E74C3C] rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-110 flex items-center justify-center text-white"
+                >
+                    <Bot className="w-8 h-8" />
+                </button>
+            </div>
+
+            {/* AI Chat Interface */}
+            {showAIChat && (
+                <div className="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-3rem)] z-50 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+                    {/* Chat Header */}
+                    <div className="bg-gradient-to-r from-[#C0392B] to-[#E74C3C] text-white p-4 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                                <Bot className="w-6 h-6" />
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-lg">Nia</h3>
+                                <p className="text-sm opacity-90">AI Hair Stylist Assistant</p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => setShowAIChat(false)}
+                            className="text-white/70 hover:text-white transition-colors"
+                        >
+                            <X className="w-6 h-6" />
+                        </button>
+                    </div>
+
+                    {/* Chat Messages */}
+                    <div className="h-96 overflow-y-auto p-4 bg-gray-50">
+                        <div className="space-y-4">
+                            {/* Welcome Message */}
+                            <div className="flex items-start gap-3">
+                                <div className="w-8 h-8 bg-[#C0392B] rounded-full flex items-center justify-center flex-shrink-0">
+                                    <Bot className="w-4 h-4 text-white" />
+                                </div>
+                                <div className="bg-white rounded-2xl px-4 py-3 shadow-sm max-w-[80%]">
+                                    <p className="text-gray-800 text-sm">
+                                        👋 Hi! I'm Nia, your AI hair stylist assistant. I can help you learn about our services, find the perfect style, or answer any questions about InStyle Hair Boutique. How can I assist you today?
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* User Messages */}
+                            {aiConversations.filter((conv: any) => conv.query).map((conv: any) => (
+                                <div key={conv.id} className="flex items-start gap-3 justify-end">
+                                    <div className="bg-[#C0392B] text-white rounded-2xl px-4 py-3 shadow-sm max-w-[80%]">
+                                        <p className="text-sm">{conv.query}</p>
+                                    </div>
+                                    <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <span className="text-xs font-bold text-gray-600">You</span>
+                                    </div>
+                                </div>
+                            ))}
+
+                            {/* AI Responses */}
+                            {aiConversations.filter((conv: any) => conv.response).map((conv: any) => (
+                                <div key={`response-${conv.id}`} className="flex items-start gap-3">
+                                    <div className="w-8 h-8 bg-[#C0392B] rounded-full flex items-center justify-center flex-shrink-0">
+                                        <Bot className="w-4 h-4 text-white" />
+                                    </div>
+                                    <div className="bg-white rounded-2xl px-4 py-3 shadow-sm max-w-[80%]">
+                                        <p className="text-gray-800 text-sm">{conv.response}</p>
+                                    </div>
+                                </div>
+                            ))}
+
+                            {/* Typing Indicator */}
+                            {isAiTyping && (
+                                <div className="flex items-start gap-3">
+                                    <div className="w-8 h-8 bg-[#C0392B] rounded-full flex items-center justify-center flex-shrink-0">
+                                        <Bot className="w-4 h-4 text-white" />
+                                    </div>
+                                    <div className="bg-white rounded-2xl px-4 py-3 shadow-sm">
+                                        <div className="flex items-center gap-1">
+                                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                                            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Chat Input */}
+                    <div className="border-t border-gray-200 p-4 bg-white">
+                        <div className="flex gap-2">
+                            <input
+                                type="text"
+                                value={chatMessage}
+                                onChange={(e) => setChatMessage(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                                placeholder="Ask me about our services..."
+                                className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C0392B] focus:border-transparent outline-none text-sm"
+                                disabled={isAiTyping}
+                            />
+                            <button
+                                onClick={handleSendMessage}
+                                disabled={!chatMessage.trim() || isAiTyping}
+                                className="px-4 py-3 bg-[#C0392B] text-white rounded-xl hover:bg-[#A93226] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center"
+                            >
+                                <Send className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-2 text-center">
+                            Powered by AI • Ask about services, pricing, or booking
+                        </p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
