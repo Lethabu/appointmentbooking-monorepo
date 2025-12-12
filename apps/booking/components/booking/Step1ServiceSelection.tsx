@@ -4,6 +4,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useBooking, Service, formatPrice, formatDuration, getTotalDuration } from './BookingContext';
 
 export default function Step1ServiceSelection() {
@@ -114,9 +115,11 @@ export default function Step1ServiceSelection() {
                             {/* Service Image (if available) */}
                             {serviceImages[service.name] && (
                                 <div className="mb-3 h-32 bg-gray-100 rounded-lg overflow-hidden">
-                                    <img
+                                    <Image
                                         src={serviceImages[service.name]}
                                         alt={service.name}
+                                        width={400}
+                                        height={128}
                                         className="w-full h-full object-cover"
                                         onError={(e) => {
                                             e.currentTarget.style.display = 'none';

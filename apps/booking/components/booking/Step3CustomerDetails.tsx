@@ -3,7 +3,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useBooking, CustomerDetails } from './BookingContext';
 
 interface FormErrors {
@@ -60,7 +60,7 @@ export default function Step3CustomerDetails() {
     };
 
     // Validate all fields
-    const validateForm = (): boolean => {
+    const validateForm = useCallback((): boolean => {
         const newErrors: FormErrors = {};
 
         (Object.keys(formData) as Array<keyof CustomerDetails>).forEach((key) => {
@@ -70,7 +70,7 @@ export default function Step3CustomerDetails() {
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
-    };
+    }, [formData]);
 
     // Handle field change
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -112,7 +112,7 @@ export default function Step3CustomerDetails() {
         if (validateForm()) {
             setCustomerDetails(formData);
         }
-    }, [formData]);
+    }, [formData, setCustomerDetails, validateForm]);
 
     // Format phone number as user types
     const formatPhoneNumber = (value: string): string => {

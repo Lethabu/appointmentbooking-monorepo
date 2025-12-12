@@ -3,7 +3,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useBooking, formatDuration } from './BookingContext';
 
 interface TimeSlot {
@@ -12,6 +12,17 @@ interface TimeSlot {
     reason?: string;
 }
 
+// Business hours configuration - moved outside component for stability
+const businessHours = {
+    monday: { start: '09:00', end: '17:00' },
+    tuesday: { start: '09:00', end: '17:00' },
+    wednesday: { start: '09:00', end: '17:00' },
+    thursday: { start: '09:00', end: '17:00' },
+    friday: { start: '09:00', end: '17:00' },
+    saturday: { start: '08:00', end: '16:00' },
+    sunday: { start: null, end: null }, // Closed
+};
+
 export default function Step2DateTime() {
     const { state, setDateTime } = useBooking();
     const [selectedDate, setSelectedDate] = useState(state.selectedDate || '');
@@ -19,17 +30,6 @@ export default function Step2DateTime() {
     const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
-    // Business hours configuration
-    const businessHours = {
-        monday: { start: '09:00', end: '17:00' },
-        tuesday: { start: '09:00', end: '17:00' },
-        wednesday: { start: '09:00', end: '17:00' },
-        thursday: { start: '09:00', end: '17:00' },
-        friday: { start: '09:00', end: '17:00' },
-        saturday: { start: '08:00', end: '16:00' },
-        sunday: { start: null, end: null }, // Closed
-    };
 
     // Get minimum date (today)
     const getMinDate = () => {
@@ -59,6 +59,42 @@ export default function Step2DateTime() {
 
         return true;
     };
+
+    // Generate default time slots (30-minute intervals)
+    const generateDefaultSlots = useCallback((dateString: string): TimeSlot[] => {
+        const date = new Date(dateString);
+        const dayOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][date.getDay()] as keyof typeof businessHours;
+        const hours = businessHours[dayOfWeek];
+
+        if (!hours.start || !hours.end) {
+            return [];
+        }
+
+        const slots: TimeSlot[] = [];
+        const [startHour, startMin] = hours.start.split(':').map(Number);
+        const [endHour, endMin] = hours.end.split(':').map(Number);
+
+        let currentHour = startHour;
+        let currentMin = startMin;
+
+        while (currentHour < endHour || (currentHour === endHour && currentMin < endMin)) {
+            const timeString = `${String(currentHour).padStart(2, '0')}:${String(currentMin).padStart(2, '0')}`;
+
+            slots.push({
+                time: timeString,
+                available: true,
+            });
+
+            // Increment by 30 minutes
+            currentMin += 30;
+            if (currentMin >= 60) {
+                currentMin = 0;
+                currentHour += 1;
+            }
+        }
+
+        return slots;
+    }, []);
 
     // Fetch available time slots from Worker API when date changes
     useEffect(() => {
@@ -100,7 +136,7 @@ export default function Step2DateTime() {
                 }
 
                 const data = await response.json();
-                
+
                 // Convert ISO datetime slots from Worker API to TimeSlot format
                 if (data.slots && Array.isArray(data.slots)) {
                     const formattedSlots: TimeSlot[] = data.slots.map((slot: any) => ({
@@ -122,43 +158,7 @@ export default function Step2DateTime() {
         }
 
         fetchAvailability();
-    }, [selectedDate, state.selectedServices]);
-
-    // Generate default time slots (30-minute intervals)
-    const generateDefaultSlots = (dateString: string): TimeSlot[] => {
-        const date = new Date(dateString);
-        const dayOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][date.getDay()] as keyof typeof businessHours;
-        const hours = businessHours[dayOfWeek];
-
-        if (!hours.start || !hours.end) {
-            return [];
-        }
-
-        const slots: TimeSlot[] = [];
-        const [startHour, startMin] = hours.start.split(':').map(Number);
-        const [endHour, endMin] = hours.end.split(':').map(Number);
-
-        let currentHour = startHour;
-        let currentMin = startMin;
-
-        while (currentHour < endHour || (currentHour === endHour && currentMin < endMin)) {
-            const timeString = `${String(currentHour).padStart(2, '0')}:${String(currentMin).padStart(2, '0')}`;
-
-            slots.push({
-                time: timeString,
-                available: true,
-            });
-
-            // Increment by 30 minutes
-            currentMin += 30;
-            if (currentMin >= 60) {
-                currentMin = 0;
-                currentHour += 1;
-            }
-        }
-
-        return slots;
-    };
+    }, [selectedDate, state.selectedServices, generateDefaultSlots]);
 
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newDate = e.target.value;

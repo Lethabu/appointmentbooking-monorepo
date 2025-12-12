@@ -5,13 +5,15 @@
   "exports": {
     "./button": "./src/Button.tsx",
     "./utils": "./src/utils.ts",
-    "./analytics": "./src/analytics.ts"
+    "./analytics": "./src/analytics.ts",
+    "./store": "./src/store.ts"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "tailwind-merge": "^2.0.0",
-    "react": "^18"
+    "react": "^18",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/react": "^18",
