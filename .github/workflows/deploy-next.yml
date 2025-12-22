@@ -2,7 +2,7 @@ name: CI Build & Cloudflare Deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, staging ]
   workflow_dispatch:
 
 jobs:
@@ -70,7 +70,7 @@ jobs:
           pnpm --filter @repo/worker deploy || pnpm --filter packages/worker deploy || pnpm run deploy
 
 # Notes:
-# - This workflow builds the monorepo on pushes to `main`.
+# - This workflow builds the monorepo on pushes to `main` and `staging`.
 # - Worker (packages/worker) deploys via separate `pnpm run deploy` or CI job using `wrangler deploy`.
 # - To enable Cloudflare Pages deployment, set repository secrets:
 #   - `CLOUDFLARE_API_TOKEN` (create at https://dash.cloudflare.com/profile/api-tokens with Pages:Edit permission)

@@ -5,12 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  ShoppingCart, 
-  MessageCircle, 
-  TrendingUp, 
-  Users, 
-  Instagram, 
+import {
+  ShoppingCart,
+  MessageCircle,
+  TrendingUp,
+  Users,
+  Instagram,
   Smartphone,
   DollarSign,
   Package,
@@ -59,8 +59,8 @@ export default function EcommerceDashboard({ tenantId }: { tenantId: string }) {
         fetch(`/api/dashboard/recent-activity?tenantId=${tenantId}`)
       ]);
 
-      const statsData = await statsRes.json();
-      const activityData = await activityRes.json();
+      const statsData = await statsRes.json() as DashboardStats;
+      const activityData = await activityRes.json() as RecentActivity[];
 
       setStats(statsData);
       setRecentActivity(activityData);
@@ -82,8 +82,8 @@ export default function EcommerceDashboard({ tenantId }: { tenantId: string }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tenantId, action: 'sync' })
       });
-      
-      const result = await response.json();
+
+      const result = await response.json() as { success: boolean; products_synced?: number; abandoned_carts_processed?: number };
       if (result.success) {
         alert(`Catalog synced! ${result.products_synced} products updated.`);
       }
@@ -98,13 +98,13 @@ export default function EcommerceDashboard({ tenantId }: { tenantId: string }) {
       const response = await fetch('/api/conversational-commerce', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           action: 'abandoned_cart_recovery',
-          tenantId 
+          tenantId
         })
       });
-      
-      const result = await response.json();
+
+      const result = await response.json() as { success: boolean; products_synced?: number; abandoned_carts_processed?: number };
       if (result.success) {
         alert(`Recovery messages sent to ${result.abandoned_carts_processed} customers.`);
         fetchDashboardData(); // Refresh data

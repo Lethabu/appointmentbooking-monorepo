@@ -1,0 +1,14 @@
+{
+    "Booking": {
+        "title": "Bespreek 'n Afspraak",
+        "select_service": "Kies 'n Diens",
+        "select_time": "Kies 'n Tyd",
+        "deposit_required": "Deposito Vereis",
+        "confirm": "Bevestig Afspraak",
+        "pay_and_confirm": "Betaal {amount} & Bevestig"
+    },
+    "Common": {
+        "loading": "Laai...",
+        "error": "Iets het verkeerd geloop"
+    }
+}

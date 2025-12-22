@@ -1,0 +1,10 @@
+[2025-12-13T06:13:16.103Z] [INFO] 🚀 Starting Cloudflare Direct Deployment with .env Loading
+[2025-12-13T06:13:16.143Z] [INFO] ============================================================
+[2025-12-13T06:13:16.150Z] [INFO] 📋 Loading environment variables from .env files...
+[2025-12-13T06:13:16.153Z] [INFO] ✅ Found apps/booking/.env file
+[2025-12-13T06:13:16.158Z] [INFO] ✅ Cloudflare API Token loaded from .env
+[2025-12-13T06:13:16.160Z] [INFO] ✅ Cloudflare Account ID loaded from .env
+[2025-12-13T06:13:16.162Z] [INFO] 🔍 Checking Wrangler status...
+[2025-12-13T06:13:31.215Z] [ERROR] ❌ Wrangler authentication failed:
+[2025-12-13T06:13:31.216Z] [SPAWNSYNC C:\WINDOWS\SYSTEM32\CMD.EXE ETIMEDOUT] Error details:
+[2025-12-13T06:13:31.220Z] [ERROR] 💥 DEPLOYMENT FAILED: Wrangler authentication failed. Check API token in .env files.

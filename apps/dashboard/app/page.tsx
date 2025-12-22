@@ -17,6 +17,7 @@ interface DashboardData {
     pendingAppointments: number
     totalRevenue: number
     activeServices: number
+    pageViews: number // Added
   }
   recentAppointments: any[]
 }
@@ -31,7 +32,7 @@ export default function Dashboard() {
       try {
         setLoading(true)
         const tenantId = 'ccb12b4d-ade6-467d-a614-7c9d198ddc70'
-        const response = await fetch(`https://www.instylehairboutique.co.za/api/dashboard?tenantId=${tenantId}`)
+        const response = await fetch(`https://appointmentbooking-monorepo.houseofgr8ness.workers.dev/api/dashboard?tenantId=${tenantId}`)
 
         if (!response.ok) {
           throw new Error('Failed to fetch dashboard data')
@@ -84,7 +85,7 @@ export default function Dashboard() {
   if (!data) return null
 
   const { tenant, statistics, recentAppointments } = data
-  const { totalAppointments, confirmedAppointments, pendingAppointments, totalRevenue, activeServices } = statistics
+  const { totalAppointments, confirmedAppointments, pendingAppointments, totalRevenue, activeServices, pageViews } = statistics
 
   // Calculate revenue in Rands
   const revenueInRands = totalRevenue / 100
@@ -140,6 +141,12 @@ export default function Dashboard() {
             title="Active Services"
             value={activeServices}
             icon="💇"
+            color="primary"
+          />
+          <StatCard
+            title="Page Views"
+            value={pageViews}
+            icon="👀"
             color="primary"
           />
         </div>

@@ -135,7 +135,7 @@ export default function Step2DateTime() {
                     throw new Error(`Availability API error: ${response.status}`);
                 }
 
-                const data = await response.json();
+                const data = await (response.json() as Promise<any>);
 
                 // Convert ISO datetime slots from Worker API to TimeSlot format
                 if (data.slots && Array.isArray(data.slots)) {

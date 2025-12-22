@@ -15,7 +15,7 @@
     "next-auth": "^4.24.7",
     "@auth/drizzle-adapter": "^1.4.2",
     "@repo/db": "workspace:*",
-    "drizzle-orm": "0.44.7"
+    "drizzle-orm": "0.45.1"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

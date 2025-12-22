@@ -35,7 +35,7 @@ export default function SmartProductShowcase({
         const productsRes = await fetch('/api/products', {
           headers: { 'x-tenant-id': tenantId },
         });
-        const productsData = await productsRes.json();
+        const productsData = await productsRes.json() as Product[];
         setProducts(productsData);
 
         // Fetch AI recommendations if customer ID available
@@ -48,7 +48,7 @@ export default function SmartProductShowcase({
               customerData: { id: customerId },
             }),
           });
-          const recsData = await recsRes.json();
+          const recsData = await recsRes.json() as { recommendations: any[] };
           setRecommendations(recsData.recommendations || []);
         }
       } catch (error) {

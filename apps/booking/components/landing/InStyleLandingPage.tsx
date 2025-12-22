@@ -13,15 +13,7 @@ import { FaTiktok, FaWhatsapp } from 'react-icons/fa';
 import BookingWizard from '@/components/booking/BookingWizard';
 import { useAI } from '../../../../packages/ui/src/store';
 
-// Brand Colors - Updated to Crimson Palette
-const colors = {
-    primary: '#C0392B',    // Crimson
-    secondary: '#1B1B1B',  // Near-Black
-    accent: '#F9F9F9',     // Warm Gray
-    dark: '#1B1B1B',
-    light: '#FFFFFF',
-    bg: '#F9F9F9'          // Warm Gray Background
-};
+// Using CSS Variables for Consistent Branding
 
 interface Service {
     id: string;
@@ -77,34 +69,30 @@ export default function InStyleLandingPage({ services = [], products = [], confi
 
         try {
             // Call AI endpoint
-            const response = await fetch('/api/ai', {
+            const response = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    agentName: 'Nia',
-                    sessionId: 'landing-page-chat',
-                    query: userMessage,
-                    response: 'I understand you\'re interested in our services. Our expert stylists can help you achieve the perfect look. Would you like to book an appointment?',
-                    responseTimeMs: 1500,
-                    resolved: true
+                    message: userMessage,
+                    history: aiConversations.map(c => ({ role: c.query ? 'user' : 'model', content: c.query || c.response }))
                 })
             });
 
-            if (response.ok) {
-                // AI response will be handled by the endpoint
-                setTimeout(() => {
-                    addAiConversation({
-                        id: crypto.randomUUID(),
-                        query: '',
-                        response: 'I understand you\'re interested in our services. Our expert stylists can help you achieve the perfect look. Would you like to book an appointment?',
-                        timestamp: Date.now(),
-                        resolved: true
-                    });
-                    setAiTyping(false);
-                }, 1000);
+            const data = await response.json() as { response: string; error?: string };
+
+            if (data.response) {
+                addAiConversation({
+                    id: crypto.randomUUID(),
+                    query: '',
+                    response: data.response,
+                    timestamp: Date.now(),
+                    resolved: true
+                });
+            } else {
+                throw new Error(data.error || 'Failed to get response');
             }
         } catch (error) {
-            setAiTyping(false);
+            console.error(error);
             addAiConversation({
                 id: crypto.randomUUID(),
                 query: '',
@@ -112,6 +100,8 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                 timestamp: Date.now(),
                 resolved: false
             });
+        } finally {
+            setAiTyping(false);
         }
     };
 
@@ -157,21 +147,12 @@ export default function InStyleLandingPage({ services = [], products = [], confi
     };
 
     // Use passed services or fallback to a default list if empty (to avoid empty page during dev)
-    const displayServices = services.length > 0 ? services : [
-        { id: '1', name: 'Premium Installations', description: 'Expert installation for middle & side parts.', price: 30000, duration_minutes: 60 },
-        { id: '2', name: 'Traditional Styling', description: 'Maphondo, lines, and intricate patterns.', price: 35000, duration_minutes: 60 },
-        { id: '3', name: 'Soft Glam Makeup', description: 'Professional makeup application.', price: 45000, duration_minutes: 120 }
-    ];
+    const displayServices = services;
 
-    const displayProducts = products.length > 0 ? products : [
-        { id: 'p1', name: "Luxury Hair Oil", description: "Shine & Health", price: 15000, image_url: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?auto=format&fit=crop&w=500&q=80" },
-        { id: 'p2', name: "Styling Gel", description: "Strong Hold", price: 8500, image_url: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=500&q=80" },
-        { id: 'p3', name: "Deep Conditioner", description: "Repair & Hydrate", price: 11000, image_url: "https://images.unsplash.com/photo-1571781565036-d3f7595ca814?auto=format&fit=crop&w=500&q=80" },
-        { id: 'p4', name: "Edge Control", description: "Sleek Edges", price: 7500, image_url: "https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?auto=format&fit=crop&w=500&q=80" }
-    ];
+    const displayProducts = products;
 
     return (
-        <div className="min-h-screen font-sans text-gray-800 overflow-x-hidden" style={{ backgroundColor: colors.bg }}>
+        <div className="min-h-screen font-sans text-gray-800 overflow-x-hidden" style={{ backgroundColor: 'var(--bg-secondary)' }}>
 
             {/* Navigation */}
             <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm transition-all duration-300">
@@ -188,7 +169,7 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                                     priority
                                 />
                             </div>
-                            <span className="text-2xl md:text-3xl font-bold font-serif leading-none" style={{ color: colors.primary }}>
+                            <span className="text-2xl md:text-3xl font-bold font-serif leading-none text-crimson-primary">
                                 InStyle<br className="hidden md:block" /> <span className="text-sm md:text-lg font-sans font-normal text-gray-600 block md:inline">Hair Boutique</span>
                             </span>
                         </div>
@@ -199,15 +180,14 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                                 <button
                                     key={item}
                                     onClick={() => scrollToSection(item.toLowerCase())}
-                                    className="text-sm font-medium hover:text-[#C0392B] transition-colors uppercase tracking-wide"
+                                    className="text-sm font-medium hover:text-crimson-primary transition-colors uppercase tracking-wide"
                                 >
                                     {item}
                                 </button>
                             ))}
                             <button
                                 onClick={() => scrollToSection('booking')}
-                                className="px-6 py-2.5 rounded-full text-white font-medium transition-transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl"
-                                style={{ backgroundColor: colors.primary }}
+                                className="px-6 py-2.5 rounded-full text-white font-medium transition-transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl bg-crimson-primary hover:bg-crimson-dark"
                             >
                                 Book Now
                             </button>
@@ -237,8 +217,7 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                         ))}
                         <button
                             onClick={() => scrollToSection('booking')}
-                            className="w-full py-3 rounded-lg text-white font-bold text-center mt-2"
-                            style={{ backgroundColor: colors.primary }}
+                            className="w-full py-3 rounded-lg text-white font-bold text-center mt-2 bg-crimson-primary hover:bg-crimson-dark"
                         >
                             Book Appointment
                         </button>
@@ -249,14 +228,14 @@ export default function InStyleLandingPage({ services = [], products = [], confi
             {/* Hero Section */}
             <section id="home" className="relative pt-20 pb-32 overflow-hidden">
                 <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
-                    <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full blur-3xl" style={{ background: `radial-gradient(${colors.primary}, transparent 70%)` }}></div>
-                    <div className="absolute bottom-0 left-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full blur-3xl" style={{ background: `radial-gradient(${colors.secondary}, transparent 70%)` }}></div>
+                    <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full blur-3xl bg-crimson-100 opacity-30"></div>
+                    <div className="absolute bottom-0 left-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full blur-3xl bg-neutral-200 opacity-20"></div>
                 </div>
 
                 <div className="container mx-auto px-4 relative z-10 text-center">
                     <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-serif mb-6 leading-tight text-gray-900">
                         Transform Your Look With <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C0392B] to-[#1B1B1B]">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary-crimson)] to-[var(--neutral-900)]">
                             Premium Hair Services
                         </span>
                     </h1>
@@ -268,16 +247,14 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                     <div className="flex flex-col sm:flex-row justify-center gap-4">
                         <button
                             onClick={() => scrollToSection('booking')}
-                            className="px-8 py-4 rounded-full text-white font-semibold text-lg shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1 flex items-center justify-center gap-2"
-                            style={{ backgroundColor: colors.primary }}
+                            className="px-8 py-4 rounded-full text-white font-semibold text-lg shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1 flex items-center justify-center gap-2 bg-crimson-primary hover:bg-crimson-dark"
                         >
                             <Calendar className="w-5 h-5" />
                             Book Appointment
                         </button>
                         <button
                             onClick={() => scrollToSection('products')}
-                            className="px-8 py-4 rounded-full font-semibold text-lg border-2 hover:bg-[#C0392B] hover:text-white transition-all flex items-center justify-center gap-2"
-                            style={{ borderColor: colors.primary, color: colors.primary }}
+                            className="px-8 py-4 rounded-full font-semibold text-lg border-2 border-crimson-primary text-crimson-primary hover:bg-crimson-primary hover:text-white transition-all flex items-center justify-center gap-2"
                         >
                             <ShoppingBag className="w-5 h-5" />
                             Shop Products
@@ -326,7 +303,7 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                                         <h3 className="text-xl font-bold mb-2 text-gray-900">{service.name}</h3>
                                         <p className="text-gray-600 mb-4 text-sm line-clamp-2">{service.description}</p>
                                         <div className="flex items-center justify-between mb-6">
-                                            <span className="text-2xl font-bold" style={{ color: colors.primary }}>
+                                            <span className="text-2xl font-bold text-crimson-primary">
                                                 R{(service.price / 100).toFixed(0)}
                                             </span>
                                             <div className="flex items-center gap-1 text-amber-500 text-sm">
@@ -336,16 +313,7 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                                         </div>
                                         <button
                                             onClick={() => scrollToSection('booking')}
-                                            className="w-full py-3 rounded-xl font-semibold border-2 transition-all hover:text-white flex items-center justify-center gap-2"
-                                            style={{ borderColor: colors.primary, color: colors.primary }}
-                                            onMouseEnter={(e) => {
-                                                e.currentTarget.style.backgroundColor = colors.primary;
-                                                e.currentTarget.style.color = 'white';
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                e.currentTarget.style.backgroundColor = 'transparent';
-                                                e.currentTarget.style.color = colors.primary;
-                                            }}
+                                            className="w-full py-3 rounded-xl font-semibold border-2 border-crimson-primary text-crimson-primary hover:bg-crimson-primary hover:text-white transition-all flex items-center justify-center gap-2"
                                         >
                                             Book Now
                                         </button>
@@ -367,7 +335,7 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                         </div>
                         <Link
                             href="/book/instylehairboutique/shop"
-                            className="text-[#C0392B] font-semibold flex items-center gap-2 hover:gap-3 transition-all"
+                            className="text-crimson-primary font-semibold flex items-center gap-2 hover:gap-3 transition-all"
                         >
                             View All Products <ArrowRight className="w-5 h-5" />
                         </Link>
@@ -389,7 +357,7 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                                 </div>
                                 <h3 className="font-semibold text-gray-900 mb-1">{product.name}</h3>
                                 <div className="flex items-center justify-between">
-                                    <span className="font-bold text-[#C0392B]">R{(product.price / 100).toFixed(0)}</span>
+                                    <span className="font-bold text-crimson-primary">R{(product.price / 100).toFixed(0)}</span>
                                     <button className="p-2 rounded-full bg-gray-50 hover:bg-[#C0392B] hover:text-white transition-colors">
                                         <ShoppingCart className="w-4 h-4" />
                                     </button>
@@ -415,10 +383,10 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                             { name: "Amanda T.", text: "The coloring service is exceptional! They created the perfect shade for me.", role: "New Client" }
                         ].map((t, i) => (
                             <div key={i} className="bg-[#F9F9F9] p-8 rounded-2xl relative">
-                                <div className="text-6xl text-[#C0392B] opacity-10 absolute top-4 left-4 font-serif">&quot;</div>
+                                <div className="text-6xl text-crimson-primary opacity-10 absolute top-4 left-4 font-serif">&quot;</div>
                                 <p className="text-gray-600 italic mb-6 relative z-10">{t.text}</p>
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center font-bold text-[#C0392B]">
+                                    <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center font-bold text-crimson-primary">
                                         {t.name[0]}
                                     </div>
                                     <div>
@@ -450,7 +418,7 @@ export default function InStyleLandingPage({ services = [], products = [], confi
             </section>
 
             {/* Footer */}
-            <footer className="bg-[#1B1B1B] text-white pt-20 pb-10">
+            <footer className="bg-[var(--neutral-900)] text-white pt-20 pb-10">
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
                         <div>
@@ -465,7 +433,7 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                             </p>
                             <div className="flex gap-4">
                                 {[Instagram, Facebook, FaTiktok].map((Icon, i) => (
-                                    <a key={i} href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#C0392B] transition-colors">
+                                    <a key={i} href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-crimson-primary transition-colors">
                                         <Icon className="w-5 h-5" />
                                     </a>
                                 ))}
@@ -476,7 +444,7 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                             <h3 className="text-lg font-bold mb-6">Quick Links</h3>
                             <ul className="space-y-3 text-gray-400 text-sm">
                                 {['Home', 'Services', 'Products', 'Gallery', 'Book Now'].map(item => (
-                                    <li key={item}><a href="#" className="hover:text-[#C0392B] transition-colors">{item}</a></li>
+                                    <li key={item}><a href="#" className="hover:text-crimson-primary transition-colors">{item}</a></li>
                                 ))}
                             </ul>
                         </div>
@@ -494,15 +462,15 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                             <h3 className="text-lg font-bold mb-6">Contact Us</h3>
                             <ul className="space-y-4 text-gray-400 text-sm">
                                 <li className="flex items-start gap-3">
-                                    <MapPin className="w-5 h-5 text-[#C0392B] shrink-0" />
+                                    <MapPin className="w-5 h-5 text-crimson-primary shrink-0" />
                                     <span>Cape Town, South Africa</span>
                                 </li>
                                 <li className="flex items-center gap-3">
-                                    <Phone className="w-5 h-5 text-[#C0392B] shrink-0" />
+                                    <Phone className="w-5 h-5 text-crimson-primary shrink-0" />
                                     <span>+27 69 917 1527</span>
                                 </li>
                                 <li className="flex items-center gap-3">
-                                    <Mail className="w-5 h-5 text-[#C0392B] shrink-0" />
+                                    <Mail className="w-5 h-5 text-crimson-primary shrink-0" />
                                     <span>info@instylehairboutique.co.za</span>
                                 </li>
                             </ul>
@@ -519,7 +487,7 @@ export default function InStyleLandingPage({ services = [], products = [], confi
             <div className="fixed bottom-6 right-6 z-50">
                 <button
                     onClick={() => setShowAIChat(!showAIChat)}
-                    className="w-16 h-16 bg-gradient-to-r from-[#C0392B] to-[#E74C3C] rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-110 flex items-center justify-center text-white"
+                    className="w-16 h-16 bg-gradient-to-r from-crimson-primary to-crimson-light rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-110 flex items-center justify-center text-white"
                 >
                     <Bot className="w-8 h-8" />
                 </button>
@@ -529,7 +497,7 @@ export default function InStyleLandingPage({ services = [], products = [], confi
             {showAIChat && (
                 <div className="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-3rem)] z-50 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
                     {/* Chat Header */}
-                    <div className="bg-gradient-to-r from-[#C0392B] to-[#E74C3C] text-white p-4 flex items-center justify-between">
+                    <div className="bg-gradient-to-r from-crimson-primary to-crimson-light text-white p-4 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                                 <Bot className="w-6 h-6" />
@@ -552,7 +520,7 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                         <div className="space-y-4">
                             {/* Welcome Message */}
                             <div className="flex items-start gap-3">
-                                <div className="w-8 h-8 bg-[#C0392B] rounded-full flex items-center justify-center flex-shrink-0">
+                                <div className="w-8 h-8 bg-crimson-primary rounded-full flex items-center justify-center flex-shrink-0">
                                     <Bot className="w-4 h-4 text-white" />
                                 </div>
                                 <div className="bg-white rounded-2xl px-4 py-3 shadow-sm max-w-[80%]">
@@ -565,7 +533,7 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                             {/* User Messages */}
                             {aiConversations.filter((conv: any) => conv.query).map((conv: any) => (
                                 <div key={conv.id} className="flex items-start gap-3 justify-end">
-                                    <div className="bg-[#C0392B] text-white rounded-2xl px-4 py-3 shadow-sm max-w-[80%]">
+                                    <div className="bg-crimson-primary text-white rounded-2xl px-4 py-3 shadow-sm max-w-[80%]">
                                         <p className="text-sm">{conv.query}</p>
                                     </div>
                                     <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
@@ -577,7 +545,7 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                             {/* AI Responses */}
                             {aiConversations.filter((conv: any) => conv.response).map((conv: any) => (
                                 <div key={`response-${conv.id}`} className="flex items-start gap-3">
-                                    <div className="w-8 h-8 bg-[#C0392B] rounded-full flex items-center justify-center flex-shrink-0">
+                                    <div className="w-8 h-8 bg-crimson-primary rounded-full flex items-center justify-center flex-shrink-0">
                                         <Bot className="w-4 h-4 text-white" />
                                     </div>
                                     <div className="bg-white rounded-2xl px-4 py-3 shadow-sm max-w-[80%]">
@@ -589,7 +557,7 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                             {/* Typing Indicator */}
                             {isAiTyping && (
                                 <div className="flex items-start gap-3">
-                                    <div className="w-8 h-8 bg-[#C0392B] rounded-full flex items-center justify-center flex-shrink-0">
+                                    <div className="w-8 h-8 bg-crimson-primary rounded-full flex items-center justify-center flex-shrink-0">
                                         <Bot className="w-4 h-4 text-white" />
                                     </div>
                                     <div className="bg-white rounded-2xl px-4 py-3 shadow-sm">
@@ -613,13 +581,13 @@ export default function InStyleLandingPage({ services = [], products = [], confi
                                 onChange={(e) => setChatMessage(e.target.value)}
                                 onKeyPress={handleKeyPress}
                                 placeholder="Ask me about our services..."
-                                className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#C0392B] focus:border-transparent outline-none text-sm"
+                                className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-crimson-primary focus:border-transparent outline-none text-sm"
                                 disabled={isAiTyping}
                             />
                             <button
                                 onClick={handleSendMessage}
                                 disabled={!chatMessage.trim() || isAiTyping}
-                                className="px-4 py-3 bg-[#C0392B] text-white rounded-xl hover:bg-[#A93226] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center"
+                                className="px-4 py-3 bg-crimson-primary text-white rounded-xl hover:bg-crimson-dark transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center"
                             >
                                 <Send className="w-5 h-5" />
                             </button>

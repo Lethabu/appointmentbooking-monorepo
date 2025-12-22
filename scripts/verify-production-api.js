@@ -11,7 +11,10 @@ const TENANT_API_URL = 'https://www.instylehairboutique.co.za/api/tenant?slug=in
 
 const EXPECTED_SERVICES = [
   { name: 'Middle & Side Installation', price: 30000, duration_minutes: 60 },
-  { name: 'Maphondo & Lines Installation', price: 35000, duration_minutes: 60 }
+  { name: 'Maphondo & Lines Installation', price: 35000, duration_minutes: 60 },
+  { name: 'Soft Glam Makeup', price: 45000, duration_minutes: 120 },
+  { name: 'Gel Maphondo Styling', price: 35000, duration_minutes: 120 },
+  { name: 'Frontal Ponytail Installation', price: 95000, duration_minutes: 120 }
 ];
 
 function makeRequest(url) {
@@ -44,9 +47,9 @@ async function verifyAPI() {
       throw new Error('Services array not found in response');
     }
 
-    console.log(`\n🔢 Services Count: ${response.services.length} (Expected: 2)`);
+    console.log(`\n🔢 Services Count: ${response.services.length} (Expected: ${EXPECTED_SERVICES.length})`);
 
-    if (response.services.length !== 2) {
+    if (response.services.length !== EXPECTED_SERVICES.length) {
       console.error('❌ FAIL: Incorrect number of services');
       return false;
     }

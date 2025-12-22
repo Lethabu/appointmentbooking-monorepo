@@ -25,7 +25,7 @@ export default function Step1ServiceSelection() {
                     throw new Error('Failed to fetch services');
                 }
 
-                const data = await response.json();
+                const data = await (response.json() as Promise<any>);
                 setServices(data.services || []);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'Failed to load services');

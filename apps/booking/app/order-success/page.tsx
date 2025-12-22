@@ -21,8 +21,8 @@ function OrderSuccessContent() {
     if (orderId) {
       fetch(`/api/orders/${orderId}`)
         .then((res) => res.json())
-        .then((data) => {
-          setOrder(data);
+        .then((data: unknown) => {
+          setOrder(data as Order);
           setLoading(false);
         })
         .catch(() => setLoading(false));

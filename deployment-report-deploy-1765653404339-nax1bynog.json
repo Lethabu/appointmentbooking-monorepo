@@ -1,0 +1,65 @@
+{
+  "summary": {
+    "deploymentId": "deploy-1765653404339-nax1bynog",
+    "environment": "production",
+    "duration": 0,
+    "checkpoints": 0,
+    "status": "completed",
+    "timestamp": "2025-12-13T19:16:44.419Z"
+  },
+  "logs": [
+    {
+      "timestamp": "2025-12-13T19:16:44.341Z",
+      "type": "info",
+      "message": "🚀 Starting Production Cloudflare Deployment",
+      "deploymentId": "deploy-1765653404339-nax1bynog",
+      "environment": "production"
+    },
+    {
+      "timestamp": "2025-12-13T19:16:44.385Z",
+      "type": "info",
+      "message": "📋 Environment: production",
+      "deploymentId": "deploy-1765653404339-nax1bynog",
+      "environment": "production"
+    },
+    {
+      "timestamp": "2025-12-13T19:16:44.388Z",
+      "type": "info",
+      "message": "🆔 Deployment ID: deploy-1765653404339-nax1bynog",
+      "deploymentId": "deploy-1765653404339-nax1bynog",
+      "environment": "production"
+    },
+    {
+      "timestamp": "2025-12-13T19:16:44.401Z",
+      "type": "info",
+      "message": "============================================================",
+      "deploymentId": "deploy-1765653404339-nax1bynog",
+      "environment": "production"
+    },
+    {
+      "timestamp": "2025-12-13T19:16:44.405Z",
+      "type": "info",
+      "message": "🔍 Validating deployment environment...",
+      "deploymentId": "deploy-1765653404339-nax1bynog",
+      "environment": "production"
+    },
+    {
+      "timestamp": "2025-12-13T19:16:44.412Z",
+      "type": "error",
+      "message": "💥 Production deployment failed: Missing required environment variables: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID",
+      "deploymentId": "deploy-1765653404339-nax1bynog",
+      "environment": "production"
+    }
+  ],
+  "checkpoints": [],
+  "config": {
+    "environment": "production",
+    "accountId": "9e96c83268cae3e0f27168ed50c92033",
+    "databaseName": "appointmentbooking-db",
+    "databaseId": "59c06cd2-8bd2-45cf-ab62-84d7a4919e11",
+    "rollbackEnabled": true,
+    "healthCheckTimeout": 30000,
+    "deploymentTimeout": 600000,
+    "maxRetries": 3
+  }
+}

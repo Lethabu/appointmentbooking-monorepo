@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["DOM", "DOM.Iterable", "ES6"],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES6"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -17,9 +21,18 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@repo/ui": ["packages/ui/src"],
-      "@repo/db": ["packages/db/src"],
-      "@repo/auth": ["packages/auth/src"]
+      "@repo/ui": [
+        "packages/ui/src"
+      ],
+      "@repo/db": [
+        "packages/db/src"
+      ],
+      "@repo/auth": [
+        "packages/auth/src"
+      ],
+      "@repo/payments": [
+        "packages/payments/src"
+      ]
     }
   },
   "include": [

@@ -1,0 +1,7 @@
+{"timestamp":"2025-12-13T19:16:44.341Z","type":"info","message":"🚀 Starting Production Cloudflare Deployment","deploymentId":"deploy-1765653404339-nax1bynog","environment":"production"}
+{"timestamp":"2025-12-13T19:16:44.385Z","type":"info","message":"📋 Environment: production","deploymentId":"deploy-1765653404339-nax1bynog","environment":"production"}
+{"timestamp":"2025-12-13T19:16:44.388Z","type":"info","message":"🆔 Deployment ID: deploy-1765653404339-nax1bynog","deploymentId":"deploy-1765653404339-nax1bynog","environment":"production"}
+{"timestamp":"2025-12-13T19:16:44.401Z","type":"info","message":"============================================================","deploymentId":"deploy-1765653404339-nax1bynog","environment":"production"}
+{"timestamp":"2025-12-13T19:16:44.405Z","type":"info","message":"🔍 Validating deployment environment...","deploymentId":"deploy-1765653404339-nax1bynog","environment":"production"}
+{"timestamp":"2025-12-13T19:16:44.412Z","type":"error","message":"💥 Production deployment failed: Missing required environment variables: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID","deploymentId":"deploy-1765653404339-nax1bynog","environment":"production"}
+{"timestamp":"2025-12-13T19:16:44.422Z","type":"success","message":"📊 Deployment report saved: deployment-report-deploy-1765653404339-nax1bynog.json","deploymentId":"deploy-1765653404339-nax1bynog","environment":"production"}

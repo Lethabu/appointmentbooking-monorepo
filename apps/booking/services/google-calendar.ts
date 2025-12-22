@@ -45,7 +45,7 @@ async function refreshAccessToken(refreshToken: string, clientId: string, client
         }
 
         const data = await response.json();
-        return data.access_token;
+        return (data as { access_token: string }).access_token;
     } catch (error) {
         console.error('Failed to refresh Google Calendar access token:', error);
         return null;
@@ -131,7 +131,7 @@ export async function createCalendarEvent(
         }
 
         const eventData = await response.json();
-        return { eventId: eventData.id };
+        return { eventId: (eventData as { id: string }).id };
     } catch (error) {
         console.error('Failed to create calendar event:', error);
         return null;

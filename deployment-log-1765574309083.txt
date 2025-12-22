@@ -1,0 +1,7 @@
+[2025-12-12T21:18:18.602Z] [INFO] 🚀 Starting Direct Cloudflare Deployment
+[2025-12-12T21:18:18.862Z] [INFO] ============================================================
+[2025-12-12T21:18:18.881Z] [INFO] 📋 Phase 1: Pre-deployment Checks
+[2025-12-12T21:18:18.904Z] [INFO] 🔐 Checking Cloudflare Wrangler Authentication...
+[2025-12-12T21:18:29.054Z] [ERROR] ❌ Wrangler authentication required
+[2025-12-12T21:18:29.063Z] [ERROR] Please run: npx wrangler login
+[2025-12-12T21:18:29.069Z] [ERROR] 💥 Deployment failed: Wrangler authentication required

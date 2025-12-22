@@ -12,6 +12,9 @@ export interface AuthEnv {
   NEXTAUTH_URL: string;
 }
 
+// Export RBAC functionality
+export * from './rbac';
+
 export function getAuthOptions(env: AuthEnv): NextAuthOptions {
   const db = getDb({ DB: env.DB });
 

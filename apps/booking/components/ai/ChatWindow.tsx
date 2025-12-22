@@ -53,7 +53,7 @@ export function ChatWindow({ tenantId }: ChatWindowProps) {
         })
       })
 
-      const data = await response.json()
+      const data = await (response.json() as Promise<any>)
 
       if (response.ok) {
         const aiMessage: Message = {
@@ -95,11 +95,10 @@ export function ChatWindow({ tenantId }: ChatWindowProps) {
               className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[80%] p-2 rounded-lg text-sm ${
-                  message.isUser
+                className={`max-w-[80%] p-2 rounded-lg text-sm ${message.isUser
                     ? 'bg-blue-500 text-white'
                     : 'bg-gray-100 text-gray-900'
-                }`}
+                  }`}
               >
                 {message.text}
               </div>

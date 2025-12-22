@@ -44,9 +44,9 @@ function BookingWidget({ tenantId, services, branding }: BookingWidgetProps) {
 
   const handleBooking = async () => {
     if (!selectedService || !selectedDateTime) return
-    
+
     setLoading(true)
-    
+
     try {
       const response = await fetch('/api/book-appointment', {
         method: 'POST',
@@ -61,8 +61,8 @@ function BookingWidget({ tenantId, services, branding }: BookingWidgetProps) {
         })
       })
 
-      const result = await response.json()
-      
+      const result = await (response.json() as Promise<any>)
+
       if (result.success) {
         setRedirectUrl(result.paymentUrl)
       } else {
@@ -93,7 +93,7 @@ function BookingWidget({ tenantId, services, branding }: BookingWidgetProps) {
           <CardContent>
             <div className="grid gap-4">
               {services.map((service) => (
-                <div 
+                <div
                   key={service.id}
                   className="border rounded-lg p-4 cursor-pointer hover:bg-gray-50"
                   onClick={() => handleServiceSelect(service)}
@@ -140,7 +140,7 @@ function BookingWidget({ tenantId, services, branding }: BookingWidgetProps) {
                 <Button variant="outline" onClick={() => setStep(1)}>
                   Back
                 </Button>
-                <Button 
+                <Button
                   onClick={() => handleDateTimeSelect(selectedDateTime)}
                   disabled={!selectedDateTime}
                 >
@@ -165,7 +165,7 @@ function BookingWidget({ tenantId, services, branding }: BookingWidgetProps) {
                 <Input
                   id="name"
                   value={customerData.name}
-                  onChange={(e) => setCustomerData({...customerData, name: e.target.value})}
+                  onChange={(e) => setCustomerData({ ...customerData, name: e.target.value })}
                   required
                 />
               </div>
@@ -175,7 +175,7 @@ function BookingWidget({ tenantId, services, branding }: BookingWidgetProps) {
                   id="email"
                   type="email"
                   value={customerData.email}
-                  onChange={(e) => setCustomerData({...customerData, email: e.target.value})}
+                  onChange={(e) => setCustomerData({ ...customerData, email: e.target.value })}
                   required
                 />
               </div>
@@ -185,15 +185,15 @@ function BookingWidget({ tenantId, services, branding }: BookingWidgetProps) {
                   id="phone"
                   type="tel"
                   value={customerData.phone}
-                  onChange={(e) => setCustomerData({...customerData, phone: e.target.value})}
+                  onChange={(e) => setCustomerData({ ...customerData, phone: e.target.value })}
                   required
                 />
               </div>
-              
+
               {/* POPIA Consent */}
               <div className="text-xs text-gray-600 bg-gray-50 p-3 rounded">
-                By booking this appointment, you consent to the processing of your personal data 
-                in accordance with POPIA (Protection of Personal Information Act). 
+                By booking this appointment, you consent to the processing of your personal data
+                in accordance with POPIA (Protection of Personal Information Act).
                 Your data will only be used for appointment management and service delivery.
               </div>
 
@@ -201,7 +201,7 @@ function BookingWidget({ tenantId, services, branding }: BookingWidgetProps) {
                 <Button variant="outline" onClick={() => setStep(2)}>
                   Back
                 </Button>
-                <Button 
+                <Button
                   onClick={handleBooking}
                   disabled={!customerData.name || !customerData.email || loading}
                   className="flex-1"

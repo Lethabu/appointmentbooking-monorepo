@@ -49,7 +49,7 @@ export default function ShopPage() {
                 // Fetch from the new Worker Endpoint
                 const url = `https://instylehairboutique.co.za/api/products${selectedCategory !== 'all' ? `?category=${selectedCategory}` : ''}`
                 const res = await fetch(url)
-                const data = await res.json()
+                const data = await (res.json() as Promise<any>)
 
                 if (data.products) {
                     setProducts(data.products)
@@ -81,7 +81,7 @@ export default function ShopPage() {
         setWishlist(prev => {
             const exists = prev.includes(id)
             const next = exists ? prev.filter(x => x !== id) : [...prev, id]
-            try { localStorage.setItem('instyle_wishlist', JSON.stringify(next)) } catch (e) {}
+            try { localStorage.setItem('instyle_wishlist', JSON.stringify(next)) } catch (e) { }
             return next
         })
     }
@@ -131,8 +131,8 @@ export default function ShopPage() {
                             key={cat.slug}
                             onClick={() => setSelectedCategory(cat.slug)}
                             className={`p-4 rounded-xl transition-all ${selectedCategory === cat.slug
-                                    ? 'bg-primary text-white shadow-lg scale-105'
-                                    : 'bg-white text-gray-600 hover:bg-gray-100'
+                                ? 'bg-primary text-white shadow-lg scale-105'
+                                : 'bg-white text-gray-600 hover:bg-gray-100'
                                 }`}
                         >
                             <div className="text-2xl mb-1">{cat.icon}</div>
@@ -142,8 +142,8 @@ export default function ShopPage() {
                     <button
                         onClick={() => setSelectedCategory('all')}
                         className={`p-4 rounded-xl transition-all ${selectedCategory === 'all'
-                                ? 'bg-gray-900 text-white shadow-lg scale-105'
-                                : 'bg-white text-gray-600 hover:bg-gray-100'
+                            ? 'bg-gray-900 text-white shadow-lg scale-105'
+                            : 'bg-white text-gray-600 hover:bg-gray-100'
                             }`}
                     >
                         <div className="text-2xl mb-1">🛍️</div>

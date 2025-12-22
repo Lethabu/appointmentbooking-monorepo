@@ -1,0 +1,14 @@
+{
+    "Booking": {
+        "title": "Book an Appointment",
+        "select_service": "Select a Service",
+        "select_time": "Select a Time",
+        "deposit_required": "Deposit Required",
+        "confirm": "Confirm Booking",
+        "pay_and_confirm": "Pay {amount} & Confirm"
+    },
+    "Common": {
+        "loading": "Loading...",
+        "error": "Something went wrong"
+    }
+}

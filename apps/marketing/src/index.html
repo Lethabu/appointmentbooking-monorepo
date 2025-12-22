@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AppointmentBooking - AI-Powered Salon Management</title>
+    <meta name="description" content="Complete salon booking platform with AI assistants. Increase bookings by 300%, reduce no-shows by 80%.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#1F2937',
+                        accent: '#F9FAFB'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .bg-gradient-radial {
+            background: radial-gradient(circle, var(--tw-gradient-stops));
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 via-white to-gray-50 font-sans">
+    <div class="min-h-screen">
+        <!-- Navigation -->
+        <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm transition-all duration-300">
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <a href="#" class="text-2xl font-bold text-gray-900 tracking-tighter">Appointment<span class="text-primary">Booking</span></a>
+                <div class="hidden md:flex gap-8 items-center text-sm font-medium text-gray-600">
+                    <a href="#features" class="hover:text-primary transition-colors">Features</a>
+                    <a href="#pricing" class="hover:text-primary transition-colors">Pricing</a>
+                    <a href="#contact" class="hover:text-primary transition-colors">Contact</a>
+                    <a href="/auth/register" class="px-6 py-2 bg-primary text-white rounded-full hover:bg-blue-700 transition-colors">Get Started</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <div class="relative pt-32 pb-32 px-4 overflow-hidden bg-gray-50">
+            <div class="absolute inset-0 z-0 opacity-10">
+                <div class="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl bg-gradient-radial from-primary to-transparent"></div>
+                <div class="absolute bottom-0 left-0 w-96 h-96 rounded-full blur-3xl bg-gradient-radial from-secondary to-transparent"></div>
+            </div>
+            <div class="container mx-auto max-w-5xl relative z-10 text-center">
+                <span class="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-6 tracking-wide uppercase">🚀 Join 500+ Salons</span>
+                <h1 class="text-5xl md:text-7xl font-bold mb-8 text-gray-900 leading-tight">
+                    The Complete Salon
+                    <span class="bg-gradient-to-r from-primary to-blue-800 bg-clip-text text-transparent">Booking Platform</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed">
+                    Increase bookings by 300%, reduce no-shows by 80%, and delight customers with AI-powered appointment management.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="/auth/register" class="px-8 py-4 bg-primary text-white font-semibold text-lg rounded-full shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1 flex items-center justify-center gap-2">
+                        <span>🚀 Start Free Trial</span>
+                    </a>
+                    <a href="#features" class="px-8 py-4 bg-white text-gray-900 border border-gray-200 font-semibold text-lg rounded-full shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 hover:border-gray-300 flex items-center justify-center gap-2">
+                        <span>📋 View Features</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="py-16 bg-white border-b border-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div class="p-4">
+                        <div class="text-4xl mb-4">📈</div>
+                        <h3 class="font-bold text-gray-900 mb-2">300% More Bookings</h3>
+                        <p class="text-gray-500 text-sm">Average increase</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-4xl mb-4">🤖</div>
+                        <h3 class="font-bold text-gray-900 mb-2">AI-Powered</h3>
+                        <p class="text-gray-500 text-sm">24/7 automation</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-4xl mb-4">⚡</div>
+                        <h3 class="font-bold text-gray-900 mb-2">Lightning Fast</h3>
+                        <p class="text-gray-500 text-sm">Edge network</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-4xl mb-4">💳</div>
+                        <h3 class="font-bold text-gray-900 mb-2">Secure Payments</h3>
+                        <p class="text-gray-500 text-sm">Multiple gateways</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div id="features" class="py-24 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-4">Complete Salon Management</h2>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto">Everything you need to run a successful salon business</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow">
+                        <div class="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl text-white font-bold">📅</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Smart Booking</h3>
+                        <p class="text-gray-600 mb-4">AI-powered scheduling that prevents double bookings and optimizes your calendar</p>
+                        <ul class="text-sm text-left space-y-2">
+                            <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Real-time availability</li>
+                            <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Automated reminders</li>
+                            <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Multi-staff scheduling</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow">
+                        <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl text-white font-bold">👥</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Customer Experience</h3>
+                        <p class="text-gray-600 mb-4">Delight customers with seamless booking and loyalty rewards</p>
+                        <ul class="text-sm text-left space-y-2">
+                            <li class="flex items-center gap-2"><span class="text-green-500">✓</span> One-click rebooking</li>
+                            <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Loyalty points system</li>
+                            <li class="flex items-center gap-2"><span class="text-green-500">✓</span> AI chat support</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow">
+                        <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl text-white font-bold">📊</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Business Growth</h3>
+                        <p class="text-gray-600 mb-4">Analytics and tools to grow your revenue and customer base</p>
+                        <ul class="text-sm text-left space-y-2">
+                            <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Revenue analytics</li>
+                            <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Marketing automation</li>
+                            <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Referral program</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="py-20 bg-gradient-to-r from-primary to-blue-600 text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to transform your salon?</h2>
+                <p class="text-xl mb-8 opacity-90">Join hundreds of successful salons using our platform</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="/auth/register" class="px-8 py-3 bg-white text-primary font-semibold rounded-lg hover:bg-gray-100 transition-colors">Get Started Free</a>
+                    <a href="#contact" class="px-8 py-3 border border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-colors">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-white pt-12 pb-6">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                    <div class="col-span-1 md:col-span-2">
+                        <h3 class="text-2xl font-bold mb-4">Appointment<span class="text-primary">Booking</span></h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            The complete salon management platform trusted by 500+ salons across South Africa.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-4">Product</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="#features" class="hover:text-white transition-colors">Features</a></li>
+                            <li><a href="#pricing" class="hover:text-white transition-colors">Pricing</a></li>
+                            <li><a href="/auth/register" class="hover:text-white transition-colors">Sign Up</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-4">Support</h4>
+                        <ul class="space-y-2 text-sm text-gray-400">
+                            <li><a href="#contact" class="hover:text-white transition-colors">Contact</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">API Docs</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-gray-800 pt-6 text-center text-sm text-gray-500">
+                    <p>&copy; 2025 AppointmentBooking. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

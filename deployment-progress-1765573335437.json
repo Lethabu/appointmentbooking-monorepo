@@ -1,0 +1,87 @@
+{
+  "cloudflare_direct_deployment": {
+    "title": "Deploy to Cloudflare Directly (Bypassing GitHub)",
+    "description": "Complete end-to-end deployment to Cloudflare without using GitHub",
+    "tasks": [
+      {
+        "id": "setup_authentication",
+        "title": "Set up Cloudflare Authentication",
+        "description": "Configure Wrangler authentication for direct Cloudflare access",
+        "status": "in_progress",
+        "command": "node scripts/quick-cloudflare-auth.js",
+        "estimated_time": "5 minutes",
+        "notes": "",
+        "completed_at": null
+      },
+      {
+        "id": "verify_configuration",
+        "title": "Verify Project Configuration",
+        "description": "Check wrangler.toml, package.json, and deployment configs",
+        "status": "pending",
+        "command": "npm run build && npm run lint",
+        "estimated_time": "10 minutes"
+      },
+      {
+        "id": "build_applications",
+        "title": "Build All Applications",
+        "description": "Build Next.js apps and prepare Worker for deployment",
+        "status": "pending",
+        "command": "pnpm run build",
+        "estimated_time": "15 minutes"
+      },
+      {
+        "id": "deploy_worker",
+        "title": "Deploy Cloudflare Worker",
+        "description": "Deploy main Worker API to Cloudflare",
+        "status": "pending",
+        "command": "npx wrangler deploy",
+        "estimated_time": "5 minutes"
+      },
+      {
+        "id": "deploy_nextjs_apps",
+        "title": "Deploy Next.js Applications",
+        "description": "Deploy booking and dashboard apps to Cloudflare Pages",
+        "status": "pending",
+        "command": "cd apps/booking && npm run pages:deploy && cd ../dashboard && npm run pages:deploy",
+        "estimated_time": "10 minutes"
+      },
+      {
+        "id": "apply_database_migrations",
+        "title": "Apply Database Migrations",
+        "description": "Execute D1 database migrations on Cloudflare",
+        "status": "pending",
+        "command": "wrangler d1 execute appointmentbooking-db --remote --file=scripts/migrations/004-safe-instyle-sync.sql",
+        "estimated_time": "5 minutes"
+      },
+      {
+        "id": "configure_custom_domains",
+        "title": "Configure Custom Domains",
+        "description": "Set up instylehairboutique.co.za and dashboard subdomain routing",
+        "status": "pending",
+        "command": "Manual via Cloudflare Dashboard",
+        "estimated_time": "15 minutes"
+      },
+      {
+        "id": "verify_deployment",
+        "title": "Verify Deployment",
+        "description": "Test all endpoints and functionality",
+        "status": "pending",
+        "command": "node scripts/verify-production-api.js",
+        "estimated_time": "10 minutes"
+      },
+      {
+        "id": "end_to_end_testing",
+        "title": "End-to-End Testing",
+        "description": "Complete user journey testing from booking to dashboard",
+        "status": "pending",
+        "command": "Manual testing + automated tests",
+        "estimated_time": "20 minutes"
+      }
+    ],
+    "total_estimated_time": "95 minutes",
+    "status": "failed",
+    "created_at": "2025-12-12T21:02:15.280Z",
+    "failed_at": "2025-12-12T21:02:15.436Z",
+    "error": "setupCloudflareAuth is not a function"
+  }
+}

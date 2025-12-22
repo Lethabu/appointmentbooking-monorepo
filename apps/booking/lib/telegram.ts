@@ -45,10 +45,10 @@ export class TelegramBot {
         })
       });
 
-      const result = await response.json();
-      return { 
-        success: result.ok, 
-        messageId: result.result?.message_id 
+      const result: { ok: boolean; result?: { message_id: number } } = await response.json();
+      return {
+        success: result.ok,
+        messageId: result.result?.message_id
       };
     } catch (error) {
       console.error('Telegram sendMessage error:', error);
@@ -69,7 +69,7 @@ export class TelegramBot {
         })
       });
 
-      const result = await response.json();
+      const result: { ok: boolean } = await response.json();
       return { success: result.ok };
     } catch (error) {
       console.error('Telegram sendPhoto error:', error);
@@ -80,7 +80,7 @@ export class TelegramBot {
   // Create inline keyboard
   createInlineKeyboard(buttons: InlineKeyboard[][]): any {
     return {
-      inline_keyboard: buttons.map(row => 
+      inline_keyboard: buttons.map(row =>
         row.map(button => ({
           text: button.text,
           callback_data: button.callbackData,

@@ -8,6 +8,8 @@ export const tenants = sqliteTable('tenants', {
   name: text('name'),
   hostnames: text('hostnames', { mode: 'json' }).$type<string[]>(),
   config: text('config', { mode: 'json' }).$type<Record<string, any>>(),
+  currency: text('currency').default('ZAR'), // Added for multi-currency support
+  paymentConfig: text('payment_config', { mode: 'json' }).$type<Record<string, any>>(), // Added for payment gateways
   salonId: text('salon_id'),
   isActive: integer('is_active', { mode: 'boolean' }).default(true),
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
@@ -150,6 +152,26 @@ export const aiAgentLogs = sqliteTable('ai_agent_logs', {
   timestampIdx: index('ai_agent_logs_timestamp_idx').on(table.timestamp),
 }));
 
+// Notifications table for system/email/push messages (migrated from legacy)
+export const notifications = sqliteTable('notifications', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull().references(() => tenants.id),
+  userId: text('user_id').notNull().references(() => users.id),
+  appointmentId: text('appointment_id').references(() => appointments.id),
+  type: text('type').notNull(), // 'confirmation', 'reminder', 'cancellation', 'update'
+  channel: text('channel').notNull(), // 'email', 'sms', 'whatsapp', 'push'
+  recipient: text('recipient').notNull(), // Email address or phone number
+  message: text('message').notNull(),
+  status: text('status').default('pending'), // 'pending', 'sent', 'failed', 'delivered'
+  sentAt: integer('sent_at', { mode: 'timestamp' }),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  tenantIdx: index('notifications_tenant_idx').on(table.tenantId),
+  userIdx: index('notifications_user_idx').on(table.userId),
+  appointmentIdx: index('notifications_appointment_idx').on(table.appointmentId),
+  statusIdx: index('notifications_status_idx').on(table.status),
+}));
+
 // Ecommerce Tables for Salon Product Sales
 
 // Products table for salon merchandise and services
@@ -238,4 +260,264 @@ export const marketingCampaigns = sqliteTable('marketing_campaigns', {
 }, (table) => ({
   tenantIdx: index('marketing_campaigns_tenant_idx').on(table.tenantId),
   typeIdx: index('marketing_campaigns_type_idx').on(table.type),
+}));
+
+// ========================================
+// ROLE-BASED ACCESS CONTROL (RBAC) SYSTEM
+// ========================================
+
+// Permission definitions enum
+export const PermissionType = {
+  // User Management
+  USER_CREATE: 'user:create',
+  USER_READ: 'user:read',
+  USER_UPDATE: 'user:update',
+  USER_DELETE: 'user:delete',
+  USER_MANAGE_ROLES: 'user:manage_roles',
+
+  // Appointment Management
+  APPOINTMENT_CREATE: 'appointment:create',
+  APPOINTMENT_READ: 'appointment:read',
+  APPOINTMENT_UPDATE: 'appointment:update',
+  APPOINTMENT_DELETE: 'appointment:delete',
+  APPOINTMENT_MANAGE_ALL: 'appointment:manage_all',
+
+  // Service Management
+  SERVICE_CREATE: 'service:create',
+  SERVICE_READ: 'service:read',
+  SERVICE_UPDATE: 'service:update',
+  SERVICE_DELETE: 'service:delete',
+
+  // Product Management
+  PRODUCT_CREATE: 'product:create',
+  PRODUCT_READ: 'product:read',
+  PRODUCT_UPDATE: 'product:update',
+  PRODUCT_DELETE: 'product:delete',
+  PRODUCT_INVENTORY: 'product:inventory',
+
+  // Analytics & Reporting
+  ANALYTICS_VIEW: 'analytics:view',
+  REPORTS_EXPORT: 'reports:export',
+  DASHBOARD_VIEW: 'dashboard:view',
+
+  // System Administration
+  SETTINGS_UPDATE: 'settings:update',
+  TENANT_MANAGE: 'tenant:manage',
+  BILLING_MANAGE: 'billing:manage',
+
+  // Marketing & Communication
+  MARKETING_SEND: 'marketing:send',
+  NOTIFICATIONS_MANAGE: 'notifications:manage',
+
+  // Full System Access (Admin only)
+  SYSTEM_ADMIN: '*'
+} as const;
+
+// Roles table - defines permission sets per tenant
+export const roles = sqliteTable('roles', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull().references(() => tenants.id, { onDelete: 'cascade' }),
+  name: text('name').notNull(),
+  description: text('description'),
+  permissions: text('permissions', { mode: 'json' }).$type<string[]>().default([]),
+  isSystemRole: integer('is_system_role', { mode: 'boolean' }).default(false),
+  isActive: integer('is_active', { mode: 'boolean' }).default(true),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  tenantIdx: index('roles_tenant_idx').on(table.tenantId),
+  nameIdx: index('roles_name_idx').on(table.name),
+  systemIdx: index('roles_system_idx').on(table.isSystemRole),
+}));
+
+// User-Role junction table - assigns roles to users
+export const userRoles = sqliteTable('user_roles', {
+  id: text('id').primaryKey(),
+  userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  roleId: text('role_id').notNull().references(() => roles.id, { onDelete: 'cascade' }),
+  assignedBy: text('assigned_by').references(() => users.id),
+  assignedAt: integer('assigned_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+  expiresAt: integer('expires_at', { mode: 'timestamp' }), // Optional role expiration
+  isActive: integer('is_active', { mode: 'boolean' }).default(true),
+}, (table) => ({
+  userIdx: index('user_roles_user_idx').on(table.userId),
+  roleIdx: index('user_roles_role_idx').on(table.roleId),
+  compositeIdx: index('user_roles_composite_idx').on(table.userId, table.roleId),
+}));
+
+// Role permission audit log - tracks permission changes
+export const roleAuditLog = sqliteTable('role_audit_log', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull().references(() => tenants.id, { onDelete: 'cascade' }),
+  userId: text('user_id').references(() => users.id), // User who made the change
+  action: text('action').notNull(), // 'create', 'update', 'delete', 'assign', 'revoke'
+  resourceType: text('resource_type').notNull(), // 'role', 'user_role', 'permission'
+  resourceId: text('resource_id').notNull(),
+  oldValue: text('old_value', { mode: 'json' }),
+  newValue: text('new_value', { mode: 'json' }),
+  ipAddress: text('ip_address'),
+  userAgent: text('user_agent'),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  tenantIdx: index('role_audit_tenant_idx').on(table.tenantId),
+  userIdx: index('role_audit_user_idx').on(table.userId),
+  actionIdx: index('role_audit_action_idx').on(table.action),
+  resourceIdx: index('role_audit_resource_idx').on(table.resourceType, table.resourceId),
+}));
+
+// Default role templates for new tenants
+export const defaultRoles = {
+  admin: {
+    name: 'Administrator',
+    description: 'Full system access and management',
+    permissions: [
+      PermissionType.SYSTEM_ADMIN,
+      PermissionType.USER_MANAGE_ROLES,
+      PermissionType.TENANT_MANAGE,
+      PermissionType.BILLING_MANAGE
+    ]
+  },
+
+  staff: {
+    name: 'Staff',
+    description: 'Operational staff with booking and client management',
+    permissions: [
+      PermissionType.APPOINTMENT_CREATE,
+      PermissionType.APPOINTMENT_READ,
+      PermissionType.APPOINTMENT_UPDATE,
+      PermissionType.APPOINTMENT_DELETE,
+      PermissionType.USER_READ,
+      PermissionType.SERVICE_READ,
+      PermissionType.PRODUCT_READ,
+      PermissionType.DASHBOARD_VIEW,
+      PermissionType.NOTIFICATIONS_MANAGE
+    ]
+  },
+
+  customer: {
+    name: 'Customer',
+    description: 'Registered customers with booking access',
+    permissions: [
+      PermissionType.APPOINTMENT_CREATE,
+      PermissionType.APPOINTMENT_READ,
+      PermissionType.APPOINTMENT_UPDATE, // Limited to own appointments
+      PermissionType.PRODUCT_READ
+    ]
+  },
+
+  guest: {
+    name: 'Guest',
+    description: 'Anonymous users for booking',
+    permissions: [
+      PermissionType.APPOINTMENT_CREATE,
+      PermissionType.SERVICE_READ,
+      PermissionType.PRODUCT_READ
+    ]
+  }
+} as const;
+
+// ========================================
+// ADVANCED AVAILABILITY MANAGEMENT
+// ========================================
+
+// Employee schedules - flexible work hours
+export const employeeSchedules = sqliteTable('employee_schedules', {
+  id: text('id').primaryKey(),
+  employeeId: text('employee_id').notNull().references(() => employees.id, { onDelete: 'cascade' }),
+  dayOfWeek: integer('day_of_week').notNull(), // 0 = Sunday, 6 = Saturday
+  startTime: text('start_time').notNull(), // HH:MM format
+  endTime: text('end_time').notNull(), // HH:MM format
+  breakStart: text('break_start'), // Optional break period
+  breakEnd: text('break_end'),
+  isActive: integer('is_active', { mode: 'boolean' }).default(true),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  employeeIdx: index('employee_schedules_employee_idx').on(table.employeeId),
+  dayIdx: index('employee_schedules_day_idx').on(table.dayOfWeek),
+}));
+
+// Holiday and closure management
+export const holidays = sqliteTable('holidays', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull().references(() => tenants.id, { onDelete: 'cascade' }),
+  name: text('name').notNull(),
+  description: text('description'),
+  date: text('date').notNull(), // YYYY-MM-DD format
+  isRecurring: integer('is_recurring', { mode: 'boolean' }).default(false),
+  affectsAllEmployees: integer('affects_all_employees', { mode: 'boolean' }).default(true),
+  affectedEmployeeIds: text('affected_employee_ids', { mode: 'json' }).$type<string[]>(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  tenantIdx: index('holidays_tenant_idx').on(table.tenantId),
+  dateIdx: index('holidays_date_idx').on(table.date),
+}));
+
+// Blocked time slots for maintenance/cleaning
+export const blockedSlots = sqliteTable('blocked_slots', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull().references(() => tenants.id, { onDelete: 'cascade' }),
+  employeeId: text('employee_id').references(() => employees.id, { onDelete: 'cascade' }), // Null = all employees
+  startTime: integer('start_time', { mode: 'timestamp' }).notNull(),
+  endTime: integer('end_time', { mode: 'timestamp' }).notNull(),
+  reason: text('reason').notNull(),
+  isActive: integer('is_active', { mode: 'boolean' }).default(true),
+  createdBy: text('created_by').references(() => users.id),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  tenantIdx: index('blocked_slots_tenant_idx').on(table.tenantId),
+  employeeIdx: index('blocked_slots_employee_idx').on(table.employeeId),
+  timeIdx: index('blocked_slots_time_idx').on(table.startTime, table.endTime),
+}));
+
+// ========================================
+// PAYMENT PLANS & DEPOSITS
+// ========================================
+
+// Enhanced payment plans for deposits and installments
+export const paymentPlans = sqliteTable('payment_plans', {
+  id: text('id').primaryKey(),
+  bookingId: text('booking_id').notNull().references(() => appointments.id, { onDelete: 'cascade' }),
+  tenantId: text('tenant_id').notNull().references(() => tenants.id, { onDelete: 'cascade' }),
+  totalAmount: integer('total_amount').notNull(), // Total booking amount in cents
+  depositAmount: integer('deposit_amount'), // Required deposit in cents (null = full payment)
+  depositPercentage: integer('deposit_percentage'), // Alternative to fixed amount
+  paymentSchedule: text('payment_schedule', { mode: 'json' }).$type<{
+    dueDate: string;
+    amount: number;
+    description: string;
+    isPaid: boolean;
+    paymentId?: string;
+  }[]>(),
+  status: text('status').default('pending'), // 'pending', 'deposit_paid', 'completed', 'cancelled'
+  autoChargeEnabled: integer('auto_charge_enabled', { mode: 'boolean' }).default(false),
+  reminderSettings: text('reminder_settings', { mode: 'json' }).$type<{
+    emailReminders: boolean;
+    smsReminders: boolean;
+    daysBeforeDue: number[];
+  }>(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  bookingIdx: index('payment_plans_booking_idx').on(table.bookingId),
+  tenantIdx: index('payment_plans_tenant_idx').on(table.tenantId),
+  statusIdx: index('payment_plans_status_idx').on(table.status),
+}));
+
+// Payment tracking for multi-part payments
+export const paymentInstallments = sqliteTable('payment_installments', {
+  id: text('id').primaryKey(),
+  paymentPlanId: text('payment_plan_id').notNull().references(() => paymentPlans.id, { onDelete: 'cascade' }),
+  amount: integer('amount').notNull(), // Amount in cents
+  dueDate: integer('due_date', { mode: 'timestamp' }).notNull(),
+  paidDate: integer('paid_date', { mode: 'timestamp' }),
+  status: text('status').default('pending'), // 'pending', 'paid', 'overdue', 'cancelled'
+  paymentMethod: text('payment_method'),
+  transactionId: text('transaction_id'),
+  failureReason: text('failure_reason'),
+  reminderSent: integer('reminder_sent', { mode: 'boolean' }).default(false),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  planIdx: index('payment_installments_plan_idx').on(table.paymentPlanId),
+  dueDateIdx: index('payment_installments_due_idx').on(table.dueDate),
+  statusIdx: index('payment_installments_status_idx').on(table.status),
 }));

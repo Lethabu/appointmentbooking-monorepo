@@ -1,3 +1,5 @@
+import type { ChatResponse } from '@/types';
+
 // API utility functions
 export const api = {
   get: async (url: string, options?: RequestInit) => {
@@ -9,11 +11,11 @@ export const api = {
       },
       ...options,
     });
-    
+
     if (!response.ok) {
       throw new Error(`API Error: ${response.status}`);
     }
-    
+
     return response.json();
   },
 
@@ -27,11 +29,11 @@ export const api = {
       body: data ? JSON.stringify(data) : undefined,
       ...options,
     });
-    
+
     if (!response.ok) {
       throw new Error(`API Error: ${response.status}`);
     }
-    
+
     return response.json();
   },
 
@@ -45,11 +47,11 @@ export const api = {
       body: data ? JSON.stringify(data) : undefined,
       ...options,
     });
-    
+
     if (!response.ok) {
       throw new Error(`API Error: ${response.status}`);
     }
-    
+
     return response.json();
   },
 
@@ -62,11 +64,11 @@ export const api = {
       },
       ...options,
     });
-    
+
     if (!response.ok) {
       throw new Error(`API Error: ${response.status}`);
     }
-    
+
     return response.json();
   },
 
@@ -83,7 +85,7 @@ export const api = {
     return api.post('/api/book-appointment', bookingData);
   },
 
-  sendChatMessage: async (message: string, agent: string, tenantId?: string) => {
-    return api.post('/api/agent', { input: message, agent, tenantId });
+  sendChatMessage: async (message: string, agent: string, tenantId?: string): Promise<ChatResponse> => {
+    return api.post('/api/agent', { input: message, agent, tenantId }) as Promise<ChatResponse>;
   },
 };

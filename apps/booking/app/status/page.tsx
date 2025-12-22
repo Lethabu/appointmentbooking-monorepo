@@ -27,8 +27,8 @@ export default function StatusPage() {
   const fetchSystemStatus = async () => {
     try {
       const response = await fetch('/api/health');
-      const data = await response.json();
-      
+      const data = await (response.json() as Promise<any>);
+
       setSystems([
         {
           name: 'Website',
@@ -88,7 +88,7 @@ export default function StatusPage() {
       outage: 'destructive',
       maintenance: 'outline'
     } as const;
-    
+
     return (
       <Badge variant={variants[status as keyof typeof variants] || 'default'}>
         {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -96,17 +96,17 @@ export default function StatusPage() {
     );
   };
 
-  const overallStatus = systems.every(s => s.status === 'operational') 
-    ? 'All Systems Operational' 
+  const overallStatus = systems.every(s => s.status === 'operational')
+    ? 'All Systems Operational'
     : systems.some(s => s.status === 'outage')
-    ? 'Service Disruption'
-    : 'Partial Outage';
+      ? 'Service Disruption'
+      : 'Partial Outage';
 
-  const overallStatusColor = overallStatus === 'All Systems Operational' 
-    ? 'text-green-600' 
+  const overallStatusColor = overallStatus === 'All Systems Operational'
+    ? 'text-green-600'
     : overallStatus === 'Service Disruption'
-    ? 'text-red-600'
-    : 'text-yellow-600';
+      ? 'text-red-600'
+      : 'text-yellow-600';
 
   if (loading) {
     return (

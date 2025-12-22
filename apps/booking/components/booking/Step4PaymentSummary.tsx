@@ -39,11 +39,11 @@ export default function Step4PaymentSummary() {
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
+                const errorData = await (response.json() as Promise<any>);
                 throw new Error(errorData.error?.message || 'Failed to create booking');
             }
 
-            const result = await response.json();
+            const result = await (response.json() as Promise<any>);
 
             // Save booking ID and move to confirmation
             setBookingConfirmation(result.booking.id);

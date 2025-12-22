@@ -39,8 +39,8 @@ export function BookingPageContent() {
     try {
       setLoading(true);
       const [servicesData, productsData] = await Promise.all([
-        api.getServices(tenant.id),
-        api.getProducts(tenant.id),
+        api.getServices(tenant.id) as Promise<Service[]>,
+        api.getProducts(tenant.id) as Promise<Product[]>,
       ]);
 
       setServices(servicesData);

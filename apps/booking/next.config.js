@@ -8,6 +8,8 @@ try {
 }
 */
 
+const withNextIntl = require('next-intl/plugin')('./i18n.ts');
+
 // Bundle analyzer configuration
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
@@ -56,7 +58,15 @@ if (process.env.NODE_ENV === 'development') {
   setupDevPlatform();
 }
 
-module.exports = withBundleAnalyzer(nextConfig);
+module.exports = withBundleAnalyzer(withNextIntl(nextConfig));
+
+// Note: next.config.js webpack customization happens here
+// The original webpack config was mutating the object passed to module.exports
+// However, next-intl wraps the config.
+// We need to move the webpack property INTO the nextConfig object *before* wrapping it,
+// OR ensure the next-intl plugin preserves it. 
+// next-intl plugin generally merges configs.
+// Let's refactor the webpack config into the nextConfig object above for clarity and safety.
 
 nextConfig.webpack = (config, { isServer, dev }) => {
   if (!config.externals) {
@@ -79,39 +89,6 @@ nextConfig.webpack = (config, { isServer, dev }) => {
     // Enable webpack optimizations for better tree shaking
     config.optimization = {
       ...config.optimization,
-      // splitChunks: {
-      //   chunks: 'all',
-      //   cacheGroups: {
-      //     // Separate vendor chunks for better caching
-      //     vendor: {
-      //       test: /[\\/]node_modules[\\/]/,
-      //       name: 'vendors',
-      //       chunks: 'all',
-      //       priority: 10,
-      //     },
-      //     // Separate React and related libraries
-      //     react: {
-      //       test: /[\\/]node_modules[\\/](react|react-dom|@react|@radix-ui)[\\/]/,
-      //       name: 'react-vendor',
-      //       chunks: 'all',
-      //       priority: 20,
-      //     },
-      //     // Separate UI libraries
-      //     ui: {
-      //       test: /[\\/]node_modules[\\/](@headlessui|@heroicons|lucide-react|framer-motion)[\\/]/,
-      //       name: 'ui-vendor',
-      //       chunks: 'all',
-      //       priority: 15,
-      //     },
-      //     // Separate large libraries
-      //     heavy: {
-      //       test: /[\\/]node_modules[\\/](recharts|convex|ai|@google)[\\/]/,
-      //       name: 'heavy-vendor',
-      //       chunks: 'all',
-      //       priority: 5,
-      //     },
-      //   },
-      // },
       // Minimize bundle size
       minimize: true,
       // Remove unused exports
@@ -139,3 +116,6 @@ nextConfig.webpack = (config, { isServer, dev }) => {
 
   return config;
 };
+
+// Re-export with wrappers
+module.exports = withBundleAnalyzer(withNextIntl(nextConfig));

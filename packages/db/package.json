@@ -5,15 +5,18 @@
   "types": "dist/index.d.ts",
   "private": true,
   "exports": {
-    ".": "./dist/index.js"
+    ".": "./dist/index.js",
+    "./schema": "./dist/schema.js",
+    "./tenant-config": "./dist/tenant-config.js",
+    "./conflicts": "./dist/conflicts.js"
   },
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch"
   },
   "dependencies": {
-    "drizzle-orm": "0.44.7",
-    "drizzle-kit": "^0.24.2"
+    "drizzle-orm": "0.45.1",
+    "drizzle-kit": "^0.31.8"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "4.20251121.0",

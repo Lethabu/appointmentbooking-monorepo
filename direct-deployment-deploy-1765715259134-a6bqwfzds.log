@@ -1,0 +1,32 @@
+[2025-12-14T12:27:39.142Z] [INFO] 🚀 Starting Direct Cloudflare Deployment (Skip Auth Check)
+[2025-12-14T12:27:39.263Z] [INFO] ============================================================
+[2025-12-14T12:27:39.276Z] [INFO] Step 1: Loading environment variables...
+[2025-12-14T12:27:39.290Z] [INFO] 📋 Loading environment variables from .env files...
+[2025-12-14T12:27:39.299Z] [INFO] ✅ Found apps/booking/.env file
+[2025-12-14T12:27:39.311Z] [INFO] ✅ Set CLOUDFLARE_API_TOKEN from .env
+[2025-12-14T12:27:39.331Z] [INFO] ✅ Set CLOUDFLARE_ACCOUNT_ID from .env
+[2025-12-14T12:27:39.340Z] [INFO] Step 2: Skipping network connectivity check, proceeding with deployment...
+[2025-12-14T12:27:39.344Z] [INFO] Step 3: Building applications...
+[2025-12-14T12:43:02.303Z] [INFO] ✅ Applications built successfully
+[2025-12-14T12:43:02.537Z] [INFO] Step 4: Deploying Cloudflare Worker...
+[2025-12-14T12:44:00.248Z] [INFO] ✅ Worker deployed successfully
+[2025-12-14T12:44:00.254Z] [INFO] Step 5: Deploying Next.js applications...
+[2025-12-14T12:44:00.259Z] [INFO] Deploying booking app...
+[2025-12-14T12:45:37.599Z] [WARNING] ⚠️ booking app deployment may have issues:
+[2025-12-14T12:45:37.624Z] [INFO] Deploying dashboard app...
+[2025-12-14T12:55:30.572Z] [WARNING] ⚠️ dashboard app deployment may have issues:
+[2025-12-14T12:55:30.675Z] [INFO] Step 6: Applying database migrations...
+[2025-12-14T12:55:30.687Z] [INFO] Applying migration: scripts/migrations/004-safe-instyle-sync.sql
+[2025-12-14T13:32:42.258Z] [WARNING] ⚠️ Migration may have issues: scripts/migrations/004-safe-instyle-sync.sql
+[2025-12-14T13:32:42.303Z] [INFO] Applying migration: scripts/migrations/023-import-instyle-data.sql
+[2025-12-14T13:51:46.716Z] [WARNING] ⚠️ Migration may have issues: scripts/migrations/023-import-instyle-data.sql
+[2025-12-14T13:51:46.774Z] [INFO] 🎉 DEPLOYMENT COMPLETED!
+[2025-12-14T13:51:46.781Z] [INFO] 📄 Deployment log saved: direct-deployment-deploy-1765715259134-a6bqwfzds.log
+[2025-12-14T13:51:46.795Z] [INFO] 
+📋 NEXT STEPS:
+[2025-12-14T13:51:46.808Z] [INFO] 1. Check Cloudflare dashboard for deployed workers
+[2025-12-14T13:51:46.831Z] [INFO] 2. Configure custom domains:
+[2025-12-14T13:51:46.844Z] [INFO]    - instylehairboutique.co.za -> booking app
+[2025-12-14T13:51:46.847Z] [INFO]    - dashboard subdomain -> dashboard app
+[2025-12-14T13:51:46.863Z] [INFO] 3. Test all endpoints manually
+[2025-12-14T13:51:46.878Z] [INFO] 4. Verify SSL certificates are active

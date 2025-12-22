@@ -13,37 +13,25 @@
  ✓ Compiled successfully
    Linting and checking validity of types ...
    Collecting page data ...
-   Generating static pages (0/14) ...
-   Generating static pages (3/14) 
-   Generating static pages (6/14) 
-   Generating static pages (10/14) 
-Time 135.4674
-Time 77.4016
- ✓ Generating static pages (14/14)
-   Finalizing page optimization ...
-   Collecting build traces ...
+Error: `getRequestContext` and `getOptionalRequestContext` can only be run
+inside the edge runtime, so please make sure to have included
+`export const runtime = 'edge'` in all the routes using such functions
+(regardless of whether they are used directly or indirectly through imports).
+    at _ (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\app\api\bookings\check-conflict\route.js:14:47115)
+    at S (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\app\api\bookings\check-conflict\route.js:19:34)
+    at i4 (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\app\api\bookings\check-conflict\route.js:14:42948)
+    at 5125 (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\app\api\bookings\check-conflict\route.js:14:44880)
+    at t (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\webpack-runtime.js:1:127)
+    at i (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\app\api\bookings\check-conflict\route.js:22:161)
+    at C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\app\api\bookings\check-conflict\route.js:22:192
+    at t.X (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\webpack-runtime.js:1:1191)
+    at C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\app\api\bookings\check-conflict\route.js:22:174
+    at Object.<anonymous> (C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking\.next\server\app\api\bookings\check-conflict\route.js:22:219)
 
-Route (app)                              Size     First Load JS
-┌ ƒ /                                    439 B          87.8 kB
-├ ƒ /_not-found                          170 B          87.5 kB
-├ ƒ /(/dashboard)/dashboard              727 B          88.1 kB
-├ ƒ /[tenant]                            57.6 kB         182 kB
-├ ƒ /admin/dashboard                     1.17 kB        88.5 kB
-├ ƒ /book-new/instylehairboutique        1.1 kB          102 kB
-├ ƒ /book/instylehairboutique            183 B           124 kB
-├ ƒ /book/instylehairboutique/shop       4.04 kB        96.7 kB
-├ ƒ /health                              170 B          87.5 kB
-├ ƒ /order-success                       1.92 kB        97.9 kB
-├ ƒ /services                            170 B          87.5 kB
-├ ƒ /shop                                2.32 kB        89.7 kB
-└ ƒ /status                              3.15 kB        90.5 kB
-+ First Load JS shared by all            87.4 kB
-  ├ chunks/854-120b470a27657045.js       31.6 kB
-  ├ chunks/ce8598d4-410fcafe1de4c056.js  53.6 kB
-  └ other shared chunks (total)          2.11 kB
-
-
-ƒ Middleware                             25.9 kB
-
-ƒ  (Dynamic)  server-rendered on demand
-
+> Build error occurred
+Error: Failed to collect page data for /api/bookings/check-conflict
+    at C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\node_modules\.pnpm\next@14.2.33_@babel+core@7._426bac2a5ee22cae0f1acefa3a14c006\node_modules\next\dist\build\utils.js:1269:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  type: 'Error'
+}
+ ELIFECYCLE  Command failed with exit code 1.

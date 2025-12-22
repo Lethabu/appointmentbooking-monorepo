@@ -25,16 +25,17 @@
     "test:accessibility": "node ./scripts/integration/accessibility.test.js",
     "test:e2e": "pnpm run test:integration && pnpm run test:accessibility"
   },
-  
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.16",
     "@types/node": "^20.10.0",
-    "drizzle-kit": "^0.24.2",
+    "@types/react": "^19.2.7",
+    "axe-core": "^4.7.2",
+    "drizzle-kit": "^0.31.8",
     "eslint": "^8.53.0",
+    "jsdom": "^22.1.0",
     "prettier": "^3.0.0",
     "turbo": "^2.6.0",
-    "wrangler": "^3.22.4",
-    "axe-core": "^4.7.2",
-    "jsdom": "^22.1.0"
+    "wrangler": "^3.22.4"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.28.0",
@@ -44,7 +45,7 @@
   },
   "pnpm": {
     "overrides": {
-      "drizzle-orm": "0.44.7"
+      "drizzle-orm": "0.45.1"
     }
   }
 }

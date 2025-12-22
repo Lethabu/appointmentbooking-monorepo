@@ -1,0 +1,13 @@
+
+> @repo/payments@0.0.0 lint C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\payments
+> eslint src --max-warnings 0
+
+
+Oops! Something went wrong! :(
+
+ESLint: 8.57.1
+
+No files matching the pattern "src" were found.
+Please check for typing mistakes in the pattern.
+
+ ELIFECYCLE  Command failed with exit code 2.

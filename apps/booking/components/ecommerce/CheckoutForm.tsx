@@ -46,7 +46,7 @@ export default function CheckoutForm({ tenantId }: CheckoutFormProps) {
         }),
       });
 
-      const result = await response.json();
+      const result = await response.json() as { success: boolean; authorization_url: string };
 
       if (result.success) {
         setRedirectUrl(result.authorization_url);

@@ -99,6 +99,10 @@ export interface AIAgent {
   capabilities?: string[];
 }
 
+export interface ChatResponse {
+  reply: string;
+}
+
 export interface Order {
   id: string;
   tenant_id: string;

@@ -23,7 +23,7 @@ export default function useAvailability(tenantId: string | null, date: Date | nu
         const dateStr = date!.toISOString().split('T')[0]
         const res = await fetch(`/api/tenant/${tenantId}/availability?date=${dateStr}&serviceId=${serviceId}`)
         if (!res.ok) throw new Error('Failed to fetch availability')
-        const data = await res.json()
+        const data = await res.json() as { slots: AvailabilitySlot[] }
         if (!cancelled) setSlots(data.slots || [])
       } catch (err) {
         if (!cancelled) setError(err instanceof Error ? err.message : String(err))

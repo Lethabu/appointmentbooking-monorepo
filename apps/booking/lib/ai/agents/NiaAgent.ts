@@ -170,7 +170,7 @@ export class NiaAgent extends BaseAgent {
             }
 
             const data = await response.json();
-            return data.availableSlots || [];
+            return (data as { availableSlots: TimeSlot[] }).availableSlots || [];
         } catch (error) {
             console.error('Check availability error:', error);
             return [];
@@ -203,7 +203,7 @@ export class NiaAgent extends BaseAgent {
                 return {
                     success: false,
                     message: 'Failed to create booking',
-                    error: errorData.error?.message || 'Unknown error',
+                    error: (errorData as { error?: { message: string } }).error?.message || 'Unknown error',
                 };
             }
 
@@ -211,7 +211,7 @@ export class NiaAgent extends BaseAgent {
 
             return {
                 success: true,
-                bookingId: data.booking.id,
+                bookingId: (data as { booking: { id: string } }).booking.id,
                 message: 'Booking created successfully',
             };
         } catch (error) {
@@ -238,7 +238,7 @@ export class NiaAgent extends BaseAgent {
             }
 
             const data = await response.json();
-            return data.services || [];
+            return (data as { services: Service[] }).services || [];
         } catch (error) {
             console.error('Get services error:', error);
             return [];

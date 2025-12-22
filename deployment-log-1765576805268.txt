@@ -1,0 +1,5 @@
+[2025-12-12T21:59:55.014Z] [INFO] 🚀 Starting Cloudflare Direct Deployment with API Token
+[2025-12-12T21:59:55.076Z] [INFO] ============================================================
+[2025-12-12T21:59:55.084Z] [INFO] 🔍 Checking Wrangler status...
+[2025-12-12T22:00:05.265Z] [ERROR] ❌ Wrangler authentication failed:
+[2025-12-12T22:00:05.267Z] [ERROR] 💥 DEPLOYMENT FAILED: Wrangler authentication required. Please set CLOUDFLARE_API_TOKEN environment variable.

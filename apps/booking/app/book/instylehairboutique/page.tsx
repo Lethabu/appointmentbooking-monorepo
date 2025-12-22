@@ -32,7 +32,7 @@ export default async function BookInStylePage() {
       return <InStyleLandingPage />;
     }
 
-    const data = await response.json();
+    const data = await response.json() as { tenant?: { config?: any }; services?: any[]; products?: any[] };
 
     // Parse config if it's a string
     const config = typeof data.tenant?.config === 'string'
