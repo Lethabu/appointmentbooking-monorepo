@@ -1,176 +1,168 @@
-# 🚀 Instyle Hair Boutique - Complete Deployment Guide
+# 🚀 AppointmentBooking SaaS - Complete Deployment Guide
 
 ## Overview
-This guide provides step-by-step instructions to deploy and configure the Instyle Hair Boutique booking system on Cloudflare infrastructure.
+
+This guide provides step-by-step instructions to deploy the complete AppointmentBooking SaaS ecosystem—including the main marketing platform, admin dashboard, and tenant booking sites—on Cloudflare's global infrastructure.
 
 ## 📋 Prerequisites
-- Cloudflare account with API access
-- Domain ownership (instylehairboutique.co.za)
+
+- Cloudflare account with a Paid Plan (for D1 and multiple Pages projects)
+- Domain ownership:
+  - Primary: `appointmentbooking.co.za`
+  - Tenant: `instylehairboutique.co.za` (example)
+- Authentication providers:
+  - [Clerk](https://clerk.com) for Dashboard/Management
+  - [Supabase](https://supabase.com) for App data/Auth
 - SuperSaaS account credentials
-- Node.js and npm installed
+- Node.js, pnpm, and Wrangler CLI installed
 
 ---
 
 ## 🔧 Phase 1: Infrastructure Setup
 
-### Step 1: Install Wrangler CLI
+### Step 1: Initialize Cloudflare Account
+
+Ensure you have your Cloudflare Account ID ready.
+
 ```bash
-npm install -g wrangler
+wrangler whoami
 ```
 
-### Step 2: Set Environment Variables
+### Step 2: Set Environment Variables (Local)
+
 ```bash
 # Windows
-set CLOUDFLARE_API_TOKEN=gZmPM0oTIikfopiJap3aIWFZBZmNAKPAZ3N3jI-Q
+set CLOUDFLARE_API_TOKEN=your_token_here
 
 # Linux/Mac
-export CLOUDFLARE_API_TOKEN=gZmPM0oTIikfopiJap3aIWFZBZmNAKPAZ3N3jI-Q
+export CLOUDFLARE_API_TOKEN=your_token_here
 ```
 
 ### Step 3: Create D1 Database
+
+The monorepo uses a single D1 database with multi-tenant schema.
+
 ```bash
 wrangler d1 create appointmentbooking-db
 ```
-**Expected Output:**
-```
-✅ Successfully created DB 'appointmentbooking-db' in region WEUR
-database_id = "59c06cd2-8bd2-45cf-ab62-84d7a4919e11"
-```
 
-### Step 4: Update wrangler.toml
-Update the database ID in `wrangler.toml`:
-```toml
-[[d1_databases]]
-binding = "DB"
-database_name = "appointmentbooking-db"
-database_id = "59c06cd2-8bd2-45cf-ab62-84d7a4919e11"  # Use your actual ID
-```
+**database_id**: `59c06cd2-8bd2-45cf-ab62-84d7a4919e11`
+
+### Step 4: Configure wrangler.toml
+
+Update the `database_id` and domain routes in the root `wrangler.toml`.
 
 ---
 
 ## 📊 Phase 2: Database Migration
 
 ### Step 5: Run Database Migration
+
 ```bash
 wrangler d1 execute appointmentbooking-db --remote --file=scripts/migrations/001-create-d1-schema.sql
 ```
 
 **Expected Output:**
+
 ```
 🚣 Executed 14 queries in 0.00 seconds (20 rows read, 43 rows written)
 ```
 
 ### Step 6: Verify Database Setup
+
 ```bash
 wrangler d1 execute appointmentbooking-db --remote --command="SELECT COUNT(*) FROM tenants"
 ```
 
 ---
 
-## 🚀 Phase 3: Worker Deployment
+## 🚀 Phase 3: SaaS Platform Deployment (Cloudflare Pages)
 
-### Step 7: Deploy Cloudflare Worker
+The platform consists of three main Next.js applications deployed to Cloudflare Pages.
+
+### Step 7: Deploy Marketing Site (Root Domain)
+
+```bash
+cd apps/marketing
+npm run pages:deploy
+```
+
+- **Domain**: `appointmentbooking.co.za`
+- **Purpose**: SaaS Landing page, pricing, and registration.
+
+### Step 8: Deploy Admin Dashboard (Subdomain)
+
+```bash
+cd apps/dashboard
+npm run pages:deploy
+```
+
+- **Domain**: `dashboard.appointmentbooking.co.za`
+- **Purpose**: Tenant management and global analytics.
+
+### Step 9: Deploy Booking Engine (Multi-Tenant)
+
+```bash
+cd apps/booking
+npm run pages:deploy
+```
+
+- **Domain**: `*.appointmentbooking.co.za` or Custom Tenant Domains.
+- **Purpose**: Customer-facing booking interface.
+
+---
+
+## 🌐 Phase 4: Domain & API Integration
+
+### Step 10: Configure Router Worker
+
+The API Worker (`packages/worker`) acts as the central router and API gateway.
+
 ```bash
 wrangler deploy
 ```
 
-**Expected Output:**
-```
-✅ Deployed appointmentbooking-monorepo
-https://appointmentbooking-monorepo.houseofgr8ness.workers.dev
-```
+### Step 11: Set up Custom Domains in Cloudflare
 
-### Step 8: Test API Endpoints
-```bash
-# Test tenant API
-curl "https://appointmentbooking-monorepo.houseofgr8ness.workers.dev/api/tenant?slug=instylehairboutique"
+1. **Pages Projects**: Connect custom domains for `marketing` and `dashboard`.
+2. **Worker Custom Domains**: Add `instylehairboutique.co.za` and others to the Worker via the Cloudflare Dashboard (**Settings** > **Triggers** > **Custom Domains**).
 
-# Test dashboard API
-curl "https://appointmentbooking-monorepo.houseofgr8ness.workers.dev/api/dashboard?tenantId=ccb12b4d-ade6-467d-a614-7c9d198ddc70"
-```
+### Step 12: Configure DNS for SaaS Platform
+
+| Record Type | Name | Content | Proxy |
+| :--- | :--- | :--- | :--- |
+| A/AAAA | @ | Point to Cloudflare Pages | ✅ |
+| CNAME | dashboard | Point to Cloudflare Pages | ✅ |
+| CNAME | api | Point to Worker Subdomain | ✅ |
 
 ---
 
-## 🌐 Phase 4: Domain Configuration
+## 🔒 Phase 5: Authentication & Security
 
-### Step 9: Add Custom Domain
-1. Go to Cloudflare Dashboard → Workers & Pages
-2. Select your worker: `appointmentbooking-monorepo`
-3. Go to **Settings** → **Triggers**
-4. Click **Add Custom Domain**
-5. Enter: `www.instylehairboutique.co.za`
-6. Click **Add Custom Domain**
+### Step 13: Configure Clerk (SaaS Admin)
 
-### Step 10: Configure DNS Records
-In Cloudflare DNS settings:
-```
-Type: CNAME
-Name: www
-Target: appointmentbooking-monorepo.houseofgr8ness.workers.dev
-Proxy: ✅ Proxied
-```
+1. Set up a Clerk project for the `dashboard` and `marketing` apps.
+2. Add `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` to Pages environment variables.
 
-### Step 11: Enable SSL
-1. Go to **SSL/TLS** → **Overview**
-2. Set encryption mode to **Full (strict)**
-3. Enable **Always Use HTTPS**
+### Step 14: Configure Supabase (Data/Tenant Auth)
+
+1. Initialize a Supabase project.
+2. Configure the Worker with `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`.
 
 ---
 
-## 🧪 Phase 5: Testing & Validation
-
-### Step 12: Test Booking Flow
-```bash
-# Create test booking
-curl -X POST "https://www.instylehairboutique.co.za/api/book" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "tenantId": "ccb12b4d-ade6-467d-a614-7c9d198ddc70",
-    "name": "Test Client",
-    "email": "test@example.com",
-    "phone": "+27123456789",
-    "serviceId": "deab9cc75a72cec17158fe6fdbe0b860",
-    "scheduledTime": "2025-11-15T10:00:00Z",
-    "notes": "Test booking"
-  }'
-```
-
-### Step 13: Verify SuperSaaS Sync
-1. Log into SuperSaaS dashboard
-2. Check "Instyle Hair Boutique" schedule
-3. Confirm test booking appears
-
-### Step 14: Test Dashboard
-Visit: `https://www.instylehairboutique.co.za/api/dashboard?tenantId=ccb12b4d-ade6-467d-a614-7c9d198ddc70`
-
----
-
-## 📱 Phase 6: Frontend Integration
-
-### Step 15: Update Frontend URLs
-In your Next.js app, update API calls to use the new domain:
-```javascript
-// Before
-const response = await fetch('/api/book', {...});
-
-// After  
-const response = await fetch('https://www.instylehairboutique.co.za/api/book', {...});
-```
-
-### Step 16: Deploy Frontend
-Deploy your Next.js frontend to Vercel or Cloudflare Pages pointing to the custom domain.
-
----
-
-## 🔒 Phase 7: Security & Monitoring
+## 🧪 Phase 6: Testing & Go Live
 
 ### Step 17: Configure Rate Limiting
+
 In Cloudflare Dashboard:
+
 1. Go to **Security** → **WAF**
 2. Create rate limiting rules for `/api/book` endpoint
 3. Set limit: 10 requests per minute per IP
 
 ### Step 18: Enable Analytics
+
 1. Go to **Analytics & Logs** → **Web Analytics**
 2. Enable analytics for your domain
 3. Set up alerts for high error rates
@@ -180,6 +172,7 @@ In Cloudflare Dashboard:
 ## 📊 Phase 8: Production Checklist
 
 ### Step 19: Final Verification
+
 - [ ] Domain resolves to Cloudflare Worker
 - [ ] SSL certificate is active
 - [ ] Booking API creates appointments
@@ -189,6 +182,7 @@ In Cloudflare Dashboard:
 - [ ] Payment integration is ready
 
 ### Step 20: Go Live
+
 1. Update DNS to point production domain
 2. Test all booking flows
 3. Monitor error logs for 24 hours
@@ -198,21 +192,24 @@ In Cloudflare Dashboard:
 
 ## 🛠️ Troubleshooting
 
-### Common Issues:
+### Common Issues
 
 **Database Connection Errors:**
+
 ```bash
 # Check database status
 wrangler d1 info appointmentbooking-db
 ```
 
 **API Not Responding:**
+
 ```bash
 # Check worker logs
 wrangler tail
 ```
 
 **SuperSaaS Sync Failing:**
+
 - Verify API key in environment variables
 - Check SuperSaaS schedule ID is correct
 - Ensure API permissions are set
@@ -222,25 +219,29 @@ wrangler tail
 ## 📞 Support Information
 
 **Technical Contacts:**
-- Cloudflare Support: https://support.cloudflare.com
-- SuperSaaS Support: https://www.supersaas.com/support
+
+- Cloudflare Support: <https://support.cloudflare.com>
+- SuperSaaS Support: <https://www.supersaas.com/support>
 
 **System URLs:**
-- Worker: https://appointmentbooking-monorepo.houseofgr8ness.workers.dev
-- Production: https://www.instylehairboutique.co.za
-- Dashboard: https://dash.cloudflare.com
+
+- Worker: <https://appointmentbooking-monorepo.houseofgr8ness.workers.dev>
+- Production: <https://www.instylehairboutique.co.za>
+- Dashboard: <https://dash.cloudflare.com>
 
 ---
 
 ## 🎯 Success Metrics
 
 **Performance Targets:**
+
 - API Response Time: < 200ms
 - Uptime: 99.9%
 - Booking Success Rate: > 99%
 - SuperSaaS Sync Rate: > 95%
 
 **Business Metrics:**
+
 - Zero booking loss during migration
 - Improved page load speeds
 - Reduced hosting costs
@@ -251,12 +252,14 @@ wrangler tail
 ## 🔄 Maintenance
 
 **Monthly Tasks:**
+
 - Review error logs
 - Check database performance
 - Verify SuperSaaS sync accuracy
 - Update SSL certificates (auto-renewed)
 
 **Quarterly Tasks:**
+
 - Performance optimization review
 - Security audit
 - Backup verification

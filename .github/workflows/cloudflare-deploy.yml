@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  audit-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,19 +15,48 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           
-      - name: Install Wrangler
-        run: npm install -g wrangler
-        
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
       - name: Deploy Cloudflare Worker
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: wrangler deploy
-        
+
+      - name: Deploy Marketing Site
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          cd apps/marketing
+          pnpm run pages:build
+          wrangler pages deploy .vercel/output/static --project-name=appointmentbooking-marketing
+
+      - name: Deploy Admin Dashboard
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          cd apps/dashboard
+          pnpm run pages:build
+          wrangler pages deploy .vercel/output/static --project-name=appointmentbooking-dashboard
+
+      - name: Deploy Booking Engine
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          cd apps/booking
+          pnpm run pages:build
+          wrangler pages deploy .vercel/output/static --project-name=appointmentbooking-engine
+
       - name: Run System Audit
         run: |
-          sleep 10
+          sleep 15
           node scripts/cloudflare-audit.js
           
       - name: Upload Audit Results
