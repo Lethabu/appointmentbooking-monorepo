@@ -1,0 +1,91 @@
+# CODEOWNERS - Enterprise Appointment Booking System
+# This file defines code ownership and review requirements
+
+# Global owners - senior developers and team leads
+* @senior-developers @team-leads
+
+# Application-specific ownership
+# Main booking application
+apps/booking/ @frontend-team @booking-specialists
+apps/booking/app/api/ @backend-team @api-specialists
+apps/booking/components/ @frontend-team @ui-specialists
+apps/booking/hooks/ @frontend-team @react-specialists
+
+# Admin dashboard
+apps/dashboard/ @admin-team @data-analysts
+apps/dashboard/components/ @admin-team @ui-specialists
+apps/dashboard/app/api/ @backend-team @analytics-specialists
+
+# Marketing application
+apps/marketing/ @marketing-team @content-team
+apps/marketing/src/ @marketing-team @frontend-team
+
+# Package ownership
+# Authentication package
+packages/auth/ @security-team @auth-specialists
+packages/auth/src/ @security-team @jwt-specialists
+
+# Database package
+packages/db/ @backend-team @database-specialists
+packages/db/migrations/ @backend-team @database-specialists
+packages/db/schema/ @backend-team @database-specialists
+
+# UI package
+packages/ui/ @frontend-team @design-team
+packages/ui/components/ @frontend-team @design-team
+
+# Worker package
+packages/worker/ @backend-team @cloud-specialists
+packages/worker/src/ @backend-team @cloudflare-specialists
+
+# Infrastructure and DevOps
+# GitHub workflows and automation
+.github/ @devops-team @architects
+.github/workflows/ @devops-team @ci-specialists
+
+# Infrastructure configuration
+infrastructure/ @devops-team @cloud-specialists
+infrastructure/cloud/ @devops-team @cloud-specialists
+infrastructure/cloudflare/ @devops-team @cloudflare-specialists
+
+# Scripts and automation
+scripts/ @automation-team @devops-team
+scripts/migrations/ @backend-team @database-specialists
+scripts/deployment/ @devops-team @deployment-specialists
+
+# Documentation
+docs/ @team-leads @technical-writers
+docs/policies/ @team-leads @compliance-team
+docs/architecture/ @architects @technical-writers
+docs/api/ @backend-team @api-specialists
+
+# Configuration files
+package.json @devops-team @frontend-team
+pnpm-workspace.yaml @devops-team @architects
+turbo.json @devops-team @build-specialists
+tsconfig.json @devops-team @typescript-specialists
+
+# Security and compliance
+SECURITY.md @security-team @compliance-team
+CODE_OF_CONDUCT.md @team-leads @hr-team
+CONTRIBUTING.md @team-leads @developer-relations
+
+# Testing
+vitest.config.ts @frontend-team @testing-specialists
+playwright.config.ts @frontend-team @testing-specialists
+apps/booking/test-results/ @frontend-team @testing-specialists
+
+# Environment and deployment
+.env.example @devops-team @security-team
+wrangler.toml @devops-team @cloudflare-specialists
+next.config.js @frontend-team @nextjs-specialists
+
+# Emergency and critical fixes
+**/emergency* @senior-developers @security-team
+**/critical* @senior-developers @security-team
+**/hotfix* @senior-developers @team-leads
+
+# Legacy and deprecated code
+**/legacy/ @senior-developers @architects
+**/deprecated/ @senior-developers @architects
+**/temp*/ @devops-team @temporary-work

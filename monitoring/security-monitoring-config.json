@@ -1,0 +1,453 @@
+{
+    "security_monitoring": {
+        "ddos_attack_detection": {
+            "cloudflare_ddos_protection": {
+                "enabled": true,
+                "protection_levels": {
+                    "low": {
+                        "requests_per_second": 100,
+                        "bandwidth_threshold": "10MB/s",
+                        "action": "challenge"
+                    },
+                    "medium": {
+                        "requests_per_second": 500,
+                        "bandwidth_threshold": "50MB/s",
+                        "action": "block_suspicious"
+                    },
+                    "high": {
+                        "requests_per_second": 1000,
+                        "bandwidth_threshold": "100MB/s",
+                        "action": "block_malicious"
+                    },
+                    "critical": {
+                        "requests_per_second": 5000,
+                        "bandwidth_threshold": "500MB/s",
+                        "action": "under_attack_mode"
+                    }
+                },
+                "monitoring_rules": [
+                    {
+                        "name": "ddos_l7_attack",
+                        "condition": "requests_per_second > baseline * 5",
+                        "severity": "critical",
+                        "auto_response": [
+                            "enable_challenge_mode",
+                            "block_suspicious_ips"
+                        ],
+                        "notification_channels": [
+                            "email",
+                            "slack",
+                            "sms"
+                        ]
+                    },
+                    {
+                        "name": "ddos_l3_l4_attack",
+                        "condition": "bandwidth_usage > 100MB/s",
+                        "severity": "critical",
+                        "auto_response": [
+                            "enable_under_attack_mode"
+                        ],
+                        "notification_channels": [
+                            "email",
+                            "slack",
+                            "sms"
+                        ]
+                    },
+                    {
+                        "name": "slowloris_attack",
+                        "condition": "connection_time > 30s AND concurrent_connections > 100",
+                        "severity": "high",
+                        "auto_response": [
+                            "block_slow_clients"
+                        ],
+                        "notification_channels": [
+                            "email",
+                            "slack"
+                        ]
+                    }
+                ]
+            },
+            "traffic_anomaly_detection": {
+                "enabled": true,
+                "baseline_period": "7d",
+                "anomaly_thresholds": {
+                    "traffic_spike": {
+                        "multiplier": 3,
+                        "duration": "5m"
+                    },
+                    "unusual_patterns": {
+                        "geo_distribution_change": 50,
+                        "user_agent_change": 30,
+                        "referrer_anomaly": 40
+                    }
+                },
+                "machine_learning_detection": {
+                    "enabled": true,
+                    "models": [
+                        "traffic_pattern_analysis",
+                        "behavior_analysis",
+                        "bot_detection"
+                    ],
+                    "confidence_threshold": 0.8,
+                    "auto_responses": [
+                        "flag_for_review",
+                        "enhanced_challenges"
+                    ]
+                }
+            }
+        },
+        "suspicious_activity_monitoring": {
+            "access_pattern_analysis": {
+                "failed_authentication_tracking": {
+                    "enabled": true,
+                    "thresholds": {
+                        "warning": "5_failures_per_hour",
+                        "critical": "20_failures_per_hour"
+                    },
+                    "ip_reputation_checking": {
+                        "enabled": true,
+                        "blacklist_monitoring": [
+                            "spamhaus",
+                            "barracuda",
+                            "surbl"
+                        ],
+                        "whitelist_checking": [
+                            "known_good_ips"
+                        ]
+                    },
+                    "geo_location_analysis": {
+                        "enabled": true,
+                        "unusual_location_threshold": "first_time_location",
+                        "vpn_detection": true,
+                        "proxy_detection": true
+                    }
+                },
+                "unusual_access_patterns": {
+                    "time_based_anomalies": {
+                        "enabled": true,
+                        "after_hours_threshold": "22:00-06:00",
+                        "weekend_activity": "high_priority_areas",
+                        "holiday_access": "flag_for_review"
+                    },
+                    "volume_based_anomalies": {
+                        "enabled": true,
+                        "api_rate_exceeded": "rate_limit * 2",
+                        "data_access_volume": "usual_volume * 5",
+                        "session_frequency": "usual_sessions * 3"
+                    }
+                },
+                "privilege_escalation_detection": {
+                    "enabled": true,
+                    "monitored_actions": [
+                        "admin_panel_access",
+                        "user_role_changes",
+                        "permission_modifications",
+                        "data_export_operations"
+                    ],
+                    "alert_conditions": [
+                        "unusual_time_access",
+                        "multiple_privilege_escalations",
+                        "after_role_modification_access"
+                    ]
+                }
+            },
+            "api_abuse_monitoring": {
+                "rate_limiting_violations": {
+                    "enabled": true,
+                    "endpoints_monitoring": [
+                        {
+                            "path": "/api/auth/login",
+                            "rate_limit": "5_per_minute",
+                            "alert_threshold": "3_per_minute"
+                        },
+                        {
+                            "path": "/api/bookings",
+                            "rate_limit": "10_per_minute",
+                            "alert_threshold": "7_per_minute"
+                        },
+                        {
+                            "path": "/api/payments",
+                            "rate_limit": "3_per_minute",
+                            "alert_threshold": "2_per_minute"
+                        }
+                    ]
+                },
+                "malicious_payload_detection": {
+                    "sql_injection_detection": {
+                        "enabled": true,
+                        "patterns": [
+                            "union select",
+                            "drop table",
+                            "insert into",
+                            "update set",
+                            "delete from"
+                        ],
+                        "auto_block": true,
+                        "notification_channels": [
+                            "email",
+                            "slack"
+                        ]
+                    },
+                    "xss_detection": {
+                        "enabled": true,
+                        "patterns": [
+                            "<script",
+                            "javascript:",
+                            "onload=",
+                            "onerror=",
+                            "eval("
+                        ],
+                        "auto_sanitize": true,
+                        "notification_channels": [
+                            "email"
+                        ]
+                    },
+                    "path_traversal_detection": {
+                        "enabled": true,
+                        "patterns": [
+                            "../",
+                            "..\\\\",
+                            "%2e%2e%2f",
+                            "%2e%2e%5c"
+                        ],
+                        "auto_block": true,
+                        "notification_channels": [
+                            "email",
+                            "slack"
+                        ]
+                    }
+                },
+                "bot_detection": {
+                    "enabled": true,
+                    "detection_methods": [
+                        "user_agent_analysis",
+                        "behavior_pattern_analysis",
+                        "rate_of_requests",
+                        "session_analysis"
+                    ],
+                    "bot_scores": {
+                        "legitimate_bot": "score >= 80",
+                        "suspicious_bot": "score 30-79",
+                        "malicious_bot": "score < 30"
+                    },
+                    "auto_responses": {
+                        "suspicious_bot": "challenge",
+                        "malicious_bot": "block",
+                        "legitimate_bot": "allow"
+                    }
+                }
+            }
+        },
+        "authentication_failure_tracking": {
+            "login_attempt_monitoring": {
+                "enabled": true,
+                "metrics": [
+                    "successful_logins",
+                    "failed_logins",
+                    "locked_accounts",
+                    "password_attempts"
+                ],
+                "geo_tracking": {
+                    "enabled": true,
+                    "track_countries": true,
+                    "flag_new_locations": true,
+                    "whitelist_countries": [
+                        "ZA",
+                        "NA",
+                        "BW",
+                        "ZM",
+                        "ZW"
+                    ]
+                },
+                "device_fingerprinting": {
+                    "enabled": true,
+                    "track_devices": true,
+                    "flag_new_devices": true,
+                    "device_reputation_checking": true
+                }
+            },
+            "session_security_monitoring": {
+                "concurrent_session_tracking": {
+                    "enabled": true,
+                    "max_concurrent_sessions": 3,
+                    "alert_on_exceed": true
+                },
+                "session_anomalies": {
+                    "enabled": true,
+                    "suspicious_indicators": [
+                        "multiple_geo_locations",
+                        "unusual_session_duration",
+                        "rapid_session_switching",
+                        "session hijacking_indicators"
+                    ]
+                },
+                "token_security": {
+                    "jwt_monitoring": {
+                        "enabled": true,
+                        "expiration_checking": true,
+                        "signature_validation": true,
+                        "algorithm_enforcement": true
+                    },
+                    "session_timeout_monitoring": {
+                        "enabled": true,
+                        "default_timeout": "30m",
+                        "extended_timeout_sessions": "flag_for_review"
+                    }
+                }
+            },
+            "account_compromise_detection": {
+                "behavior_analysis": {
+                    "enabled": true,
+                    "baseline_behavior": {
+                        "login_times": "usual_hours",
+                        "access_patterns": "typical_pages",
+                        "action_frequency": "normal_rate"
+                    },
+                    "anomaly_detection": {
+                        "unusual_login_times": true,
+                        "unusual_page_access": true,
+                        "rapid_action_sequences": true,
+                        "privilege_escalation_attempts": true
+                    }
+                },
+                "account_lockout_tracking": {
+                    "enabled": true,
+                    "lockout_thresholds": {
+                        "warning": "3_attempts",
+                        "critical": "5_attempts"
+                    },
+                    "auto_unlock_conditions": [
+                        "admin_approval",
+                        "time_based_unlock",
+                        "password_reset_required"
+                    ]
+                }
+            }
+        },
+        "security_dashboard": {
+            "real_time_security_overview": {
+                "widgets": [
+                    {
+                        "type": "threat_summary",
+                        "title": "Security Threats (Last 24h)",
+                        "metrics": [
+                            "blocked_requests",
+                            "ddos_attempts",
+                            "auth_failures"
+                        ],
+                        "refresh_interval": "1m"
+                    },
+                    {
+                        "type": "geographic_threat_map",
+                        "title": "Threat Geographic Distribution",
+                        "data_source": "blocked_requests",
+                        "map_type": "world_map"
+                    },
+                    {
+                        "type": "authentication_security",
+                        "title": "Authentication Security Metrics",
+                        "metrics": [
+                            "failed_logins",
+                            "successful_logins",
+                            "locked_accounts"
+                        ],
+                        "time_range": "24h"
+                    },
+                    {
+                        "type": "api_security_status",
+                        "title": "API Security Status",
+                        "metrics": [
+                            "rate_limit_violations",
+                            "malicious_requests",
+                            "bot_blocks"
+                        ],
+                        "breakdown": [
+                            "endpoint"
+                        ]
+                    }
+                ]
+            },
+            "security_incident_tracking": {
+                "incident_lifecycle": {
+                    "detection": "automated_alert",
+                    "assessment": "security_team_review",
+                    "containment": "automated_response",
+                    "investigation": "forensic_analysis",
+                    "recovery": "service_restoration",
+                    "post_incident": "lessons_learned"
+                },
+                "escalation_matrix": {
+                    "sev1_critical": {
+                        "response_time": "15m",
+                        "escalation": "security_team_lead",
+                        "notification_channels": [
+                            "email",
+                            "slack",
+                            "sms",
+                            "phone"
+                        ]
+                    },
+                    "sev2_high": {
+                        "response_time": "1h",
+                        "escalation": "security_analyst",
+                        "notification_channels": [
+                            "email",
+                            "slack"
+                        ]
+                    },
+                    "sev3_medium": {
+                        "response_time": "4h",
+                        "escalation": "security_team",
+                        "notification_channels": [
+                            "email"
+                        ]
+                    },
+                    "sev4_low": {
+                        "response_time": "24h",
+                        "escalation": "security_team",
+                        "notification_channels": [
+                            "email"
+                        ]
+                    }
+                }
+            }
+        },
+        "compliance_monitoring": {
+            "gdpr_compliance": {
+                "data_processing_tracking": {
+                    "enabled": true,
+                    "tracked_activities": [
+                        "personal_data_access",
+                        "data_modification",
+                        "data_deletion",
+                        "data_export"
+                    ]
+                },
+                "consent_tracking": {
+                    "enabled": true,
+                    "consent_withdrawal_monitoring": true,
+                    "consent_expiry_tracking": true
+                },
+                "data_breach_detection": {
+                    "enabled": true,
+                    "unauthorized_access_detection": true,
+                    "data_exfiltration_detection": true,
+                    "immediate_notification_required": true
+                }
+            },
+            "audit_logging": {
+                "enabled": true,
+                "log_retention_period": "7y",
+                "log_integrity": {
+                    "hashing_algorithm": "SHA-256",
+                    "digital_signatures": true
+                },
+                "log_access_control": {
+                    "read_access": "authorized_personnel_only",
+                    "modification_protection": true,
+                    "backup_logging": true
+                }
+            }
+        }
+    }
+}

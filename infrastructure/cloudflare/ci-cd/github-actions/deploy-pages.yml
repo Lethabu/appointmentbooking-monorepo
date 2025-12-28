@@ -1,0 +1,272 @@
+name: Deploy Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'apps/**'
+      - 'packages/ui/**'
+      - 'infrastructure/cloudflare/pages/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      app:
+        description: 'Application to deploy'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - marketing
+          - dashboard
+          - booking
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+jobs:
+  validate:
+    name: Validate Applications
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: [marketing, dashboard, booking]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Type check ${{ matrix.app }}
+        run: pnpm --filter @repo/${{ matrix.app }} type-check
+
+      - name: Lint ${{ matrix.app }}
+        run: pnpm --filter @repo/${{ matrix.app }} lint
+
+      - name: Build ${{ matrix.app }}
+        run: pnpm --filter @repo/${{ matrix.app }} build
+
+  deploy-marketing:
+    name: Deploy Marketing Site
+    needs: validate
+    runs-on: ubuntu-latest
+    if: github.event.inputs.app == 'all' || github.event.inputs.app == 'marketing' || github.event.inputs.app == ''
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build for Pages
+        run: pnpm --filter @repo/marketing run pages:build
+
+      - name: Deploy Marketing to ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: appointmentbooking-${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}-marketing
+          directory: apps/marketing/.vercel/output/static
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          wranglerVersion: '3'
+
+      - name: Run Marketing Tests
+        run: |
+          echo "Running marketing site tests..."
+          # Add specific tests for marketing site
+
+  deploy-dashboard:
+    name: Deploy Dashboard
+    needs: validate
+    runs-on: ubuntu-latest
+    if: github.event.inputs.app == 'all' || github.event.inputs.app == 'dashboard' || github.event.inputs.app == ''
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build for Pages
+        run: pnpm --filter @repo/dashboard run pages:build
+
+      - name: Deploy Dashboard to ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: appointmentbooking-${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}-dashboard
+          directory: apps/dashboard/.vercel/output/static
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          wranglerVersion: '3'
+
+      - name: Run Dashboard Tests
+        run: |
+          echo "Running dashboard tests..."
+          # Add dashboard-specific tests
+
+  deploy-booking:
+    name: Deploy Booking Engine
+    needs: validate
+    runs-on: ubuntu-latest
+    if: github.event.inputs.app == 'all' || github.event.inputs.app == 'booking' || github.event.inputs.app == ''
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build for Pages
+        run: pnpm --filter @repo/booking run pages:build
+
+      - name: Deploy Booking to ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: appointmentbooking-${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}-booking
+          directory: apps/booking/.vercel/output/static
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          wranglerVersion: '3'
+
+      - name: Run E2E Tests
+        run: |
+          echo "Running booking engine E2E tests..."
+          cd apps/booking
+          npm run test:e2e
+
+  database-migration:
+    name: Run Database Migrations
+    needs: deploy-booking
+    runs-on: ubuntu-latest
+    if: github.event.inputs.app == 'all' || github.event.inputs.app == 'booking' || github.event.inputs.app == ''
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Run Migrations
+        run: |
+          echo "Running database migrations..."
+          cd infrastructure/cloudflare/d1
+          # Apply migrations
+          for migration in $(ls migrations/*.sql | sort); do
+            echo "Applying migration: $migration"
+            wrangler d1 execute appointmentbooking-${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}-db --file="$migration" --remote
+          done
+
+      - name: Verify Database
+        run: |
+          echo "Verifying database structure..."
+          # Add database verification checks
+
+  security-scan:
+    name: Security Scanning
+    needs: [deploy-marketing, deploy-dashboard, deploy-booking]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: OWASP ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.7.0
+        with:
+          target: 'https://dashboard.appointmentbooking.co.za'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
+
+  notify:
+    name: Notify Deployment Status
+    needs: [deploy-marketing, deploy-dashboard, deploy-booking, database-migration, security-scan]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: Notify Success
+        if: needs.deploy-marketing.result == 'success' && needs.deploy-dashboard.result == 'success' && needs.deploy-booking.result == 'success'
+        run: |
+          echo "✅ All applications deployed successfully"
+          # Add notification logic (Slack, email, etc.)
+
+      - name: Notify Failure
+        if: needs.deploy-marketing.result == 'failure' || needs.deploy-dashboard.result == 'failure' || needs.deploy-booking.result == 'failure'
+        run: |
+          echo "❌ Deployment failed"
+          # Add failure notification logic

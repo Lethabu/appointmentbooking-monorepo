@@ -1,0 +1,434 @@
+{
+    "dashboard_configurations": {
+        "main_dashboard": {
+            "name": "Instyle Hair Boutique - Main Operations Dashboard",
+            "description": "Real-time overview of system health, performance, and business metrics",
+            "widgets": [
+                {
+                    "type": "traffic_overview",
+                    "title": "Traffic Overview",
+                    "time_range": "24h",
+                    "metrics": [
+                        "requests",
+                        "page_views",
+                        "unique_visitors"
+                    ],
+                    "breakdown": [
+                        "country",
+                        "device_type",
+                        "referrer"
+                    ]
+                },
+                {
+                    "type": "performance_metrics",
+                    "title": "Performance Metrics",
+                    "time_range": "24h",
+                    "metrics": [
+                        "response_time_p50",
+                        "response_time_p95",
+                        "response_time_p99"
+                    ],
+                    "thresholds": {
+                        "p95": {
+                            "warning": 500,
+                            "critical": 1000,
+                            "unit": "ms"
+                        }
+                    }
+                },
+                {
+                    "type": "error_tracking",
+                    "title": "Error Tracking",
+                    "time_range": "24h",
+                    "metrics": [
+                        "4xx_errors",
+                        "5xx_errors",
+                        "error_rate"
+                    ],
+                    "thresholds": {
+                        "error_rate": {
+                            "warning": 0.005,
+                            "critical": 0.01,
+                            "unit": "percentage"
+                        }
+                    }
+                },
+                {
+                    "type": "business_metrics",
+                    "title": "Business Metrics",
+                    "time_range": "24h",
+                    "metrics": [
+                        "bookings_today",
+                        "revenue_today",
+                        "conversion_rate"
+                    ],
+                    "calculated_metrics": [
+                        {
+                            "name": "conversion_rate",
+                            "formula": "(bookings_today / total_sessions) * 100",
+                            "thresholds": {
+                                "warning": 12,
+                                "critical": 10,
+                                "unit": "percentage"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "layout": {
+                "columns": 3,
+                "rows": 2,
+                "refresh_interval": "1m"
+            },
+            "alerts": [
+                {
+                    "name": "high_traffic_spike",
+                    "condition": "requests_per_minute > 1000",
+                    "severity": "warning",
+                    "notification_channels": [
+                        "email",
+                        "slack"
+                    ]
+                },
+                {
+                    "name": "response_time_degradation",
+                    "condition": "response_time_p95 > 1000",
+                    "severity": "critical",
+                    "notification_channels": [
+                        "email",
+                        "slack",
+                        "sms"
+                    ]
+                },
+                {
+                    "name": "error_rate_spike",
+                    "condition": "error_rate > 0.01",
+                    "severity": "critical",
+                    "notification_channels": [
+                        "email",
+                        "slack",
+                        "sms"
+                    ]
+                }
+            ]
+        },
+        "security_dashboard": {
+            "name": "Security Operations Dashboard",
+            "description": "Security monitoring and threat detection",
+            "widgets": [
+                {
+                    "type": "threat_detection",
+                    "title": "Threat Detection",
+                    "time_range": "24h",
+                    "metrics": [
+                        "blocked_requests",
+                        "bot_score",
+                        "ddos_attempts"
+                    ],
+                    "filters": {
+                        "threat_types": [
+                            "bot",
+                            "ddos",
+                            "sql_injection",
+                            "xss"
+                        ]
+                    }
+                },
+                {
+                    "type": "authentication_metrics",
+                    "title": "Authentication Metrics",
+                    "time_range": "24h",
+                    "metrics": [
+                        "failed_logins",
+                        "successful_logins",
+                        "auth_failures"
+                    ],
+                    "breakdown": [
+                        "country",
+                        "user_agent"
+                    ]
+                },
+                {
+                    "type": "api_security",
+                    "title": "API Security",
+                    "time_range": "24h",
+                    "metrics": [
+                        "api_rate_limit_hits",
+                        "suspicious_requests",
+                        "blocked_api_calls"
+                    ],
+                    "filters": {
+                        "endpoints": [
+                            "/api/auth",
+                            "/api/bookings",
+                            "/api/payments"
+                        ]
+                    }
+                }
+            ],
+            "alerts": [
+                {
+                    "name": "ddos_detected",
+                    "condition": "requests_per_second > baseline * 10",
+                    "severity": "critical",
+                    "notification_channels": [
+                        "email",
+                        "slack",
+                        "sms"
+                    ]
+                },
+                {
+                    "name": "auth_failure_spike",
+                    "condition": "failed_logins > 50_per_hour",
+                    "severity": "warning",
+                    "notification_channels": [
+                        "email",
+                        "slack"
+                    ]
+                },
+                {
+                    "name": "suspicious_activity",
+                    "condition": "bot_score < 30 AND requests > 100_per_hour",
+                    "severity": "warning",
+                    "notification_channels": [
+                        "slack"
+                    ]
+                }
+            ]
+        },
+        "business_intelligence_dashboard": {
+            "name": "Business Intelligence Dashboard",
+            "description": "Revenue, conversion, and customer analytics",
+            "widgets": [
+                {
+                    "type": "revenue_tracking",
+                    "title": "Revenue Tracking",
+                    "time_range": "30d",
+                    "metrics": [
+                        "daily_revenue",
+                        "monthly_revenue",
+                        "average_booking_value"
+                    ],
+                    "currency": "ZAR"
+                },
+                {
+                    "type": "conversion_funnel",
+                    "title": "Booking Conversion Funnel",
+                    "time_range": "7d",
+                    "steps": [
+                        "page_views",
+                        "booking_initiations",
+                        "service_selections",
+                        "time_selections",
+                        "booking_completions"
+                    ],
+                    "conversion_rates": true
+                },
+                {
+                    "type": "customer_behavior",
+                    "title": "Customer Behavior Analytics",
+                    "time_range": "7d",
+                    "metrics": [
+                        "session_duration",
+                        "bounce_rate",
+                        "return_visitors"
+                    ],
+                    "breakdown": [
+                        "traffic_source",
+                        "device_type"
+                    ]
+                },
+                {
+                    "type": "service_popularity",
+                    "title": "Service Popularity",
+                    "time_range": "30d",
+                    "metrics": [
+                        "bookings_by_service",
+                        "revenue_by_service",
+                        "duration_by_service"
+                    ],
+                    "chart_type": "bar"
+                }
+            ],
+            "alerts": [
+                {
+                    "name": "revenue_drop",
+                    "condition": "daily_revenue < yesterday_revenue * 0.8",
+                    "severity": "warning",
+                    "notification_channels": [
+                        "email"
+                    ]
+                },
+                {
+                    "name": "conversion_rate_drop",
+                    "condition": "conversion_rate < 0.12",
+                    "severity": "warning",
+                    "notification_channels": [
+                        "email",
+                        "slack"
+                    ]
+                }
+            ]
+        }
+    },
+    "performance_monitoring": {
+        "real_time_monitoring": {
+            "enabled": true,
+            "refresh_interval": "30s",
+            "metrics": [
+                {
+                    "name": "worker_response_time",
+                    "source": "workers_metrics",
+                    "thresholds": {
+                        "p50": {
+                            "warning": 200,
+                            "critical": 500
+                        },
+                        "p95": {
+                            "warning": 500,
+                            "critical": 1000
+                        },
+                        "p99": {
+                            "warning": 1000,
+                            "critical": 2000
+                        }
+                    }
+                },
+                {
+                    "name": "database_query_performance",
+                    "source": "d1_analytics",
+                    "thresholds": {
+                        "average_time": {
+                            "warning": 100,
+                            "critical": 500
+                        },
+                        "slow_queries": {
+                            "warning": 10,
+                            "critical": 50
+                        }
+                    }
+                },
+                {
+                    "name": "cdn_performance",
+                    "source": "cdn_analytics",
+                    "thresholds": {
+                        "cache_hit_rate": {
+                            "warning": 0.8,
+                            "critical": 0.7
+                        },
+                        "bandwidth_usage": {
+                            "warning": 1000,
+                            "critical": 2000
+                        }
+                    }
+                }
+            ]
+        },
+        "historical_analysis": {
+            "enabled": true,
+            "retention_period": "90d",
+            "aggregation_intervals": [
+                "1h",
+                "1d",
+                "1w",
+                "1m"
+            ],
+            "trending_analysis": {
+                "performance_degradation": "compare_last_7_days_vs_previous_7_days",
+                "traffic_patterns": "identify_anomalies_and_seasonal_patterns",
+                "capacity_planning": "analyze_growth_trends"
+            }
+        }
+    },
+    "traffic_analytics": {
+        "real_time_analytics": {
+            "enabled": true,
+            "granularity": "1m",
+            "metrics": [
+                "concurrent_visitors",
+                "requests_per_second",
+                "bandwidth_usage",
+                "top_pages",
+                "top_countries"
+            ]
+        },
+        "reporting": {
+            "daily_reports": {
+                "enabled": true,
+                "recipients": [
+                    "ops-team@instyle.co.za"
+                ],
+                "content": [
+                    "traffic_summary",
+                    "performance_summary",
+                    "error_summary",
+                    "business_summary"
+                ]
+            },
+            "weekly_reports": {
+                "enabled": true,
+                "recipients": [
+                    "business@instyle.co.za"
+                ],
+                "content": [
+                    "trend_analysis",
+                    "capacity_planning",
+                    "business_metrics",
+                    "security_summary"
+                ]
+            },
+            "monthly_reports": {
+                "enabled": true,
+                "recipients": [
+                    "management@instyle.co.za"
+                ],
+                "content": [
+                    "comprehensive_analysis",
+                    "recommendations",
+                    "cost_analysis"
+                ]
+            }
+        }
+    },
+    "real_time_monitoring_setup": {
+        "webhooks": [
+            {
+                "name": "critical_alerts_webhook",
+                "url": "${SLACK_WEBHOOK_URL}",
+                "events": [
+                    "response_time_critical",
+                    "error_rate_critical",
+                    "security_threats"
+                ],
+                "severity": "critical"
+            },
+            {
+                "name": "warning_alerts_webhook",
+                "url": "${EMAIL_WEBHOOK_URL}",
+                "events": [
+                    "response_time_warning",
+                    "error_rate_warning"
+                ],
+                "severity": "warning"
+            }
+        ],
+        "automated_actions": [
+            {
+                "trigger": "ddos_detected",
+                "actions": [
+                    "enable_under_attack_mode",
+                    "block_suspicious_ips",
+                    "notify_incident_commander"
+                ]
+            },
+            {
+                "trigger": "response_time_critical",
+                "actions": [
+                    "scale_resources",
+                    "enable_performance_mode",
+                    "notify_technical_lead"
+                ]
+            }
+        ]
+    }
+}

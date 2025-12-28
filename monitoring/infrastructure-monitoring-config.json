@@ -1,0 +1,442 @@
+{
+    "infrastructure_monitoring": {
+        "worker_performance_monitoring": {
+            "cloudflare_workers": {
+                "metrics_collection": {
+                    "response_time": {
+                        "enabled": true,
+                        "thresholds": {
+                            "p50": {
+                                "warning": 100,
+                                "critical": 200
+                            },
+                            "p95": {
+                                "warning": 500,
+                                "critical": 1000
+                            },
+                            "p99": {
+                                "warning": 1000,
+                                "critical": 2000
+                            }
+                        }
+                    },
+                    "cpu_time": {
+                        "enabled": true,
+                        "thresholds": {
+                            "average": {
+                                "warning": 10,
+                                "critical": 25
+                            },
+                            "p95": {
+                                "warning": 25,
+                                "critical": 50
+                            }
+                        }
+                    },
+                    "memory_usage": {
+                        "enabled": true,
+                        "thresholds": {
+                            "peak": {
+                                "warning": 64,
+                                "critical": 128
+                            },
+                            "average": {
+                                "warning": 32,
+                                "critical": 64
+                            }
+                        }
+                    },
+                    "error_rate": {
+                        "enabled": true,
+                        "thresholds": {
+                            "error_rate": {
+                                "warning": 0.005,
+                                "critical": 0.01
+                            }
+                        }
+                    }
+                },
+                "real_time_alerts": [
+                    {
+                        "name": "worker_high_cpu",
+                        "condition": "cpu_time > 25ms",
+                        "severity": "warning",
+                        "notification_channels": [
+                            "email",
+                            "slack"
+                        ]
+                    },
+                    {
+                        "name": "worker_memory_exhaustion",
+                        "condition": "memory_usage > 128MB",
+                        "severity": "critical",
+                        "notification_channels": [
+                            "email",
+                            "slack",
+                            "sms"
+                        ]
+                    },
+                    {
+                        "name": "worker_timeout_errors",
+                        "condition": "timeout_errors > 10_per_minute",
+                        "severity": "critical",
+                        "notification_channels": [
+                            "email",
+                            "slack",
+                            "sms"
+                        ]
+                    }
+                ],
+                "performance_tracking": {
+                    "endpoint_performance": {
+                        "/api/bookings": {
+                            "target_response_time": 200,
+                            "critical_response_time": 500
+                        },
+                        "/api/auth": {
+                            "target_response_time": 300,
+                            "critical_response_time": 800
+                        },
+                        "/api/payments": {
+                            "target_response_time": 500,
+                            "critical_response_time": 1500
+                        }
+                    },
+                    "function_performance": {
+                        "database_queries": {
+                            "target_time": 100,
+                            "critical_time": 500
+                        },
+                        "external_api_calls": {
+                            "target_time": 300,
+                            "critical_time": 1000
+                        }
+                    }
+                }
+            }
+        },
+        "database_performance_tracking": {
+            "cloudflare_d1": {
+                "metrics_collection": {
+                    "query_performance": {
+                        "enabled": true,
+                        "slow_query_threshold": 100,
+                        "very_slow_query_threshold": 500,
+                        "metrics": [
+                            "avg_response_time",
+                            "query_count",
+                            "error_rate"
+                        ]
+                    },
+                    "storage_usage": {
+                        "enabled": true,
+                        "thresholds": {
+                            "warning": 80,
+                            "critical": 95
+                        },
+                        "metrics": [
+                            "storage_used",
+                            "storage_limit",
+                            "growth_rate"
+                        ]
+                    },
+                    "connection_metrics": {
+                        "enabled": true,
+                        "metrics": [
+                            "active_connections",
+                            "connection_errors",
+                            "deadlocks"
+                        ]
+                    }
+                },
+                "performance_monitoring": {
+                    "table_specific_monitoring": {
+                        "appointments": {
+                            "query_patterns": [
+                                "SELECT * FROM appointments WHERE tenant_id = ?",
+                                "INSERT INTO appointments VALUES (?)",
+                                "UPDATE appointments SET status = ? WHERE id = ?"
+                            ],
+                            "target_response_time": 50
+                        },
+                        "users": {
+                            "query_patterns": [
+                                "SELECT * FROM users WHERE email = ?",
+                                "INSERT INTO users VALUES (?)",
+                                "UPDATE users SET last_login = ? WHERE id = ?"
+                            ],
+                            "target_response_time": 25
+                        },
+                        "services": {
+                            "query_patterns": [
+                                "SELECT * FROM services WHERE tenant_id = ?",
+                                "SELECT * FROM services WHERE id = ?"
+                            ],
+                            "target_response_time": 20
+                        }
+                    },
+                    "index_performance": {
+                        "enabled": true,
+                        "monitored_indexes": [
+                            "appointments_tenant_id_idx",
+                            "users_email_idx",
+                            "services_tenant_id_idx"
+                        ],
+                        "target_usage_rate": 0.8
+                    }
+                },
+                "alerting_rules": [
+                    {
+                        "name": "slow_queries",
+                        "condition": "avg_query_time > 100ms",
+                        "severity": "warning",
+                        "notification_channels": [
+                            "email"
+                        ]
+                    },
+                    {
+                        "name": "database_storage_critical",
+                        "condition": "storage_usage > 95%",
+                        "severity": "critical",
+                        "notification_channels": [
+                            "email",
+                            "slack",
+                            "sms"
+                        ]
+                    },
+                    {
+                        "name": "query_error_rate_high",
+                        "condition": "query_error_rate > 0.01",
+                        "severity": "critical",
+                        "notification_channels": [
+                            "email",
+                            "slack"
+                        ]
+                    }
+                ]
+            }
+        },
+        "cdn_edge_performance": {
+            "cloudflare_cdn": {
+                "cache_performance": {
+                    "metrics": {
+                        "cache_hit_rate": {
+                            "enabled": true,
+                            "thresholds": {
+                                "warning": 0.8,
+                                "critical": 0.7
+                            }
+                        },
+                        "cache_size": {
+                            "enabled": true,
+                            "thresholds": {
+                                "warning": "1GB",
+                                "critical": "2GB"
+                            }
+                        },
+                        "origin_requests": {
+                            "enabled": true,
+                            "thresholds": {
+                                "warning": "1000_per_minute",
+                                "critical": "5000_per_minute"
+                            }
+                        }
+                    },
+                    "real_time_alerts": [
+                        {
+                            "name": "cache_hit_rate_degradation",
+                            "condition": "cache_hit_rate < 0.8",
+                            "severity": "warning",
+                            "notification_channels": [
+                                "email",
+                                "slack"
+                            ]
+                        },
+                        {
+                            "name": "high_origin_traffic",
+                            "condition": "origin_requests > 1000_per_minute",
+                            "severity": "warning",
+                            "notification_channels": [
+                                "email"
+                            ]
+                        }
+                    ]
+                },
+                "edge_performance": {
+                    "metrics": {
+                        "edge_response_time": {
+                            "enabled": true,
+                            "thresholds": {
+                                "p50": {
+                                    "warning": 50,
+                                    "critical": 100
+                                },
+                                "p95": {
+                                    "warning": 100,
+                                    "critical": 200
+                                }
+                            }
+                        },
+                        "bandwidth_usage": {
+                            "enabled": true,
+                            "thresholds": {
+                                "warning": "100MB_per_minute",
+                                "critical": "500MB_per_minute"
+                            }
+                        },
+                        "geographic_distribution": {
+                            "enabled": true,
+                            "monitor_regions": [
+                                "ZA",
+                                "NA",
+                                "SADC"
+                            ],
+                            "performance_targets": {
+                                "ZA": {
+                                    "max_response_time": 100
+                                },
+                                "NA": {
+                                    "max_response_time": 200
+                                },
+                                "SADC": {
+                                    "max_response_time": 300
+                                }
+                            }
+                        }
+                    }
+                },
+                "asset_optimization": {
+                    "image_optimization": {
+                        "enabled": true,
+                        "metrics": [
+                            "compression_ratio",
+                            "delivery_time",
+                            "cache_improvement"
+                        ],
+                        "targets": {
+                            "compression_ratio": "> 70%",
+                            "delivery_improvement": "> 50%"
+                        }
+                    },
+                    "minification": {
+                        "enabled": true,
+                        "file_types": [
+                            "css",
+                            "js",
+                            "html"
+                        ],
+                        "metrics": [
+                            "size_reduction",
+                            "load_time_improvement"
+                        ]
+                    }
+                }
+            }
+        },
+        "resource_utilization_alerts": {
+            "auto_scaling_triggers": [
+                {
+                    "metric": "cpu_utilization",
+                    "threshold": 80,
+                    "action": "scale_up",
+                    "cooldown_period": "5m"
+                },
+                {
+                    "metric": "memory_usage",
+                    "threshold": 90,
+                    "action": "scale_up",
+                    "cooldown_period": "10m"
+                },
+                {
+                    "metric": "request_rate",
+                    "threshold": "1000_per_minute",
+                    "action": "scale_up",
+                    "cooldown_period": "15m"
+                }
+            ],
+            "capacity_planning": {
+                "trend_analysis": {
+                    "enabled": true,
+                    "lookback_period": "30d",
+                    "projections": [
+                        "7d",
+                        "30d",
+                        "90d"
+                    ],
+                    "metrics": [
+                        "traffic_growth",
+                        "storage_growth",
+                        "user_growth"
+                    ]
+                },
+                "resource_forecasting": {
+                    "cpu_forecast": {
+                        "current_capacity": "100 requests/second",
+                        "growth_rate": "15% per month",
+                        "capacity_warning_threshold": "80%",
+                        "capacity_critical_threshold": "95%"
+                    },
+                    "storage_forecast": {
+                        "current_usage": "500MB",
+                        "growth_rate": "50MB per month",
+                        "capacity_warning_threshold": "80%",
+                        "capacity_critical_threshold": "95%"
+                    }
+                }
+            }
+        },
+        "infrastructure_dashboard": {
+            "real_time_overview": {
+                "widgets": [
+                    {
+                        "type": "system_health",
+                        "title": "System Health Overview",
+                        "metrics": [
+                            "worker_status",
+                            "database_status",
+                            "cdn_status"
+                        ],
+                        "refresh_interval": "30s"
+                    },
+                    {
+                        "type": "performance_metrics",
+                        "title": "Performance Metrics (Last 24h)",
+                        "metrics": [
+                            "avg_response_time",
+                            "error_rate",
+                            "throughput"
+                        ],
+                        "charts": [
+                            "line",
+                            "gauge"
+                        ]
+                    },
+                    {
+                        "type": "resource_usage",
+                        "title": "Resource Usage",
+                        "metrics": [
+                            "cpu_usage",
+                            "memory_usage",
+                            "storage_usage"
+                        ],
+                        "breakdown": [
+                            "worker",
+                            "database",
+                            "cdn"
+                        ]
+                    },
+                    {
+                        "type": "capacity_planning",
+                        "title": "Capacity Planning",
+                        "metrics": [
+                            "current_capacity",
+                            "growth_trend",
+                            "projected_capacity"
+                        ],
+                        "time_range": "30d"
+                    }
+                ]
+            }
+        }
+    }
+}

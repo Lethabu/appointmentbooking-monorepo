@@ -1,0 +1,20 @@
+# Zero Trust Security Infrastructure Configuration
+
+This directory contains Terraform templates for Cloudflare Zero Trust security deployment.
+
+## Components
+
+- `main.tf` - Zero Trust configuration
+- `policies/` - Access control policies
+- `rules/` - Security rules and filters
+- `identity/` - Identity provider integration
+- `device/` - Device certification policies
+
+## Features
+
+- Identity provider integration
+- Device certification
+- Access policies by application
+- Network-level security
+- Application-level security
+- Audit logging

@@ -1,0 +1,607 @@
+# Comprehensive Alerting Configuration for Cloudflare Deployment
+# Appointment Booking Platform - Monitoring and Alerting System
+# Version: 1.0.0
+# Last Updated: December 24, 2025
+
+# ============================================
+# ALERT THRESHOLDS AND ESCALATION
+# ============================================
+
+alert_thresholds:
+  # Critical Severity (SEV1) - 15 minute response
+  critical:
+    uptime:
+      condition: "< 99%"
+      duration: "5m"
+      auto_escalation: true
+    response_time:
+      condition: "> 1000ms (p95)"
+      duration: "10m"
+      auto_escalation: true
+    error_rate:
+      condition: "> 1%"
+      duration: "5m"
+      auto_escalation: true
+    security_incident:
+      condition: "ddos_attack OR data_breach OR auth_compromise"
+      duration: "immediate"
+      auto_escalation: true
+    business_impact:
+      condition: "conversion_rate < 10% OR revenue_drop > 30%"
+      duration: "30m"
+      auto_escalation: true
+
+  # High Severity (SEV2) - 1 hour response
+  high:
+    uptime:
+      condition: "< 99.5%"
+      duration: "15m"
+      auto_escalation: true
+    response_time:
+      condition: "> 500ms (p95)"
+      duration: "15m"
+      auto_escalation: false
+    error_rate:
+      condition: "> 0.5%"
+      duration: "10m"
+      auto_escalation: false
+    performance_degradation:
+      condition: "page_load_time > 5s OR database_slow_queries > 10"
+      duration: "20m"
+      auto_escalation: false
+    business_metrics:
+      condition: "conversion_rate < 12% OR customer_satisfaction < 4.0"
+      duration: "1h"
+      auto_escalation: false
+
+  # Medium Severity (SEV3) - 4 hour response
+  medium:
+    uptime:
+      condition: "< 99.9%"
+      duration: "30m"
+      auto_escalation: false
+    response_time:
+      condition: "> 300ms (p95)"
+      duration: "30m"
+      auto_escalation: false
+    error_rate:
+      condition: "> 0.1%"
+      duration: "20m"
+      auto_escalation: false
+    resource_usage:
+      condition: "cpu_usage > 80% OR memory_usage > 85%"
+      duration: "30m"
+      auto_escalation: false
+    security_events:
+      condition: "failed_logins > 20_per_hour OR suspicious_activity"
+      duration: "1h"
+      auto_escalation: false
+
+  # Low Severity (SEV4) - 24 hour response
+  low:
+    performance_warnings:
+      condition: "response_time > 200ms (p95)"
+      duration: "1h"
+      auto_escalation: false
+    minor_errors:
+      condition: "error_rate > 0.05%"
+      duration: "2h"
+      auto_escalation: false
+    maintenance_alerts:
+      condition: "ssl_expiry < 30_days OR storage_usage > 80%"
+      duration: "24h"
+      auto_escalation: false
+
+# ============================================
+# NOTIFICATION CHANNELS
+# ============================================
+
+notification_channels:
+  # Email Notifications
+  email:
+    primary_contacts:
+      - ops-team@instyle.co.za
+      - tech-lead@instyle.co.za
+    secondary_contacts:
+      - security@instyle.co.za
+      - business@instyle.co.za
+    escalation_contacts:
+      - cto@instyle.co.za
+      - business-owner@instyle.co.za
+    
+    # Email Templates
+    templates:
+      critical_alert:
+        subject: "🚨 CRITICAL ALERT - {alert_name}"
+        priority: "high"
+        include_screenshots: true
+        include_logs: true
+        response_required: true
+        
+      high_alert:
+        subject: "⚠️ HIGH PRIORITY ALERT - {alert_name}"
+        priority: "normal"
+        include_metrics: true
+        response_required: false
+        
+      warning_alert:
+        subject: "📊 WARNING - {alert_name}"
+        priority: "low"
+        summary_only: true
+        response_required: false
+
+  # Slack Notifications
+  slack:
+    webhooks:
+      alerts_channel: "${SLACK_ALERTS_WEBHOOK}"
+      operations_channel: "${SLACK_OPS_WEBHOOK}"
+      security_channel: "${SLACK_SECURITY_WEBHOOK}"
+      business_channel: "${SLACK_BUSINESS_WEBHOOK}"
+    
+    channels:
+      critical_alerts: "#alerts-critical"
+      high_alerts: "#alerts-high"
+      operations: "#operations"
+      security: "#security-team"
+      business: "#business-metrics"
+    
+    # Slack Message Formatting
+    formatting:
+      include_emoji: true
+      include_metrics: true
+      include_action_buttons: true
+      include_threads: true
+
+  # SMS Notifications (for critical alerts only)
+  sms:
+    enabled: true
+    provider: "twilio"
+    critical_contacts:
+      - "+27699171527"  # Business Owner
+      - "+27XXX-XXX-XXX"  # Technical Lead
+      - "+27XXX-XXX-XXX"  # Security Lead
+    
+    # SMS Template
+    template: "ALERT: {alert_name} - {brief_description} - Response required within {response_time}"
+
+  # Phone Calls (for SEV1 only)
+  phone:
+    enabled: true
+    contacts:
+      - role: "incident_commander"
+        number: "+27XXX-XXX-XXX"
+        escalation_order: 1
+      - role: "technical_lead"
+        number: "+27XXX-XXX-XXX"
+        escalation_order: 2
+      - role: "business_owner"
+        number: "+27699171527"
+        escalation_order: 3
+
+# ============================================
+# ALERT SEVERITY CLASSIFICATION
+# ============================================
+
+severity_classification:
+  sev1_critical:
+    definition: "Complete service outage or major security breach"
+    response_time: "15 minutes"
+    escalation_time: "15 minutes"
+    notification_channels: ["email", "slack", "sms", "phone"]
+    incident_commander_required: true
+    business_notification: true
+    
+    examples:
+      - "Main website completely down"
+      - "Database corruption or loss"
+      - "Confirmed data breach"
+      - "Payment system compromise"
+      - "Active security attack"
+      - "DDoS attack with service impact"
+
+  sev2_high:
+    definition: "Significant service degradation or security incident"
+    response_time: "1 hour"
+    escalation_time: "1 hour"
+    notification_channels: ["email", "slack"]
+    incident_commander_required: false
+    business_notification: false
+    
+    examples:
+      - "Partial service outage"
+      - "High error rate (>5%)"
+      - "Performance severely degraded"
+      - "Unauthorized access attempt"
+      - "Payment processing failures"
+      - "API rate limit exceeded"
+
+  sev3_medium:
+    definition: "Minor security events or service issues"
+    response_time: "4 hours"
+    escalation_time: "4 hours"
+    notification_channels: ["email"]
+    incident_commander_required: false
+    business_notification: false
+    
+    examples:
+      - "Individual feature not working"
+      - "Slow performance"
+      - "Minor security vulnerabilities"
+      - "Single account compromise"
+      - "Integration failures"
+      - "Cache performance issues"
+
+  sev4_low:
+    definition: "Informational events or minor issues"
+    response_time: "24 hours"
+    escalation_time: "24 hours"
+    notification_channels: ["email_summary"]
+    incident_commander_required: false
+    business_notification: false
+    
+    examples:
+      - "Documentation updates needed"
+      - "Minor UI issues"
+      - "Routine maintenance alerts"
+      - "SSL certificate expiry warnings"
+      - "Storage usage notifications"
+
+# ============================================
+# RESPONSE TIME REQUIREMENTS
+# ============================================
+
+response_time_requirements:
+  # Initial Response Times
+  initial_response:
+    sev1: "15 minutes"
+    sev2: "1 hour"
+    sev3: "4 hours"
+    sev4: "24 hours"
+  
+  # Resolution Time Targets
+  resolution_targets:
+    sev1: "2 hours"
+    sev2: "4 hours"
+    sev3: "24 hours"
+    sev4: "72 hours"
+  
+  # Communication Frequency
+  communication_frequency:
+    sev1:
+      initial: "immediate"
+      updates: "every 30 minutes"
+      final: "upon resolution"
+    sev2:
+      initial: "within 1 hour"
+      updates: "every 2 hours"
+      final: "upon resolution"
+    sev3:
+      initial: "within 4 hours"
+      updates: "daily"
+      final: "upon resolution"
+    sev4:
+      initial: "within 24 hours"
+      updates: "weekly"
+      final: "upon resolution"
+
+# ============================================
+# AUTOMATED ACTIONS AND ESCALATION
+# ============================================
+
+automated_actions:
+  # SEV1 Automated Responses
+  sev1_actions:
+    - action: "create_incident_ticket"
+      service: "jira"
+      priority: "highest"
+    - action: "notify_incident_commander"
+      method: "all_channels"
+    - action: "enable_under_attack_mode"
+      service: "cloudflare"
+    - action: "scale_resources"
+      service: "cloudflare_workers"
+    - action: "block_malicious_ips"
+      service: "cloudflare"
+    - action: "send_customer_notification"
+      service: "status_page"
+
+  # SEV2 Automated Responses
+  sev2_actions:
+    - action: "create_incident_ticket"
+      service: "jira"
+      priority: "high"
+    - action: "notify_technical_team"
+      method: "email_slack"
+    - action: "enable_performance_mode"
+      service: "cloudflare"
+    - action: "increase_monitoring_frequency"
+      service: "all_monitoring_tools"
+
+  # SEV3 Automated Responses
+  sev3_actions:
+    - action: "create_task_ticket"
+      service: "jira"
+      priority: "normal"
+    - action: "notify_ops_team"
+      method: "email"
+    - action: "increase_monitoring_frequency"
+      service: "sentry_cloudflare"
+
+  # SEV4 Automated Responses
+  sev4_actions:
+    - action: "create_maintenance_ticket"
+      service: "jira"
+      priority: "low"
+    - action: "add_to_daily_summary"
+      service: "reporting"
+
+# ============================================
+# ESCALATION MATRIX
+# ============================================
+
+escalation_matrix:
+  # Level 1: Operations Team (0-1 hour)
+  level_1:
+    primary_contact: "ops-oncall@instyle.co.za"
+    backup_contact: "ops-team@instyle.co.za"
+    phone: "+27XXX-XXX-XXX"
+    responsibilities:
+      - "Initial incident assessment"
+      - "Basic troubleshooting"
+      - "Status page updates"
+      - "Customer communication"
+    response_time: "15 minutes for SEV1, 1 hour for others"
+
+  # Level 2: Technical Leadership (1-4 hours)
+  level_2:
+    primary_contact: "tech-lead@instyle.co.za"
+    backup_contact: "senior-dev@instyle.co.za"
+    phone: "+27XXX-XXX-XXX"
+    responsibilities:
+      - "Complex technical issues"
+      - "Architecture decisions"
+      - "Resource allocation"
+      - "External vendor coordination"
+    response_time: "1 hour for SEV1, 4 hours for others"
+
+  # Level 3: Executive Leadership (4+ hours)
+  level_3:
+    primary_contact: "cto@instyle.co.za"
+    backup_contact: "ceo@instyle.co.za"
+    phone: "+27XXX-XXX-XXX"
+    responsibilities:
+      - "Business impact decisions"
+      - "Customer escalation"
+      - "Media relations"
+      - "Strategic resource allocation"
+    response_time: "4 hours for SEV1, 24 hours for others"
+
+  # Level 4: Business Owner
+  level_4:
+    primary_contact: "business-owner@instyle.co.za"
+    phone: "+27699171527"
+    responsibilities:
+      - "Business continuity decisions"
+      - "Customer relationship management"
+      - "Financial impact assessment"
+      - "External communications"
+    response_time: "1 hour for SEV1, as needed for others"
+
+# ============================================
+# ALERT ROUTING AND FILTERING
+# ============================================
+
+alert_routing:
+  # Route by Alert Type
+  alert_type_routing:
+    security_alerts:
+      channels: ["security@instyle.co.za", "#security-team"]
+      escalation: "security_lead"
+      auto_actions: ["block_ips", "enable_protection"]
+    
+    performance_alerts:
+      channels: ["tech-team@instyle.co.za", "#operations"]
+      escalation: "tech_lead"
+      auto_actions: ["scale_resources", "enable_caching"]
+    
+    business_alerts:
+      channels: ["business@instyle.co.za", "#business-metrics"]
+      escalation: "business_owner"
+      auto_actions: ["create_business_task"]
+    
+    infrastructure_alerts:
+      channels: ["ops-team@instyle.co.za", "#infrastructure"]
+      escalation: "operations_manager"
+      auto_actions: ["check_system_health"]
+
+  # Suppression Rules
+  suppression_rules:
+    maintenance_window:
+      enabled: true
+      schedule: "Tuesday 2-4 AM SAST"
+      suppress_non_critical: true
+    
+    deployment_window:
+      enabled: true
+      duration: "30 minutes post-deployment"
+      suppress_performance_warnings: true
+    
+    known_issues:
+      enabled: true
+      maintenance_mode: true
+      suppress_related_alerts: true
+
+# ============================================
+# ALERT TEMPLATES AND FORMS
+# ============================================
+
+alert_templates:
+  # Critical Alert Template
+  critical_alert_template: |
+    🚨 CRITICAL INCIDENT ALERT
+    
+    Alert: {alert_name}
+    Severity: SEV1 - CRITICAL
+    Time: {timestamp}
+    Duration: {duration}
+    
+    Impact: {impact_description}
+    Affected Systems: {affected_systems}
+    Customer Impact: {customer_impact}
+    
+    Actions Taken:
+    - {actions_taken}
+    
+    Next Steps:
+    - {next_steps}
+    
+    Incident Commander: {incident_commander}
+    Next Update: {next_update_time}
+    
+    Response Required: YES (15 minutes)
+    
+  # High Priority Alert Template
+  high_alert_template: |
+    ⚠️ HIGH PRIORITY ALERT
+    
+    Alert: {alert_name}
+    Severity: SEV2 - HIGH
+    Time: {timestamp}
+    
+    Description: {description}
+    Current Status: {status}
+    
+    Immediate Actions:
+    - {immediate_actions}
+    
+    Contact: {primary_contact}
+    
+  # Business Impact Alert Template
+  business_alert_template: |
+    📊 BUSINESS IMPACT ALERT
+    
+    Metric: {metric_name}
+    Current Value: {current_value}
+    Threshold: {threshold}
+    Time: {timestamp}
+    
+    Business Impact: {business_impact}
+    Recommended Actions: {recommended_actions}
+    
+    Contact: {business_contact}
+
+# ============================================
+# INCIDENT WORKFLOW AUTOMATION
+# ============================================
+
+incident_workflow:
+  # Automatic Workflow States
+  workflow_states:
+    detected:
+      trigger: "alert_fired"
+      actions: ["create_ticket", "notify_team", "start_timer"]
+    
+    investigating:
+      trigger: "acknowledged"
+      actions: ["assign_owner", "collect_data", "analyze_impact"]
+    
+    containing:
+      trigger: "root_cause_identified"
+      actions: ["implement_fix", "monitor_progress", "update_stakeholders"]
+    
+    recovering:
+      trigger: "fix_implemented"
+      actions: ["verify_solution", "gradual_rollback", "monitor_stability"]
+    
+    resolved:
+      trigger: "solution_verified"
+      actions: ["close_ticket", "send_summary", "schedule_review"]
+    
+    post_incident:
+      trigger: "24_hours_stable"
+      actions: ["conduct_review", "update_procedures", "team_learning"]
+
+# ============================================
+# REPORTING AND ANALYTICS
+# ============================================
+
+alerting_analytics:
+  # Alert Metrics Tracking
+  metrics_tracked:
+    - "alert_volume_by_severity"
+    - "response_time_compliance"
+    - "false_positive_rate"
+    - "resolution_time_trends"
+    - "escalation_frequency"
+    - "team_performance_metrics"
+
+  # Reporting Schedule
+  reports:
+    daily_summary:
+      recipients: ["ops-team@instyle.co.za"]
+      content: ["alert_summary", "response_times", "trends"]
+    
+    weekly_analysis:
+      recipients: ["tech-lead@instyle.co.za", "management@instyle.co.za"]
+      content: ["performance_analysis", "improvement_opportunities", "compliance"]
+    
+    monthly_review:
+      recipients: ["cto@instyle.co.za", "business_owner@instyle.co.za"]
+      content: ["comprehensive_analysis", "strategic_recommendations", "cost_analysis"]
+
+# ============================================
+# CONFIGURATION VALIDATION
+# ============================================
+
+configuration_validation:
+  # Alert Threshold Validation
+  threshold_validation:
+    - "response_time_thresholds_aligned_with_sla"
+    - "error_rate_thresholds_appropriate_for_business"
+    - "security_thresholds_compliant_with_policy"
+    - "business_metric_thresholds_realistic"
+
+  # Notification Channel Validation
+  notification_validation:
+    - "all_email_addresses_valid"
+    - "slack_webhooks_accessible"
+    - "sms_numbers_verified"
+    - "phone_numbers_updated"
+
+  # Escalation Path Validation
+  escalation_validation:
+    - "all_contacts_accessible_24_7"
+    - "backup_contacts_configured"
+    - "response_times_achievable"
+    - "escalation_order_correct"
+
+# ============================================
+# INTEGRATION CONFIGURATIONS
+# ============================================
+
+integrations:
+  # Jira Integration
+  jira:
+    enabled: true
+    project_key: "AB"
+    issue_types:
+      sev1: "Bug"
+      sev2: "Bug"
+      sev3: "Task"
+      sev4: "Task"
+    auto_create: true
+    auto_assign: true
+
+  # Status Page Integration
+  status_page:
+    enabled: true
+    provider: "statuspage.io"
+    page_id: "${STATUS_PAGE_ID}"
+    auto_update: true
+    incident_creation: true
+
+  # PagerDuty Integration
+  pagerduty:
+    enabled: false  # Currently not configured
+    service_key: "${PAGERDUTY_SERVICE_KEY}"
+    escalation_policy: "${PAGERDUTY_ESCALATION_POLICY}"

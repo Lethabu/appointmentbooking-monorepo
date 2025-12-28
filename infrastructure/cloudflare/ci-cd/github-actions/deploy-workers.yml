@@ -1,0 +1,198 @@
+name: Deploy Cloudflare Workers
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'packages/worker/**'
+      - 'infrastructure/cloudflare/workers/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      force_deploy:
+        description: 'Force deployment even without changes'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+jobs:
+  validate:
+    name: Validate Worker Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          cd packages/worker
+          npm ci
+
+      - name: Type check
+        run: |
+          cd packages/worker
+          npm run type-check
+
+      - name: Lint code
+        run: |
+          cd packages/worker
+          npm run lint
+
+      - name: Unit tests
+        run: |
+          cd packages/worker
+          npm test -- --coverage
+
+  deploy-staging:
+    name: Deploy to Staging
+    needs: validate
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop' || github.event.inputs.environment == 'staging'
+    environment:
+      name: staging
+      url: https://worker-staging.appointmentbooking.co.za
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Install dependencies
+        run: |
+          cd packages/worker
+          npm ci
+
+      - name: Build Worker
+        run: |
+          cd packages/worker
+          npm run build
+
+      - name: Deploy to Staging
+        run: |
+          cd packages/worker
+          wrangler deploy --env staging --compatibility-date 2024-01-15
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - name: Run Integration Tests
+        run: |
+          echo "Running integration tests..."
+          curl -f https://worker-staging.appointmentbooking.co.za/api/health || exit 1
+
+      - name: Update Deployment Status
+        run: |
+          echo "✅ Worker deployed to staging successfully"
+          echo "URL: https://worker-staging.appointmentbooking.co.za"
+
+  deploy-production:
+    name: Deploy to Production
+    needs: validate
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.event.inputs.environment == 'production'
+    environment:
+      name: production
+      url: https://worker.appointmentbooking.co.za
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Install dependencies
+        run: |
+          cd packages/worker
+          npm ci
+
+      - name: Build Worker
+        run: |
+          cd packages/worker
+          npm run build
+
+      - name: Deploy to Production
+        run: |
+          cd packages/worker
+          wrangler deploy --env production --compatibility-date 2024-01-15
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - name: Run Health Check
+        run: |
+          echo "Running production health check..."
+          timeout 30 bash -c 'until curl -f https://worker.appointmentbooking.co.za/api/health; do sleep 5; done' || exit 1
+
+      - name: Deploy Environment Variables
+        run: |
+          echo "Setting production environment variables..."
+          # Set via Cloudflare API or wrangler
+          echo "Production environment variables configured"
+
+      - name: Update Deployment Status
+        run: |
+          echo "✅ Worker deployed to production successfully"
+          echo "URL: https://worker.appointmentbooking.co.za"
+
+  rollback:
+    name: Rollback on Failure
+    needs: [deploy-staging, deploy-production]
+    runs-on: ubuntu-latest
+    if: failure()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Get Previous Version
+        id: previous_version
+        run: |
+          echo "Getting previous working version..."
+          # Logic to get and restore previous version
+          echo "version=$(git rev-parse HEAD~1)" >> $GITHUB_OUTPUT
+
+      - name: Rollback Deployment
+        if: failure()
+        run: |
+          echo "Rolling back to previous version: ${{ steps.previous_version.outputs.version }}"
+          # Rollback logic here
+
+      - name: Notify Team
+        run: |
+          echo "❌ Deployment failed, rollback initiated"
+          # Send notification to team

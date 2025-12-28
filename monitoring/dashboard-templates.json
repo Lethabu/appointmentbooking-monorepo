@@ -1,0 +1,1055 @@
+{
+    "dashboard_templates": {
+        "executive_overview_dashboard": {
+            "name": "Executive Overview Dashboard",
+            "description": "High-level business and technical metrics for executive decision making",
+            "target_audience": "C-Level Executives, Business Owners",
+            "refresh_interval": "1h",
+            "layout": {
+                "grid_columns": 12,
+                "grid_rows": 8,
+                "responsive": true
+            },
+            "widgets": [
+                {
+                    "id": "revenue-overview",
+                    "type": "metric_card",
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 6,
+                        "height": 2
+                    },
+                    "title": "Revenue Overview",
+                    "metrics": [
+                        {
+                            "label": "Daily Revenue",
+                            "value": "current_daily_revenue",
+                            "target": "daily_revenue_target",
+                            "format": "currency",
+                            "currency": "ZAR"
+                        },
+                        {
+                            "label": "Monthly Revenue",
+                            "value": "current_monthly_revenue",
+                            "target": "monthly_revenue_target",
+                            "format": "currency",
+                            "currency": "ZAR"
+                        },
+                        {
+                            "label": "Revenue Growth",
+                            "value": "revenue_growth_rate",
+                            "format": "percentage",
+                            "trend": true
+                        }
+                    ]
+                },
+                {
+                    "id": "conversion-summary",
+                    "type": "gauge_chart",
+                    "position": {
+                        "x": 6,
+                        "y": 0,
+                        "width": 3,
+                        "height": 2
+                    },
+                    "title": "Conversion Rate",
+                    "metric": "overall_conversion_rate",
+                    "targets": {
+                        "target": 0.15,
+                        "warning": 0.12,
+                        "critical": 0.10
+                    },
+                    "format": "percentage"
+                },
+                {
+                    "id": "system-health",
+                    "type": "status_indicators",
+                    "position": {
+                        "x": 9,
+                        "y": 0,
+                        "width": 3,
+                        "height": 2
+                    },
+                    "title": "System Health",
+                    "indicators": [
+                        {
+                            "label": "Uptime",
+                            "value": "system_uptime",
+                            "status": "uptime_status",
+                            "target": 99.9
+                        },
+                        {
+                            "label": "Response Time",
+                            "value": "avg_response_time",
+                            "status": "response_time_status",
+                            "target": 200
+                        },
+                        {
+                            "label": "Error Rate",
+                            "value": "error_rate",
+                            "status": "error_rate_status",
+                            "target": 0.001
+                        }
+                    ]
+                },
+                {
+                    "id": "revenue-trend",
+                    "type": "line_chart",
+                    "position": {
+                        "x": 0,
+                        "y": 2,
+                        "width": 8,
+                        "height": 3
+                    },
+                    "title": "Revenue Trend (Last 30 Days)",
+                    "data_source": "revenue_analytics",
+                    "metrics": [
+                        "daily_revenue"
+                    ],
+                    "time_range": "30d",
+                    "interpolation": "smooth",
+                    "show_target_line": true,
+                    "targets": {
+                        "target_line": "daily_revenue_target"
+                    }
+                },
+                {
+                    "id": "booking-funnel",
+                    "type": "funnel_chart",
+                    "position": {
+                        "x": 8,
+                        "y": 2,
+                        "width": 4,
+                        "height": 3
+                    },
+                    "title": "Booking Conversion Funnel",
+                    "funnel_stages": [
+                        {
+                            "label": "Landing Page Views",
+                            "value": "landing_page_views"
+                        },
+                        {
+                            "label": "Booking Page Visits",
+                            "value": "booking_page_visits"
+                        },
+                        {
+                            "label": "Service Selections",
+                            "value": "service_selections"
+                        },
+                        {
+                            "label": "Payment Initiated",
+                            "value": "payment_initiated"
+                        },
+                        {
+                            "label": "Bookings Completed",
+                            "value": "bookings_completed"
+                        }
+                    ],
+                    "show_conversion_rates": true,
+                    "highlight_drop_offs": true
+                },
+                {
+                    "id": "top-services",
+                    "type": "bar_chart",
+                    "position": {
+                        "x": 0,
+                        "y": 5,
+                        "width": 6,
+                        "height": 3
+                    },
+                    "title": "Top Performing Services",
+                    "data_source": "service_analytics",
+                    "metrics": [
+                        "revenue_by_service",
+                        "bookings_by_service"
+                    ],
+                    "chart_type": "horizontal_bar",
+                    "limit": 5,
+                    "show_values": true
+                },
+                {
+                    "id": "customer-satisfaction",
+                    "type": "gauge_chart",
+                    "position": {
+                        "x": 6,
+                        "y": 5,
+                        "width": 3,
+                        "height": 3
+                    },
+                    "title": "Customer Satisfaction",
+                    "metric": "customer_satisfaction_score",
+                    "targets": {
+                        "target": 4.5,
+                        "warning": 4.0,
+                        "critical": 3.5
+                    },
+                    "format": "decimal",
+                    "max": 5
+                },
+                {
+                    "id": "system-performance",
+                    "type": "line_chart",
+                    "position": {
+                        "x": 9,
+                        "y": 5,
+                        "width": 3,
+                        "height": 3
+                    },
+                    "title": "System Performance (24h)",
+                    "metrics": [
+                        "response_time_p95",
+                        "error_rate",
+                        "throughput"
+                    ],
+                    "time_range": "24h",
+                    "dual_axis": true,
+                    "show_thresholds": true
+                }
+            ],
+            "kpi_cards": [
+                {
+                    "title": "Monthly Revenue Target",
+                    "value": "monthly_revenue",
+                    "target": "monthly_revenue_target",
+                    "format": "currency",
+                    "currency": "ZAR",
+                    "trend": true
+                },
+                {
+                    "title": "Customer Acquisition Cost",
+                    "value": "customer_acquisition_cost",
+                    "format": "currency",
+                    "currency": "ZAR",
+                    "trend": false
+                },
+                {
+                    "title": "Average Booking Value",
+                    "value": "average_booking_value",
+                    "format": "currency",
+                    "currency": "ZAR",
+                    "trend": true
+                },
+                {
+                    "title": "Customer Retention Rate",
+                    "value": "customer_retention_rate",
+                    "format": "percentage",
+                    "trend": true
+                }
+            ]
+        },
+        "operations_dashboard": {
+            "name": "Operations Dashboard",
+            "description": "Real-time operational metrics and system health monitoring",
+            "target_audience": "Operations Team, DevOps Engineers",
+            "refresh_interval": "30s",
+            "layout": {
+                "grid_columns": 12,
+                "grid_rows": 10,
+                "responsive": true
+            },
+            "widgets": [
+                {
+                    "id": "system-status",
+                    "type": "status_grid",
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 12,
+                        "height": 2
+                    },
+                    "title": "System Status Overview",
+                    "systems": [
+                        {
+                            "name": "Cloudflare Workers",
+                            "status": "worker_status",
+                            "response_time": "worker_response_time",
+                            "error_rate": "worker_error_rate"
+                        },
+                        {
+                            "name": "Database (D1)",
+                            "status": "database_status",
+                            "response_time": "database_response_time",
+                            "connection_count": "active_connections"
+                        },
+                        {
+                            "name": "CDN",
+                            "status": "cdn_status",
+                            "cache_hit_rate": "cache_hit_rate",
+                            "bandwidth": "bandwidth_usage"
+                        },
+                        {
+                            "name": "Payment Gateway",
+                            "status": "payment_status",
+                            "transaction_rate": "payment_transaction_rate",
+                            "failure_rate": "payment_failure_rate"
+                        }
+                    ]
+                },
+                {
+                    "id": "realtime-traffic",
+                    "type": "line_chart",
+                    "position": {
+                        "x": 0,
+                        "y": 2,
+                        "width": 8,
+                        "height": 3
+                    },
+                    "title": "Real-time Traffic (Last 24h)",
+                    "metrics": [
+                        "requests_per_minute",
+                        "concurrent_users",
+                        "bandwidth_usage"
+                    ],
+                    "time_range": "24h",
+                    "real_time": true,
+                    "show_baselines": true
+                },
+                {
+                    "id": "error-analysis",
+                    "type": "error_breakdown",
+                    "position": {
+                        "x": 8,
+                        "y": 2,
+                        "width": 4,
+                        "height": 3
+                    },
+                    "title": "Error Analysis (24h)",
+                    "breakdown": [
+                        "4xx_errors",
+                        "5xx_errors",
+                        "timeout_errors"
+                    ],
+                    "show_stack_traces": true,
+                    "error_tracking": "sentry"
+                },
+                {
+                    "id": "performance-metrics",
+                    "type": "multi_metric_chart",
+                    "position": {
+                        "x": 0,
+                        "y": 5,
+                        "width": 6,
+                        "height": 2
+                    },
+                    "title": "Performance Metrics (1h)",
+                    "metrics": [
+                        {
+                            "name": "Response Time P95",
+                            "value": "response_time_p95",
+                            "unit": "ms"
+                        },
+                        {
+                            "name": "Database Queries",
+                            "value": "database_query_time",
+                            "unit": "ms"
+                        },
+                        {
+                            "name": "External API Calls",
+                            "value": "external_api_latency",
+                            "unit": "ms"
+                        }
+                    ],
+                    "time_range": "1h",
+                    "show_percentiles": true
+                },
+                {
+                    "id": "resource-utilization",
+                    "type": "resource_gauge",
+                    "position": {
+                        "x": 6,
+                        "y": 5,
+                        "width": 3,
+                        "height": 2
+                    },
+                    "title": "Resource Utilization",
+                    "resources": [
+                        {
+                            "name": "CPU Usage",
+                            "value": "cpu_usage",
+                            "max": 100
+                        },
+                        {
+                            "name": "Memory Usage",
+                            "value": "memory_usage",
+                            "max": 128
+                        },
+                        {
+                            "name": "Storage Usage",
+                            "value": "storage_usage",
+                            "max": 1000
+                        }
+                    ],
+                    "format": "percentage"
+                },
+                {
+                    "id": "security-events",
+                    "type": "security_events_table",
+                    "position": {
+                        "x": 9,
+                        "y": 5,
+                        "width": 3,
+                        "height": 2
+                    },
+                    "title": "Security Events (24h)",
+                    "events": [
+                        "blocked_requests",
+                        "ddos_attempts",
+                        "auth_failures"
+                    ],
+                    "show_geo_data": true,
+                    "threat_level_indicators": true
+                },
+                {
+                    "id": "infrastructure-health",
+                    "type": "health_check_grid",
+                    "position": {
+                        "x": 0,
+                        "y": 7,
+                        "width": 12,
+                        "height": 3
+                    },
+                    "title": "Infrastructure Health Check",
+                    "checks": [
+                        {
+                            "name": "API Endpoints",
+                            "checks": [
+                                {
+                                    "endpoint": "/api/health",
+                                    "expected": 200,
+                                    "timeout": 5000
+                                },
+                                {
+                                    "endpoint": "/api/bookings",
+                                    "expected": 200,
+                                    "timeout": 10000
+                                },
+                                {
+                                    "endpoint": "/api/payments",
+                                    "expected": 200,
+                                    "timeout": 15000
+                                }
+                            ]
+                        },
+                        {
+                            "name": "External Services",
+                            "checks": [
+                                {
+                                    "service": "Paystack",
+                                    "endpoint": "api.paystack.co",
+                                    "timeout": 10000
+                                },
+                                {
+                                    "service": "Google Calendar",
+                                    "endpoint": "www.googleapis.com",
+                                    "timeout": 5000
+                                },
+                                {
+                                    "service": "WhatsApp Business",
+                                    "endpoint": "graph.facebook.com",
+                                    "timeout": 10000
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Database",
+                            "checks": [
+                                {
+                                    "check": "Connection Pool",
+                                    "metric": "active_connections",
+                                    "max": 100
+                                },
+                                {
+                                    "check": "Query Performance",
+                                    "metric": "avg_query_time",
+                                    "max": 100
+                                },
+                                {
+                                    "check": "Storage Health",
+                                    "metric": "storage_usage",
+                                    "max": 90
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "security_operations_dashboard": {
+            "name": "Security Operations Dashboard",
+            "description": "Comprehensive security monitoring and threat detection",
+            "target_audience": "Security Team, SOC Analysts",
+            "refresh_interval": "1m",
+            "layout": {
+                "grid_columns": 12,
+                "grid_rows": 8,
+                "responsive": true
+            },
+            "widgets": [
+                {
+                    "id": "threat-overview",
+                    "type": "threat_summary",
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 8,
+                        "height": 2
+                    },
+                    "title": "Threat Overview (24h)",
+                    "threats": [
+                        {
+                            "type": "DDoS Attacks",
+                            "count": "ddos_attempts",
+                            "severity": "current_threat_level"
+                        },
+                        {
+                            "type": "Blocked Requests",
+                            "count": "blocked_requests",
+                            "severity": "normal"
+                        },
+                        {
+                            "type": "Auth Failures",
+                            "count": "auth_failures",
+                            "severity": "elevated"
+                        },
+                        {
+                            "type": "Bot Traffic",
+                            "count": "bot_requests",
+                            "severity": "monitoring"
+                        }
+                    ],
+                    "show_trends": true
+                },
+                {
+                    "id": "geographic-threat-map",
+                    "type": "world_map",
+                    "position": {
+                        "x": 8,
+                        "y": 0,
+                        "width": 4,
+                        "height": 2
+                    },
+                    "title": "Threat Geographic Distribution",
+                    "data": "threats_by_country",
+                    "heatmap": true,
+                    "color_scale": "threat_intensity"
+                },
+                {
+                    "id": "authentication-security",
+                    "type": "auth_metrics",
+                    "position": {
+                        "x": 0,
+                        "y": 2,
+                        "width": 6,
+                        "height": 2
+                    },
+                    "title": "Authentication Security (24h)",
+                    "metrics": [
+                        {
+                            "label": "Successful Logins",
+                            "value": "successful_logins",
+                            "format": "number"
+                        },
+                        {
+                            "label": "Failed Logins",
+                            "value": "failed_logins",
+                            "format": "number"
+                        },
+                        {
+                            "label": "Locked Accounts",
+                            "value": "locked_accounts",
+                            "format": "number"
+                        },
+                        {
+                            "label": "Suspicious Login Locations",
+                            "value": "suspicious_locations",
+                            "format": "number"
+                        }
+                    ],
+                    "show_geo_indicators": true
+                },
+                {
+                    "id": "api-security-status",
+                    "type": "api_security_status",
+                    "position": {
+                        "x": 6,
+                        "y": 2,
+                        "width": 6,
+                        "height": 2
+                    },
+                    "title": "API Security Status",
+                    "endpoints": [
+                        {
+                            "path": "/api/auth",
+                            "status": "auth_endpoint_status",
+                            "rate_limit_hits:": "auth_rate_limit_hits",
+                            "threat_score": "auth_threat_score"
+                        },
+                        {
+                            "path": "/api/bookings",
+                            "status": "booking_endpoint_status",
+                            "rate_limit_hits:": "booking_rate_limit_hits",
+                            "threat_score": "booking_threat_score"
+                        },
+                        {
+                            "path": "/api/payments",
+                            "status": "payment_endpoint_status",
+                            "rate_limit_hits:": "payment_rate_limit_hits",
+                            "threat_score": "payment_threat_score"
+                        }
+                    ]
+                },
+                {
+                    "id": "security-incidents-timeline",
+                    "type": "timeline",
+                    "position": {
+                        "x": 0,
+                        "y": 4,
+                        "width": 12,
+                        "height": 2
+                    },
+                    "title": "Security Incidents Timeline (24h)",
+                    "events": "security_incidents",
+                    "severity_indicators": true,
+                    "auto_refresh": true
+                },
+                {
+                    "id": "vulnerability-assessment",
+                    "type": "vuln_status",
+                    "position": {
+                        "x": 0,
+                        "y": 6,
+                        "width": 6,
+                        "height": 2
+                    },
+                    "title": "Vulnerability Assessment",
+                    "categories": [
+                        {
+                            "name": "Critical",
+                            "count": "critical_vulns",
+                            "status": "critical"
+                        },
+                        {
+                            "name": "High",
+                            "count": "high_vulns",
+                            "status": "high"
+                        },
+                        {
+                            "name": "Medium",
+                            "count": "medium_vulns",
+                            "status": "medium"
+                        },
+                        {
+                            "name": "Low",
+                            "count": "low_vulns",
+                            "status": "low"
+                        }
+                    ],
+                    "last_scan": "last_vuln_scan",
+                    "scan_status": "vuln_scan_status"
+                },
+                {
+                    "id": "compliance-status",
+                    "type": "compliance_dashboard",
+                    "position": {
+                        "x": 6,
+                        "y": 6,
+                        "width": 6,
+                        "height": 2
+                    },
+                    "title": "Compliance Status",
+                    "standards": [
+                        {
+                            "name": "GDPR",
+                            "status": "gdpr_compliance",
+                            "score": "gdpr_score"
+                        },
+                        {
+                            "name": "POPIA",
+                            "status": "popia_compliance",
+                            "score": "popia_score"
+                        },
+                        {
+                            "name": "PCI DSS",
+                            "status": "pci_compliance",
+                            "score": "pci_score"
+                        },
+                        {
+                            "name": "OWASP",
+                            "status": "owasp_compliance",
+                            "score": "owasp_score"
+                        }
+                    ],
+                    "last_audit": "last_compliance_audit"
+                }
+            ]
+        },
+        "business_intelligence_dashboard": {
+            "name": "Business Intelligence Dashboard",
+            "description": "Comprehensive business analytics and insights",
+            "target_audience": "Business Analysts, Marketing Team",
+            "refresh_interval": "1h",
+            "layout": {
+                "grid_columns": 12,
+                "grid_rows": 10,
+                "responsive": true
+            },
+            "widgets": [
+                {
+                    "id": "revenue-analytics",
+                    "type": "revenue_analytics",
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 8,
+                        "height": 3
+                    },
+                    "title": "Revenue Analytics (30 Days)",
+                    "metrics": [
+                        {
+                            "label": "Total Revenue",
+                            "value": "total_revenue",
+                            "format": "currency"
+                        },
+                        {
+                            "label": "Revenue Growth",
+                            "value": "revenue_growth",
+                            "format": "percentage"
+                        },
+                        {
+                            "label": "Average Order Value",
+                            "value": "avg_booking_value",
+                            "format": "currency"
+                        },
+                        {
+                            "label": "Revenue per Customer",
+                            "value": "revenue_per_customer",
+                            "format": "currency"
+                        }
+                    ],
+                    "time_series": "daily_revenue",
+                    "show_forecasts": true
+                },
+                {
+                    "id": "customer-segmentation",
+                    "type": "customer_segments",
+                    "position": {
+                        "x": 8,
+                        "y": 0,
+                        "width": 4,
+                        "height": 3
+                    },
+                    "title": "Customer Segmentation",
+                    "segments": [
+                        {
+                            "name": "New Customers",
+                            "count": "new_customers",
+                            "percentage": "new_customer_percentage"
+                        },
+                        {
+                            "name": "Returning Customers",
+                            "count": "returning_customers",
+                            "percentage": "returning_customer_percentage"
+                        },
+                        {
+                            "name": "High Value Customers",
+                            "count": "high_value_customers",
+                            "percentage": "high_value_percentage"
+                        }
+                    ],
+                    "show_values": true,
+                    "chart_type": "donut"
+                },
+                {
+                    "id": "conversion-funnel-advanced",
+                    "type": "advanced_funnel",
+                    "position": {
+                        "x": 0,
+                        "y": 3,
+                        "width": 6,
+                        "height": 4
+                    },
+                    "title": "Advanced Conversion Funnel",
+                    "funnel_stages": [
+                        {
+                            "label": "Website Visitors",
+                            "value": "website_visitors",
+                            "conversion_rate": null,
+                            "drop_off_rate": null
+                        },
+                        {
+                            "label": "Service Page Views",
+                            "value": "service_page_views",
+                            "conversion_rate": "service_page_conversion",
+                            "drop_off_rate": "website_to_service_drop_off"
+                        },
+                        {
+                            "label": "Booking Initiations",
+                            "value": "booking_initiations",
+                            "conversion_rate": "booking_initiation_rate",
+                            "drop_off_rate": "service_to_booking_drop_off"
+                        },
+                        {
+                            "label": "Form Completions",
+                            "value": "form_completions",
+                            "conversion_rate": "form_completion_rate",
+                            "drop_off_rate": "booking_to_form_drop_off"
+                        },
+                        {
+                            "label": "Payments Initiated",
+                            "value": "payments_initiated",
+                            "conversion_rate": "payment_initiation_rate",
+                            "drop_off_rate": "form_to_payment_drop_off"
+                        },
+                        {
+                            "label": "Successful Bookings",
+                            "value": "successful_bookings",
+                            "conversion_rate": "payment_completion_rate",
+                            "drop_off_rate": "payment_to_booking_drop_off"
+                        }
+                    ],
+                    "show_bottlenecks": true,
+                    "recommendations": true
+                },
+                {
+                    "id": "service-performance-matrix",
+                    "type": "performance_matrix",
+                    "position": {
+                        "x": 6,
+                        "y": 3,
+                        "width": 6,
+                        "height": 4
+                    },
+                    "title": "Service Performance Matrix",
+                    "services": [
+                        {
+                            "name": "Haircut",
+                            "revenue": "haircut_revenue",
+                            "bookings": "haircut_bookings",
+                            "satisfaction": "haircut_satisfaction"
+                        },
+                        {
+                            "name": "Coloring",
+                            "revenue": "coloring_revenue",
+                            "bookings": "coloring_bookings",
+                            "satisfaction": "coloring_satisfaction"
+                        },
+                        {
+                            "name": "Styling",
+                            "revenue": "styling_revenue",
+                            "bookings": "styling_bookings",
+                            "satisfaction": "styling_satisfaction"
+                        },
+                        {
+                            "name": "Treatments",
+                            "revenue": "treatment_revenue",
+                            "bookings": "treatment_bookings",
+                            "satisfaction": "treatment_satisfaction"
+                        }
+                    ],
+                    "chart_type": "scatter",
+                    "bubble_size": "total_revenue",
+                    "show_trends": true
+                },
+                {
+                    "id": "customer-journey-heatmap",
+                    "type": "journey_heatmap",
+                    "position": {
+                        "x": 0,
+                        "y": 7,
+                        "width": 8,
+                        "height": 3
+                    },
+                    "title": "Customer Journey Heatmap",
+                    "journey_paths": [
+                        {
+                            "path": "Homepage → Services → Booking → Payment",
+                            "percentage": "path_1_percentage"
+                        },
+                        {
+                            "path": "Homepage → About → Services → Booking → Payment",
+                            "percentage": "path_2_percentage"
+                        },
+                        {
+                            "path": "Direct → Booking → Payment",
+                            "percentage": "path_3_percentage"
+                        },
+                        {
+                            "path": "Social Media → Homepage → Services → Booking → Payment",
+                            "percentage": "path_4_percentage"
+                        }
+                    ],
+                    "time_spent_per_step": true,
+                    "drop_off_points": true
+                },
+                {
+                    "id": "marketing-roi-dashboard",
+                    "type": "marketing_roi",
+                    "position": {
+                        "x": 8,
+                        "y": 7,
+                        "width": 4,
+                        "height": 3
+                    },
+                    "title": "Marketing ROI Analysis",
+                    "channels": [
+                        {
+                            "name": "Google Ads",
+                            "cost": "google_ads_cost",
+                            "revenue": "google_ads_revenue",
+                            "roi": "google_ads_roi"
+                        },
+                        {
+                            "name": "Facebook Ads",
+                            "cost": "facebook_ads_cost",
+                            "revenue": "facebook_ads_revenue",
+                            "roi": "facebook_ads_roi"
+                        },
+                        {
+                            "name": "Organic Search",
+                            "cost": "organic_cost",
+                            "revenue": "organic_revenue",
+                            "roi": "organic_roi"
+                        },
+                        {
+                            "name": "Social Media",
+                            "cost": "social_media_cost",
+                            "revenue": "social_media_revenue",
+                            "roi": "social_media_roi"
+                        }
+                    ],
+                    "show_cpa": true,
+                    "show_ltv": true
+                }
+            ]
+        }
+    },
+    "dashboard_sharing": {
+        "sharing_settings": {
+            "executive_overview": {
+                "public_access": false,
+                "authorized_users": [
+                    "executives",
+                    "business_owner"
+                ],
+                "embed_options": {
+                    "responsive": true,
+                    "auto_refresh": true
+                },
+                "export_formats": [
+                    "PDF",
+                    "PNG",
+                    "Excel"
+                ]
+            },
+            "operations": {
+                "public_access": false,
+                "authorized_users": [
+                    "operations_team",
+                    "devops",
+                    "technical_lead"
+                ],
+                "embed_options": {
+                    "responsive": true,
+                    "auto_refresh": true
+                },
+                "export_formats": [
+                    "PNG",
+                    "JSON"
+                ]
+            },
+            "security": {
+                "public_access": false,
+                "authorized_users": [
+                    "security_team",
+                    "soc_analysts"
+                ],
+                "embed_options": {
+                    "responsive": true,
+                    "auto_refresh": true
+                },
+                "export_formats": [
+                    "PDF",
+                    "PNG"
+                ]
+            },
+            "business_intelligence": {
+                "public_access": false,
+                "authorized_users": [
+                    "business_analysts",
+                    "marketing_team",
+                    "executives"
+                ],
+                "embed_options": {
+                    "responsive": true,
+                    "auto_refresh": true
+                },
+                "export_formats": [
+                    "PDF",
+                    "PNG",
+                    "Excel",
+                    "PowerBI"
+                ]
+            }
+        }
+    },
+    "mobile_dashboard": {
+        "mobile_optimized_dashboards": {
+            "executive_mobile": {
+                "name": "Executive Mobile Dashboard",
+                "widgets": [
+                    {
+                        "type": "kpi_cards",
+                        "compact": true
+                    },
+                    {
+                        "type": "revenue_summary",
+                        "compact": true
+                    },
+                    {
+                        "type": "system_health_indicator",
+                        "compact": true
+                    }
+                ]
+            },
+            "operations_mobile": {
+                "name": "Operations Mobile Dashboard",
+                "widgets": [
+                    {
+                        "type": "system_status_grid",
+                        "compact": true
+                    },
+                    {
+                        "type": "critical_alerts",
+                        "compact": true
+                    },
+                    {
+                        "type": "performance_metrics",
+                        "compact": true
+                    }
+                ]
+            }
+        }
+    },
+    "dashboard_api": {
+        "real_time_data": {
+            "endpoints": {
+                "metrics": "/api/dashboard/metrics",
+                "alerts": "/api/dashboard/alerts",
+                "status": "/api/dashboard/status",
+                "business_metrics": "/api/dashboard/business"
+            },
+            "webhook_support": true,
+            "real_time_protocols": [
+                "WebSocket",
+                "Server-Sent Events"
+            ]
+        },
+        "data_refresh": {
+            "real_time_metrics": "30s",
+            "business_metrics": "1h",
+            "historical_data": "1d",
+            "cached_data": "5m"
+        }
+    }
+}

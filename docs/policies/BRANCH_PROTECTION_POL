@@ -1,0 +1,243 @@
+# GitHub Branch Protection & Security Policies
+
+## Overview
+
+This document outlines the enterprise-grade branch protection rules and security policies for the Appointment Booking Monorepo repository.
+
+## Protected Branches
+
+### Primary Branches
+- `main` - Production-ready code, fully protected
+- `staging` - Pre-production testing environment
+- `develop` - Integration branch for feature development
+
+### Feature Branches
+- Pattern: `feature/`, `bugfix/`, `hotfix/`, `release/`
+- Temporary branches for specific work items
+- Auto-deleted after merge
+
+## Branch Protection Rules
+
+### Main Branch (`main`)
+**Required Settings:**
+- ✅ Require pull request reviews before merging
+  - Minimum 2 reviewers for production changes
+  - At least 1 senior developer approval
+  - Dismiss stale approvals when new commits are pushed
+- ✅ Require review from code owners
+- ✅ Require status checks to pass before merging
+  - `CI Build & Cloudflare Deploy` must pass
+  - `Cloudflare Deploy & Audit` must complete
+  - All tests must pass
+- ✅ Require branches to be up to date before merging
+- ✅ Require conversation resolution before merging
+- ✅ Include administrators in restrictions
+- ✅ Restrict pushes to administrators
+
+### Staging Branch (`staging`)
+**Required Settings:**
+- ✅ Require pull request reviews before merging
+  - Minimum 1 reviewer
+- ✅ Require status checks to pass
+- ✅ Require branches to be up to date
+- ✅ Restrict pushes to administrators
+
+### Develop Branch (`develop`)
+**Required Settings:**
+- ✅ Require pull request reviews before merging
+  - Minimum 1 reviewer
+- ✅ Require status checks to pass
+- ✅ Restrict pushes to administrators
+
+## Status Checks Configuration
+
+### Required Status Checks
+1. **CI Build & Cloudflare Deploy**
+   - Must pass for all deployments
+   - Tests monorepo build process
+   - Validates Cloudflare deployment
+
+2. **Cloudflare Deploy & Audit**
+   - Ensures deployment success
+   - Runs post-deployment audits
+   - Uploads audit artifacts
+
+3. **Linting and Code Quality**
+   - ESLint validation
+   - TypeScript type checking
+   - Prettier formatting validation
+
+4. **Test Coverage**
+   - Unit tests execution
+   - Integration tests
+   - E2E tests with Playwright
+
+### Optional but Recommended Checks
+- Security vulnerability scanning
+- Dependency license validation
+- Performance benchmarking
+- Accessibility testing
+
+## Code Review Requirements
+
+### Review Categories
+
+#### Production Changes (Main Branch)
+- **Minimum Reviewers:** 2
+- **Reviewers Required:**
+  - 1 Senior Developer
+  - 1 Team Lead or Architect
+- **Review Focus:**
+  - Code quality and architecture
+  - Security implications
+  - Performance impact
+  - Documentation completeness
+
+#### Staging Changes
+- **Minimum Reviewers:** 1
+- **Reviewer Type:** Any team member
+- **Review Focus:**
+  - Functional correctness
+  - Integration compatibility
+
+#### Feature Development (Develop Branch)
+- **Minimum Reviewers:** 1
+- **Review Focus:**
+  - Code style and conventions
+  - Basic functionality
+  - Test coverage
+
+### Code Owner Assignment
+```yaml
+# CODEOWNERS file content
+# Global owners
+* @senior-developers @team-leads
+
+# Application-specific owners
+apps/booking/ @frontend-team @booking-specialists
+apps/dashboard/ @admin-team @data-analysts
+apps/marketing/ @marketing-team @content-team
+
+# Package-specific owners
+packages/auth/ @security-team @auth-specialists
+packages/db/ @backend-team @database-specialists
+packages/ui/ @frontend-team @design-team
+
+# Infrastructure
+.github/ @devops-team @architects
+infrastructure/ @devops-team @cloud-specialists
+scripts/ @automation-team @devops-team
+```
+
+## Security Policies
+
+### Secret Management
+- ✅ Enforce signed commits for production branches
+- ✅ Restrict access to deployment secrets
+- ✅ Regular secret rotation policy
+- ✅ No secrets in commit history
+
+### Access Control
+- **Admin Access:** Limited to tech leads and senior developers
+- **Write Access:** All team members for feature branches
+- **Read Access:** Open for public visibility
+
+### Security Scanning
+- **Dependency Scanning:** Automated via GitHub Security Advisories
+- **Code Scanning:** GitHub Advanced Security enabled
+- **Secret Scanning:** Enabled with push protection
+- **Supply Chain Security:** Dependency review enabled
+
+## Deployment Protection
+
+### Production Deployment Rules
+1. **Main Branch Only**
+   - Only `main` branch deploys to production
+   - Staging deployment required before main merge
+   - Rollback capability must be verified
+
+2. **Deployment Windows**
+   - **Business Hours:** 9 AM - 5 PM (UTC)
+   - **Emergency Hotfixes:** Allowed with approval
+   - **Weekend Deployments:** Prohibited unless critical
+
+3. **Deployment Checklist**
+   - [ ] All tests passing
+   - [ ] Security scan completed
+   - [ ] Performance benchmarks met
+   - [ ] Documentation updated
+   - [ ] Rollback plan verified
+
+## Monitoring and Alerts
+
+### Branch Protection Failures
+- **Notification:** Immediate to development team
+- **Escalation:** After 2 hours to tech leads
+- **Resolution:** Within 4 hours for production issues
+
+### Security Incidents
+- **Detection:** Automated scanning alerts
+- **Response:** Immediate security team notification
+- **Action:** Automatic branch protection on critical vulnerabilities
+
+## Configuration Commands
+
+### GitHub CLI Setup
+```bash
+# Enable branch protection
+gh api repos/{owner}/{repo}/branches/main/protection \
+  --method PUT \
+  --field required_pull_request_reviews='{"required_approving_review_count": 2, "dismiss_stale_reviews": true}' \
+  --field required_status_checks='{"strict": true, "contexts": ["CI Build & Cloudflare Deploy", "Cloudflare Deploy & Audit"]}' \
+  --field enforce_admins='true'
+```
+
+### Required Repository Settings
+1. **Features:**
+   - ✅ Wikis disabled
+   - ✅ Issues enabled
+   - ✅ Projects enabled
+   - ✅ Discussions enabled
+
+2. **Pull Requests:**
+   - ✅ Allow merge commits disabled
+   - ✅ Allow squash merging enabled
+   - ✅ Allow rebase merging enabled
+   - ✅ Always suggest updating pull request branches
+
+3. **Security:**
+   - ✅ Dependency graph enabled
+   - ✅ Dependabot alerts enabled
+   - ✅ Dependabot security updates enabled
+
+## Review and Maintenance
+
+### Policy Review Schedule
+- **Monthly:** Security scan results review
+- **Quarterly:** Branch protection rule review
+- **Annually:** Complete policy audit and updates
+
+### Exception Handling
+- **Process:** Submit exception request via GitHub issue
+- **Approval:** Requires 2 senior developer approvals
+- **Documentation:** Exception must be documented with justification
+- **Duration:** Maximum 30 days, renewable
+
+## Compliance and Audit
+
+### Audit Trail
+- All branch protection changes logged
+- Review decisions tracked
+- Security scan results archived
+- Deployment history maintained
+
+### Reporting
+- Monthly security compliance reports
+- Quarterly branch protection audits
+- Annual policy effectiveness review
+
+---
+
+**Document Owner:** Development Team Lead  
+**Last Updated:** December 2025  
+**Next Review:** March 2026

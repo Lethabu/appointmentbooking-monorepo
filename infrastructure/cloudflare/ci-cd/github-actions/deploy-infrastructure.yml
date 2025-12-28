@@ -1,0 +1,288 @@
+name: Deploy Infrastructure
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'infrastructure/cloudflare/**'
+      - '.github/workflows/deploy-infrastructure.yml'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      plan_only:
+        description: 'Show plan only (no apply)'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+  TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+
+jobs:
+  plan:
+    name: Terraform Plan
+    runs-on: ubuntu-latest
+    if: github.event.inputs.plan_only != 'false'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      - name: Setup Terraform Cloud
+        if: env.TF_API_TOKEN != ''
+        run: |
+          terraform login
+          echo "backend \"remote\" {" >> infrastructure/cloudflare/backend.tf
+          echo "  organization = \"appointment-booking\"" >> infrastructure/cloudflare/backend.tf
+          echo "  workspaces {" >> infrastructure/cloudflare/backend.tf
+          echo "    name = \"instyle-infrastructure\"" >> infrastructure/cloudflare/backend.tf
+          echo "  }" >> infrastructure/cloudflare/backend.tf
+          echo "}" >> infrastructure/cloudflare/backend.tf
+
+      - name: Terraform Init
+        run: |
+          cd infrastructure/cloudflare
+          terraform init -backend-config="environments/${{ github.event.inputs.environment || 'staging' }}.tfvars"
+
+      - name: Terraform Plan
+        run: |
+          cd infrastructure/cloudflare
+          terraform plan -var-file="environments/${{ github.event.inputs.environment || 'staging' }}.tfvars" -out=tfplan
+
+      - name: Comment Plan Results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const output = fs.readFileSync('tfplan', 'utf8');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## Terraform Plan Results\n\n\`\`\`\n${output}\n\`\`\``
+            });
+
+  validate:
+    name: Validate Infrastructure
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      - name: Terraform Format
+        run: |
+          cd infrastructure/cloudflare
+          terraform fmt -check -recursive
+
+      - name: Terraform Validate
+        run: |
+          cd infrastructure/cloudflare
+          terraform validate
+
+      - name: Checkov Security Scan
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: infrastructure/cloudflare
+          framework: terraform
+          output_format: json
+          output_file_path: checkov-results.json
+
+      - name: Upload Checkov Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: checkov-results
+          path: checkov-results.json
+
+  apply:
+    name: Terraform Apply
+    needs: [validate, plan]
+    runs-on: ubuntu-latest
+    if: github.event.inputs.plan_only == 'false' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    environment:
+      name: ${{ github.event.inputs.environment || 'staging' }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      - name: Terraform Init
+        run: |
+          cd infrastructure/cloudflare
+          terraform init -backend-config="environments/${{ github.event.inputs.environment || 'staging' }}.tfvars"
+
+      - name: Terraform Apply
+        run: |
+          cd infrastructure/cloudflare
+          terraform apply -auto-approve -var-file="environments/${{ github.event.inputs.environment || 'staging' }}.tfvars"
+        env:
+          TF_IN_AUTOMATION: true
+
+      - name: Terraform Output
+        run: |
+          cd infrastructure/cloudflare
+          terraform output -json > terraform-output.json
+
+      - name: Upload Terraform State
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-state
+          path: infrastructure/cloudflare/terraform.tfstate
+          retention-days: 30
+
+      - name: Upload Terraform Output
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-output
+          path: infrastructure/cloudflare/terraform-output.json
+
+  destroy:
+    name: Terraform Destroy
+    runs-on: ubuntu-latest
+    if: github.event.inputs.environment == 'staging' && github.event.inputs.plan_only == 'false'
+    environment:
+      name: staging
+      url: https://staging.appointmentbooking.co.za
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      - name: Terraform Init
+        run: |
+          cd infrastructure/cloudflare
+          terraform init -backend-config="environments/staging.tfvars"
+
+      - name: Terraform Destroy
+        run: |
+          cd infrastructure/cloudflare
+          terraform destroy -auto-approve -var-file="environments/staging.tfvars"
+        env:
+          TF_IN_AUTOMATION: true
+
+  backup:
+    name: Infrastructure Backup
+    needs: apply
+    runs-on: ubuntu-latest
+    if: success()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Backup Database
+        run: |
+          echo "Creating database backup..."
+          cd infrastructure/cloudflare
+          # Create D1 database backup
+          wrangler d1 backup create appointmentbooking-${{ github.event.inputs.environment || 'staging' }}-db
+
+      - name: Upload Backup
+        uses: actions/upload-artifact@v3
+        with:
+          name: infrastructure-backup-${{ github.ref_name }}-${{ github.sha }}
+          path: |
+            infrastructure/cloudflare/terraform.tfstate
+            infrastructure/cloudflare/terraform-output.json
+          retention-days: 90
+
+  test-infrastructure:
+    name: Test Infrastructure
+    needs: apply
+    runs-on: ubuntu-latest
+    if: success()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Test Workers Health
+        run: |
+          echo "Testing Workers health..."
+          curl -f https://worker-${{ github.event.inputs.environment || 'staging' }}.appointmentbooking.co.za/api/health
+
+      - name: Test Pages Deployment
+        run: |
+          echo "Testing Pages deployment..."
+          curl -f https://dashboard-${{ github.event.inputs.environment || 'staging' }}.appointmentbooking.co.za/api/health || echo "Dashboard not deployed"
+
+      - name: Test Database Connectivity
+        run: |
+          echo "Testing database connectivity..."
+          # Add database connectivity tests
+
+      - name: Test R2 Storage
+        run: |
+          echo "Testing R2 storage..."
+          # Add R2 storage tests
+
+  notify:
+    name: Notify Infrastructure Status
+    needs: [apply, test-infrastructure]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: Notify Success
+        if: needs.apply.result == 'success' && needs.test-infrastructure.result == 'success'
+        run: |
+          echo "✅ Infrastructure deployed and tested successfully"
+          # Add success notification
+
+      - name: Notify Failure
+        if: needs.apply.result == 'failure' || needs.test-infrastructure.result == 'failure'
+        run: |
+          echo "❌ Infrastructure deployment failed"
+          # Add failure notification

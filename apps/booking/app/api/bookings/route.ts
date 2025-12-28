@@ -1,7 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPaymentGateway, PaymentGateway, PaymentRouter, StripeGateway, PayFastGateway, YocoGateway, PaystackGateway } from '@repo/payments';
+import { withEmergencyAuth, withRateLimit, withInputValidation } from '../../middleware-emergency';
 // Note: In real implementation, we would import the DB client and schema
 // import { db } from '@/lib/db'; 
+
+// Input validation schema
+const bookingValidation = (body: any) => {
+    const errors: string[] = [];
+
+    if (!body.serviceId || typeof body.serviceId !== 'string') {
+        errors.push('Valid serviceId is required');
+    }
+
+    if (!body.time || typeof body.time !== 'string') {
+        errors.push('Valid time is required');
+    }
+
+    if (!body.tenantId || typeof body.tenantId !== 'string') {
+        errors.push('Valid tenantId is required');
+    }
+
+    if (!body.customerDetails || typeof body.customerDetails !== 'object') {
+        errors.push('Valid customerDetails object is required');
+    }
+
+    return {
+        isValid: errors.length === 0,
+        errors: errors.length > 0 ? errors : undefined
+    };
+};
 
 export async function POST(req: NextRequest) {
     try {

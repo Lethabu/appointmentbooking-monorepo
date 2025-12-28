@@ -1,0 +1,445 @@
+{
+    "sentry_integration": {
+        "project_configuration": {
+            "project_name": "appointmentbooking-monorepo",
+            "organization": "instylehairboutique",
+            "environment": "production",
+            "release": "v1.0.0",
+            "tags": {
+                "service": "appointment-booking",
+                "tenant": "instylehairboutique",
+                "region": "cloudflare"
+            }
+        },
+        "error_tracking": {
+            "javascript_errors": {
+                "enabled": true,
+                "sources": [
+                    "frontend",
+                    "api_routes"
+                ],
+                "capture_unchanged": true,
+                "capture_unhandled_rejections": true,
+                "breadcrumb_sentry": true
+            },
+            "server_errors": {
+                "enabled": true,
+                "sources": [
+                    "worker_routes",
+                    "api_handlers"
+                ],
+                "capture_slow_transactions": true,
+                "transaction_sampling": 0.1
+            }
+        },
+        "performance_monitoring": {
+            "web_vitals": {
+                "enabled": true,
+                "metrics": [
+                    "LCP",
+                    "FID",
+                    "CLS",
+                    "FCP",
+                    "TTFB"
+                ],
+                "thresholds": {
+                    "LCP": {
+                        "good": 2500,
+                        "poor": 4000
+                    },
+                    "FID": {
+                        "good": 100,
+                        "poor": 300
+                    },
+                    "CLS": {
+                        "good": 0.1,
+                        "poor": 0.25
+                    }
+                }
+            },
+            "transactions": {
+                "enabled": true,
+                "traces_sample_rate": 0.1,
+                "custom_instrumentation": true,
+                "http_tracing": true,
+                "database_tracing": true
+            },
+            "profiles": {
+                "enabled": true,
+                "profiles_sample_rate": 0.01
+            }
+        },
+        "custom_metrics": {
+            "business_metrics": {
+                "booking_conversion_rate": {
+                    "type": "counter",
+                    "description": "Rate of successful bookings vs total attempts",
+                    "tags": [
+                        "service_type",
+                        "tenant"
+                    ]
+                },
+                "revenue_processed": {
+                    "type": "distribution",
+                    "description": "Revenue amount per transaction",
+                    "tags": [
+                        "payment_method",
+                        "service_type"
+                    ]
+                },
+                "ai_agent_interactions": {
+                    "type": "counter",
+                    "description": "Number of AI agent conversations",
+                    "tags": [
+                        "outcome",
+                        "user_type"
+                    ]
+                }
+            },
+            "performance_metrics": {
+                "database_query_time": {
+                    "type": "histogram",
+                    "description": "Database query execution time",
+                    "tags": [
+                        "query_type",
+                        "table"
+                    ]
+                },
+                "api_response_time": {
+                    "type": "histogram",
+                    "description": "API endpoint response time",
+                    "tags": [
+                        "endpoint",
+                        "method"
+                    ]
+                },
+                "external_api_latency": {
+                    "type": "histogram",
+                    "description": "External API call latency",
+                    "tags": [
+                        "service",
+                        "endpoint"
+                    ]
+                }
+            },
+            "user_experience_metrics": {
+                "page_load_time": {
+                    "type": "histogram",
+                    "description": "Page load completion time",
+                    "tags": [
+                        "page_type",
+                        "device_type"
+                    ]
+                },
+                "user_session_duration": {
+                    "type": "distribution",
+                    "description": "Duration of user sessions",
+                    "tags": [
+                        "user_type",
+                        "traffic_source"
+                    ]
+                },
+                "booking_flow_completion": {
+                    "type": "counter",
+                    "description": "Booking flow completion tracking",
+                    "tags": [
+                        "step",
+                        "completion_status"
+                    ]
+                }
+            }
+        },
+        "alerting_rules": {
+            "error_rate_alerts": {
+                "high_error_rate": {
+                    "name": "High Error Rate Alert",
+                    "condition": "error_rate > 0.01",
+                    "time_window": "5m",
+                    "severity": "critical",
+                    "notification_channels": [
+                        "email",
+                        "slack"
+                    ],
+                    "actions": [
+                        "create_incident",
+                        "notify_incident_commander",
+                        "collect_recent_errors"
+                    ]
+                },
+                "new_error_pattern": {
+                    "name": "New Error Pattern Detected",
+                    "condition": "new_error_signature_count > 5",
+                    "time_window": "1h",
+                    "severity": "warning",
+                    "notification_channels": [
+                        "email"
+                    ],
+                    "actions": [
+                        "group_similar_errors",
+                        "create_ticket_for_review"
+                    ]
+                }
+            },
+            "performance_alerts": {
+                "slow_response_time": {
+                    "name": "Slow Response Time Alert",
+                    "condition": "avg_response_time > 1000",
+                    "time_window": "10m",
+                    "severity": "warning",
+                    "notification_channels": [
+                        "email",
+                        "slack"
+                    ],
+                    "actions": [
+                        "collect_performance_profile",
+                        "check_resource_usage"
+                    ]
+                },
+                "web_vitals_degradation": {
+                    "name": "Web Vitals Degradation",
+                    "condition": "avg_LCP > 2500 OR avg_FID > 100 OR avg_CLS > 0.1",
+                    "time_window": "15m",
+                    "severity": "warning",
+                    "notification_channels": [
+                        "email"
+                    ],
+                    "actions": [
+                        "analyze_performance_regression",
+                        "check_recent_deployments"
+                    ]
+                }
+            },
+            "business_metric_alerts": {
+                "booking_conversion_drop": {
+                    "name": "Booking Conversion Rate Drop",
+                    "condition": "booking_conversion_rate < 0.12",
+                    "time_window": "2h",
+                    "severity": "warning",
+                    "notification_channels": [
+                        "email",
+                        "slack"
+                    ],
+                    "actions": [
+                        "analyze_user_journey",
+                        "check_booking_flow_errors"
+                    ]
+                },
+                "ai_agent_failure_spike": {
+                    "name": "AI Agent Failure Spike",
+                    "condition": "ai_agent_error_rate > 0.15",
+                    "time_window": "30m",
+                    "severity": "warning",
+                    "notification_channels": [
+                        "slack"
+                    ],
+                    "actions": [
+                        "check_ai_service_status",
+                        "analyze_conversation_logs"
+                    ]
+                }
+            }
+        },
+        "dashboards": {
+            "error_tracking_dashboard": {
+                "name": "Error Tracking Dashboard",
+                "description": "Comprehensive error monitoring and analysis",
+                "widgets": [
+                    {
+                        "type": "error_rate_trend",
+                        "title": "Error Rate Trend (24h)",
+                        "time_range": "24h",
+                        "breakdown": [
+                            "error_type",
+                            "severity"
+                        ]
+                    },
+                    {
+                        "type": "top_errors",
+                        "title": "Top 10 Errors",
+                        "time_range": "24h",
+                        "metrics": [
+                            "error_count",
+                            "affected_users"
+                        ],
+                        "limit": 10
+                    },
+                    {
+                        "type": "error_impact",
+                        "title": "Error Impact Analysis",
+                        "time_range": "7d",
+                        "metrics": [
+                            "users_affected",
+                            "sessions_impacted",
+                            "revenue_impacted"
+                        ]
+                    }
+                ]
+            },
+            "performance_dashboard": {
+                "name": "Performance Monitoring Dashboard",
+                "description": "Application performance and user experience metrics",
+                "widgets": [
+                    {
+                        "type": "response_time_trend",
+                        "title": "API Response Time Trend",
+                        "time_range": "24h",
+                        "metrics": [
+                            "p50",
+                            "p95",
+                            "p99"
+                        ],
+                        "breakdown": [
+                            "endpoint"
+                        ]
+                    },
+                    {
+                        "type": "web_vitals",
+                        "title": "Core Web Vitals",
+                        "time_range": "24h",
+                        "metrics": [
+                            "LCP",
+                            "FID",
+                            "CLS",
+                            "FCP",
+                            "TTFB"
+                        ],
+                        "thresholds": {
+                            "LCP": {
+                                "good": 2500,
+                                "poor": 4000
+                            },
+                            "FID": {
+                                "good": 100,
+                                "poor": 300
+                            },
+                            "CLS": {
+                                "good": 0.1,
+                                "poor": 0.25
+                            }
+                        }
+                    },
+                    {
+                        "type": "transaction_breakdown",
+                        "title": "Transaction Performance Breakdown",
+                        "time_range": "24h",
+                        "breakdown": [
+                            "transaction_name",
+                            "op"
+                        ],
+                        "metrics": [
+                            "duration",
+                            "count"
+                        ]
+                    }
+                ]
+            },
+            "business_metrics_dashboard": {
+                "name": "Business Metrics Dashboard",
+                "description": "Business performance and conversion metrics",
+                "widgets": [
+                    {
+                        "type": "conversion_funnel",
+                        "title": "Booking Conversion Funnel",
+                        "time_range": "7d",
+                        "steps": [
+                            "landing_page_views",
+                            "booking_page_views",
+                            "service_selections",
+                            "time_selections",
+                            "booking_submissions",
+                            "payment_completions"
+                        ],
+                        "conversion_rates": true
+                    },
+                    {
+                        "type": "revenue_tracking",
+                        "title": "Revenue Tracking",
+                        "time_range": "30d",
+                        "metrics": [
+                            "daily_revenue",
+                            "revenue_by_service"
+                        ],
+                        "chart_type": "line"
+                    },
+                    {
+                        "type": "user_engagement",
+                        "title": "User Engagement Metrics",
+                        "time_range": "7d",
+                        "metrics": [
+                            "session_duration",
+                            "page_views_per_session",
+                            "bounce_rate"
+                        ],
+                        "breakdown": [
+                            "traffic_source",
+                            "device_type"
+                        ]
+                    }
+                ]
+            }
+        },
+        "issue_tracking": {
+            "auto_grouping": {
+                "enabled": true,
+                "similarity_threshold": 0.8,
+                "grouping_rules": [
+                    "error.message",
+                    "stacktrace.function",
+                    "fingerprint"
+                ]
+            },
+            "issue_workflows": {
+                "auto_assign": {
+                    "enabled": true,
+                    "rules": [
+                        {
+                            "condition": "error.tags.service contains 'api'",
+                            "assignee": "api-team@instyle.co.za"
+                        },
+                        {
+                            "condition": "error.tags.service contains 'frontend'",
+                            "assignee": "frontend-team@instyle.co.za"
+                        }
+                    ]
+                },
+                "auto_escalation": {
+                    "enabled": true,
+                    "rules": [
+                        {
+                            "condition": "issue.age > 24h AND unresolved",
+                            "escalate_to": "tech-lead@instyle.co.za"
+                        }
+                    ]
+                }
+            }
+        },
+        "integration_configurations": {
+            "slack_integration": {
+                "webhook_url": "${SLACK_WEBHOOK_URL}",
+                "channels": {
+                    "errors": "#alerts-errors",
+                    "performance": "#alerts-performance",
+                    "business": "#business-metrics"
+                },
+                "message_formatting": {
+                    "include_screenshots": true,
+                    "include_stack_traces": true,
+                    "include_user_context": true
+                }
+            },
+            "jira_integration": {
+                "enabled": true,
+                "project_key": "AB",
+                "issue_types": {
+                    "bug": "Bug",
+                    "performance": "Performance Issue",
+                    "security": "Security Issue"
+                },
+                "auto_create": {
+                    "condition": "error_count > 100 OR severity = 'critical'",
+                    "assignee": "tech-team@instyle.co.za"
+                }
+            }
+        }
+    }
+}

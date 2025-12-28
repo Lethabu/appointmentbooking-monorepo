@@ -1,0 +1,207 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+// ============================================================================
+// EMERGENCY SECURITY PATCH: Authentication Middleware
+// File: middleware-emergency.ts
+// Purpose: Emergency authentication enforcement for all API routes
+// Status: CRITICAL - Deploy immediately
+// ============================================================================
+
+/**
+ * Emergency authentication middleware for API routes
+ * This is a temporary fix until full authentication implementation is complete
+ */
+export function withEmergencyAuth(handler: Function) {
+  return async (req: NextRequest, ...args: any[]) => {
+    // Skip authentication for health checks and public endpoints
+    const publicPaths = ['/api/health', '/api/public', '/api/webhook'];
+    const url = req.nextUrl.pathname;
+    
+    const isPublicPath = publicPaths.some(path => url.startsWith(path));
+    if (isPublicPath) {
+      return handler(req, ...args);
+    }
+
+    // Check for authentication token
+    const authHeader = req.headers.get('authorization');
+    const apiKey = req.headers.get('x-api-key');
+    
+    // Emergency validation - accept either Bearer token or API key
+    const hasValidAuth = 
+      (authHeader && authHeader.startsWith('Bearer ')) ||
+      (apiKey && apiKey.length > 16); // Basic validation
+    
+    if (!hasValidAuth) {
+      console.warn(`[SECURITY] Unauthorized access attempt to ${url} from ${req.headers.get('x-forwarded-for') || 'unknown'}`);
+      return NextResponse.json(
+        { 
+          error: 'Unauthorized - Authentication required',
+          code: 'AUTH_REQUIRED',
+          timestamp: new Date().toISOString()
+        }, 
+        { 
+          status: 401,
+          headers: {
+            'WWW-Authenticate': 'Bearer realm="api"',
+            'X-Content-Type-Options': 'nosniff'
+          }
+        }
+      );
+    }
+
+    // Log authentication attempt for security monitoring
+    console.log(`[SECURITY] Authenticated request to ${url}`);
+
+    try {
+      const response = await handler(req, ...args);
+      
+      // Add security headers to response
+      if (response instanceof NextResponse) {
+        response.headers.set('X-Content-Type-Options', 'nosniff');
+        response.headers.set('X-Frame-Options', 'DENY');
+        response.headers.set('X-XSS-Protection', '1; mode=block');
+        response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+      }
+      
+      return response;
+    } catch (error) {
+      console.error(`[SECURITY] Error in authenticated handler for ${url}:`, error);
+      return NextResponse.json(
+        { 
+          error: 'Internal Server Error',
+          code: 'INTERNAL_ERROR',
+          timestamp: new Date().toISOString()
+        }, 
+        { status: 500 }
+      );
+    }
+  };
+}
+
+/**
+ * Rate limiting middleware
+ */
+export function withRateLimit(maxRequests: number = 100, windowMs: number = 15 * 60 * 1000) {
+  const requests = new Map<string, { count: number; resetTime: number }>();
+  
+  return (handler: Function) => {
+    return async (req: NextRequest, ...args: any[]) => {
+      const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
+      const now = Date.now();
+      const key = `${ip}-${req.nextUrl.pathname}`;
+      
+      const current = requests.get(key);
+      
+      if (!current || now > current.resetTime) {
+        requests.set(key, { count: 1, resetTime: now + windowMs });
+      } else if (current.count >= maxRequests) {
+        console.warn(`[SECURITY] Rate limit exceeded for ${key}`);
+        return NextResponse.json(
+          { 
+            error: 'Too Many Requests',
+            code: 'RATE_LIMIT_EXCEEDED',
+            retryAfter: Math.ceil((current.resetTime - now) / 1000)
+          }, 
+          { 
+            status: 429,
+            headers: {
+              'Retry-After': Math.ceil((current.resetTime - now) / 1000).toString(),
+              'X-RateLimit-Limit': maxRequests.toString(),
+              'X-RateLimit-Remaining': '0',
+              'X-RateLimit-Reset': current.resetTime.toString()
+            }
+          }
+        );
+      } else {
+        current.count++;
+      }
+      
+      return handler(req, ...args);
+    };
+  };
+}
+
+/**
+ * Input validation middleware
+ */
+export function withInputValidation(validator: (body: any) => { isValid: boolean; errors?: string[] }) {
+  return (handler: Function) => {
+    return async (req: NextRequest, ...args: any[]) => {
+      try {
+        const body = await req.json();
+        const validation = validator(body);
+        
+        if (!validation.isValid) {
+          console.warn(`[SECURITY] Invalid input for ${req.nextUrl.pathname}:`, validation.errors);
+          return NextResponse.json(
+            { 
+              error: 'Invalid input',
+              code: 'VALIDATION_FAILED',
+              details: validation.errors,
+              timestamp: new Date().toISOString()
+            }, 
+            { status: 400 }
+          );
+        }
+        
+        // Add validated body to request for handler
+        const modifiedReq = new NextRequest(req.url, {
+          method: req.method,
+          headers: req.headers,
+          body: JSON.stringify(body),
+        });
+        
+        return handler(modifiedReq, ...args);
+      } catch (error) {
+        console.error(`[SECURITY] Input validation error:`, error);
+        return NextResponse.json(
+          { 
+            error: 'Invalid JSON',
+            code: 'INVALID_JSON',
+            timestamp: new Date().toISOString()
+          }, 
+          { status: 400 }
+        );
+      }
+    };
+  };
+}
+
+/**
+ * Tenant isolation middleware
+ */
+export function withTenantIsolation(handler: Function) {
+  return async (req: NextRequest, ...args: any[]) => {
+    const url = req.nextUrl;
+    const tenantSlug = url.pathname.split('/')[2]; // /api/tenant/{slug}/...
+    
+    if (tenantSlug) {
+      // Validate tenant slug format
+      if (!/^[a-z0-9-]+$/.test(tenantSlug)) {
+        console.warn(`[SECURITY] Invalid tenant slug: ${tenantSlug}`);
+        return NextResponse.json(
+          { 
+            error: 'Invalid tenant identifier',
+            code: 'INVALID_TENANT',
+            timestamp: new Date().toISOString()
+          }, 
+          { status: 400 }
+        );
+      }
+      
+      // Add tenant header for downstream processing
+      const modifiedReq = new NextRequest(req.url, {
+        method: req.method,
+        headers: new Headers(req.headers),
+      });
+      modifiedReq.headers.set('x-tenant-slug', tenantSlug);
+      
+      return handler(modifiedReq, ...args);
+    }
+    
+    return handler(req, ...args);
+  };
+}
+
+// Export for use in API routes
+export { withEmergencyAuth as auth, withRateLimit as rateLimit, withInputValidation as validate, withTenantIsolation as tenantIsolation };

@@ -1,122 +1,463 @@
-# Root .gitignore for monorepo
+# =============================================================================
+# APPOINTMENT BOOKING MONOREPO - COMPREHENSIVE .GITIGNORE
+# =============================================================================
 
-# Node
-/node_modules
-**/node_modules
+# =============================================================================
+# NODE.JS & PACKAGE MANAGERS
+# =============================================================================
+# Dependencies
+node_modules/
+**/node_modules/
+.pnp
+.pnp.js
 
+# Package manager lock files (keep only pnpm-lock.yaml)
+package-lock.json
+yarn.lock
+!pnpm-lock.yaml
+
+# pnpm specific
+.pnpm-debug.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# npm
+.npm
+npm-debug.log*
+.npmrc
+
+# =============================================================================
+# BUILD OUTPUTS & CACHE
+# =============================================================================
 # Next.js
-/.next/
-/out/
-/.next
-**/next
+.next/
+out/
+build/
+dist/
+.vercel/
+.vercel/
 
-# Build artifacts and cache
-/build
-.cache
-.parcel-cache
-.vite
+# Vite
+.vite/
+.vite/cache/
 
-# Large binary files
-*.node
+# Turbo
+.turbo/
+.turbo/cache/
+.turbo/cookies/
+.turbo/daemon/
+
+# General build artifacts
+build/
+dist/
+lib/
+*.tsbuildinfo
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+
+# =============================================================================
+# CLOUDFLARE & EDGE COMPUTING
+# =============================================================================
+.wrangler/
+.wrangler/cache/
+.wrangler/state/
+.dev.vars
+.cloudflare/
+
+# Cloudflare Pages
+.pages/
+.vercel/output/
+.output/
+
+# Wrangler builds
+workers-site/
+worker.js
+worker.mjs
+
+# =============================================================================
+# ENVIRONMENT & CONFIGURATION
+# =============================================================================
+# Environment files
+.env*
+!.env.example
+!.env.local.example
+!.env.development.example
+!.env.staging.example
+!.env.production.example
+
+# Local development
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Secrets and keys
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets.json
+secrets/
+credentials.json
+
+# =============================================================================
+# TESTING & COVERAGE
+# =============================================================================
+# Test outputs
+coverage/
+*.lcov
+.nyc_output/
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Test artifacts
+*.test.js.snap
+*.spec.js.snap
+__snapshots__/
+
+# Vitest
+.vitest/
+test-results/
+vitest.config.ts.tsbuildinfo
+
+# Jest
+jest.config.js.bak
+jest.config.ts.bak
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# =============================================================================
+# DEVELOPMENT TOOLS
+# =============================================================================
+# IDEs and editors
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Windows
 *.exe
-*.dll
-*.so
-*.dylib
+*.msi
+*.cab
+*.deb
+*.rpm
 
-# Logs
+# Linux
+*.so
+*.so.*
+*.dylib
+*.a
+
+# =============================================================================
+# LOGS & MONITORING
+# =============================================================================
+# Log files
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
 lerna-debug.log*
+pnpm-debug.log*
 
 # Runtime data
-pids
+pids/
 *.pid
 *.seed
 *.pid.lock
 
-# Coverage directory used by tools like istanbul
-coverage
-*.lcov
+# =============================================================================
+# DATABASE & STORAGE
+# =============================================================================
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
 
-# nyc test coverage
-.nyc_output
+# Database dumps
+*.sql
+*.dump
+*.backup
 
-# Dependency directories
-jspm_packages/
+# Prisma
+prisma/dev.db*
+prisma/migrations/dev.db*
 
-# Optional npm cache directory
-.npm
+# Drizzle
+drizzle/
+drizzle.config.ts.tsbuildinfo
 
-# Optional eslint cache
-.eslintcache
+# =============================================================================
+# SECURITY & AUDIT
+# =============================================================================
+# Security reports
+security-report.json
+audit-results/
+*.audit.json
+security-scan-results/
 
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
+# Snyk
+.snyk
+.snyk-report
 
-# Optional REPL history
-.node_repl_history
+# =============================================================================
+# ANALYTICS & PERFORMANCE
+# =============================================================================
+# Performance reports
+lighthouse-report.json
+lighthouse-results/
+*.lighthouse.json
 
-# Output of 'npm pack'
-*.tgz
+# Bundle analyzers
+.bundle-analyzer/
 
-# Yarn Integrity file
-.yarn-integrity
+# =============================================================================
+# APPLICATION SPECIFIC
+# =============================================================================
+# Booking app specific
+apps/booking/.next/
+apps/booking/out/
+apps/booking/build/
+apps/booking/.vercel/
+apps/booking/public/build/
+apps/booking/.turbo/
 
-# parcel-bundler cache (https://parceljs.org/)
-.parcel-cache
+# Marketing app specific
+apps/marketing/.next/
+apps/marketing/out/
+apps/marketing/build/
+apps/marketing/.vercel/
+apps/marketing/.turbo/
 
-# Next.js build output
-.next
-out
+# Dashboard app specific
+apps/dashboard/.next/
+apps/dashboard/out/
+apps/dashboard/build/
+apps/dashboard/.vercel/
+apps/dashboard/.turbo/
 
-# Nuxt.js build / generate output
-.nuxt
-dist
+# =============================================================================
+# PACKAGE SPECIFIC
+# =============================================================================
+# Auth package
+packages/auth/dist/
+packages/auth/lib/
+packages/auth/build/
 
-# Gatsby files
-.cache/
-public
+# DB package
+packages/db/dist/
+packages/db/lib/
+packages/db/build/
+packages/db/drizzle/
+packages/db/migrations/
 
-# Storybook build outputs
-.out
-.storybook-out
+# UI package
+packages/ui/dist/
+packages/ui/lib/
+packages/ui/build/
+packages/ui/storybook-static/
 
-# Temporary folders
+# Worker package
+packages/worker/.wrangler/
+packages/worker/build/
+packages/worker/dist/
+
+# =============================================================================
+# MONOREPO SPECIFIC
+# =============================================================================
+# Monorepo tools
+.turbo/
+.turbo-cache/
+.turbo/cookies/
+.turbo/daemon/
+
+# Rush
+common/deploy/
+common/autoinstallers/*/.npm/
+common/config/.rush/
+common/scripts/install-run.js
+common/scripts/install.js
+common/scripts/install.cmd
+common/scripts/install.ps1
+common/temp/
+common/tools/
+
+# =============================================================================
+# DOCUMENTATION & ASSETS
+# =============================================================================
+# Generated documentation
+docs/generated/
+docs/build/
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+
+# Asset optimization
+*.min.js
+*.min.css
+*.bundle.js
+*.bundle.css
+
+# =============================================================================
+# TEMPORARY & WORKING FILES
+# =============================================================================
+# Temporary files
 tmp/
 temp/
+.tmp/
+.temp/
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# Working files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.orig
+*.patch
+*.diff
 
-# OS generated files
-Thumbs.db
-ehthumbs.db
-Desktop.ini
+# =============================================================================
+# THIRD-PARTY TOOLS
+# =============================================================================
+# Turborepo
+.turbo/
 
-# Environment files
-.env*
-.dev.vars
+# Nx
+.nx/cache/
+.nx/workspace-data/
+
+# Lerna
+lerna-debug.log*
+
+# Rush
+common/autoinstallers/*/.npm/
+
+# =============================================================================
+# MOBILE & CROSS-PLATFORM
+# =============================================================================
+# React Native
+.expo/
+.expo-shared/
+.expo/settings.json
+.expo/*.json
+.expo/*.js
+.expo/*.config.js
+
+# Cordova
+/platforms/
+/plugins/
+/merges/
+
+# Capacitor
+/android/
+/ios/
+
+# =============================================================================
+# LEGACY & MIGRATION
+# =============================================================================
+# Legacy code
+legacy/
+deprecated/
+temp-old-repo/
+old-versions/
+
+# Migration artifacts
+migration-*
+upgrade-*
+rollback-*
+
+# =============================================================================
+# ENTERPRISE & COMPLIANCE
+# =============================================================================
+# Compliance reports
+compliance/
+audit/
+security/
+*.compliance.json
+*.security.json
+
+# Legal and licensing
+LICENSES/
+THIRD-PARTY-NOTICES
+
+# =============================================================================
+# EXCLUSIONS (FILES THAT SHOULD BE TRACKED)
+# =============================================================================
+# Keep these files even if they match patterns above
 !.env.example
+!.env.local.example
+!.env.development.example
+!.env.staging.example
+!.env.production.example
+!.vscode/extensions.json
+!.vscode/settings.json
+!pnpm-lock.yaml
+!package.json
+!turbo.json
+!tsconfig.json
+!tailwind.config.js
+!next.config.js
+!next.config.mjs
+!next.config.ts
+!vitest.config.ts
+!playwright.config.ts
 
-# Vercel
-.vercel
-.vercel/
+# Documentation (keep certain docs)
+!README.md
+!CHANGELOG.md
+!CONTRIBUTING.md
+!LICENSE
+!SECURITY.md
 
-# Wrangler
-.wrangler/
+# =============================================================================
+# LARGE FILES & MEDIA
+# =============================================================================
+# Large media files (>10MB)
+*.mov
+*.mp4
+*.avi
+*.mkv
+*.wmv
+*.flv
+*.wav
+*.flac
+*.aac
+*.ogg
+*.wma
+*.m4a
 
-# Misc
-*.pem
+# High-resolution images (>5MB)
+*.psd
+*.ai
+*.sketch
+*.fig
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# =============================================================================
+# END OF FILE
+# =============================================================================

@@ -1,0 +1,1087 @@
+openapi: 3.0.3
+info:
+  title: Appointment Booking API
+  description: |
+    Comprehensive API for appointment booking systems with tenant management, real-time dashboard updates, and AI integration.
+    
+    ## Features
+    - Multi-tenant appointment booking system
+    - Real-time dashboard updates via Server-Sent Events
+    - AI conversation logging and analytics
+    - Product catalog and shop integration
+    - Staff schedule management
+    - Comprehensive analytics and reporting
+    
+    ## Base URL
+    `https://your-worker-domain.workers.dev`
+    
+    ## Authentication
+    Use Bearer token authentication for protected endpoints:
+    ```
+    Authorization: Bearer YOUR_API_KEY
+    ```
+    
+    ## Rate Limiting
+    - General API: 100 requests per minute per IP
+    - Booking Creation: 10 requests per minute per tenant
+    - Dashboard Analytics: 60 requests per minute
+    - Real-time Stream: 1 connection per tenant
+    
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@appointmentbooking.co.za
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://your-worker-domain.workers.dev
+    description: Production server
+
+paths:
+  /api/book:
+    post:
+      tags:
+        - Booking Management
+      summary: Create a new appointment booking
+      description: Creates a new appointment booking for a tenant service
+      operationId: createBooking
+      security: []  # Public endpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingRequest'
+            example:
+              tenantId: "ccb12b4d-ade6-467d-a614-7c9d198ddc70"
+              name: "John Doe"
+              email: "john@example.com"
+              phone: "+27123456789"
+              serviceId: "service-uuid-here"
+              scheduledTime: "2024-01-15T14:30:00.000Z"
+              notes: "First time customer"
+      responses:
+        '200':
+          description: Booking created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/tenant:
+    get:
+      tags:
+        - Tenant & Services
+      summary: Get tenant information and services
+      description: Retrieves tenant details and their active services
+      operationId: getTenant
+      security: []  # Public endpoint
+      parameters:
+        - name: slug
+          in: query
+          required: true
+          description: Tenant slug (e.g., "instylehairboutique")
+          schema:
+            type: string
+          example: "instylehairboutique"
+      responses:
+        '200':
+          description: Tenant information retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/public/services:
+    get:
+      tags:
+        - Tenant & Services
+      summary: Get public services
+      description: Retrieves active services for a tenant (public endpoint)
+      operationId: getPublicServices
+      security: []  # Public endpoint
+      parameters:
+        - name: tenantId
+          in: query
+          required: true
+          description: Tenant UUID
+          schema:
+            type: string
+            format: uuid
+          example: "ccb12b4d-ade6-467d-a614-7c9d198ddc70"
+      responses:
+        '200':
+          description: Services retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServicesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/tenant/{tenantId}/availability:
+    get:
+      tags:
+        - Booking Management
+      summary: Check service availability
+      description: Get available time slots for a service on a specific date
+      operationId: getAvailability
+      security: []  # Public endpoint
+      parameters:
+        - name: tenantId
+          in: path
+          required: true
+          description: Tenant UUID
+          schema:
+            type: string
+            format: uuid
+        - name: date
+          in: query
+          required: true
+          description: Date in YYYY-MM-DD format
+          schema:
+            type: string
+            format: date
+          example: "2024-01-15"
+        - name: serviceId
+          in: query
+          required: true
+          description: Service UUID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Availability retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailabilityResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/tenant/{tenantId}/schedules:
+    post:
+      tags:
+        - Staff Management
+      summary: Create or update staff schedules
+      description: Create or duplicate staff schedules for services
+      operationId: createSchedules
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: tenantId
+          in: path
+          required: true
+          description: Tenant UUID
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRequest'
+            example:
+              staffNames: ["Sarah", "Mike"]
+              serviceId: "service-uuid"
+              schedule:
+                - day: 1
+                  start: "09:00"
+                  end: "17:00"
+                - day: 2
+                  start: "09:00"
+                  end: "17:00"
+      responses:
+        '200':
+          description: Schedules created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/dashboard:
+    get:
+      tags:
+        - Dashboard & Analytics
+      summary: Get dashboard statistics
+      description: Retrieves comprehensive tenant statistics and recent appointments
+      operationId: getDashboardStats
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: tenantId
+          in: query
+          required: true
+          description: Tenant UUID
+          schema:
+            type: string
+            format: uuid
+          example: "ccb12b4d-ade6-467d-a614-7c9d198ddc70"
+      responses:
+        '200':
+          description: Dashboard statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardStatsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/dashboard/bookings:
+    get:
+      tags:
+        - Dashboard & Analytics
+      summary: Get dashboard bookings
+      description: Retrieves bookings for dashboard display with optional filtering
+      operationId: getDashboardBookings
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: tenantId
+          in: query
+          required: true
+          description: Tenant UUID
+          schema:
+            type: string
+            format: uuid
+        - name: status
+          in: query
+          description: Optional status filter
+          schema:
+            type: string
+            enum: [pending, confirmed, cancelled, completed]
+        - name: limit
+          in: query
+          description: Maximum results (default: 100, max: 500)
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 500
+            default: 100
+      responses:
+        '200':
+          description: Bookings retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardBookingsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/dashboard/stream:
+    get:
+      tags:
+        - Dashboard & Analytics
+      summary: Real-time dashboard updates
+      description: Server-Sent Events stream for real-time dashboard updates
+      operationId: dashboardStream
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: tenantId
+          in: query
+          required: true
+          description: Tenant UUID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Server-Sent Events stream
+          content:
+            text/event-stream:
+              schema:
+                type: string
+              example: |
+                event: appointments
+                data: {"rows": [{"id": "booking-uuid", "scheduled_time": 1705324200, "status": "confirmed"}]}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /api/products:
+    get:
+      tags:
+        - Products & Shop
+      summary: Get products
+      description: Retrieves products for the shop page with optional category filtering
+      operationId: getProducts
+      security: []  # Public endpoint
+      parameters:
+        - name: category
+          in: query
+          description: Optional category slug filter
+          schema:
+            type: string
+          example: "hair-tools"
+      responses:
+        '200':
+          description: Products retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductsResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/health:
+    get:
+      tags:
+        - System Health
+      summary: Health check
+      description: Check system health and service status
+      operationId: healthCheck
+      security: []  # Public endpoint
+      responses:
+        '200':
+          description: System is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/ai:
+    get:
+      tags:
+        - AI & Automation
+      summary: Get AI analytics
+      description: Retrieves AI conversation statistics and logs
+      operationId: getAiStats
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: tenantId
+          in: query
+          required: true
+          description: Tenant UUID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: AI statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiStatsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - AI & Automation
+      summary: Log AI interaction
+      description: Logs a new AI conversation for analytics
+      operationId: logAiInteraction
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiLogRequest'
+            example:
+              agentName: "booking-assistant"
+              userId: "user-uuid"
+              sessionId: "session-uuid"
+              query: "I need to book a haircut"
+              response: "I can help you with that. What time works for you?"
+              responseTimeMs: 800
+              resolved: true
+              escalated: false
+              satisfactionScore: 5
+      responses:
+        '200':
+          description: AI interaction logged successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiLogResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication
+
+  schemas:
+    BookingRequest:
+      type: object
+      required:
+        - tenantId
+        - name
+        - email
+        - phone
+        - serviceId
+        - scheduledTime
+      properties:
+        tenantId:
+          type: string
+          format: uuid
+          description: Tenant UUID
+          example: "ccb12b4d-ade6-467d-a614-7c9d198ddc70"
+        name:
+          type: string
+          description: Customer name
+          example: "John Doe"
+        email:
+          type: string
+          format: email
+          description: Customer email
+          example: "john@example.com"
+        phone:
+          type: string
+          description: Customer phone number
+          example: "+27123456789"
+        serviceId:
+          type: string
+          format: uuid
+          description: Service UUID
+          example: "service-uuid-here"
+        scheduledTime:
+          type: string
+          format: date-time
+          description: Scheduled appointment time in ISO 8601 format
+          example: "2024-01-15T14:30:00.000Z"
+        notes:
+          type: string
+          description: Additional notes for the appointment
+          example: "First time customer"
+
+    BookingResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Operation success status
+          example: true
+        bookingId:
+          type: string
+          format: uuid
+          description: Unique booking identifier
+          example: "booking-uuid-here"
+        message:
+          type: string
+          description: Success message
+          example: "Booking created successfully"
+
+    Tenant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Tenant UUID
+          example: "ccb12b4d-ade6-467d-a614-7c9d198ddc70"
+        name:
+          type: string
+          description: Tenant name
+          example: "InStyle Hair Boutique"
+        slug:
+          type: string
+          description: Tenant URL slug
+          example: "instylehairboutique"
+        description:
+          type: string
+          description: Tenant description
+          example: "Premium hair services"
+        phone:
+          type: string
+          description: Contact phone number
+          example: "+27123456789"
+        email:
+          type: string
+          format: email
+          description: Contact email
+          example: "info@instylestudio.co.za"
+        is_active:
+          type: boolean
+          description: Tenant active status
+          example: true
+
+    Service:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Service UUID
+          example: "service-uuid"
+        name:
+          type: string
+          description: Service name
+          example: "Haircut & Style"
+        description:
+          type: string
+          description: Service description
+          example: "Professional haircut and styling"
+        price:
+          type: number
+          format: decimal
+          description: Service price
+          example: 350.00
+        duration_minutes:
+          type: integer
+          description: Service duration in minutes
+          example: 60
+        is_active:
+          type: boolean
+          description: Service active status
+          example: true
+
+    TenantResponse:
+      type: object
+      properties:
+        tenant:
+          $ref: '#/components/schemas/Tenant'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+
+    ServicesResponse:
+      type: object
+      properties:
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+
+    AvailabilityResponse:
+      type: object
+      properties:
+        slots:
+          type: array
+          items:
+            type: string
+            format: date-time
+          description: Available time slots in ISO 8601 format
+          example:
+            - "2024-01-15T09:00:00.000Z"
+            - "2024-01-15T10:00:00.000Z"
+            - "2024-01-15T11:00:00.000Z"
+
+    ScheduleRequest:
+      type: object
+      required:
+        - schedule
+      properties:
+        staffNames:
+          type: array
+          items:
+            type: string
+          description: Array of staff names (empty for all staff)
+          example: ["Sarah", "Mike"]
+        serviceId:
+          type: string
+          format: uuid
+          description: Service UUID
+          example: "service-uuid"
+        schedule:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduleSlot'
+          description: Schedule slots
+
+    ScheduleSlot:
+      type: object
+      required:
+        - day
+        - start
+        - end
+      properties:
+        day:
+          type: integer
+          minimum: 0
+          maximum: 6
+          description: Day of week (0=Sunday, 1=Monday, etc.)
+          example: 1
+        start:
+          type: string
+          pattern: '^([01]?[0-9]|2[0-3]):[0-5][0-9]$'
+          description: Start time in HH:MM format
+          example: "09:00"
+        end:
+          type: string
+          pattern: '^([01]?[0-9]|2[0-3]):[0-5][0-9]$'
+          description: End time in HH:MM format
+          example: "17:00"
+
+    ScheduleResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          description: Success message
+          example: "Schedule updated for 2 staff members"
+
+    DashboardStats:
+      type: object
+      properties:
+        totalAppointments:
+          type: integer
+          description: Total number of appointments
+          example: 150
+        confirmedAppointments:
+          type: integer
+          description: Number of confirmed appointments
+          example: 120
+        pendingAppointments:
+          type: integer
+          description: Number of pending appointments
+          example: 30
+        totalRevenue:
+          type: number
+          format: decimal
+          description: Total revenue from confirmed appointments
+          example: 42000.00
+        activeServices:
+          type: integer
+          description: Number of active services
+          example: 8
+        pageViews:
+          type: integer
+          description: Total page views
+          example: 1250
+
+    DashboardBooking:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Booking UUID
+          example: "booking-uuid"
+        user_name:
+          type: string
+          description: Customer name
+          example: "John Doe"
+        user_email:
+          type: string
+          format: email
+          description: Customer email
+          example: "john@example.com"
+        user_phone:
+          type: string
+          description: Customer phone
+          example: "+27123456789"
+        service_name:
+          type: string
+          description: Service name
+          example: "Haircut & Style"
+        scheduled_time:
+          type: integer
+          description: Scheduled time as Unix timestamp
+          example: 1705324200
+        status:
+          type: string
+          enum: [pending, confirmed, cancelled, completed]
+          description: Booking status
+          example: "confirmed"
+        payment_status:
+          type: string
+          enum: [pending, paid, failed]
+          description: Payment status
+          example: "paid"
+        created_at:
+          type: integer
+          description: Creation timestamp
+          example: 1705324200
+
+    DashboardStatsResponse:
+      type: object
+      properties:
+        tenant:
+          $ref: '#/components/schemas/Tenant'
+        statistics:
+          $ref: '#/components/schemas/DashboardStats'
+        recentAppointments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardBooking'
+
+    DashboardBookingsResponse:
+      type: object
+      properties:
+        bookings:
+          type: array
+          items:
+            $ref: '#/components/schemas/DashboardBooking'
+        count:
+          type: integer
+          description: Number of bookings returned
+          example: 1
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Product UUID
+          example: "product-uuid"
+        name:
+          type: string
+          description: Product name
+          example: "Professional Hair Dryer"
+        description:
+          type: string
+          description: Product description
+          example: "Ionic hair dryer with multiple heat settings"
+        short_description:
+          type: string
+          description: Short product description
+          example: "Ionic hair dryer with multiple heat settings"
+        price:
+          type: number
+          format: decimal
+          description: Product price
+          example: 899.00
+        images:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: Product image URLs
+          example: ["https://example.com/image1.jpg"]
+        category_name:
+          type: string
+          description: Category name
+          example: "Hair Tools"
+        category_slug:
+          type: string
+          description: Category slug
+          example: "hair-tools"
+        is_active:
+          type: boolean
+          description: Product active status
+          example: true
+
+    ProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          description: System status
+          example: "healthy"
+        timestamp:
+          type: string
+          format: date-time
+          description: Check timestamp
+          example: "2024-01-01T00:00:00.000Z"
+        services:
+          type: object
+          properties:
+            database:
+              type: string
+              enum: [operational, degraded, down]
+              description: Database service status
+              example: "operational"
+            worker:
+              type: string
+              enum: [operational, degraded, down]
+              description: Worker service status
+              example: "operational"
+        version:
+          type: string
+          description: Service version
+          example: "e9ebc0e1-d799-4160-8747-7621f42d49ed"
+
+    AiConversation:
+      type: object
+      properties:
+        agentName:
+          type: string
+          description: AI agent name
+          example: "booking-assistant"
+        query:
+          type: string
+          description: User query
+          example: "I need to book a haircut"
+        response:
+          type: string
+          description: AI response
+          example: "I can help you with that. What time works for you?"
+        response_time_ms:
+          type: integer
+          description: Response time in milliseconds
+          example: 800
+        resolved:
+          type: boolean
+          description: Whether the issue was resolved
+          example: true
+        escalated:
+          type: boolean
+          description: Whether escalated to human
+          example: false
+        satisfactionScore:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: User satisfaction score
+          example: 5
+        timestamp:
+          type: integer
+          description: Conversation timestamp
+          example: 1705324200
+
+    AiStats:
+      type: object
+      properties:
+        totalConversations:
+          type: integer
+          description: Total number of conversations
+          example: 45
+        resolvedIssues:
+          type: integer
+          description: Number of resolved issues
+          example: 38
+        escalatedToHuman:
+          type: integer
+          description: Number of escalations to human
+          example: 7
+        avgResponseTime:
+          type: number
+          format: decimal
+          description: Average response time in milliseconds
+          example: 1200
+        recentConversations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiConversation'
+
+    AiStatsResponse:
+      type: object
+      properties:
+        stats:
+          $ref: '#/components/schemas/AiStats'
+
+    AiLogRequest:
+      type: object
+      required:
+        - agentName
+        - sessionId
+        - query
+        - response
+        - responseTimeMs
+      properties:
+        agentName:
+          type: string
+          description: AI agent name
+          example: "booking-assistant"
+        userId:
+          type: string
+          format: uuid
+          description: Optional user UUID
+          example: "user-uuid"
+        sessionId:
+          type: string
+          format: uuid
+          description: Session UUID
+          example: "session-uuid"
+        query:
+          type: string
+          description: User query
+          example: "I need to book a haircut"
+        response:
+          type: string
+          description: AI response
+          example: "I can help you with that. What time works for you?"
+        responseTimeMs:
+          type: integer
+          description: Response time in milliseconds
+          example: 800
+        resolved:
+          type: boolean
+          description: Whether the issue was resolved
+          example: true
+        escalated:
+          type: boolean
+          description: Whether escalated to human
+          example: false
+        satisfactionScore:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: User satisfaction score
+          example: 5
+        errorMessage:
+          type: string
+          description: Optional error message
+          example: "Service temporarily unavailable"
+
+    AiLogResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Operation success status
+          example: true
+        id:
+          type: string
+          format: uuid
+          description: Log entry UUID
+          example: "log-uuid"
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error description
+          example: "Missing required fields"
+        details:
+          type: object
+          description: Additional error context
+          example:
+            field: "tenantId is required"
+        statusCode:
+          type: integer
+          description: HTTP status code
+          example: 400
+
+  responses:
+    BadRequest:
+      description: Bad request - invalid input data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Missing required fields"
+            details:
+              field: "tenantId is required"
+            statusCode: 400
+
+    Unauthorized:
+      description: Unauthorized - invalid or missing authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Invalid or missing API key"
+            statusCode: 401
+
+    Forbidden:
+      description: Forbidden - insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Insufficient permissions"
+            statusCode: 403
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Tenant not found"
+            statusCode: 404
+
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Rate limit exceeded"
+            details:
+              limit: 100
+              window: "1 minute"
+              resetTime: "2024-01-01T00:00:00Z"
+            statusCode: 429
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Internal server error"
+            statusCode: 500
+
+tags:
+  - name: Booking Management
+    description: Appointment booking creation and availability checks
+  - name: Tenant & Services
+    description: Tenant information and service management
+  - name: Dashboard & Analytics
+    description: Dashboard statistics and real-time updates
+  - name: Products & Shop
+    description: Product catalog and shop functionality
+  - name: Staff Management
+    description: Staff schedule management
+  - name: System Health
+    description: Health checks and system status
+  - name: AI & Automation
+    description: AI conversation logging and analytics
