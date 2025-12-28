@@ -1,61 +1,38 @@
-<<<<<<< HEAD
 # Appointment Booking Monorepo
 
-## Overview
-This is a monorepo for the Appointment Booking system, containing:
-- `apps/booking`: The main customer-facing booking application.
-- `apps/dashboard`: Admin dashboard.
-- `packages/*`: Shared libraries (auth, db, ui).
-
-## Quick Start
-1.  Install dependencies:
-    ```bash
-    pnpm install
-    ```
-2.  Run the booking app:
-    ```bash
-    cd apps/booking
-    npm run dev
-    ```
-
-## Documentation
-- [Development Guide](docs/DEVELOPMENT.md)
-- [Architecture Report](.agent/audit/ARCHITECTURE_REPORT.md)
-
-## Recent Updates
-- Removed `@vercel/analytics` and Vercel-specific configurations.
-- Added Playwright E2E tests.
-- Fixed SSR issues with browser globals.
-- Improved error handling in `TenantHome` component.
-=======
 A comprehensive, production-ready appointment booking system built for multi-tenant businesses with seamless SuperSaaS integration. Features real-time dashboards, automated marketing, and enterprise-grade architecture.
 
 ## 🌟 Key Features
 
 ### 🏢 Multi-Tenant Architecture
+
 - **Tenant Isolation**: Complete data separation between businesses
 - **Custom Branding**: White-label solutions for each tenant
 - **Scalable Design**: Support for thousands of concurrent users
 
 ### 📅 Advanced Booking System
+
 - **Real-Time Availability**: Live calendar integration with SuperSaaS
 - **Multi-Employee Support**: Parallel scheduling for multiple staff members
 - **Service Management**: Dynamic pricing, duration, and categorization
 - **Automated Reminders**: SMS, WhatsApp, and email notifications
 
 ### 📊 Business Intelligence Dashboard
+
 - **Live Appointment View**: Real-time booking monitoring
 - **Revenue Analytics**: Comprehensive financial reporting
 - **Client Management**: Customer history and preferences
 - **Performance Metrics**: Key business KPIs and trends
 
 ### 🤖 AI-Powered Features
+
 - **Conversational Commerce**: Chatbot booking assistance
 - **Smart Automation**: Automated marketing campaigns
 - **Predictive Analytics**: Demand forecasting and optimization
 - **Intelligent Routing**: Optimal staff assignment
 
 ### 🔗 Third-Party Integrations
+
 - **SuperSaaS**: Complete calendar synchronization
 - **WhatsApp Business**: Automated messaging
 - **Payment Gateways**: Paystack, Yoco, PayFast integration
@@ -64,18 +41,21 @@ A comprehensive, production-ready appointment booking system built for multi-ten
 ## 🛠 Technology Stack
 
 ### Frontend
+
 - **Next.js 14**: React framework with App Router
 - **TypeScript**: Type-safe development
 - **Tailwind CSS**: Utility-first CSS framework
 - **shadcn/ui**: Modern component library
 
 ### Backend
+
 - **Cloudflare Workers**: Edge computing platform
 - **D1 Database**: SQLite-compatible distributed database
 - **Drizzle ORM**: Type-safe database operations
 - **NextAuth.js**: Authentication framework
 
 ### Infrastructure
+
 - **Cloudflare Pages**: Global CDN deployment
 - **Wrangler CLI**: Development and deployment tool
 - **Turbo**: Monorepo build system
@@ -84,6 +64,7 @@ A comprehensive, production-ready appointment booking system built for multi-ten
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Node.js 18+
 - pnpm package manager
 - Cloudflare account with Wrangler CLI
@@ -91,31 +72,32 @@ A comprehensive, production-ready appointment booking system built for multi-ten
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/Lethabu/appointmentbooking-monorepo.git
    cd appointmentbooking-monorepo
-````
+   ```
 
-2. __Install dependencies__
+2. **Install dependencies**
 
    ```bash
    pnpm install
    ```
 
-3. __Set up environment variables__
+3. **Set up environment variables**
 
    ```bash
    cp apps/booking/.env.example apps/booking/.env
    # Edit .env with your API keys
    ```
 
-4. __Deploy database schema__
+4. **Deploy database schema**
 
    ```bash
    pnpm run db:migrate
    ```
 
-5. __Start development server__
+5. **Start development server**
 
    ```bash
    pnpm run dev
@@ -220,18 +202,24 @@ pnpm run verify-api       # Verify production APIs
 
 ## 🔒 Security Features
 
-- __End-to-end encryption__ for sensitive data
-- __Rate limiting__ on all API endpoints
-- __Input validation__ and sanitization
-- __CORS configuration__ for cross-origin requests
-- __Authentication guards__ for protected routes
+- **End-to-end encryption** for sensitive data
+- **Rate limiting** on all API endpoints
+- **Input validation** and sanitization
+- **CORS configuration** for cross-origin requests
+- **Authentication guards** for protected routes
 
 ## 📈 Performance
 
-- __Edge Computing__: Global low-latency responses
-- __Database Optimization__: Indexed queries and caching
-- __CDN Delivery__: Static assets served via Cloudflare
-- __Lazy Loading__: Components loaded on demand
+- **Edge Computing**: Global low-latency responses
+- **Database Optimization**: Indexed queries and caching
+- **CDN Delivery**: Static assets served via Cloudflare
+- **Lazy Loading**: Components loaded on demand
+
+## 📚 Documentation
+
+- [Development Guide](docs/DEVELOPMENT.md)
+- [Architecture Report](.agent/audit/ARCHITECTURE_REPORT.md)
+- [Implementation Summary](IMPLEMENTATION_SUMMARY.md)
 
 ## 🤝 Contributing
 
@@ -239,9 +227,9 @@ pnpm run verify-api       # Verify production APIs
 2. Create a feature branch: `git checkout -b feature-name`
 3. Make your changes and add tests
 4. Run the test suite: `pnpm run test`
-5. Commit your changes: `git commit -m "Add feature"`
+5. Commit your changes following our commit conventions
 6. Push to your branch: `git push origin feature-name`
-7. Create a Pull Request
+7. Create a Pull Request with proper description
 
 ## 📄 License
 
@@ -251,20 +239,28 @@ This project is proprietary software. All rights reserved.
 
 For technical support or questions:
 
-- __Documentation__: Check `/docs` folder for detailed guides
-- __Issues__: Create GitHub issues for bug reports
-- __Discussions__: Use GitHub Discussions for questions
+- **Documentation**: Check `/docs` folder for detailed guides
+- **Issues**: Create GitHub issues for bug reports
+- **Discussions**: Use GitHub Discussions for questions
 
 ## 🏆 Success Stories
 
-__Instyle Hair Boutique__ - Successfully migrated from SuperSaaS with:
+**Instyle Hair Boutique** - Successfully migrated from SuperSaaS with:
 
 - 100% service alignment
 - Zero data loss during migration
 - 4x booking capacity with multi-employee support
 - Modern web interface with mobile optimization
 
+## Recent Updates
+
+- Removed `@vercel/analytics` and Vercel-specific configurations
+- Added Playwright E2E tests
+- Fixed SSR issues with browser globals
+- Improved error handling in `TenantHome` component
+- Implemented comprehensive version control workflows
+- Established branch protection and security policies
+
 ---
 
-__Status__: 🟢 Production Ready __Version__: 1.0.0 __Last Updated__: November 2025' > README.md
->>>>>>> 6fd441ccf1edfd2f5237cf542e127c5402d271c0
+**Status**: 🟢 Production Ready | **Version**: 1.0.0 | **Last Updated**: December 2025
