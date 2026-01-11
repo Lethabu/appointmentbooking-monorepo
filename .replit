@@ -33,3 +33,8 @@ waitForPort = 5000
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[deployment]
+build = ["sh", "-c", "pnpm install --no-frozen-lockfile && pnpm turbo run build --filter=@repo/db --filter=@repo/auth --filter=@repo/ai --filter=@repo/worker && pnpm run db:push --force && cd apps/booking && pnpm run build"]
+run = ["sh", "-c", "cd apps/booking && pnpm run start --port 5000 --hostname 0.0.0.0"]
+deploymentTarget = "cloudrun"
