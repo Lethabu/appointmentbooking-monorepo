@@ -10,9 +10,40 @@ export interface Service {
     id: string;
     name: string;
     description: string;
+    shortDescription?: string;
     price: number; // in cents
+    priceType?: 'fixed' | 'hourly' | 'package' | 'tiered';
     durationMinutes: number;
+    setupTimeMinutes?: number;
+    cleanupTimeMinutes?: number;
     category?: string;
+    subcategory?: string;
+    serviceType?: 'appointment' | 'package' | 'membership';
+    isPackage?: boolean;
+    packageIncludes?: string[];
+    pricingTiers?: Array<{
+        name: string;
+        price: number;
+        minQuantity?: number;
+        maxQuantity?: number;
+        description?: string;
+    }>;
+    requiresDeposit?: boolean;
+    depositPercentage?: number;
+    maxClientsPerSession?: number;
+    popularityScore?: number;
+    imageUrls?: string[];
+    isActive?: boolean;
+    isFeatured?: boolean;
+    tags?: string[];
+    availableStaff?: Array<{
+        id: string;
+        name: string;
+        role: string;
+        rating: number;
+        specialties: string[];
+        profileImageUrl?: string;
+    }>;
 }
 
 export interface CustomerDetails {

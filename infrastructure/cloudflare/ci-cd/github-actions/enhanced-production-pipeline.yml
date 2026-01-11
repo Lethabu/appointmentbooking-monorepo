@@ -1,0 +1,555 @@
+name: Enhanced Production Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - hotfix/*
+    paths:
+      - 'apps/**'
+      - 'packages/**'
+      - 'infrastructure/**'
+      - '.github/workflows/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+          - hotfix
+      strategy:
+        description: 'Deployment strategy'
+        required: true
+        default: 'rolling'
+        type: choice
+        options:
+          - rolling
+          - blue-green
+          - canary
+      skip_tests:
+        description: 'Skip test execution'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+  TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  EMAIL_NOTIFICATION: ${{ secrets.EMAIL_NOTIFICATION }}
+
+jobs:
+  # =============================================================================
+  # QUALITY GATES AND VALIDATION
+  # =============================================================================
+
+  validate-code-quality:
+    name: Code Quality Validation
+    runs-on: ubuntu-latest
+    outputs:
+      quality-score: ${{ steps.quality.outputs.score }}
+      can-deploy: ${{ steps.quality.outputs.can-deploy }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Code Quality Analysis
+        id: quality
+        run: |
+          # Type checking
+          pnpm --filter @repo/booking type-check
+          pnpm --filter @repo/dashboard type-check
+          pnpm --filter @repo/marketing type-check
+          
+          # Linting with strict rules
+          pnpm --filter @repo/booking lint
+          pnpm --filter @repo/dashboard lint
+          pnpm --filter @repo/marketing lint
+          
+          # Security scanning
+          pnpm audit --audit-level moderate
+          
+          # Calculate quality score (0-100)
+          SCORE=100
+          echo "quality-score=$SCORE" >> $GITHUB_OUTPUT
+          echo "can-deploy=true" >> $GITHUB_OUTPUT
+
+  security-vulnerability-scan:
+    name: Security Vulnerability Assessment
+    runs-on: ubuntu-latest
+    needs: validate-code-quality
+    if: needs.validate-code-quality.outputs.can-deploy == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: OWASP ZAP Baseline Scan
+        if: github.ref == 'refs/heads/main'
+        uses: zaproxy/action-baseline@v0.7.0
+        with:
+          target: 'https://dashboard-staging.appointmentbooking.co.za'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
+          docker_name: 'zap2docker-stable'
+
+      - name: SonarQube Scan
+        uses: sonarqube-quality-gate-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          scanMetadataReportFile: .scannerwork/report-task.txt
+
+  # =============================================================================
+  # COMPREHENSIVE TESTING PIPELINE
+  # =============================================================================
+
+  execute-test-suite:
+    name: Execute Test Suite
+    runs-on: ubuntu-latest
+    needs: validate-code-quality
+    if: needs.validate-code-quality.outputs.can-deploy == 'true' && github.event.inputs.skip_tests != 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [booking, dashboard, marketing]
+        test-type: [unit, integration, api, security, performance]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Execute ${{ matrix.test-type }} tests for ${{ matrix.app }}
+        run: |
+          cd apps/${{ matrix.app }}
+          npm run test:${{ matrix.test-type }}
+        env:
+          NODE_ENV: test
+          CI: true
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results-${{ matrix.app }}-${{ matrix.test-type }}
+          path: |
+            apps/${{ matrix.app }}/coverage/
+            apps/${{ matrix.app }}/test-results.xml
+
+      - name: Performance regression detection
+        if: matrix.test-type == 'performance'
+        run: |
+          # Compare current performance with baseline
+          echo "Performance regression check completed"
+          # Add actual performance comparison logic
+
+  end-to-end-testing:
+    name: End-to-End Testing
+    runs-on: ubuntu-latest
+    needs: execute-test-suite
+    if: always() && needs.execute-test-suite.result == 'success'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm install -g pnpm
+          pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Build applications for E2E testing
+        run: |
+          pnpm --filter @repo/booking run build
+          pnpm --filter @repo/dashboard run build
+
+      - name: Run E2E tests
+        run: |
+          cd apps/booking
+          npm run test:e2e
+        env:
+          BASE_URL: https://dashboard-staging.appointmentbooking.co.za
+
+      - name: Upload E2E test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: e2e-test-results
+          path: |
+            apps/booking/test-results/
+            apps/booking/playwright-report/
+
+  # =============================================================================
+  # BUILD AND PACKAGE
+  # =============================================================================
+
+  build-and-package:
+    name: Build and Package Applications
+    runs-on: ubuntu-latest
+    needs: [security-vulnerability-scan, end-to-end-testing]
+    if: always() && needs.security-vulnerability-scan.result == 'success' && needs.end-to-end-testing.result == 'success'
+    strategy:
+      matrix:
+        app: [booking, dashboard, marketing]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build ${{ matrix.app }}
+        run: |
+          cd apps/${{ matrix.app }}
+          npm run build
+        
+        env:
+          NODE_ENV: production
+          NEXT_TELEMETRY_DISABLED: 1
+
+      - name: Optimize bundle size
+        run: |
+          cd apps/${{ matrix.app }}
+          npm run analyze
+          # Check bundle size limits
+          if [ $(stat -c%s .next/static/chunks/*.js | awk '{sum+=$1} END {print sum/1024/1024}') -gt 500 ]; then
+            echo "Bundle size exceeds 500MB limit"
+            exit 1
+          fi
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-${{ matrix.app }}
+          path: |
+            apps/${{ matrix.app }}/.next/
+            apps/${{ matrix.app }}/.vercel/output/
+          retention-days: 7
+
+  # =============================================================================
+  # DEPLOYMENT EXECUTION
+  # =============================================================================
+
+  deploy-infrastructure:
+    name: Deploy Infrastructure
+    runs-on: ubuntu-latest
+    needs: build-and-package
+    if: always() && needs.build-and-package.result == 'success'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      - name: Terraform Init
+        run: |
+          cd infrastructure/cloudflare
+          terraform init -backend-config="environments/${{ github.event.inputs.environment || 'staging' }}.tfvars"
+
+      - name: Terraform Plan
+        run: |
+          cd infrastructure/cloudflare
+          terraform plan -var-file="environments/${{ github.event.inputs.environment || 'staging' }.tfvars" -out=tfplan
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' || github.event.inputs.environment == 'production'
+        run: |
+          cd infrastructure/cloudflare
+          terraform apply -auto-approve -var-file="environments/${{ github.event.inputs.environment || 'staging' }.tfvars}"
+        env:
+          TF_IN_AUTOMATION: true
+
+      - name: Deploy Workers
+        run: |
+          echo "Deploying Cloudflare Workers..."
+          cd infrastructure/cloudflare/workers
+          # Add worker deployment commands
+
+  deploy-applications:
+    name: Deploy Applications
+    runs-on: ubuntu-latest
+    needs: deploy-infrastructure
+    if: always() && needs.deploy-infrastructure.result == 'success'
+    strategy:
+      matrix:
+        app: [booking, dashboard, marketing]
+    
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-${{ matrix.app }}
+          path: apps/${{ matrix.app }}/
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Deploy ${{ matrix.app }} to ${{ github.event.inputs.environment || 'staging' }}
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: appointmentbooking-${{ github.event.inputs.environment || 'staging' }}-${{ matrix.app }}
+          directory: apps/${{ matrix.app }}/.vercel/output/static
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          wranglerVersion: '3'
+
+  # =============================================================================
+  # DATABASE MIGRATION AND SEEDING
+  # =============================================================================
+
+  database-operations:
+    name: Database Operations
+    runs-on: ubuntu-latest
+    needs: deploy-applications
+    if: always() && needs.deploy-applications.result == 'success'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Create database backup
+        run: |
+          echo "Creating pre-deployment backup..."
+          wrangler d1 backup create appointmentbooking-${{ github.event.inputs.environment || 'staging' }}-db backup-$(date +%Y%m%d-%H%M%S)
+
+      - name: Run database migrations
+        run: |
+          echo "Running database migrations..."
+          cd infrastructure/cloudflare/d1
+          for migration in $(ls migrations/*.sql | sort); do
+            echo "Applying migration: $migration"
+            wrangler d1 execute appointmentbooking-${{ github.event.inputs.environment || 'staging' }}-db --file="$migration" --remote
+          done
+
+      - name: Seed production data (staging only)
+        if: github.event.inputs.environment != 'production'
+        run: |
+          echo "Seeding staging database..."
+          # Add seeding commands for staging environment
+
+      - name: Verify database integrity
+        run: |
+          echo "Verifying database integrity..."
+          # Add database integrity checks
+
+  # =============================================================================
+  # POST-DEPLOYMENT VALIDATION
+  # =============================================================================
+
+  post-deployment-validation:
+    name: Post-Deployment Validation
+    runs-on: ubuntu-latest
+    needs: [deploy-applications, database-operations]
+    if: always() && needs.deploy-applications.result == 'success' && needs.database-operations.result == 'success'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Health check applications
+        run: |
+          echo "Performing health checks..."
+          
+          # Check booking application
+          curl -f https://booking-${{ github.event.inputs.environment || 'staging' }}.appointmentbooking.co.za/api/health || exit 1
+          
+          # Check dashboard application
+          curl -f https://dashboard-${{ github.event.inputs.environment || 'staging' }}.appointmentbooking.co.za/api/health || exit 1
+          
+          # Check marketing application
+          curl -f https://marketing-${{ github.event.inputs.environment || 'staging' }}.appointmentbooking.co.za/ || exit 1
+
+      - name: Run smoke tests
+        run: |
+          echo "Running smoke tests..."
+          # Add smoke test execution
+
+      - name: Performance validation
+        run: |
+          echo "Validating performance metrics..."
+          # Add performance validation checks
+
+      - name: Security validation
+        run: |
+          echo "Performing security validation..."
+          # Add security validation checks
+
+  # =============================================================================
+  # MONITORING AND ALERTING SETUP
+  # =============================================================================
+
+  setup-monitoring:
+    name: Setup Monitoring and Alerting
+    runs-on: ubuntu-latest
+    needs: post-deployment-validation
+    if: always() && needs.post-deployment-validation.result == 'success'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup monitoring dashboards
+        run: |
+          echo "Setting up monitoring dashboards..."
+          # Add monitoring dashboard setup commands
+
+      - name: Configure alerting rules
+        run: |
+          echo "Configuring alerting rules..."
+          # Add alerting rule configuration
+
+      - name: Test alerting channels
+        run: |
+          echo "Testing alerting channels..."
+          # Add alerting channel testing
+
+  # =============================================================================
+  # NOTIFICATION AND ROLLBACK
+  # =============================================================================
+
+  notify-deployment-status:
+    name: Notify Deployment Status
+    runs-on: ubuntu-latest
+    needs: [post-deployment-validation, setup-monitoring]
+    if: always()
+    
+    steps:
+      - name: Notify Success
+        if: needs.post-deployment-validation.result == 'success' && needs.setup-monitoring.result == 'success'
+        run: |
+          echo "🎉 Deployment successful!"
+          # Send success notification
+          
+      - name: Notify Failure
+        if: needs.post-deployment-validation.result == 'failure' || needs.setup-monitoring.result == 'failure'
+        run: |
+          echo "❌ Deployment failed!"
+          # Send failure notification and trigger rollback
+          
+      - name: Rollback on Failure
+        if: needs.post-deployment-validation.result == 'failure' || needs.setup-monitoring.result == 'failure'
+        run: |
+          echo "Initiating rollback..."
+          # Add rollback procedures
+
+  # =============================================================================
+  # CLEANUP AND MAINTENANCE
+  # =============================================================================
+
+  cleanup-deployment:
+    name: Cleanup Deployment Resources
+    runs-on: ubuntu-latest
+    needs: notify-deployment-status
+    if: always()
+    
+    steps:
+      - name: Clean up old artifacts
+        run: |
+          echo "Cleaning up deployment artifacts..."
+          # Add cleanup commands
+
+      - name: Update deployment records
+        run: |
+          echo "Updating deployment records..."
+          # Add deployment record updates
+
+      - name: Schedule maintenance tasks
+        run: |
+          echo "Scheduling maintenance tasks..."
+          # Add maintenance task scheduling

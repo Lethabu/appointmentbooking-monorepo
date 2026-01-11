@@ -1,30 +1,8 @@
 
 > dashboard@0.1.0 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\dashboard
-> next build
+> cross-env NODE_OPTIONS='--max-old-space-size=8192' next build
 
-  ▲ Next.js 14.2.33
+  ▲ Next.js 14.2.35
 
    Creating an optimized production build ...
- ✓ Compiled successfully
-   Linting and checking validity of types ...
-   Collecting page data ...
-   Generating static pages (0/5) ...
-   Generating static pages (1/5) 
-   Generating static pages (2/5) 
-   Generating static pages (3/5) 
- ✓ Generating static pages (5/5)
-   Finalizing page optimization ...
-   Collecting build traces ...
-
-Route (app)                              Size     First Load JS
-┌ ○ /                                    2.96 kB        90.3 kB
-├ ○ /_not-found                          872 B          88.2 kB
-└ ○ /schedules                           1.76 kB        89.1 kB
-+ First Load JS shared by all            87.3 kB
-  ├ chunks/854-fd07451339e9e23c.js       31.8 kB
-  ├ chunks/ce8598d4-9506f11fb0554c23.js  53.6 kB
-  └ other shared chunks (total)          1.86 kB
-
-
-○  (Static)  prerendered as static content
-
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`

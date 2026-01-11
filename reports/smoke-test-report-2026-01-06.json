@@ -1,0 +1,172 @@
+{
+  "passed": [
+    {
+      "name": "SSL Certificate Valid",
+      "status": 404,
+      "issuer": "Unknown"
+    }
+  ],
+  "failed": [
+    {
+      "name": "GET /api/health",
+      "status": 404,
+      "response": {}
+    },
+    {
+      "name": "GET /health (root)",
+      "status": 404
+    },
+    {
+      "name": "GET /api/health/database",
+      "status": 404,
+      "response": {}
+    },
+    {
+      "name": "GET /api/health/services",
+      "status": 404
+    },
+    {
+      "name": "GET /api/health/uptime",
+      "status": 404
+    },
+    {
+      "name": "GET /api/availability",
+      "status": 404,
+      "slots": 0
+    },
+    {
+      "name": "GET /api/services",
+      "status": 404,
+      "count": 0
+    },
+    {
+      "name": "GET /api/staff",
+      "status": 404,
+      "count": 0
+    },
+    {
+      "name": "POST /api/bookings (creation)",
+      "status": 405
+    },
+    {
+      "name": "GET /api/bookings (listing)",
+      "status": 404,
+      "count": 0
+    },
+    {
+      "name": "POST /api/auth/login",
+      "status": 405,
+      "hasToken": false
+    },
+    {
+      "name": "POST /api/auth/register",
+      "status": 405
+    },
+    {
+      "name": "POST /api/auth/password-reset",
+      "status": 405
+    },
+    {
+      "name": "POST /api/auth/refresh",
+      "status": 405
+    },
+    {
+      "name": "GET /api/user/profile (unauthenticated)",
+      "status": 404,
+      "correctlyProtected": true
+    },
+    {
+      "name": "GET /api/google-calendar/oauth",
+      "status": 404,
+      "redirect": null
+    },
+    {
+      "name": "GET /api/google-calendar/status",
+      "status": 404
+    },
+    {
+      "name": "GET /api/outlook-calendar/oauth",
+      "status": 404,
+      "redirect": null
+    },
+    {
+      "name": "GET /api/outlook-calendar/status",
+      "status": 404
+    },
+    {
+      "name": "GET /api/calendar/sync-status",
+      "status": 404
+    },
+    {
+      "name": "POST /api/payments/create-intent",
+      "status": 405,
+      "hasClientSecret": false
+    },
+    {
+      "name": "POST /api/payments/webhook/stripe",
+      "status": 405
+    },
+    {
+      "name": "POST /api/payments/refund",
+      "status": 405
+    },
+    {
+      "name": "GET /api/payments/methods",
+      "status": 404
+    },
+    {
+      "name": "Security Headers Present",
+      "status": 404,
+      "headers": {
+        "Content-Security-Policy": false,
+        "X-Frame-Options": false,
+        "X-Content-Type-Options": false
+      }
+    },
+    {
+      "name": "CORS Headers Configured",
+      "status": 405,
+      "Access-Control-Allow-Origin": "*"
+    },
+    {
+      "name": "Response Compression Enabled",
+      "status": 404,
+      "encoding": "none"
+    },
+    {
+      "name": "API Response Time (< 500ms)",
+      "status": 404,
+      "responseTime": 28,
+      "threshold": 500
+    },
+    {
+      "name": "Concurrent Requests (5)",
+      "allSuccessful": false,
+      "totalTime": 109,
+      "avgResponseTime": 21.8,
+      "threshold": 1000
+    },
+    {
+      "name": "Frontend Page Load (< 2s)",
+      "status": 404,
+      "loadTime": 52,
+      "threshold": 2000
+    },
+    {
+      "name": "E2E Workflow: Availability Check",
+      "status": 404
+    }
+  ],
+  "warnings": [
+    {
+      "name": "DELETE /api/bookings",
+      "message": "No appointment ID available for cancellation test"
+    }
+  ],
+  "errors": [],
+  "startTime": 1767727593999,
+  "endTime": 1767727598946,
+  "totalTests": 32,
+  "totalPassed": 1,
+  "totalFailed": 31
+}

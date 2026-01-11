@@ -1,12 +1,10 @@
 import { defineConfig } from 'drizzle-kit';
 
 export default defineConfig({
-  dialect: 'sqlite',
+  dialect: 'postgresql',
   schema: './packages/db/src/schema.ts',
   out: './drizzle',
-  driver: 'd1',
   dbCredentials: {
-    wranglerConfigPath: 'wrangler.toml',
-    dbName: 'appointmentbooking-db',
+    url: process.env.DATABASE_URL || 'postgresql://user:pass@localhost:5432/appointmentbooking',
   },
 });

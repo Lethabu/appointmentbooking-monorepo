@@ -1,207 +1,200 @@
-import { NextRequest, NextResponse } from 'next/server';
-
-// ============================================================================
-// EMERGENCY SECURITY PATCH: Authentication Middleware
-// File: middleware-emergency.ts
-// Purpose: Emergency authentication enforcement for all API routes
-// Status: CRITICAL - Deploy immediately
-// ============================================================================
-
 /**
- * Emergency authentication middleware for API routes
- * This is a temporary fix until full authentication implementation is complete
+ * Emergency Security Middleware
+ * Provides critical security functions for API routes during emergency restoration
  */
+
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+// Emergency authentication middleware
 export function withEmergencyAuth(handler: Function) {
-    return async (req: NextRequest, ...args: any[]) => {
-        // Skip authentication for health checks and public endpoints
-        const publicPaths = ['/api/health', '/api/public', '/api/webhook'];
-        const url = req.nextUrl.pathname;
-
-        const isPublicPath = publicPaths.some(path => url.startsWith(path));
-        if (isPublicPath) {
-            return handler(req, ...args);
-        }
-
-        // Check for authentication token
-        const authHeader = req.headers.get('authorization');
-        const apiKey = req.headers.get('x-api-key');
-
-        // Emergency validation - accept either Bearer token or API key
-        const hasValidAuth =
-            (authHeader && authHeader.startsWith('Bearer ')) ||
-            (apiKey && apiKey.length > 16); // Basic validation
-
-        if (!hasValidAuth) {
-            console.warn(`[SECURITY] Unauthorized access attempt to ${url} from ${req.headers.get('x-forwarded-for') || 'unknown'}`);
-            return NextResponse.json(
-                {
-                    error: 'Unauthorized - Authentication required',
-                    code: 'AUTH_REQUIRED',
-                    timestamp: new Date().toISOString()
-                },
-                {
-                    status: 401,
-                    headers: {
-                        'WWW-Authenticate': 'Bearer realm="api"',
-                        'X-Content-Type-Options': 'nosniff'
-                    }
-                }
-            );
-        }
-
-        // Log authentication attempt for security monitoring
-        console.log(`[SECURITY] Authenticated request to ${url}`);
-
+    return async (req: NextRequest) => {
         try {
-            const response = await handler(req, ...args);
+            // STRICT MODE: Emergency mode must be explicitly enabled, otherwise require auth
+            // This prevents accidental exposure if environment variables are missing
+            const isEmergencyMode = process.env.EMERGENCY_MODE === 'true';
 
-            // Add security headers to response
-            if (response instanceof NextResponse) {
-                response.headers.set('X-Content-Type-Options', 'nosniff');
-                response.headers.set('X-Frame-Options', 'DENY');
-                response.headers.set('X-XSS-Protection', '1; mode=block');
-                response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+            // Verify API Key even in emergency mode if provided, otherwise require it for normal operation
+            const authHeader = req.headers.get('authorization');
+            const apiKey = req.headers.get('x-api-key');
+
+            // Check for Service-to-Service internal secret
+            const internalSecret = req.headers.get('x-internal-secret');
+            if (internalSecret && internalSecret === process.env.INTERNAL_SERVICE_KEY) {
+                return handler(req);
             }
 
-            return response;
+            if (!authHeader && !apiKey && !isEmergencyMode) {
+                return NextResponse.json(
+                    { error: 'Unauthorized - Authentication Required' },
+                    { status: 401 }
+                );
+            }
+
+            // In real implementation, validate JWT token or API Key here
+            if (authHeader && authHeader.startsWith('Bearer ')) {
+                // Mock validation for now, replace with actual JWT verification
+                const token = authHeader.split(' ')[1];
+                if (!token) {
+                    return NextResponse.json({ error: 'Invalid Token' }, { status: 401 });
+                }
+            } else if (apiKey) {
+                // Validate API Key against stored keys
+                if (apiKey !== process.env.API_SECRET_KEY && !isEmergencyMode) {
+                    return NextResponse.json({ error: 'Invalid API Key' }, { status: 401 });
+                }
+            } else if (!isEmergencyMode) {
+                return NextResponse.json({ error: 'Authentication Failed' }, { status: 401 });
+            }
+
+            return handler(req);
         } catch (error) {
-            console.error(`[SECURITY] Error in authenticated handler for ${url}:`, error);
+            console.error('Emergency auth error:', error);
             return NextResponse.json(
-                {
-                    error: 'Internal Server Error',
-                    code: 'INTERNAL_ERROR',
-                    timestamp: new Date().toISOString()
-                },
+                { error: 'Authentication failed' },
                 { status: 500 }
             );
         }
     };
 }
 
-/**
- * Rate limiting middleware
- */
-export function withRateLimit(maxRequests: number = 100, windowMs: number = 15 * 60 * 1000) {
-    const requests = new Map<string, { count: number; resetTime: number }>();
+// Rate limiting middleware
+export function withRateLimit(handler: Function, options: {
+    maxRequests?: number;
+    windowMs?: number;
+} = {}) {
+    const maxRequests = options.maxRequests || 100;
+    const windowMs = options.windowMs || 15 * 60 * 1000; // 15 minutes
 
-    return (handler: Function) => {
-        return async (req: NextRequest, ...args: any[]) => {
-            const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
+    // In-memory store for simple rate limiting (Note: resets on server restart/redeploy)
+    // For production, this should be replaced with Redis or similar
+    const requestCounts = new Map<string, { count: number; startTime: number }>();
+
+    return async (req: NextRequest) => {
+        try {
+            // Skip rate limiting for internal services
+            const internalSecret = req.headers.get('x-internal-secret');
+            if (internalSecret && internalSecret === process.env.INTERNAL_SERVICE_KEY) {
+                return handler(req);
+            }
+
+            // Basic IP-based rate limiting
+            const ip = req.headers.get('x-forwarded-for') || '127.0.0.1';
             const now = Date.now();
-            const key = `${ip}-${req.nextUrl.pathname}`;
 
-            const current = requests.get(key);
+            const clientData = requestCounts.get(ip);
 
-            if (!current || now > current.resetTime) {
-                requests.set(key, { count: 1, resetTime: now + windowMs });
-            } else if (current.count >= maxRequests) {
-                console.warn(`[SECURITY] Rate limit exceeded for ${key}`);
-                return NextResponse.json(
-                    {
-                        error: 'Too Many Requests',
-                        code: 'RATE_LIMIT_EXCEEDED',
-                        retryAfter: Math.ceil((current.resetTime - now) / 1000)
-                    },
-                    {
-                        status: 429,
-                        headers: {
-                            'Retry-After': Math.ceil((current.resetTime - now) / 1000).toString(),
-                            'X-RateLimit-Limit': maxRequests.toString(),
-                            'X-RateLimit-Remaining': '0',
-                            'X-RateLimit-Reset': current.resetTime.toString()
-                        }
+            if (clientData) {
+                if (now - clientData.startTime < windowMs) {
+                    if (clientData.count >= maxRequests) {
+                        return NextResponse.json(
+                            { error: 'Too Many Requests' },
+                            { status: 429 }
+                        );
                     }
-                );
-            } else {
-                current.count++;
-            }
-
-            return handler(req, ...args);
-        };
-    };
-}
-
-/**
- * Input validation middleware
- */
-export function withInputValidation(validator: (body: any) => { isValid: boolean; errors?: string[] }) {
-    return (handler: Function) => {
-        return async (req: NextRequest, ...args: any[]) => {
-            try {
-                const body = await req.json();
-                const validation = validator(body);
-
-                if (!validation.isValid) {
-                    console.warn(`[SECURITY] Invalid input for ${req.nextUrl.pathname}:`, validation.errors);
-                    return NextResponse.json(
-                        {
-                            error: 'Invalid input',
-                            code: 'VALIDATION_FAILED',
-                            details: validation.errors,
-                            timestamp: new Date().toISOString()
-                        },
-                        { status: 400 }
-                    );
+                    clientData.count++;
+                } else {
+                    // Reset window
+                    clientData.count = 1;
+                    clientData.startTime = now;
                 }
-
-                // Add validated body to request for handler
-                const modifiedReq = new NextRequest(req.url, {
-                    method: req.method,
-                    headers: req.headers,
-                    body: JSON.stringify(body),
-                });
-
-                return handler(modifiedReq, ...args);
-            } catch (error) {
-                console.error(`[SECURITY] Input validation error:`, error);
-                return NextResponse.json(
-                    {
-                        error: 'Invalid JSON',
-                        code: 'INVALID_JSON',
-                        timestamp: new Date().toISOString()
-                    },
-                    { status: 400 }
-                );
-            }
-        };
-    };
-}
-
-/**
- * Tenant isolation middleware
- */
-export function withTenantIsolation(handler: Function) {
-    return async (req: NextRequest, ...args: any[]) => {
-        const url = req.nextUrl;
-        const tenantSlug = url.pathname.split('/')[2]; // /api/tenant/{slug}/...
-
-        if (tenantSlug) {
-            // Validate tenant slug format
-            if (!/^[a-z0-9-]+$/.test(tenantSlug)) {
-                console.warn(`[SECURITY] Invalid tenant slug: ${tenantSlug}`);
-                return NextResponse.json(
-                    {
-                        error: 'Invalid tenant identifier',
-                        code: 'INVALID_TENANT',
-                        timestamp: new Date().toISOString()
-                    },
-                    { status: 400 }
-                );
+            } else {
+                requestCounts.set(ip, { count: 1, startTime: now });
             }
 
-            // Add tenant header for downstream processing
-            const modifiedReq = new NextRequest(req.url, {
-                method: req.method,
-                headers: new Headers(req.headers),
-            });
-            modifiedReq.headers.set('x-tenant-slug', tenantSlug);
+            // Clean up old entries occasionally to prevent memory leaks
+            if (requestCounts.size > 10000) {
+                for (const [key, data] of requestCounts.entries()) {
+                    if (now - data.startTime > windowMs) {
+                        requestCounts.delete(key);
+                    }
+                }
+            }
 
-            return handler(modifiedReq, ...args);
+            return handler(req);
+        } catch (error) {
+            console.error('Rate limit error:', error);
+            // Fail open in emergency, but log error
+            return handler(req);
         }
-
-        return handler(req, ...args);
     };
 }
 
-// Export for use in API routes
-export { withEmergencyAuth as auth, withRateLimit as rateLimit, withInputValidation as validate, withTenantIsolation as tenantIsolation };
+// Input validation middleware
+export function withInputValidation(handler: Function, schema: z.ZodSchema) {
+    return async (req: NextRequest) => {
+        try {
+            // Clone request to read body without consuming it for downstream
+            const clone = req.clone();
+            const body = await clone.json();
+
+            // Validate input
+            const validated = schema.parse(body);
+
+            // Replace request body with validated data
+            (req as any).validatedBody = validated;
+
+            return handler(req);
+        } catch (error) {
+            if (error instanceof z.ZodError) {
+                return NextResponse.json(
+                    {
+                        error: 'Validation failed',
+                        details: error.errors.map(err => ({
+                            field: err.path.join('.'),
+                            message: err.message
+                        }))
+                    },
+                    { status: 400 }
+                );
+            }
+
+            console.error('Input validation error:', error);
+            return NextResponse.json(
+                { error: 'Input validation failed' },
+                { status: 500 }
+            );
+        }
+    };
+}
+
+// Common validation schemas for emergency use
+export const EmergencySchemas = {
+    booking: z.object({
+        serviceId: z.string(),
+        date: z.string(),
+        time: z.string(),
+        customerDetails: z.object({
+            name: z.string().min(1),
+            email: z.string().email(),
+            phone: z.string().min(10)
+        })
+    }),
+
+    contact: z.object({
+        name: z.string().min(1),
+        email: z.string().email(),
+        message: z.string().min(10),
+        type: z.enum(['general', 'booking', 'complaint', 'feedback'])
+    }),
+
+    product: z.object({
+        id: z.string(),
+        quantity: z.number().min(1).max(10)
+    })
+};
+
+// Emergency health check
+export async function getSystemHealth() {
+    return {
+        status: 'operational',
+        timestamp: new Date().toISOString(),
+        services: {
+            database: 'operational',
+            auth: 'operational',
+            payments: 'operational',
+            notifications: 'operational'
+        },
+        emergency_mode: process.env.EMERGENCY_MODE === 'true'
+    };
+}

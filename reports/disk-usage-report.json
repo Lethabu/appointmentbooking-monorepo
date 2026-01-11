@@ -1,0 +1,113 @@
+{
+  "timestamp": "2026-01-06T22:56:55.139Z",
+  "diskUsage": {
+    "apps/booking": {
+      "path": "c:\\Users\\Adrin\\Documents\\MyProjects\\appointmentbooking-monorepo\\apps\\booking",
+      "size": 117728997,
+      "sizeFormatted": "112.28 MB",
+      "files": 540,
+      "directories": 209,
+      "exists": true
+    },
+    "apps/marketing": {
+      "path": "c:\\Users\\Adrin\\Documents\\MyProjects\\appointmentbooking-monorepo\\apps\\marketing",
+      "size": 201888,
+      "sizeFormatted": "197.16 KB",
+      "files": 28,
+      "directories": 6,
+      "exists": true
+    },
+    "packages": {
+      "path": "c:\\Users\\Adrin\\Documents\\MyProjects\\appointmentbooking-monorepo\\packages",
+      "size": 441479396,
+      "sizeFormatted": "421.03 MB",
+      "files": 29140,
+      "directories": 1354,
+      "exists": true
+    },
+    "scripts": {
+      "path": "c:\\Users\\Adrin\\Documents\\MyProjects\\appointmentbooking-monorepo\\scripts",
+      "size": 1099652,
+      "sizeFormatted": "1.05 MB",
+      "files": 84,
+      "directories": 3,
+      "exists": true
+    },
+    "monitoring": {
+      "path": "c:\\Users\\Adrin\\Documents\\MyProjects\\appointmentbooking-monorepo\\monitoring",
+      "size": 208829,
+      "sizeFormatted": "203.93 KB",
+      "files": 11,
+      "directories": 1,
+      "exists": true
+    },
+    "nginx": {
+      "path": "c:\\Users\\Adrin\\Documents\\MyProjects\\appointmentbooking-monorepo\\nginx",
+      "size": 12367,
+      "sizeFormatted": "12.08 KB",
+      "files": 1,
+      "directories": 1,
+      "exists": true
+    },
+    "static-deploy": {
+      "path": "c:\\Users\\Adrin\\Documents\\MyProjects\\appointmentbooking-monorepo\\static-deploy",
+      "size": 9085,
+      "sizeFormatted": "8.87 KB",
+      "files": 1,
+      "directories": 1,
+      "exists": true
+    },
+    "infrastructure": {
+      "path": "c:\\Users\\Adrin\\Documents\\MyProjects\\appointmentbooking-monorepo\\infrastructure",
+      "size": 345452,
+      "sizeFormatted": "337.36 KB",
+      "files": 37,
+      "directories": 20,
+      "exists": true
+    },
+    "reports": {
+      "path": "c:\\Users\\Adrin\\Documents\\MyProjects\\appointmentbooking-monorepo\\reports",
+      "size": 329952,
+      "sizeFormatted": "322.22 KB",
+      "files": 7,
+      "directories": 1,
+      "exists": true
+    },
+    "docs": {
+      "path": "c:\\Users\\Adrin\\Documents\\MyProjects\\appointmentbooking-monorepo\\docs",
+      "size": 1454796,
+      "sizeFormatted": "1.39 MB",
+      "files": 92,
+      "directories": 12,
+      "exists": true
+    },
+    "tests": {
+      "path": "c:\\Users\\Adrin\\Documents\\MyProjects\\appointmentbooking-monorepo\\tests",
+      "size": 0,
+      "sizeFormatted": "0 Bytes",
+      "files": 0,
+      "directories": 3,
+      "exists": true
+    },
+    "ai-tools": {
+      "path": "c:\\Users\\Adrin\\Documents\\MyProjects\\appointmentbooking-monorepo\\ai-tools",
+      "size": 431024,
+      "sizeFormatted": "420.92 KB",
+      "files": 34,
+      "directories": 14,
+      "exists": true
+    }
+  },
+  "cleanupcandidates": {
+    "nodeModules": [],
+    "buildOutputs": [],
+    "cacheDirs": [],
+    "logFiles": [],
+    "dockerArtifacts": [],
+    "tempFiles": []
+  },
+  "cleanupActions": [],
+  "totalSpaceUsed": 563301438,
+  "totalSpaceToFree": 0,
+  "excludedCritical": []
+}

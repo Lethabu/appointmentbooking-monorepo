@@ -8,6 +8,11 @@
     "./analytics": "./src/analytics.ts",
     "./store": "./src/store.ts"
   },
+  "scripts": {
+    "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings 0",
+    "lint:fix": "eslint \"./src/**/*.{ts,tsx}\" --fix",
+    "type-check": "tsc --noEmit"
+  },
   "dependencies": {
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

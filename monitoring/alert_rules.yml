@@ -1,0 +1,443 @@
+# Production Alert Rules for Appointment Booking System
+# Comprehensive alerting for all critical system components
+# Created: 2025-12-31
+
+groups:
+  # Infrastructure alerts
+  - name: infrastructure
+    rules:
+      # High CPU usage
+      - alert: HighCPUUsage
+        expr: 100 - (avg(rate(node_cpu_seconds_total{mode='idle'}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+          team: infrastructure
+          component: server
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is above 80% for more than 5 minutes on {{ $labels.instance }}"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/high-cpu"
+
+      # Critical CPU usage
+      - alert: CriticalCPUUsage
+        expr: 100 - (avg(rate(node_cpu_seconds_total{mode='idle'}[5m])) * 100) > 95
+        for: 2m
+        labels:
+          severity: critical
+          team: infrastructure
+          component: server
+        annotations:
+          summary: "Critical CPU usage detected"
+          description: "CPU usage is above 95% for more than 2 minutes on {{ $labels.instance }}"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/critical-cpu"
+
+      # High memory usage
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+          team: infrastructure
+          component: server
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is above 85% for more than 5 minutes on {{ $labels.instance }}"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/high-memory"
+
+      # Critical memory usage
+      - alert: CriticalMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 95
+        for: 2m
+        labels:
+          severity: critical
+          team: infrastructure
+          component: server
+        annotations:
+          summary: "Critical memory usage detected"
+          description: "Memory usage is above 95% for more than 2 minutes on {{ $labels.instance }}"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/critical-memory"
+
+      # High disk usage
+      - alert: HighDiskUsage
+        expr: 100 - ((node_filesystem_avail_bytes{mountpoint='/'} / node_filesystem_size_bytes{mountpoint='/'}) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+          team: infrastructure
+          component: server
+        annotations:
+          summary: "High disk usage detected"
+          description: "Disk usage is above 80% for more than 5 minutes on {{ $labels.instance }}"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/high-disk"
+
+      # Critical disk usage
+      - alert: CriticalDiskUsage
+        expr: 100 - ((node_filesystem_avail_bytes{mountpoint='/'} / node_filesystem_size_bytes{mountpoint='/'}) * 100) > 90
+        for: 2m
+        labels:
+          severity: critical
+          team: infrastructure
+          component: server
+        annotations:
+          summary: "Critical disk usage detected"
+          description: "Disk usage is above 90% for more than 2 minutes on {{ $labels.instance }}"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/critical-disk"
+
+  # Application alerts
+  - name: application
+    rules:
+      # High error rate
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~'5..'}[5m]) / rate(http_requests_total[5m]) > 0.05
+        for: 2m
+        labels:
+          severity: critical
+          team: development
+          component: application
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is above 5% for more than 2 minutes on {{ $labels.instance }}"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/high-error-rate"
+
+      # Service down
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+          team: development
+          component: application
+        annotations:
+          summary: "Service is down"
+          description: "{{ $labels.job }} service is down on {{ $labels.instance }}"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/service-down"
+
+      # High response time
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          team: development
+          component: application
+        annotations:
+          summary: "High response time detected"
+          description: "95th percentile response time is above 2 seconds for more than 5 minutes"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/high-response-time"
+
+      # Database connection issues
+      - alert: DatabaseConnectionIssues
+        expr: postgresql_up == 0
+        for: 1m
+        labels:
+          severity: critical
+          team: database
+          component: database
+        annotations:
+          summary: "Database connection failed"
+          description: "Cannot connect to PostgreSQL database"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/database-connection"
+
+      # Cache connection issues
+      - alert: CacheConnectionIssues
+        expr: redis_up == 0
+        for: 1m
+        labels:
+          severity: critical
+          team: development
+          component: cache
+        annotations:
+          summary: "Cache connection failed"
+          description: "Cannot connect to Redis cache"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/cache-connection"
+
+      # Low cache hit ratio
+      - alert: LowCacheHitRatio
+        expr: rate(redis_keyspace_hits_total[5m]) / (rate(redis_keyspace_hits_total[5m]) + rate(redis_keyspace_misses_total[5m])) < 0.8
+        for: 10m
+        labels:
+          severity: warning
+          team: development
+          component: cache
+        annotations:
+          summary: "Low cache hit ratio"
+          description: "Cache hit ratio is below 80% for more than 10 minutes"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/low-cache-hit-ratio"
+
+  # Business metrics alerts
+  - name: business_metrics
+    rules:
+      # Zero bookings for extended period
+      - alert: NoBookingsForExtendedPeriod
+        expr: rate(appointments_created_total[1h]) == 0
+        for: 30m
+        labels:
+          severity: critical
+          team: business
+          component: booking
+        annotations:
+          summary: "No bookings for extended period"
+          description: "No new appointments have been created in the last 30 minutes"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/no-bookings"
+
+      # Unusual booking spike
+      - alert: UnusualBookingSpike
+        expr: rate(appointments_created_total[5m]) > (rate(appointments_created_total[1h]) * 3)
+        for: 5m
+        labels:
+          severity: warning
+          team: business
+          component: booking
+        annotations:
+          summary: "Unusual booking spike detected"
+          description: "Booking rate is 3x higher than normal for more than 5 minutes"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/booking-spike"
+
+      # Payment processing issues
+      - alert: PaymentProcessingIssues
+        expr: rate(payments_failed_total[5m]) / rate(payments_total[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: critical
+          team: finance
+          component: payments
+        annotations:
+          summary: "High payment failure rate"
+          description: "Payment failure rate is above 10% for more than 2 minutes"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/payment-issues"
+
+      # Revenue drop
+      - alert: RevenueDrop
+        expr: rate(revenue_total[1h]) < (rate(revenue_total[24h]) * 0.5)
+        for: 30m
+        labels:
+          severity: warning
+          team: business
+          component: revenue
+        annotations:
+          summary: "Revenue drop detected"
+          description: "Revenue rate is 50% lower than 24-hour average for more than 30 minutes"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/revenue-drop"
+
+  # Security alerts
+  - name: security
+    rules:
+      # Multiple failed login attempts
+      - alert: MultipleFailedLogins
+        expr: rate(auth_failed_attempts_total[5m]) > 10
+        for: 2m
+        labels:
+          severity: critical
+          team: security
+          component: authentication
+        annotations:
+          summary: "Multiple failed login attempts"
+          description: "More than 10 failed login attempts per second for more than 2 minutes"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/multiple-failed-logins"
+
+      # Suspicious API usage
+      - alert: SuspiciousAPIActivity
+        expr: rate(api_requests_total{source='suspicious'}[5m]) > 5
+        for: 5m
+        labels:
+          severity: warning
+          team: security
+          component: api
+        annotations:
+          summary: "Suspicious API activity detected"
+          description: "High rate of requests from suspicious sources for more than 5 minutes"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/suspicious-api-activity"
+
+      # SSL certificate expiry
+      - alert: SSLCertificateExpiring
+        expr: (ssl_certificate_expiry_seconds - time()) / 86400 < 30
+        for: 0s
+        labels:
+          severity: warning
+          team: infrastructure
+          component: ssl
+        annotations:
+          summary: "SSL certificate expiring soon"
+          description: "SSL certificate for {{ $labels.instance }} expires in less than 30 days"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/ssl-expiry"
+
+      # Security scan failed
+      - alert: SecurityScanFailed
+        expr: security_scan_status == 1
+        for: 0s
+        labels:
+          severity: critical
+          team: security
+          component: security
+        annotations:
+          summary: "Security scan failed"
+          description: "Automated security scan failed for {{ $labels.instance }}"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/security-scan-failed"
+
+  # Database performance alerts
+  - name: database_performance
+    rules:
+      # High database connections
+      - alert: HighDatabaseConnections
+        expr: postgresql_connections_active > 80
+        for: 5m
+        labels:
+          severity: warning
+          team: database
+          component: database
+        annotations:
+          summary: "High number of database connections"
+          description: "Active database connections above 80 for more than 5 minutes"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/high-db-connections"
+
+      # Slow database queries
+      - alert: SlowDatabaseQueries
+        expr: postgresql_slow_queries_rate > 5
+        for: 5m
+        labels:
+          severity: warning
+          team: database
+          component: database
+        annotations:
+          summary: "Slow database queries detected"
+          description: "More than 5 slow queries per second for more than 5 minutes"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/slow-db-queries"
+
+      # Database replication lag
+      - alert: DatabaseReplicationLag
+        expr: postgresql_replication_lag_seconds > 300
+        for: 2m
+        labels:
+          severity: warning
+          team: database
+          component: database
+        annotations:
+          summary: "Database replication lag detected"
+          description: "Database replication lag is above 5 minutes for more than 2 minutes"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/db-replication-lag"
+
+  # Infrastructure capacity alerts
+  - name: capacity
+    rules:
+      # Auto-scaling needed
+      - alert: AutoScalingNeeded
+        expr: (cpu_usage_percent > 70) or (memory_usage_percent > 80) or (disk_usage_percent > 75)
+        for: 10m
+        labels:
+          severity: warning
+          team: infrastructure
+          component: capacity
+        annotations:
+          summary: "Auto-scaling should be triggered"
+          description: "System resources are above thresholds for auto-scaling for more than 10 minutes"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/auto-scaling"
+
+      # Container restart loop
+      - alert: ContainerRestartLoop
+        expr: increase(kube_pod_container_status_restarts_total[1h]) > 5
+        for: 5m
+        labels:
+          severity: critical
+          team: infrastructure
+          component: container
+        annotations:
+          summary: "Container restart loop detected"
+          description: "Container {{ $labels.pod }} has restarted more than 5 times in the last hour"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/container-restart-loop"
+
+  # External service alerts
+  - name: external_services
+    rules:
+      # Third-party API down
+      - alert: ThirdPartyAPIDown
+        expr: up{job=~'.*-api'} == 0
+        for: 2m
+        labels:
+          severity: critical
+          team: development
+          component: external
+        annotations:
+          summary: "Third-party API is down"
+          description: "{{ $labels.job }} API is not responding"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/third-party-api-down"
+
+      # High external API latency
+      - alert: HighExternalAPILatency
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job=~'.*-api'}[5m])) > 5
+        for: 5m
+        labels:
+          severity: warning
+          team: development
+          component: external
+        annotations:
+          summary: "High external API latency"
+          description: "95th percentile latency for {{ $labels.job }} API is above 5 seconds"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/high-api-latency"
+
+  # Calendar integration alerts
+  - name: calendar_integration
+    rules:
+      # Calendar sync failures
+      - alert: CalendarSyncFailures
+        expr: rate(calendar_sync_failures_total[5m]) > 1
+        for: 3m
+        labels:
+          severity: warning
+          team: development
+          component: calendar
+        annotations:
+          summary: "Calendar sync failures detected"
+          description: "More than 1 calendar sync failure per second for more than 3 minutes"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/calendar-sync-failures"
+
+      # Calendar API rate limit exceeded
+      - alert: CalendarAPIRateLimitExceeded
+        expr: rate(calendar_api_rate_limit_exceeded_total[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: warning
+          team: development
+          component: calendar
+        annotations:
+          summary: "Calendar API rate limit exceeded"
+          description: "Calendar API rate limit exceeded for more than 2 minutes"
+          runbook_url: "https://runbooks.appointmentbooking.co.za/calendar-rate-limit"
+
+# Notification routing
+notification_templates:
+  email:
+    subject: "Appointment Booking System Alert: {{ .GroupLabels.alertname }}"
+    body: |
+      Alert: {{ .GroupLabels.alertname }}
+      Severity: {{ .CommonLabels.severity }}
+      Summary: {{ .CommonAnnotations.summary }}
+      Description: {{ .CommonAnnotations.description }}
+      Instance: {{ .CommonLabels.instance }}
+      Time: {{ .CommonAnnotations.timestamp }}
+      Runbook: {{ .CommonAnnotations.runbook_url }}
+
+  slack:
+    text: "🚨 {{ .GroupLabels.alertname }} - {{ .CommonLabels.severity }}"
+    attachments:
+      - color: "{{ if eq .CommonLabels.severity \"critical\" }}danger{{ else }}warning{{ end }}"
+        fields:
+          - title: "Summary"
+            value: "{{ .CommonAnnotations.summary }}"
+            short: true
+          - title: "Description"
+            value: "{{ .CommonAnnotations.description }}"
+            short: true
+          - title: "Instance"
+            value: "{{ .CommonLabels.instance }}"
+            short: true
+          - title: "Runbook"
+            value: "{{ .CommonAnnotations.runbook_url }}"
+            short: true
+
+  pagerduty:
+    description: "{{ .CommonAnnotations.summary }}"
+    severity: "{{ .CommonLabels.severity }}"
+    source: "{{ .CommonLabels.instance }}"
+    component: "{{ .CommonLabels.component }}"
+    group: "{{ .CommonLabels.team }}"

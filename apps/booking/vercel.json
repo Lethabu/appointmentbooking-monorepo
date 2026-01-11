@@ -1,0 +1,5 @@
+{
+    "framework": "nextjs",
+    "buildCommand": "npx next build",
+    "installCommand": "echo 'Skipping install since dependencies are managed by monorepo'"
+}

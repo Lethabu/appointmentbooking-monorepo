@@ -1,3 +1,8 @@
+// ============================================================================
+// Edge Runtime Configuration for Cloudflare Pages
+// ============================================================================
+export const runtime = 'edge';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { niaAgent } from '@/lib/ai/agents/NiaAgent';
 

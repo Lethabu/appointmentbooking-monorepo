@@ -1,0 +1,259 @@
+# Multi-stage production Dockerfile for Appointment Booking System
+# Optimized for security, performance, and production deployment
+# Created: 2025-12-31
+
+# Build stage
+FROM node:18-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Install build dependencies
+RUN apk add --no-cache \
+    libc6-compat \
+    python3 \
+    make \
+    g++ \
+    git
+
+# Copy package files
+COPY package.json package-lock.json* ./
+COPY apps/booking/package.json apps/booking/package-lock.json* apps/booking/
+COPY packages/*/package.json packages/*/package-lock.json* packages/*/
+
+# Install dependencies
+RUN npm ci --only=production --ignore-scripts
+
+# Copy source code
+COPY apps/ ./apps/
+COPY packages/ ./packages/
+COPY scripts/ ./scripts/
+COPY docs/ ./docs/
+COPY next.config.js next.config.mjs ./
+COPY tsconfig.json tsconfig.base.json ./
+COPY .eslintrc.json .eslintrc.js ./
+COPY tailwind.config.js postcss.config.js ./
+
+# Build application
+ENV NEXT_TELEMETRY_DISABLED 1
+RUN npm run build
+
+# Production stage
+FROM node:18-alpine AS production
+
+# Install security updates and runtime dependencies
+RUN apk update && apk upgrade && \
+    apk add --no-cache \
+    dumb-init \
+    curl \
+    wget \
+    ca-certificates \
+    tzdata \
+    && rm -rf /var/cache/apk/*
+
+# Create app user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001
+
+# Set working directory
+WORKDIR /app
+
+# Copy built application
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
+
+# Copy health check script
+COPY --chown=nextjs:nodejs scripts/health-check.js ./scripts/
+
+# Set permissions
+RUN chmod +x ./scripts/health-check.js
+
+# Set environment variables for production
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD node ./scripts/health-check.js
+
+# Switch to non-root user
+USER nextjs
+
+# Use dumb-init to handle signals properly
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start application
+CMD ["node", "server.js"]
+
+# Development stage (for local development)
+FROM node:18-alpine AS development
+
+WORKDIR /app
+
+# Install development dependencies
+RUN apk add --no-cache git
+
+# Copy package files
+COPY package.json package-lock.json* ./
+COPY apps/booking/package.json apps/booking/package-lock.json* apps/booking/
+COPY packages/*/package.json packages/*/package-lock.json* packages/*/
+
+# Install all dependencies (including dev dependencies)
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Set environment variables for development
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Expose port
+EXPOSE 3000
+
+# Start development server
+CMD ["npm", "run", "dev"]
+
+# Worker service stage
+FROM node:18-alpine AS worker
+
+WORKDIR /app
+
+# Install runtime dependencies
+RUN apk add --no-cache \
+    dumb-init \
+    curl \
+    ca-certificates
+
+# Copy package files
+COPY package.json package-lock.json* ./
+COPY apps/booking/package.json apps/booking/package-lock.json* apps/booking/
+COPY packages/*/package.json packages/*/package-lock.json* packages/*/
+
+# Install production dependencies only
+RUN npm ci --only=production --ignore-scripts
+
+# Copy source code
+COPY packages/ ./packages/
+COPY apps/booking/ ./apps/booking/
+
+# Copy worker specific files
+COPY --chown=nodejs:nodejs scripts/worker/ ./scripts/worker/
+COPY --chown=nodejs:nodejs scripts/health-check.js ./
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3001
+
+# Expose port
+EXPOSE 3001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD node ./scripts/health-check.js
+
+# Switch to non-root user
+USER nodejs
+
+# Use dumb-init
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start worker
+CMD ["node", "scripts/worker/index.js"]
+
+# Nginx stage for static serving
+FROM nginx:alpine AS nginx-static
+
+# Copy custom nginx configuration
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+
+# Copy static files
+COPY --from=production /app/.next/static /usr/share/nginx/html/_next/static
+COPY --from=production /app/public /usr/share/nginx/html
+
+# Set permissions
+RUN chown -R nginx:nginx /usr/share/nginx/html && \
+    chmod -R 755 /usr/share/nginx/html
+
+# Expose ports
+EXPOSE 80 443
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost/health || exit 1
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
+
+# Database initialization stage
+FROM postgres:15-alpine AS db-init
+
+# Copy initialization scripts
+COPY database/init.sql /docker-entrypoint-initdb.d/
+COPY database/postgresql.conf /etc/postgresql/
+
+# Set permissions
+RUN chmod +x /docker-entrypoint-initdb.d/*.sql
+
+# Database migration stage
+FROM node:18-alpine AS db-migration
+
+WORKDIR /app
+
+# Install dependencies
+RUN apk add --no-cache postgresql-client
+
+# Copy migration scripts
+COPY scripts/migrations/ ./migrations/
+COPY apps/booking/supabase/migrations/ ./supabase-migrations/
+
+# Copy environment configuration
+COPY --from=production /app/package.json ./
+
+# Run migrations
+CMD ["sh", "-c", "sleep 30 && npm run db:migrate"]
+
+# Monitoring stage
+FROM prom/prometheus:latest AS monitoring
+
+# Copy monitoring configuration
+COPY monitoring/prometheus.yml /etc/prometheus/
+
+# Expose port
+EXPOSE 9090
+
+# Start Prometheus
+CMD ["prometheus", "--config.file=/etc/prometheus/prometheus.yml"]
+
+# Multi-stage build summary
+# FROM builder (npm install, build)
+# FROM development (npm install with dev deps, dev server)
+# FROM production (final production image)
+# FROM worker (background job processor)
+# FROM nginx-static (static file serving)
+# FROM db-init (database initialization)
+# FROM db-migration (database migrations)
+# FROM monitoring (monitoring setup)
+
+# Image labels for metadata
+LABEL maintainer="devops@appointmentbooking.co.za" \
+    version="1.0.0" \
+    description="Appointment Booking System - Production Ready" \
+    build.date="2025-12-31" \
+    node.version="18" \
+    alpine.version="3.18"
+
+# Security labels
+LABEL security.scan="true" \
+    security.policy="production-grade" \
+    security.user="non-root" \
+    security.vulnerabilities="scanned"

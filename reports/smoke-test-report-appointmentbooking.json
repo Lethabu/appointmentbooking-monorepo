@@ -1,0 +1,363 @@
+{
+  "timestamp": "2026-01-06T23:58:21.669Z",
+  "url": "https://appointmentbooking.co.za",
+  "tests": {
+    "coreFunctionality": [
+      {
+        "name": "Homepage Loads",
+        "url": "https://appointmentbooking.co.za",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:22.336Z"
+      },
+      {
+        "name": "Health Check API",
+        "url": "https://appointmentbooking.co.za/api/health",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:22.376Z"
+      },
+      {
+        "name": "Services API",
+        "url": "https://appointmentbooking.co.za/api/services",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:22.418Z"
+      },
+      {
+        "name": "Staff API",
+        "url": "https://appointmentbooking.co.za/api/staff",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:22.463Z"
+      },
+      {
+        "name": "Availability API",
+        "url": "https://appointmentbooking.co.za/api/availability?date=2026-01-15",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:22.516Z"
+      },
+      {
+        "name": "Tenants API",
+        "url": "https://appointmentbooking.co.za/api/tenants",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:22.564Z"
+      }
+    ],
+    "authentication": [
+      {
+        "name": "Auth Login Endpoint",
+        "url": "https://appointmentbooking.co.za/api/auth/login",
+        "expectedStatus": 400,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:22.608Z"
+      },
+      {
+        "name": "Auth Register Endpoint",
+        "url": "https://appointmentbooking.co.za/api/auth/register",
+        "expectedStatus": 400,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:22.652Z"
+      },
+      {
+        "name": "Auth Forgot Password",
+        "url": "https://appointmentbooking.co.za/api/auth/forgot-password",
+        "expectedStatus": 400,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:22.699Z"
+      },
+      {
+        "name": "Auth Refresh Token",
+        "url": "https://appointmentbooking.co.za/api/auth/refresh",
+        "expectedStatus": 400,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:22.745Z"
+      },
+      {
+        "name": "Google OAuth Init",
+        "url": "https://appointmentbooking.co.za/api/auth/google",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:22.787Z"
+      },
+      {
+        "name": "Microsoft OAuth Init",
+        "url": "https://appointmentbooking.co.za/api/auth/microsoft",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:22.836Z"
+      }
+    ],
+    "bookingWorkflow": [
+      {
+        "name": "Create Booking Endpoint",
+        "url": "https://appointmentbooking.co.za/api/bookings",
+        "expectedStatus": 400,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:22.874Z"
+      },
+      {
+        "name": "List Bookings Endpoint",
+        "url": "https://appointmentbooking.co.za/api/bookings",
+        "expectedStatus": 401,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:22.918Z"
+      },
+      {
+        "name": "Cancel Booking Endpoint",
+        "url": "https://appointmentbooking.co.za/api/bookings/cancel",
+        "expectedStatus": 400,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:22.958Z"
+      },
+      {
+        "name": "Reschedule Booking Endpoint",
+        "url": "https://appointmentbooking.co.za/api/bookings/reschedule",
+        "expectedStatus": 400,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.001Z"
+      },
+      {
+        "name": "Booking Status Endpoint",
+        "url": "https://appointmentbooking.co.za/api/bookings/status",
+        "expectedStatus": 400,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.041Z"
+      },
+      {
+        "name": "Booking Reminders API",
+        "url": "https://appointmentbooking.co.za/api/bookings/reminders",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.077Z"
+      }
+    ],
+    "paymentProcessing": [
+      {
+        "name": "Stripe Create Payment Intent",
+        "url": "https://appointmentbooking.co.za/api/payments/create-intent",
+        "expectedStatus": 400,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.119Z"
+      },
+      {
+        "name": "Stripe Webhook",
+        "url": "https://appointmentbooking.co.za/api/payments/webhook/stripe",
+        "expectedStatus": 400,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.158Z"
+      },
+      {
+        "name": "Paystack Initialize",
+        "url": "https://appointmentbooking.co.za/api/payments/paystack/initialize",
+        "expectedStatus": 400,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.207Z"
+      },
+      {
+        "name": "Paystack Webhook",
+        "url": "https://appointmentbooking.co.za/api/payments/webhook/paystack",
+        "expectedStatus": 400,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.248Z"
+      },
+      {
+        "name": "Refund Endpoint",
+        "url": "https://appointmentbooking.co.za/api/payments/refund",
+        "expectedStatus": 400,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.290Z"
+      },
+      {
+        "name": "Payment Methods API",
+        "url": "https://appointmentbooking.co.za/api/payments/methods",
+        "expectedStatus": 401,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.342Z"
+      }
+    ],
+    "calendarIntegrations": [
+      {
+        "name": "Google Calendar OAuth",
+        "url": "https://appointmentbooking.co.za/api/google-calendar/oauth",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.388Z"
+      },
+      {
+        "name": "Google Calendar Status",
+        "url": "https://appointmentbooking.co.za/api/google-calendar/status",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.437Z"
+      },
+      {
+        "name": "Google Calendar Events",
+        "url": "https://appointmentbooking.co.za/api/google-calendar/events",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.476Z"
+      },
+      {
+        "name": "Outlook Calendar OAuth",
+        "url": "https://appointmentbooking.co.za/api/outlook-calendar/oauth",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.532Z"
+      },
+      {
+        "name": "Outlook Calendar Status",
+        "url": "https://appointmentbooking.co.za/api/outlook-calendar/status",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.573Z"
+      },
+      {
+        "name": "Calendar Sync Status",
+        "url": "https://appointmentbooking.co.za/api/calendar/sync-status",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.625Z"
+      }
+    ],
+    "emailNotifications": [
+      {
+        "name": "Send Test Email",
+        "url": "https://appointmentbooking.co.za/api/notifications/test-email",
+        "expectedStatus": 400,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.670Z"
+      },
+      {
+        "name": "Email Templates API",
+        "url": "https://appointmentbooking.co.za/api/notifications/templates",
+        "expectedStatus": 200,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.718Z"
+      },
+      {
+        "name": "Email Logs API",
+        "url": "https://appointmentbooking.co.za/api/notifications/logs",
+        "expectedStatus": 401,
+        "actualStatus": 404,
+        "passed": false,
+        "responseTime": "N/A",
+        "timestamp": "2026-01-06T23:58:23.765Z"
+      }
+    ],
+    "security": {
+      "checks": {
+        "httpsEnforced": true,
+        "contentSecurityPolicy": false,
+        "xFrameOptions": false,
+        "xContentTypeOptions": false,
+        "strictTransportSecurity": true,
+        "xssProtection": false,
+        "referrerPolicy": false
+      },
+      "passed": 2,
+      "failed": 5
+    },
+    "performance": {
+      "endpoints": {
+        "https://appointmentbooking.co.za": {
+          "avg": 46,
+          "min": 39,
+          "max": 51,
+          "p95": 51
+        },
+        "https://appointmentbooking.co.za/api/health": {
+          "avg": 39,
+          "min": 36,
+          "max": 43,
+          "p95": 43
+        },
+        "https://appointmentbooking.co.za/api/services": {
+          "avg": 43,
+          "min": 38,
+          "max": 55,
+          "p95": 55
+        }
+      },
+      "concurrency": {
+        "totalRequests": 10,
+        "successful": 0,
+        "totalTime": 300,
+        "avgTimePerRequest": 30,
+        "allSuccessful": false
+      }
+    }
+  },
+  "summary": {
+    "total": 44,
+    "passed": 5,
+    "failed": 39,
+    "warnings": 0
+  }
+}

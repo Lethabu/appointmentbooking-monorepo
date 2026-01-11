@@ -1,3 +1,8 @@
+// ============================================================================
+// Edge Runtime Configuration for Cloudflare Pages
+// ============================================================================
+export const runtime = 'edge';
+
 import { NextRequest, NextResponse } from 'next/server';
 // Make sure Ollama is running and accessible from your Next.js application.
 // You might need to expose it on your network if it's running on a different machine.

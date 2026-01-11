@@ -18,10 +18,41 @@ export * from './rbac';
 export function getAuthOptions(env: AuthEnv): NextAuthOptions {
   const db = getDb({ DB: env.DB });
 
-  // Helper function to extract tenant from request (simplified for build compatibility)
+  // Helper function to extract tenant from request with proper validation
   function getTenantFromRequest(): string | null {
-    // TODO: Implement tenant detection when needed
-    return null;
+    // Get tenant from various sources in order of priority
+
+    // 1. Check subdomain (e.g., tenant.app.com)
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname;
+      const subdomain = hostname.split('.')[0];
+      if (subdomain && subdomain !== 'www' && subdomain !== 'appointmentbooking') {
+        return subdomain;
+      }
+    }
+
+    // 2. Check URL path pattern (/tenant/page)
+    if (typeof window !== 'undefined') {
+      const pathParts = window.location.pathname.split('/');
+      if (pathParts.length > 1 && pathParts[1]) {
+        const potentialTenant = pathParts[1];
+        if (potentialTenant !== 'api' && potentialTenant !== 'auth') {
+          return potentialTenant;
+        }
+      }
+    }
+
+    // 3. Check query parameter (?tenant=tenant-slug)
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tenantParam = urlParams.get('tenant');
+      if (tenantParam) {
+        return tenantParam;
+      }
+    }
+
+    // Default to instylehairboutique for backward compatibility
+    return 'instylehairboutique';
   }
 
   return {

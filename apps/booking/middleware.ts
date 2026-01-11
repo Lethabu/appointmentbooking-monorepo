@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 
 // ============================================================================
 // CLOUDFLARE MIGRATION: Multi-Tenant Middleware with NextAuth
 // File: middleware.ts
-// Purpose: Handle tenant routing and authentication for Cloudflare deployment
+// Purpose: Handle tenant routing, authentication, and security headers
 // ============================================================================
 
 // Cloudflare KV or D1 based tenant resolution
@@ -25,6 +24,7 @@ async function resolveTenant(hostname: string): Promise<string | null> {
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
   const hostname = request.headers.get('host') || '';
+  let response = NextResponse.next();
 
   // CRITICAL: Bypass all internal, asset, and NextAuth API paths
   if (
@@ -40,7 +40,6 @@ export async function middleware(request: NextRequest) {
 
   if (tenantSlug) {
     // Add tenant information to headers for downstream use
-    const response = NextResponse.next();
     response.headers.set('x-tenant-id', tenantSlug);
     response.headers.set('x-tenant-host', hostname);
 
@@ -50,22 +49,50 @@ export async function middleware(request: NextRequest) {
       const rewriteResponse = NextResponse.rewrite(rewriteUrl);
       rewriteResponse.headers.set('x-tenant-id', tenantSlug);
       rewriteResponse.headers.set('x-tenant-host', hostname);
-      return rewriteResponse;
+      response = rewriteResponse;
     }
-
-    return response;
-  }
-
-  // For main platform domain, continue normally
-  if (
+  } else if (
     hostname === 'www.appointmentbooking.co.za' ||
     hostname === 'appointmentbooking.co.za'
   ) {
-    return NextResponse.next();
+    // For main platform domain, continue normally
+    response = NextResponse.next();
   }
 
-  // Default: continue with request
-  return NextResponse.next();
+  // ============================================================================
+  // SECURITY HEADERS (Emergency Patch)
+  // ============================================================================
+
+  // HSTS - Force HTTPS
+  response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+
+  // X-Frame-Options - Prevent Clickjacking
+  response.headers.set('X-Frame-Options', 'DENY');
+
+  // X-Content-Type-Options - Prevent MIME Sniffing
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+
+  // Referrer-Policy - Privacy Protection
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+
+  // Permissions-Policy - Restrict Browser Features
+  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(self "https://js.stripe.com")');
+
+  // Content-Security-Policy - mitigate XSS
+  // allowing unsafe-inline/eval for Next.js functionality, strictly scoped otherwise
+  const csp = [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com https://js.stripe.com https://va.vercel-scripts.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "img-src 'self' data: https: blob:",
+    "font-src 'self' data: https://fonts.gstatic.com",
+    "frame-src 'self' https://js.stripe.com https://hooks.stripe.com",
+    "connect-src 'self' https://api.stripe.com https://*.googleapis.com https://vitals.vercel-insights.com"
+  ].join('; ');
+
+  response.headers.set('Content-Security-Policy', csp);
+
+  return response;
 }
 
 export const config = {

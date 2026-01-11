@@ -1,0 +1,22 @@
+name = "appointment-booking-coza"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[pages]
+build_command = "npm run build"
+pages_build_output_dir = ".next/static,.next/server/app,/"
+
+# Memory optimization for build process
+[limits]
+  cpu_ms = 600000
+
+# Exclude large cache files from deployment
+[assets]
+  binding = "ASSETS"
+  directory = ".next"
+  ignore = [
+    ".next/cache/**",
+    ".next/server/**",
+    ".next/**/*.map",
+    "node_modules/**"
+  ]

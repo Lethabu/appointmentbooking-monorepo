@@ -1,3 +1,8 @@
+// ============================================================================
+// Edge Runtime Configuration for Cloudflare Pages
+// ============================================================================
+export const runtime = 'edge';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getPaymentGateway, PaymentGateway } from '@repo/payments';
 // import { db } from '@/lib/db'; // Assuming access to DB via alias defined in next.config or tsconfig

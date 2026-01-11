@@ -1,3 +1,8 @@
+// ============================================================================
+// Edge Runtime Configuration for Cloudflare Pages
+// ============================================================================
+export const runtime = 'edge';
+
 import { NextResponse } from 'next/server';
 // import { AIClient } from '@repo/ai'; // Temporarily disabled - @repo/ai package not available
 

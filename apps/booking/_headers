@@ -1,0 +1,56 @@
+# Cloudflare Pages Headers Configuration
+# For Next.js app deployment
+
+# ============================================================================
+# Security Headers
+# ============================================================================
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# ============================================================================
+# Next.js Static Assets Caching
+# ============================================================================
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/_next/data/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# ============================================================================
+# Static Assets Caching
+# ============================================================================
+/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# ============================================================================
+# Images and Media
+# ============================================================================
+/*.ico
+  Cache-Control: public, max-age=86400
+
+/*.png
+  Cache-Control: public, max-age=86400
+
+/*.jpg
+  Cache-Control: public, max-age=86400
+
+/*.svg
+  Cache-Control: public, max-age=86400
+
+# ============================================================================
+# SPA Fallback for Dynamic Routes
+# ============================================================================
+/book-new/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/book/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/dashboard/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/api/*
+  Cache-Control: public, max-age=0, must-revalidate

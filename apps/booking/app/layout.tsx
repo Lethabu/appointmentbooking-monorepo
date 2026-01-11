@@ -2,11 +2,14 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
-// Force dynamic rendering to avoid static generation issues
+// ============================================================================
+// CLOUDFLARE EDGE RUNTIME CONFIGURATION
+// For @cloudflare/next-on-pages compatibility
+// ============================================================================
+export const runtime = 'edge'
+
+// Force dynamic rendering for multi-tenant support
 export const dynamic = 'force-dynamic'
-
-
-
 
 const inter = Inter({ subsets: ['latin'] })
 

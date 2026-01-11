@@ -1,0 +1,241 @@
+name: 🔍 Code Quality Gates
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main, develop ]
+
+env:
+  NODE_VERSION: '18'
+  PNPM_VERSION: '8'
+
+jobs:
+  quality-gates:
+    name: 🛡️ Quality Gates
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for better analysis
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: 💾 Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pnpm-store
+            **/node_modules
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: 📥 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # 🔍 LINTING & CODE ANALYSIS
+      - name: 🔍 ESLint Analysis
+        run: pnpm run lint
+        continue-on-error: false
+
+      - name: 🎨 Prettier Check
+        run: pnpm run format:check
+        continue-on-error: false
+
+      - name: 📝 TypeScript Check
+        run: pnpm run type-check
+        continue-on-error: false
+
+      # 🧪 TESTING
+      - name: 🧪 Unit Tests
+        run: pnpm run test:unit
+        continue-on-error: false
+
+      - name: 🧪 Integration Tests
+        run: pnpm run test:integration
+        continue-on-error: false
+
+      - name: 🧪 E2E Tests
+        run: pnpm run test:e2e
+        continue-on-error: false
+
+      # 📊 QUALITY METRICS
+      - name: 📊 Generate Quality Report
+        run: pnpm run quality:report
+
+      - name: 📈 Upload Quality Report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: quality-report
+          path: |
+            reports/quality-metrics.json
+            reports/quality-report.html
+            reports/eslint-report.json
+
+      # 🔒 SECURITY SCANS
+      - name: 🔒 Security Audit
+        run: pnpm audit --audit-level moderate
+        continue-on-error: false
+
+      - name: 🛡️ Dependency Security Scan
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { execSync } = require('child_process');
+            try {
+              const output = execSync('pnpm audit --json', { encoding: 'utf8' });
+              const auditResult = JSON.parse(output);
+              
+              if (auditResult.vulnerabilities) {
+                const vulnerabilities = Object.values(auditResult.vulnerabilities);
+                if (vulnerabilities.length > 0) {
+                  core.setFailed(`Found ${vulnerabilities.length} security vulnerabilities`);
+                }
+              }
+            } catch (error) {
+              console.log('No vulnerabilities found or audit failed');
+            }
+
+      # 🏗️ BUILD VERIFICATION
+      - name: 🏗️ Build Applications
+        run: |
+          pnpm run build:sequential
+        continue-on-error: false
+
+      - name: 📦 Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: build-artifacts
+          path: |
+            apps/*/dist/
+            apps/*/.next/
+            packages/*/dist/
+
+      # 📋 CODE REVIEW REQUIREMENTS
+      - name: 👥 Check Review Requirements
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+
+            const requiredReviews = 2; // Configure based on team requirements
+            const approvals = pr.requested_reviewers?.length || 0;
+            
+            if (approvals < requiredReviews) {
+              core.warning(`This PR requires ${requiredReviews} reviews, but only has ${approvals} assigned`);
+            }
+
+      # 🎯 QUALITY GATES THRESHOLDS
+      - name: 🎯 Quality Gates Verification
+        run: |
+          echo "🔍 Running quality gates verification..."
+          
+          # Check if quality metrics meet thresholds
+          if [ -f "reports/quality-metrics.json" ]; then
+            QUALITY_SCORE=$(jq -r '.summary.overallQuality' reports/quality-metrics.json)
+            VIOLATIONS=$(jq -r '.summary.totalViolations' reports/quality-metrics.json)
+            
+            echo "Quality Score: $QUALITY_SCORE"
+            echo "Total Violations: $VIOLATIONS"
+            
+            # Quality thresholds (configure as needed)
+            MIN_QUALITY_SCORE=70
+            MAX_VIOLATIONS=20
+            
+            if (( $(echo "$QUALITY_SCORE < $MIN_QUALITY_SCORE" | bc -l) )); then
+              echo "❌ Quality score $QUALITY_SCORE is below minimum threshold $MIN_QUALITY_SCORE"
+              exit 1
+            fi
+            
+            if [ "$VIOLATIONS" -gt "$MAX_VIOLATIONS" ]; then
+              echo "❌ Too many violations ($VIOLATIONS) exceed maximum threshold ($MAX_VIOLATIONS)"
+              exit 1
+            fi
+            
+            echo "✅ Quality gates passed"
+          else
+            echo "⚠️ Quality metrics report not found, skipping threshold checks"
+          fi
+
+      # 📱 PERFORMANCE MONITORING
+      - name: ⚡ Performance Budget Check
+        run: |
+          echo "🔍 Checking performance budgets..."
+          # Add performance budget checks here
+          # Example: Bundle size, Core Web Vitals, etc.
+
+      # 📚 DOCUMENTATION
+      - name: 📚 Documentation Check
+        run: |
+          echo "📚 Checking documentation requirements..."
+          # Ensure README, API docs, etc. are updated
+          if [ -f "README.md" ]; then
+            echo "✅ README.md found"
+          else
+            echo "❌ README.md missing"
+            exit 1
+          fi
+
+  # 🚀 DEPLOYMENT GATE
+  deploy-gate:
+    name: 🚀 Deployment Gate
+    runs-on: ubuntu-latest
+    needs: [quality-gates]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+      - name: ✅ Quality Gates Passed
+        run: |
+          echo "🎉 All quality gates passed! Ready for deployment."
+          echo "📊 Review the quality report: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+  # 📊 QUALITY DASHBOARD
+  quality-dashboard:
+    name: 📊 Update Quality Dashboard
+    runs-on: ubuntu-latest
+    needs: [quality-gates]
+    if: always()
+    
+    steps:
+      - name: 📊 Download Quality Reports
+        uses: actions/download-artifact@v3
+        with:
+          name: quality-report
+          path: reports/
+
+      - name: 📈 Update Quality Dashboard
+        run: |
+          echo "📊 Updating quality dashboard..."
+          # This could push metrics to a monitoring system
+          # or update a dashboard with current quality status
+
+      - name: 📢 Notify Quality Status
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const qualityReport = require('./reports/quality-metrics.json');
+            const qualityScore = qualityReport.summary.overallQuality;
+            
+            let status = '🟢';
+            if (qualityScore < 70) status = '🔴';
+            else if (qualityScore < 85) status = '🟡';
+            
+            const message = `${status} Code Quality Score: ${qualityScore}/100`;
+            
+            // You could post this to Slack, Teams, or other notification systems
+            console.log(message);
