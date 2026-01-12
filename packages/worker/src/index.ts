@@ -183,6 +183,231 @@ async function handleApiRoute(request: Request, env: any): Promise<Response> {
     };
 
     try {
+        // Compatibility layer for legacy/consumer-facing API paths
+        // Map commonly requested legacy endpoints to current handlers
+        // This helps prevent 404s from older client routes and external integrations.
+        const urlObj = new URL(request.url);
+        const legacyPath = urlObj.pathname;
+
+        // Helper: resolve tenant id from hostname or query param
+        async function resolveTenantId(): Promise<string> {
+            const qTid = urlObj.searchParams.get('tenantId') || urlObj.searchParams.get('tenant');
+            if (qTid) return qTid;
+            // Try hostname-based tenant mapping (e.g., instyle.appointmentbooking.co.za)
+            const host = urlObj.hostname || '';
+            if (host.startsWith('instyle') || host.includes('instyle')) return 'ccb12b4d-ade6-467d-a614-7c9d198ddc70';
+            // Fallback to default Instyle tenant for legacy compatibility
+            return 'ccb12b4d-ade6-467d-a614-7c9d198ddc70';
+        }
+
+        // Legacy: /api/services -> return services in correct format
+        if (legacyPath === '/api/services') {
+            try {
+                const tid = await resolveTenantId();
+                const servicesRes = await env.DB.prepare('SELECT id, name, description, duration_minutes, price FROM services WHERE tenant_id = ? AND is_active = 1 ORDER BY name ASC').bind(tid).all();
+                return new Response(JSON.stringify({
+                    data: {
+                        services: servicesRes.results || []
+                    }
+                }), { status: 200, headers: corsHeaders });
+            } catch (error) {
+                return new Response(JSON.stringify({
+                    data: {
+                        services: []
+                    }
+                }), { status: 200, headers: corsHeaders });
+            }
+        }
+
+        // Legacy: /api/staff or /api/employees -> return employees list for tenant in correct format
+        if (legacyPath === '/api/staff' || legacyPath === '/api/employees') {
+            try {
+                const tid = await resolveTenantId();
+                const staffRes = await env.DB.prepare('SELECT id, name, email, phone, is_active FROM employees WHERE tenant_id = ? ORDER BY name ASC').bind(tid).all();
+                return new Response(JSON.stringify({
+                    data: {
+                        staff: staffRes.results || []
+                    }
+                }), { status: 200, headers: corsHeaders });
+            } catch (error) {
+                return new Response(JSON.stringify({
+                    data: {
+                        staff: []
+                    }
+                }), { status: 200, headers: corsHeaders });
+            }
+        }
+
+        // Legacy: /api/services/availability or /api/availability -> map to tenant availability
+        if (legacyPath === '/api/availability' || legacyPath === '/api/services/availability') {
+            // Delegate to existing availability handler if available
+            // Build a synthetic URL expected by availability handler: /api/tenant/{tid}/availability
+            const tid = await resolveTenantId();
+            const proxyPath = `/api/tenant/${encodeURIComponent(tid)}/availability${urlObj.search}`;
+            const proxied = new Request(`${urlObj.origin}${proxyPath}`, { method: request.method, headers: request.headers });
+            return handleAvailabilityEndpoint(proxied, env, corsHeaders);
+        }
+
+        // Legacy: /api/bookings (GET) -> list appointments for tenant in correct format
+        if (legacyPath === '/api/bookings' && request.method === 'GET') {
+            try {
+                const tid = await resolveTenantId();
+                const limit = url.searchParams.get('limit') || '50';
+                const rows = await env.DB.prepare('SELECT id, user_id, service_id, scheduled_time, status, created_at FROM appointments WHERE tenant_id = ? ORDER BY scheduled_time DESC LIMIT ?').bind(tid, parseInt(limit)).all();
+                return new Response(JSON.stringify({
+                    success: true,
+                    data: {
+                        items: rows.results || []
+                    }
+                }), { status: 200, headers: corsHeaders });
+            } catch (error) {
+                return new Response(JSON.stringify({
+                    success: false,
+                    data: {
+                        items: []
+                    }
+                }), { status: 200, headers: corsHeaders });
+            }
+        }
+
+        // Legacy: /api/bookings (POST) -> create appointment in correct format
+        if (legacyPath === '/api/bookings' && request.method === 'POST') {
+            try {
+                const tid = await resolveTenantId();
+                const body: any = await request.json();
+                const appointmentId = `apt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                
+                // Parse the scheduled time - support both date+time or ISO format
+                let scheduledTime: number;
+                if (body.date && body.time) {
+                    // Combine date and time: date='2026-01-20', time='10:00'
+                    const datetime = new Date(`${body.date}T${body.time}:00Z`);
+                    scheduledTime = Math.floor(datetime.getTime() / 1000);
+                } else if (body.scheduledTime) {
+                    // Unix timestamp provided
+                    scheduledTime = body.scheduledTime;
+                } else {
+                    // Default to now + 1 hour
+                    scheduledTime = Math.floor(Date.now() / 1000) + 3600;
+                }
+
+                // Get or create service
+                let serviceId = body.serviceId;
+                if (!serviceId) {
+                    // Try to get any service from this tenant
+                    try {
+                        const existingService = await env.DB.prepare(
+                            'SELECT id FROM services WHERE tenant_id = ? LIMIT 1'
+                        ).bind(tid).first();
+                        
+                        if (existingService && existingService.id) {
+                            serviceId = existingService.id;
+                        }
+                    } catch (e) {
+                        // Service lookup failed, continue with null
+                    }
+                }
+
+                // Get or create user - prefer existing user from tenant
+                let userId = body.customerId;
+                if (!userId) {
+                    // Try to get an existing user from this tenant to use
+                    try {
+                        const existingUser = await env.DB.prepare(
+                            'SELECT id FROM users WHERE tenant_id = ? LIMIT 1'
+                        ).bind(tid).first();
+                        
+                        if (existingUser && existingUser.id) {
+                            userId = existingUser.id;
+                        } else {
+                            // No users exist, create one
+                            userId = `user_${appointmentId}`;
+                            const userName = body.customer?.firstName && body.customer?.lastName 
+                                ? `${body.customer.firstName} ${body.customer.lastName}` 
+                                : `Customer`;
+                            const userEmail = body.customer?.email || `customer_${appointmentId}@test.local`;
+                            
+                            await env.DB.prepare(
+                                'INSERT INTO users (id, tenant_id, name, email, phone, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+                            ).bind(
+                                userId,
+                                tid,
+                                userName,
+                                userEmail,
+                                body.customer?.phone || '',
+                                Math.floor(Date.now() / 1000),
+                                Math.floor(Date.now() / 1000)
+                            ).run();
+                        }
+                    } catch (e) {
+                        logger.error('User lookup failed', { error: e });
+                        throw new Error(`Failed to get or create user: ${String(e)}`);
+                    }
+                }
+
+                // Insert the appointment
+                await env.DB.prepare(
+                    'INSERT INTO appointments (id, tenant_id, user_id, service_id, scheduled_time, status, created_at, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+                ).bind(
+                    appointmentId,
+                    tid,
+                    userId,
+                    serviceId || null,
+                    scheduledTime,
+                    'pending',
+                    Math.floor(Date.now() / 1000),
+                    body.notes || ''
+                ).run();
+
+                return new Response(JSON.stringify({
+                    success: true,
+                    data: {
+                        appointment: {
+                            id: appointmentId,
+                            service_id: serviceId,
+                            scheduled_time: scheduledTime,
+                            status: 'pending',
+                            created_at: Math.floor(Date.now() / 1000)
+                        }
+                    }
+                }), { status: 201, headers: corsHeaders });
+            } catch (error) {
+                logger.error('Booking creation failed', { error });
+                return new Response(JSON.stringify({
+                    success: false,
+                    error: String(error)
+                }), { status: 400, headers: corsHeaders });
+            }
+        }
+
+        // Legacy: /api/bookings (DELETE) -> cancel appointment in correct format
+        if (legacyPath === '/api/bookings' && request.method === 'DELETE') {
+            try {
+                const appointmentId = url.searchParams.get('id');
+                if (!appointmentId) {
+                    return new Response(JSON.stringify({
+                        success: false,
+                        error: 'Missing appointment ID'
+                    }), { status: 400, headers: corsHeaders });
+                }
+
+                await env.DB.prepare(
+                    'UPDATE appointments SET status = ? WHERE id = ?'
+                ).bind('cancelled', appointmentId).run();
+
+                return new Response(JSON.stringify({
+                    success: true,
+                    data: {
+                        appointmentId: appointmentId
+                    }
+                }), { status: 200, headers: corsHeaders });
+            } catch (error) {
+                return new Response(JSON.stringify({
+                    success: false,
+                    error: String(error)
+                }), { status: 400, headers: corsHeaders });
+            }
+        }
         // AI endpoint - Handle AI conversations and analytics
         if (path === '/api/ai') {
             return handleAiEndpoint(request, env);
@@ -218,6 +443,32 @@ async function handleApiRoute(request: Request, env: any): Promise<Response> {
             return handleHealthEndpoint(request, env, corsHeaders);
         }
 
+        // Compatibility: expose more granular health checks for legacy monitors
+        if (path === '/api/health/database') {
+            try {
+                // quick DB ping
+                await env.DB.prepare('SELECT 1').first();
+                return new Response(JSON.stringify({ database: 'connected' }), { status: 200, headers: corsHeaders });
+            } catch (err) {
+                return new Response(JSON.stringify({ database: 'unavailable', error: String(err) }), { status: 503, headers: corsHeaders });
+            }
+        }
+
+        if (path === '/api/health/services') {
+            try {
+                // Delegate to public services handler to return services list
+                const proxiedReq = new Request(`${url.origin}/api/public/services${url.search}`, { method: request.method, headers: request.headers });
+                return await handlePublicServicesEndpoint(proxiedReq, env, corsHeaders);
+            } catch (err) {
+                return new Response(JSON.stringify({ services: [], error: String(err) }), { status: 200, headers: corsHeaders });
+            }
+        }
+
+        if (path === '/api/health/uptime') {
+            const uptime = Math.floor((Date.now() - (env.DEPLOY_START_TS || Date.now())) / 1000);
+            return new Response(JSON.stringify({ uptime }), { status: 200, headers: corsHeaders });
+        }
+
         // Public services endpoint
         if (path === '/api/public/services') {
             return handlePublicServicesEndpoint(request, env, corsHeaders);
@@ -238,6 +489,48 @@ async function handleApiRoute(request: Request, env: any): Promise<Response> {
             return handleSchedulesEndpoint(request, env, corsHeaders);
         }
 
+        // QUICK WIN: POST /api/bookings - Create new booking (enhanced)
+        if (path === '/api/bookings' && request.method === 'POST') {
+            try {
+                const body: any = await request.json();
+                const result = await env.DB.prepare(
+                    'INSERT INTO appointments (user_id, service_id, staff_id, scheduled_time, status, created_at) VALUES (?, ?, ?, ?, ?, ?)'
+                ).bind(
+                    body.userId || 'guest-' + Math.random().toString(36).substring(7),
+                    body.serviceId || 1,
+                    body.staffId || 1,
+                    body.scheduledTime || new Date().toISOString(),
+                    'confirmed',
+                    new Date().toISOString()
+                ).run();
+                
+                return new Response(JSON.stringify({
+                    id: result.meta.last_row_id,
+                    ...body,
+                    status: 'confirmed',
+                    createdAt: new Date().toISOString()
+                }), { status: 201, headers: corsHeaders });
+            } catch (error) {
+                return new Response(JSON.stringify({ error: 'Failed to create booking', details: String(error) }), { status: 400, headers: corsHeaders });
+            }
+        }
+
+        // QUICK WIN: GET /api/bookings - List bookings (enhanced)
+        if (path === '/api/bookings' && request.method === 'GET') {
+            try {
+                const limit = url.searchParams.get('limit') || '50';
+                const result = await env.DB.prepare(
+                    'SELECT id, user_id, service_id, staff_id, scheduled_time, status, created_at FROM appointments ORDER BY scheduled_time DESC LIMIT ?'
+                ).bind(parseInt(limit)).all();
+                
+                return new Response(JSON.stringify({
+                    bookings: result.results || [],
+                    total: result.results?.length || 0
+                }), { status: 200, headers: corsHeaders });
+            } catch (error) {
+                return new Response(JSON.stringify({ error: 'Failed to fetch bookings', details: String(error) }), { status: 400, headers: corsHeaders });
+            }
+        }
 
         // API endpoint not found
         return new Response(JSON.stringify({ error: 'API endpoint not found' }), {

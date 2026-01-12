@@ -13,9 +13,9 @@ const path = require('path');
 
 // Configuration
 const CONFIG = {
-    baseUrl: 'https://4afe5103.appointment-booking-coza.pages.dev',
+    baseUrl: 'https://59af2613.appointment-booking-coza.pages.dev',
     stagingUrl: 'https://staging.appointmentbooking.co.za',
-    apiBase: 'https://4afe5103.appointment-booking-coza.pages.dev/api',
+    apiBase: 'https://59af2613.appointment-booking-coza.pages.dev/api',
     timeout: 30000,
     maxRetries: 3,
     retryDelay: 2000
@@ -223,7 +223,7 @@ async function testAppointmentManagement() {
     // Test availability endpoint
     try {
         const response = await retryRequest(
-            `${CONFIG.apiBase}/availability?date=2026-01-20&serviceId=service_1`
+            `${CONFIG.apiBase}/availability?date=2026-01-20&serviceId=svc_middle_side`
         );
         recordTest(
             'GET /api/availability',
@@ -261,10 +261,10 @@ async function testAppointmentManagement() {
     // Test booking creation (with mock data)
     try {
         const bookingData = {
-            serviceId: 'service_1',
+            serviceId: 'svc_middle_side',  // Use real Instyle Hair Boutique service ID
             date: '2026-01-20',
             time: '10:00',
-            staffId: 'staff_1',
+            staffId: 'emp_noma',  // Use real Instyle employee
             customer: {
                 firstName: 'Test',
                 lastName: 'User',
@@ -738,7 +738,7 @@ async function testEndToEndWorkflow() {
     try {
         // Step 1: Check availability
         const availabilityResponse = await retryRequest(
-            `${CONFIG.apiBase}/availability?date=2026-01-25&serviceId=service_1`
+            `${CONFIG.apiBase}/availability?date=2026-01-25&serviceId=svc_middle_side`
         );
 
         if (availabilityResponse.status !== 200 || !availabilityResponse.body.success) {
@@ -756,10 +756,10 @@ async function testEndToEndWorkflow() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                serviceId: 'service_1',
+                serviceId: 'svc_middle_side',  // Use real Instyle service
                 date: '2026-01-25',
                 time: bookingTime,
-                staffId: 'staff_1',
+                staffId: 'emp_noma',  // Use real Instyle employee
                 customer: {
                     firstName: 'E2E',
                     lastName: 'Test User',

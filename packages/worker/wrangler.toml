@@ -1,0 +1,63 @@
+###############################################################################
+# Cloudflare Worker Configuration - appointmentbooking-coza
+# SPEC: Cloudflare Workers v4 + D1 Database Bindings
+# Generated: 2026-01-11 - Spec-Driven Development
+###############################################################################
+
+# Core Configuration
+name = "appointmentbooking-coza"
+type = "service"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+###############################################################################
+# ENVIRONMENT VARIABLES (Production)
+###############################################################################
+[vars]
+NEXT_PUBLIC_APP_URL = "https://appointmentbooking.co.za"
+NEXTAUTH_URL = "https://appointmentbooking.co.za"
+NODE_ENV = "production"
+
+###############################################################################
+# D1 DATABASE BINDINGS (Spec Requirement: Worker must access D1)
+###############################################################################
+# SPEC: Binding name must be 'DB' to match env.DB in worker code
+[[d1_databases]]
+binding = "DB"
+database_name = "appointmentbooking-db"
+database_id = "59c06cd2-8bd2-45cf-ab62-84d7a4919e11"
+
+###############################################################################
+# PRODUCTION ENVIRONMENT CONFIGURATION
+###############################################################################
+[env.production]
+name = "appointmentbooking-coza-production"
+
+[env.production.vars]
+NODE_ENV = "production"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "appointmentbooking-db"
+database_id = "59c06cd2-8bd2-45cf-ab62-84d7a4919e11"
+
+###############################################################################
+# ROUTES CONFIGURATION (Spec: Edge computing route pattern)
+###############################################################################
+route = "appointmentbooking-coza.houseofgr8ness.workers.dev/api/*"
+zone_name = "houseofgr8ness.workers.dev"
+
+###############################################################################
+# BUILD CONFIGURATION
+###############################################################################
+[build]
+command = "npm run build"
+cwd = "."
+main = "src/index.ts"
+
+###############################################################################
+# OBSERVABILITY & MONITORING
+###############################################################################
+# Logpush integration for analytics
+observability = {enabled = true}

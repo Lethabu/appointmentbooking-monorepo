@@ -5,9 +5,9 @@ compatibility_flags = ["nodejs_compat"]
 
 # Pages Configuration
 [pages]
-build_command = "npm run build"
-build_output_dir = ".next"
-pages_build_output_dir = ".next"
+build_command = "pnpm --filter=booking build"
+build_output_dir = "apps/booking/.next"
+pages_build_output_dir = "apps/booking/.next"
 node_compat = true
 
 # Environment Variables - Production
@@ -30,9 +30,9 @@ binding = "FETCH"
 
 # Build Configuration for Next.js
 [env.production.pages.build]
-command = "npm run build"
-cwd = "./apps/booking"
-output_dir = ".next"
+command = "pnpm --filter=booking build"
+cwd = "./"
+output_dir = "apps/booking/.next"
 
 # Headers Configuration
 [[env.production.pages.headers]]

@@ -1,8 +1,0 @@
-
-> dashboard@0.1.0 build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\dashboard
-> cross-env NODE_OPTIONS='--max-old-space-size=8192' next build
-
-  ▲ Next.js 14.2.35
-
-   Creating an optimized production build ...
-[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`

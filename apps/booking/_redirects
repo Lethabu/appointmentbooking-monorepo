@@ -1,7 +1,8 @@
 # Cloudflare Pages Redirects Configuration
 
-# API routes redirect to Cloudflare Worker
-/api/* https://www.instylehairboutique.co.za/api/:splat 200
+# API routes proxy to Cloudflare Worker (proxy 200)
+# Route all /api/* requests to the Worker backend so Pages serves frontend and Worker handles API.
+/api/* https://appointmentbooking-coza.houseofgr8ness.workers.dev/api/:splat 200
 
 # Legacy tenant routes
 /instylehairboutique/* /instyle/:splat 301

@@ -1,0 +1,139 @@
+﻿
+ΓòöΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòù
+Γòæ     POST-DEPLOYMENT SMOKE TEST SUITE v1.0                               Γòæ
+Γòæ     Target: appointmentbooking.co.za                                    Γòæ
+ΓòÜΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓò¥
+    
+[2026-01-11T16:56:34.939Z] ≡ƒº¬ Testing Health Check Endpoints...
+[2026-01-11T16:56:37.417Z] ≡ƒƒó Γ£ô GET /api/health
+[2026-01-11T16:56:37.560Z] ≡ƒö┤ Γ£ù GET /health (root): Unknown error
+[2026-01-11T16:56:37.622Z] ≡ƒö┤ Γ£ù GET /api/health/database: Unknown error
+[2026-01-11T16:56:37.686Z] ≡ƒö┤ Γ£ù GET /api/health/services: Unknown error
+[2026-01-11T16:56:37.730Z] ≡ƒö┤ Γ£ù GET /api/health/uptime: Unknown error
+[2026-01-11T16:56:38.242Z] ≡ƒº¬ Testing Appointment Management APIs...
+[2026-01-11T16:56:38.296Z] ≡ƒö┤ Γ£ù GET /api/availability: Unknown error
+[2026-01-11T16:56:38.348Z] ≡ƒö┤ Γ£ù GET /api/services: Unknown error
+[2026-01-11T16:56:38.421Z] ≡ƒö┤ Γ£ù GET /api/staff: Unknown error
+[2026-01-11T16:56:38.487Z] ≡ƒö┤ Γ£ù POST /api/bookings (creation): Unknown error
+[2026-01-11T16:56:38.549Z] ≡ƒö┤ Γ£ù GET /api/bookings (listing): Unknown error
+[2026-01-11T16:56:38.550Z] ≡ƒƒí ΓÜá DELETE /api/bookings: No appointment ID available for cancellation test
+[2026-01-11T16:56:39.063Z] ≡ƒº¬ Testing Authentication Flows...
+[2026-01-11T16:56:39.202Z] ≡ƒö┤ Γ£ù POST /api/auth/login: Unknown error
+[2026-01-11T16:56:39.306Z] ≡ƒö┤ Γ£ù POST /api/auth/register: Unknown error
+[2026-01-11T16:56:39.335Z] ≡ƒö┤ Γ£ù POST /api/auth/password-reset: Unknown error
+[2026-01-11T16:56:39.370Z] ≡ƒö┤ Γ£ù POST /api/auth/refresh: Unknown error
+[2026-01-11T16:56:39.443Z] ≡ƒö┤ Γ£ù GET /api/user/profile (unauthenticated): Unknown error
+[2026-01-11T16:56:39.958Z] ≡ƒº¬ Testing Calendar Integrations...
+[2026-01-11T16:56:40.036Z] ≡ƒö┤ Γ£ù GET /api/google-calendar/oauth: Unknown error
+[2026-01-11T16:56:40.151Z] ≡ƒö┤ Γ£ù GET /api/google-calendar/status: Unknown error
+[2026-01-11T16:56:40.264Z] ≡ƒö┤ Γ£ù GET /api/outlook-calendar/oauth: Unknown error
+[2026-01-11T16:56:40.302Z] ≡ƒö┤ Γ£ù GET /api/outlook-calendar/status: Unknown error
+[2026-01-11T16:56:40.350Z] ≡ƒö┤ Γ£ù GET /api/calendar/sync-status: Unknown error
+[2026-01-11T16:56:40.854Z] ≡ƒº¬ Testing Payment Processing...
+[2026-01-11T16:56:40.929Z] ≡ƒö┤ Γ£ù POST /api/payments/create-intent: Unknown error
+[2026-01-11T16:56:40.988Z] ≡ƒö┤ Γ£ù POST /api/payments/webhook/stripe: Unknown error
+[2026-01-11T16:56:41.085Z] ≡ƒƒó Γ£ô POST /api/payments/refund
+[2026-01-11T16:56:41.149Z] ≡ƒö┤ Γ£ù GET /api/payments/methods: Unknown error
+[2026-01-11T16:56:41.658Z] ≡ƒº¬ Testing Infrastructure...
+[2026-01-11T16:56:41.720Z] ≡ƒƒó Γ£ô SSL Certificate Valid
+[2026-01-11T16:56:42.061Z] ≡ƒö┤ Γ£ù Security Headers Present: Unknown error
+[2026-01-11T16:56:42.096Z] ≡ƒö┤ Γ£ù CORS Headers Configured: Unknown error
+[2026-01-11T16:56:42.430Z] ≡ƒö┤ Γ£ù Response Compression Enabled: Unknown error
+[2026-01-11T16:56:42.943Z] ≡ƒº¬ Testing Performance...
+[2026-01-11T16:56:43.447Z] ≡ƒö┤ Γ£ù API Response Time (< 500ms): Unknown error
+[2026-01-11T16:56:43.891Z] ≡ƒö┤ Γ£ù Concurrent Requests (5): Unknown error
+[2026-01-11T16:56:43.952Z] ≡ƒö┤ Γ£ù Frontend Page Load (< 2s): Unknown error
+[2026-01-11T16:56:44.462Z] ≡ƒº¬ Testing End-to-End Workflow...
+[2026-01-11T16:56:44.521Z] ≡ƒö┤ Γ£ù E2E Workflow: Availability Check: Unknown error
+
+ΓòöΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòù
+Γòæ     POST-DEPLOYMENT SMOKE TEST REPORT - appointmentbooking.co.za        Γòæ
+ΓòÜΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓò¥
+
+≡ƒôè EXECUTIVE SUMMARY
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+≡ƒòÉ Test Execution: 2026-01-11T16:56:34.937Z
+ΓÅ▒∩╕Å Duration: 9.59 seconds
+≡ƒôê Total Tests: 32
+Γ£à Passed: 3 (9.38%)
+Γ¥î Failed: 29
+ΓÜá∩╕Å Warnings: 1
+Γ¥ù Errors: 0
+
+≡ƒÄ» PASS/FAIL RATE
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓûæΓûæΓûæΓûæΓûæΓûæΓûæΓûæΓûæΓûæ 9.38%
+
+≡ƒôï PASSED TESTS (3)
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+Γ£ô GET /api/health
+Γ£ô POST /api/payments/refund
+Γ£ô SSL Certificate Valid
+
+≡ƒôï FAILED TESTS (29)
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+Γ£ù GET /health (root)
+Γ£ù GET /api/health/database
+Γ£ù GET /api/health/services
+Γ£ù GET /api/health/uptime
+Γ£ù GET /api/availability
+Γ£ù GET /api/services
+Γ£ù GET /api/staff
+Γ£ù POST /api/bookings (creation)
+Γ£ù GET /api/bookings (listing)
+Γ£ù POST /api/auth/login
+Γ£ù POST /api/auth/register
+Γ£ù POST /api/auth/password-reset
+Γ£ù POST /api/auth/refresh
+Γ£ù GET /api/user/profile (unauthenticated)
+Γ£ù GET /api/google-calendar/oauth
+Γ£ù GET /api/google-calendar/status
+Γ£ù GET /api/outlook-calendar/oauth
+Γ£ù GET /api/outlook-calendar/status
+Γ£ù GET /api/calendar/sync-status
+Γ£ù POST /api/payments/create-intent
+Γ£ù POST /api/payments/webhook/stripe
+Γ£ù GET /api/payments/methods
+Γ£ù Security Headers Present
+Γ£ù CORS Headers Configured
+Γ£ù Response Compression Enabled
+Γ£ù API Response Time (< 500ms)
+Γ£ù Concurrent Requests (5)
+Γ£ù Frontend Page Load (< 2s)
+Γ£ù E2E Workflow: Availability Check
+
+ΓÜá∩╕Å WARNINGS
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓÜá DELETE /api/bookings: No appointment ID available for cancellation test
+
+Γ¥ù ERRORS
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+No errors
+
+≡ƒÅÑ HEALTH CHECK STATUS
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+Γ£ô Health endpoints responding
+
+≡ƒöÉ AUTHENTICATION STATUS
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓÜá Authentication flows may have issues
+
+≡ƒôà CALENDAR INTEGRATION STATUS
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓÜá Calendar integrations may have issues
+
+≡ƒÆ│ PAYMENT PROCESSING STATUS
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+Γ£ô Payment processing functional
+
+ΓÜí PERFORMANCE STATUS
+ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+ΓÜá Performance may need optimization
+
+ΓòöΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòù
+Γòæ  DEPLOYMENT STATUS: ΓÜá∩╕Å ISSUES DETECTED - REVIEW REQUIRED  Γòæ
+ΓòÜΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓò¥
+
+[2026-01-11T16:56:44.540Z] ≡ƒö╡ Report saved to: C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\reports\smoke-test-report-2026-01-11.txt
+[2026-01-11T16:56:44.546Z] ≡ƒö╡ JSON report saved to: C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\reports\smoke-test-report-2026-01-11.json
+[2026-01-11T16:56:44.547Z] ≡ƒö╡ Smoke tests completed with exit code: 1

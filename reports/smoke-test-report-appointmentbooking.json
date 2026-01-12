@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-01-06T23:58:21.669Z",
+  "timestamp": "2026-01-11T14:47:35.877Z",
   "url": "https://appointmentbooking.co.za",
   "tests": {
     "coreFunctionality": [
@@ -7,19 +7,19 @@
         "name": "Homepage Loads",
         "url": "https://appointmentbooking.co.za",
         "expectedStatus": 200,
-        "actualStatus": 404,
-        "passed": false,
+        "actualStatus": 200,
+        "passed": true,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:22.336Z"
+        "timestamp": "2026-01-11T14:47:37.535Z"
       },
       {
         "name": "Health Check API",
         "url": "https://appointmentbooking.co.za/api/health",
         "expectedStatus": 200,
-        "actualStatus": 404,
-        "passed": false,
+        "actualStatus": 200,
+        "passed": true,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:22.376Z"
+        "timestamp": "2026-01-11T14:47:38.033Z"
       },
       {
         "name": "Services API",
@@ -28,7 +28,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:22.418Z"
+        "timestamp": "2026-01-11T14:47:38.223Z"
       },
       {
         "name": "Staff API",
@@ -37,7 +37,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:22.463Z"
+        "timestamp": "2026-01-11T14:47:38.423Z"
       },
       {
         "name": "Availability API",
@@ -46,7 +46,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:22.516Z"
+        "timestamp": "2026-01-11T14:47:38.623Z"
       },
       {
         "name": "Tenants API",
@@ -55,7 +55,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:22.564Z"
+        "timestamp": "2026-01-11T14:47:38.821Z"
       }
     ],
     "authentication": [
@@ -66,7 +66,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:22.608Z"
+        "timestamp": "2026-01-11T14:47:39.011Z"
       },
       {
         "name": "Auth Register Endpoint",
@@ -75,7 +75,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:22.652Z"
+        "timestamp": "2026-01-11T14:47:39.203Z"
       },
       {
         "name": "Auth Forgot Password",
@@ -84,7 +84,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:22.699Z"
+        "timestamp": "2026-01-11T14:47:39.406Z"
       },
       {
         "name": "Auth Refresh Token",
@@ -93,7 +93,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:22.745Z"
+        "timestamp": "2026-01-11T14:47:39.604Z"
       },
       {
         "name": "Google OAuth Init",
@@ -102,7 +102,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:22.787Z"
+        "timestamp": "2026-01-11T14:47:39.793Z"
       },
       {
         "name": "Microsoft OAuth Init",
@@ -111,7 +111,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:22.836Z"
+        "timestamp": "2026-01-11T14:47:39.991Z"
       }
     ],
     "bookingWorkflow": [
@@ -122,7 +122,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:22.874Z"
+        "timestamp": "2026-01-11T14:47:40.179Z"
       },
       {
         "name": "List Bookings Endpoint",
@@ -131,7 +131,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:22.918Z"
+        "timestamp": "2026-01-11T14:47:40.370Z"
       },
       {
         "name": "Cancel Booking Endpoint",
@@ -140,7 +140,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:22.958Z"
+        "timestamp": "2026-01-11T14:47:40.558Z"
       },
       {
         "name": "Reschedule Booking Endpoint",
@@ -149,7 +149,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.001Z"
+        "timestamp": "2026-01-11T14:47:40.749Z"
       },
       {
         "name": "Booking Status Endpoint",
@@ -158,7 +158,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.041Z"
+        "timestamp": "2026-01-11T14:47:40.944Z"
       },
       {
         "name": "Booking Reminders API",
@@ -167,7 +167,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.077Z"
+        "timestamp": "2026-01-11T14:47:41.140Z"
       }
     ],
     "paymentProcessing": [
@@ -178,7 +178,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.119Z"
+        "timestamp": "2026-01-11T14:47:41.327Z"
       },
       {
         "name": "Stripe Webhook",
@@ -187,7 +187,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.158Z"
+        "timestamp": "2026-01-11T14:47:41.520Z"
       },
       {
         "name": "Paystack Initialize",
@@ -196,7 +196,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.207Z"
+        "timestamp": "2026-01-11T14:47:41.708Z"
       },
       {
         "name": "Paystack Webhook",
@@ -205,7 +205,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.248Z"
+        "timestamp": "2026-01-11T14:47:41.898Z"
       },
       {
         "name": "Refund Endpoint",
@@ -214,7 +214,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.290Z"
+        "timestamp": "2026-01-11T14:47:42.088Z"
       },
       {
         "name": "Payment Methods API",
@@ -223,7 +223,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.342Z"
+        "timestamp": "2026-01-11T14:47:42.283Z"
       }
     ],
     "calendarIntegrations": [
@@ -234,7 +234,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.388Z"
+        "timestamp": "2026-01-11T14:47:42.478Z"
       },
       {
         "name": "Google Calendar Status",
@@ -243,7 +243,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.437Z"
+        "timestamp": "2026-01-11T14:47:42.679Z"
       },
       {
         "name": "Google Calendar Events",
@@ -252,7 +252,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.476Z"
+        "timestamp": "2026-01-11T14:47:42.869Z"
       },
       {
         "name": "Outlook Calendar OAuth",
@@ -261,7 +261,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.532Z"
+        "timestamp": "2026-01-11T14:47:43.057Z"
       },
       {
         "name": "Outlook Calendar Status",
@@ -270,7 +270,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.573Z"
+        "timestamp": "2026-01-11T14:47:43.246Z"
       },
       {
         "name": "Calendar Sync Status",
@@ -279,7 +279,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.625Z"
+        "timestamp": "2026-01-11T14:47:43.436Z"
       }
     ],
     "emailNotifications": [
@@ -290,7 +290,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.670Z"
+        "timestamp": "2026-01-11T14:47:43.628Z"
       },
       {
         "name": "Email Templates API",
@@ -299,7 +299,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.718Z"
+        "timestamp": "2026-01-11T14:47:43.830Z"
       },
       {
         "name": "Email Logs API",
@@ -308,7 +308,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-06T23:58:23.765Z"
+        "timestamp": "2026-01-11T14:47:44.028Z"
       }
     ],
     "security": {
@@ -317,47 +317,47 @@
         "contentSecurityPolicy": false,
         "xFrameOptions": false,
         "xContentTypeOptions": false,
-        "strictTransportSecurity": true,
+        "strictTransportSecurity": false,
         "xssProtection": false,
         "referrerPolicy": false
       },
-      "passed": 2,
-      "failed": 5
+      "passed": 1,
+      "failed": 6
     },
     "performance": {
       "endpoints": {
         "https://appointmentbooking.co.za": {
-          "avg": 46,
-          "min": 39,
-          "max": 51,
-          "p95": 51
+          "avg": 191,
+          "min": 186,
+          "max": 200,
+          "p95": 200
         },
         "https://appointmentbooking.co.za/api/health": {
-          "avg": 39,
-          "min": 36,
-          "max": 43,
-          "p95": 43
+          "avg": 212,
+          "min": 203,
+          "max": 222,
+          "p95": 222
         },
         "https://appointmentbooking.co.za/api/services": {
-          "avg": 43,
-          "min": 38,
-          "max": 55,
-          "p95": 55
+          "avg": 196,
+          "min": 185,
+          "max": 206,
+          "p95": 206
         }
       },
       "concurrency": {
         "totalRequests": 10,
-        "successful": 0,
-        "totalTime": 300,
-        "avgTimePerRequest": 30,
-        "allSuccessful": false
+        "successful": 10,
+        "totalTime": 1815,
+        "avgTimePerRequest": 182,
+        "allSuccessful": true
       }
     }
   },
   "summary": {
     "total": 44,
-    "passed": 5,
-    "failed": 39,
+    "passed": 7,
+    "failed": 37,
     "warnings": 0
   }
 }
