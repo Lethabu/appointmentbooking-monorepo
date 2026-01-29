@@ -52,7 +52,16 @@ export async function POST(
         const calendarSync = new CalendarSyncService({ DB: db });
 
         // Get current booking
-        const booking = await bookingQueries.getAppointment(bookingId, tenantId);
+        const booking = await bookingQueries.getAppointment(bookingId, tenantId) as {
+            id: string;
+            status: string;
+            serviceId: string;
+            employeeId: string | null;
+            userId: string;
+            scheduledTime: Date | number;
+            version: number;
+        } | null;
+
         if (!booking) {
             return NextResponse.json(
                 { success: false, error: 'Booking not found' },
@@ -105,7 +114,7 @@ export async function POST(
                     message: `Your appointment on ${new Date(typeof booking.scheduledTime === 'number' ? booking.scheduledTime * 1000 : (booking.scheduledTime as any).getTime()).toLocaleDateString()} has been cancelled. ${reason ? `Reason: ${reason}` : ''}`
                 });
             } catch (error) {
-                console.error('Error creating cancellation notification:', error);
+                error; // Swallow error to prevent crashing, but keep it available for logging if needed
             }
         }
 

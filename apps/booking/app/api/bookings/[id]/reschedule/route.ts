@@ -15,6 +15,21 @@ import { z } from 'zod';
  * Handles appointment rescheduling with conflict detection and calendar sync
  */
 
+// Interface for the booking object return from database
+interface AppointmentRecord {
+    id: string;
+    status: string;
+    serviceId: string;
+    employeeId: string | null;
+    userId: string;
+    scheduledTime: Date | number;
+    version: number;
+    notes?: string | null;
+    tenantId: string;
+    createdAt?: Date | number;
+    updatedAt?: Date | number;
+}
+
 // Rescheduling request validation schema
 const rescheduleRequestSchema = z.object({
     newDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be in YYYY-MM-DD format'),
@@ -95,7 +110,7 @@ export async function POST(
         const availabilityQueries = new EnhancedAvailabilityQueries(db);
 
         // Get current booking
-        const booking = await bookingQueries.getAppointment(bookingId, tenantId);
+        const booking = await bookingQueries.getAppointment(bookingId, tenantId) as AppointmentRecord | null;
         if (!booking) {
             return NextResponse.json(
                 { success: false, error: 'Booking not found' },
@@ -339,7 +354,7 @@ export async function GET(
         const availabilityQueries = new EnhancedAvailabilityQueries(db);
 
         // Get current booking
-        const booking = await bookingQueries.getAppointment(bookingId, tenantId);
+        const booking = await bookingQueries.getAppointment(bookingId, tenantId) as AppointmentRecord | null;
         if (!booking) {
             return NextResponse.json(
                 { success: false, error: 'Booking not found' },

@@ -6,6 +6,7 @@ settings:
 
 overrides:
   drizzle-orm: 0.45.1
+  '@cloudflare/workers-types': 4.20251121.0
 
 importers:
 
@@ -26,7 +27,7 @@ importers:
     devDependencies:
       '@cloudflare/next-on-pages':
         specifier: ^1.13.16
-        version: 1.13.16(next@14.2.35(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(vercel@48.10.10(@swc/core@1.15.4(@swc/helpers@0.5.17))(rollup@4.53.3)(typescript@5.9.3))(wrangler@4.59.0)
+        version: 1.13.16(@cloudflare/workers-types@4.20251121.0)(next@14.2.35(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(vercel@48.10.10(@swc/core@1.15.4(@swc/helpers@0.5.17))(rollup@4.53.3)(typescript@5.9.3))(wrangler@4.59.0(@cloudflare/workers-types@4.20251121.0))
       '@types/node':
         specifier: ^20.10.0
         version: 20.19.24
@@ -56,7 +57,7 @@ importers:
         version: 9.0.0(eslint@8.57.1)
       eslint-plugin-import:
         specifier: ^2.29.0
-        version: 2.32.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)
+        version: 2.32.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@8.57.1)
       eslint-plugin-jsx-a11y:
         specifier: ^6.8.0
         version: 6.10.2(eslint@8.57.1)
@@ -83,7 +84,7 @@ importers:
         version: 2.6.0
       wrangler:
         specifier: ^4.59.0
-        version: 4.59.0
+        version: 4.59.0(@cloudflare/workers-types@4.20251121.0)
 
   apps/booking:
     dependencies:
@@ -284,7 +285,7 @@ importers:
         version: 4.1.0
       drizzle-orm:
         specifier: 0.45.1
-        version: 0.45.1(@cloudflare/workers-types@4.20251111.0)(@opentelemetry/api@1.9.0)(@prisma/client@6.19.0(typescript@5.9.3))(@types/pg@8.15.6)
+        version: 0.45.1(@cloudflare/workers-types@4.20251121.0)(@opentelemetry/api@1.9.0)(@prisma/client@6.19.0(typescript@5.9.3))(@types/pg@8.15.6)
       embla-carousel-react:
         specifier: ^8.6.0
         version: 8.6.0(react@18.3.1)
@@ -405,13 +406,13 @@ importers:
     devDependencies:
       '@cloudflare/next-on-pages':
         specifier: ^1.13.16
-        version: 1.13.16(next@14.2.35(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(vercel@48.10.10(@swc/core@1.15.4(@swc/helpers@0.5.17))(rollup@4.53.3)(typescript@5.9.3))(wrangler@4.59.0)
+        version: 1.13.16(@cloudflare/workers-types@4.20251121.0)(next@14.2.35(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(vercel@48.10.10(@swc/core@1.15.4(@swc/helpers@0.5.17))(rollup@4.53.3)(typescript@5.9.3))(wrangler@4.59.0(@cloudflare/workers-types@4.20251121.0))
       '@next/bundle-analyzer':
         specifier: ^16.0.1
         version: 16.0.1
       '@opennextjs/cloudflare':
         specifier: ^1.14.8
-        version: 1.14.8(next@14.2.35(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(wrangler@4.59.0)
+        version: 1.14.8(next@14.2.35(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(wrangler@4.59.0(@cloudflare/workers-types@4.20251121.0))
       '@playwright/test':
         specifier: ^1.40.0
         version: 1.56.1
@@ -523,7 +524,7 @@ importers:
     devDependencies:
       '@cloudflare/next-on-pages':
         specifier: ^1.13.16
-        version: 1.13.16(next@14.2.35(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(wrangler@4.59.0)
+        version: 1.13.16(@cloudflare/workers-types@4.20251121.0)(next@14.2.35(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(wrangler@4.59.0(@cloudflare/workers-types@4.20251121.0))
       '@types/node':
         specifier: ^20
         version: 20.19.24
@@ -559,7 +560,7 @@ importers:
     dependencies:
       next:
         specifier: ^14.2.35
-        version: 14.2.35(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 14.2.35(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -749,7 +750,7 @@ importers:
         version: link:../db
       drizzle-orm:
         specifier: 0.45.1
-        version: 0.45.1(@cloudflare/workers-types@4.20251111.0)(@opentelemetry/api@1.9.0)(@prisma/client@6.19.0(typescript@5.9.3))(@types/pg@8.15.6)
+        version: 0.45.1(@cloudflare/workers-types@4.20251121.0)(@opentelemetry/api@1.9.0)(@prisma/client@6.19.0(typescript@5.9.3))(@types/pg@8.15.6)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -761,14 +762,14 @@ importers:
         version: 3.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ^4.20231025.0
-        version: 4.20251111.0
+        specifier: 4.20251121.0
+        version: 4.20251121.0
       typescript:
         specifier: ^5.0.0
         version: 5.9.3
       wrangler:
         specifier: ^3.0.0
-        version: 3.114.15(@cloudflare/workers-types@4.20251111.0)
+        version: 3.114.15(@cloudflare/workers-types@4.20251121.0)
 
 packages:
 
@@ -1433,7 +1434,7 @@ packages:
     deprecated: 'Please use the OpenNext adapter instead: https://opennext.js.org/cloudflare'
     hasBin: true
     peerDependencies:
-      '@cloudflare/workers-types': ^4.20240208.0
+      '@cloudflare/workers-types': 4.20251121.0
       next: '>=14.3.0 && <=15.5.2'
       vercel: '>=30.0.0 && <=47.0.4'
       wrangler: ^3.28.2 || ^4.0.0
@@ -1518,9 +1519,6 @@ packages:
     engines: {node: '>=16'}
     cpu: [x64]
     os: [win32]
-
-  '@cloudflare/workers-types@4.20251111.0':
-    resolution: {integrity: sha512-C8BgQRJlnxcUGycNr8pSKs7WBDQwc43p3pnuGv+Lc0KR2y6raR/9Rs7/lPqQ086ECYSiNqU6IPcbeszKbg4LXA==}
 
   '@cloudflare/workers-types@4.20251121.0':
     resolution: {integrity: sha512-jzFg7hEGKzpEalxTCanN6lM8IdkvO/brsERp/+OyMms4Zi0nhDPUAg9dUcKU8wDuDUnzbjkplY6YRwle7Cq6gA==}
@@ -8072,7 +8070,7 @@ packages:
     resolution: {integrity: sha512-Te0FOdKIistGNPMq2jscdqngBRfBpC8uMFVwqjf6gtTVJHIQ/dosgV/CLBU2N4ZJBsXL5savCba9b0YJskKdcA==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
-      '@cloudflare/workers-types': '>=4'
+      '@cloudflare/workers-types': 4.20251121.0
       '@electric-sql/pglite': '>=0.2.0'
       '@libsql/client': '>=0.10.0'
       '@libsql/client-wasm': '>=0.10.0'
@@ -12668,7 +12666,7 @@ packages:
     engines: {node: '>=16.17.0'}
     hasBin: true
     peerDependencies:
-      '@cloudflare/workers-types': ^4.20250408.0
+      '@cloudflare/workers-types': 4.20251121.0
     peerDependenciesMeta:
       '@cloudflare/workers-types':
         optional: true
@@ -12678,7 +12676,7 @@ packages:
     engines: {node: '>=20.0.0'}
     hasBin: true
     peerDependencies:
-      '@cloudflare/workers-types': ^4.20260111.0
+      '@cloudflare/workers-types': 4.20251121.0
     peerDependenciesMeta:
       '@cloudflare/workers-types':
         optional: true
@@ -14272,7 +14270,7 @@ snapshots:
     dependencies:
       mime: 3.0.0
 
-  '@cloudflare/next-on-pages@1.13.16(next@14.2.35(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(vercel@48.10.10(@swc/core@1.15.4(@swc/helpers@0.5.17))(rollup@4.53.3)(typescript@5.9.3))(wrangler@4.59.0)':
+  '@cloudflare/next-on-pages@1.13.16(@cloudflare/workers-types@4.20251121.0)(next@14.2.35(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(vercel@48.10.10(@swc/core@1.15.4(@swc/helpers@0.5.17))(rollup@4.53.3)(typescript@5.9.3))(wrangler@4.59.0(@cloudflare/workers-types@4.20251121.0))':
     dependencies:
       acorn: 8.15.0
       ast-types: 0.14.2
@@ -14288,12 +14286,14 @@ snapshots:
       pcre-to-regexp: 1.1.0
       semver: 7.7.3
       vercel: 48.10.10(@swc/core@1.15.4(@swc/helpers@0.5.17))(rollup@4.53.3)(typescript@5.9.3)
-      wrangler: 4.59.0
+      wrangler: 4.59.0(@cloudflare/workers-types@4.20251121.0)
+    optionalDependencies:
+      '@cloudflare/workers-types': 4.20251121.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  '@cloudflare/next-on-pages@1.13.16(next@14.2.35(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(wrangler@4.59.0)':
+  '@cloudflare/next-on-pages@1.13.16(@cloudflare/workers-types@4.20251121.0)(next@14.2.35(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(wrangler@4.59.0(@cloudflare/workers-types@4.20251121.0))':
     dependencies:
       acorn: 8.15.0
       ast-types: 0.14.2
@@ -14308,7 +14308,9 @@ snapshots:
       package-manager-manager: 0.2.0
       pcre-to-regexp: 1.1.0
       semver: 7.7.3
-      wrangler: 4.59.0
+      wrangler: 4.59.0(@cloudflare/workers-types@4.20251121.0)
+    optionalDependencies:
+      '@cloudflare/workers-types': 4.20251121.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -14354,8 +14356,6 @@ snapshots:
 
   '@cloudflare/workerd-windows-64@1.20260111.0':
     optional: true
-
-  '@cloudflare/workers-types@4.20251111.0': {}
 
   '@cloudflare/workers-types@4.20251121.0': {}
 
@@ -15681,7 +15681,7 @@ snapshots:
       - aws-crt
       - supports-color
 
-  '@opennextjs/cloudflare@1.14.8(next@14.2.35(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(wrangler@4.59.0)':
+  '@opennextjs/cloudflare@1.14.8(next@14.2.35(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(wrangler@4.59.0(@cloudflare/workers-types@4.20251121.0))':
     dependencies:
       '@ast-grep/napi': 0.40.0
       '@dotenvx/dotenvx': 1.31.0
@@ -15691,7 +15691,7 @@ snapshots:
       glob: 12.0.0
       next: 14.2.35(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       ts-tqdm: 0.8.6
-      wrangler: 4.59.0
+      wrangler: 4.59.0(@cloudflare/workers-types@4.20251121.0)
       yargs: 18.0.0
     transitivePeerDependencies:
       - aws-crt
@@ -21406,13 +21406,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251111.0)(@opentelemetry/api@1.9.0)(@prisma/client@6.19.0(typescript@5.9.3))(@types/pg@8.15.6):
-    optionalDependencies:
-      '@cloudflare/workers-types': 4.20251111.0
-      '@opentelemetry/api': 1.9.0
-      '@prisma/client': 6.19.0(typescript@5.9.3)
-      '@types/pg': 8.15.6
-
   drizzle-orm@0.45.1(@cloudflare/workers-types@4.20251121.0)(@opentelemetry/api@1.9.0)(@prisma/client@6.19.0(typescript@5.9.3))(@types/pg@8.15.6):
     optionalDependencies:
       '@cloudflare/workers-types': 4.20251121.0
@@ -22076,7 +22069,7 @@ snapshots:
       '@typescript-eslint/parser': 6.21.0(eslint@8.57.1)(typescript@5.9.3)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@8.57.1)
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
       eslint-plugin-react: 7.37.5(eslint@8.57.1)
@@ -22125,7 +22118,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0)(eslint@8.57.1):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.3
@@ -22140,39 +22133,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0)(eslint@8.57.1):
-    dependencies:
-      '@nolyfill/is-core-module': 1.0.39
-      debug: 4.4.3
-      eslint: 8.57.1
-      get-tsconfig: 4.13.0
-      is-bun-module: 2.0.0
-      stable-hash: 0.0.5
-      tinyglobby: 0.2.15
-      unrs-resolver: 1.11.1
-    optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)
-    transitivePeerDependencies:
-      - supports-color
-
-  eslint-module-utils@2.12.1(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-module-utils@2.12.1(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0)(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 6.21.0(eslint@8.57.1)(typescript@5.9.3)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1)
-    transitivePeerDependencies:
-      - supports-color
-
-  eslint-module-utils@2.12.1(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint@8.57.1):
-    dependencies:
-      debug: 3.2.7
-    optionalDependencies:
-      '@typescript-eslint/parser': 6.21.0(eslint@8.57.1)(typescript@5.9.3)
-      eslint: 8.57.1
-      eslint-import-resolver-node: 0.3.9
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -22187,36 +22155,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.1(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
-      hasown: 2.0.2
-      is-core-module: 2.16.1
-      is-glob: 4.0.3
-      minimatch: 3.1.2
-      object.fromentries: 2.0.8
-      object.groupby: 1.0.3
-      object.values: 1.2.1
-      semver: 6.3.1
-      string.prototype.trimend: 1.0.9
-      tsconfig-paths: 3.15.0
-    optionalDependencies:
-      '@typescript-eslint/parser': 6.21.0(eslint@8.57.1)(typescript@5.9.3)
-    transitivePeerDependencies:
-      - eslint-import-resolver-typescript
-      - eslint-import-resolver-webpack
-      - supports-color
-
-  eslint-plugin-import@2.32.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1):
-    dependencies:
-      '@rtsao/scc': 1.1.0
-      array-includes: 3.1.9
-      array.prototype.findlastindex: 1.2.6
-      array.prototype.flat: 1.3.3
-      array.prototype.flatmap: 1.3.3
-      debug: 3.2.7
-      doctrine: 2.1.0
-      eslint: 8.57.1
-      eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.1(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint@8.57.1)
+      eslint-module-utils: 2.12.1(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0)(eslint@8.57.1))(eslint@8.57.1)
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -24392,7 +24331,7 @@ snapshots:
       postcss: 8.4.31
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      styled-jsx: 5.1.1(react@18.3.1)
+      styled-jsx: 5.1.1(@babel/core@7.28.5)(react@18.3.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 14.1.0
       '@next/swc-darwin-x64': 14.1.0
@@ -24435,33 +24374,6 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  next@14.2.35(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      '@next/env': 14.2.35
-      '@swc/helpers': 0.5.5
-      busboy: 1.6.0
-      caniuse-lite: 1.0.30001754
-      graceful-fs: 4.2.11
-      postcss: 8.4.31
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      styled-jsx: 5.1.1(react@18.3.1)
-    optionalDependencies:
-      '@next/swc-darwin-arm64': 14.2.33
-      '@next/swc-darwin-x64': 14.2.33
-      '@next/swc-linux-arm64-gnu': 14.2.33
-      '@next/swc-linux-arm64-musl': 14.2.33
-      '@next/swc-linux-x64-gnu': 14.2.33
-      '@next/swc-linux-x64-musl': 14.2.33
-      '@next/swc-win32-arm64-msvc': 14.2.33
-      '@next/swc-win32-ia32-msvc': 14.2.33
-      '@next/swc-win32-x64-msvc': 14.2.33
-      '@opentelemetry/api': 1.9.0
-      '@playwright/test': 1.56.1
-    transitivePeerDependencies:
-      - '@babel/core'
-      - babel-plugin-macros
-
   next@14.2.35(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@19.2.3(react@18.3.1))(react@18.3.1):
     dependencies:
       '@next/env': 14.2.35
@@ -24472,7 +24384,7 @@ snapshots:
       postcss: 8.4.31
       react: 18.3.1
       react-dom: 19.2.3(react@18.3.1)
-      styled-jsx: 5.1.1(react@18.3.1)
+      styled-jsx: 5.1.1(@babel/core@7.28.5)(react@18.3.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 14.2.33
       '@next/swc-darwin-x64': 14.2.33
@@ -26241,11 +26153,6 @@ snapshots:
     optionalDependencies:
       '@babel/core': 7.28.5
 
-  styled-jsx@5.1.1(react@18.3.1):
-    dependencies:
-      client-only: 0.0.1
-      react: 18.3.1
-
   styled-jsx@5.1.1(react@19.2.3):
     dependencies:
       client-only: 0.0.1
@@ -27260,7 +27167,7 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20260111.0
       '@cloudflare/workerd-windows-64': 1.20260111.0
 
-  wrangler@3.114.15(@cloudflare/workers-types@4.20251111.0):
+  wrangler@3.114.15(@cloudflare/workers-types@4.20251121.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.3.4
       '@cloudflare/unenv-preset': 2.0.2(unenv@2.0.0-rc.14)(workerd@1.20250718.0)
@@ -27273,14 +27180,14 @@ snapshots:
       unenv: 2.0.0-rc.14
       workerd: 1.20250718.0
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20251111.0
+      '@cloudflare/workers-types': 4.20251121.0
       fsevents: 2.3.3
       sharp: 0.33.5
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  wrangler@4.59.0:
+  wrangler@4.59.0(@cloudflare/workers-types@4.20251121.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.1
       '@cloudflare/unenv-preset': 2.9.0(unenv@2.0.0-rc.24)(workerd@1.20260111.0)
@@ -27291,6 +27198,7 @@ snapshots:
       unenv: 2.0.0-rc.24
       workerd: 1.20260111.0
     optionalDependencies:
+      '@cloudflare/workers-types': 4.20251121.0
       fsevents: 2.3.3
     transitivePeerDependencies:
       - bufferutil

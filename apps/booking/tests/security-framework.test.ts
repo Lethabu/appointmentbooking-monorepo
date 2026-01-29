@@ -3,24 +3,10 @@
  * Comprehensive testing of the enterprise-grade compliance and security framework
  */
 
-// Mock console.log to avoid noise in tests
-const originalConsoleLog = console.log;
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
-beforeEach(() => {
-    console.log = jest.fn();
-});
-
-afterEach(() => {
-    console.log = originalConsoleLog;
-});
-
-// Import Jest globals (these are available in Jest environment)
-const describe = global.describe;
-const it = global.it;
-const expect = global.expect;
-const beforeEach = global.beforeEach;
-const afterEach = global.afterEach;
-const jest = global.jest;
+// Fix for global jest usage
+const jest = vi;
 
 // Mock NextRequest for testing
 class MockNextRequest {
@@ -148,7 +134,7 @@ describe('Security Framework Integration Tests', () => {
 
         beforeEach(() => {
             // Clear any rate limiting data
-            process.env.NODE_ENV = 'test';
+            (process.env as any).NODE_ENV = 'test';
         });
 
         it('should allow valid requests through security middleware', async () => {
@@ -163,7 +149,7 @@ describe('Security Framework Integration Tests', () => {
             });
 
             // Mock environment variable
-            process.env.API_SECRET_KEY = 'valid-api-key';
+            (process.env as any).API_SECRET_KEY = 'valid-api-key';
 
             const result = await SecurityMiddleware.process(request);
             expect(result).toBeNull(); // Should allow request through
@@ -217,7 +203,7 @@ describe('Security Framework Integration Tests', () => {
             expect(results).toBeDefined();
             expect(results).toHaveLength(6); // 6 PCI requirements
 
-            const networkSecurity = results.find(r => r.requirementId === '1');
+            const networkSecurity = results.find((r: any) => r.requirementId === '1');
             expect(networkSecurity).toBeDefined();
             expect(networkSecurity!.score).toBeGreaterThanOrEqual(0);
             expect(networkSecurity!.score).toBeLessThanOrEqual(100);
@@ -338,7 +324,7 @@ describe('Security Framework Integration Tests', () => {
                 })
             );
 
-            process.env.API_SECRET_KEY = 'valid-api-key';
+            (process.env as any).API_SECRET_KEY = 'valid-api-key';
 
             const startTime = Date.now();
             const results = await Promise.all(

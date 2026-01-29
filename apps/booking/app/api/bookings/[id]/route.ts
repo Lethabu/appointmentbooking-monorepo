@@ -46,8 +46,16 @@ export async function GET(
         const db = env.DB || (global as any).DB;
         const bookingQueries = new BookingQueries(db);
 
-        // Get booking
-        const booking = await bookingQueries.getAppointment(bookingId, tenantId);
+        // Get booking with explicit typing
+        const booking = await bookingQueries.getAppointment(bookingId, tenantId) as {
+            id: string;
+            status: string;
+            serviceId: string;
+            employeeId: string | null;
+            userId: string;
+            scheduledTime: Date | number;
+            version: number;
+        } | null;
 
         if (!booking) {
             return NextResponse.json(

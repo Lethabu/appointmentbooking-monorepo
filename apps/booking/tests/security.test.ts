@@ -61,7 +61,7 @@ Overall Risk Level: ${this.calculateRiskLevel()}
 const createSecurityTestHandlers = () => [
     // Handler with various security vulnerabilities for testing
     http.post('/api/bookings', async ({ request }) => {
-        const body = await request.json();
+        const body = await request.json() as any;
 
         // Test for SQL injection vulnerabilities
         if (body.serviceId && body.serviceId.includes("'; DROP TABLE appointments; --")) {
@@ -215,7 +215,7 @@ const createSecurityTestHandlers = () => [
 
     // Handler with rate limiting bypass
     http.post('/api/auth/login', async ({ request }) => {
-        const body = await request.json();
+        const body = await request.json() as any;
 
         // No rate limiting implementation
         return HttpResponse.json({
@@ -230,7 +230,7 @@ const createSecurityTestHandlers = () => [
 
     // Handler with CSRF vulnerability
     http.post('/api/settings/update', async ({ request }) => {
-        const body = await request.json();
+        const body = await request.json() as any;
 
         // No CSRF token validation
         return HttpResponse.json({
@@ -278,7 +278,7 @@ describe('Security Testing Suite', () => {
                     })
                 });
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 if (response.status === 200 && data.success) {
                     scanner.addVulnerability({
@@ -324,7 +324,7 @@ describe('Security Testing Suite', () => {
                     })
                 });
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 // Check if the response contains unsanitized input
                 const responseText = JSON.stringify(data);
@@ -375,7 +375,7 @@ describe('Security Testing Suite', () => {
                     })
                 });
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 if (response.status === 201 && data.success) {
                     scanner.addVulnerability({
@@ -415,7 +415,7 @@ describe('Security Testing Suite', () => {
                     })
                 });
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 if (response.status === 200 && data.success) {
                     scanner.addVulnerability({
@@ -509,7 +509,7 @@ describe('Security Testing Suite', () => {
 
             for (const test of idorTests) {
                 const response = await fetch(`/api/bookings?customerId=${encodeURIComponent(test.customerId)}`);
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 if (response.status === 200 && data.success) {
                     if (test.customerId === 'admin' && data.data.items.some((item: any) => item.notes?.includes('admin'))) {
@@ -549,7 +549,7 @@ describe('Security Testing Suite', () => {
                 body: JSON.stringify({ email: 'test@example.com', password: 'password' })
             });
 
-            const loginData = await loginResponse.json();
+            const loginData = await loginResponse.json() as any;
 
             if (loginResponse.status === 200 && loginData.success) {
                 const token = loginData.data.token;
@@ -575,7 +575,7 @@ describe('Security Testing Suite', () => {
     describe('Information Disclosure Testing', () => {
         it('should not expose sensitive information in responses', async () => {
             const response = await fetch('/api/debug/config');
-            const data = await response.json();
+            const data = await response.json() as any;
 
             const sensitivePatterns = [
                 { pattern: /password/i, description: 'Password exposure' },
@@ -622,7 +622,7 @@ describe('Security Testing Suite', () => {
                     body: 'invalid json'
                 });
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 const errorPatterns = [
                     /stack trace/i,
@@ -658,7 +658,7 @@ describe('Security Testing Suite', () => {
 
             for (const payload of traversalPayloads) {
                 const response = await fetch(`/api/files/${payload}`);
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 if (response.status === 200 && data.success && data.data.content.includes('Confidential')) {
                     scanner.addVulnerability({
@@ -709,7 +709,7 @@ describe('Security Testing Suite', () => {
                     body: JSON.stringify(test.data)
                 });
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 if (response.status === 201 && data.success) {
                     scanner.addVulnerability({
@@ -907,7 +907,7 @@ describe('Security Testing Suite', () => {
                 body: JSON.stringify({ theme: 'dark', notifications: false })
             });
 
-            const data = await csrfResponse.json();
+            const data = await csrfResponse.json() as any;
 
             if (csrfResponse.status === 200 && data.success) {
                 scanner.addVulnerability({

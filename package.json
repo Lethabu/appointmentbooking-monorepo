@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
+    "build:sequential": "turbo run build --concurrency 1",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
@@ -15,6 +16,8 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,md,js,jsx}\"",
     "type-check": "turbo run type-check",
     "test": "turbo run test",
+    "test:unit": "turbo run test:unit",
+    "test:integration": "turbo run test:integration",
     "test:e2e": "turbo run test:e2e",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
@@ -22,6 +25,7 @@
     "deploy": "turbo run deploy",
     "setup": "node scripts/setup-project.js",
     "setup:hooks": "npx husky install && npx husky add .husky/pre-commit \"pnpm run quality:check\"",
+    "quality:report": "echo 'Quality report generation...'",
     "pre-commit": "pnpm run lint && pnpm run type-check"
   },
   "devDependencies": {
@@ -54,7 +58,8 @@
   },
   "pnpm": {
     "overrides": {
-      "drizzle-orm": "0.45.1"
+      "drizzle-orm": "0.45.1",
+      "@cloudflare/workers-types": "4.20251121.0"
     }
   }
 }

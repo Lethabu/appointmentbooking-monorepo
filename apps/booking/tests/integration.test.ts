@@ -21,7 +21,7 @@ process.env.MICROSOFT_CLIENT_SECRET = 'test-microsoft-client-secret';
 const handlers = [
     // Mock all API endpoints with realistic responses
     http.post('/api/bookings', async ({ request }) => {
-        const body = await request.json();
+        const body = await request.json() as any;
 
         if (!body.serviceId) {
             return HttpResponse.json(
@@ -166,7 +166,7 @@ const handlers = [
     }),
 
     http.post('/api/calendar/webhooks/google', async ({ request }) => {
-        const body = await request.json();
+        const body = await request.json() as any;
 
         return HttpResponse.json({
             success: true,
@@ -245,7 +245,7 @@ describe('Integration Testing Suite', () => {
         it('should complete full booking flow from availability check to confirmation', async () => {
             // Step 1: Check availability
             const availabilityResponse = await fetch('/api/availability?date=2026-01-15&serviceId=service_1');
-            const availabilityData = await availabilityResponse.json();
+            const availabilityData = await availabilityResponse.json() as any;
 
             expect(availabilityResponse.status).toBe(200);
             expect(availabilityData.success).toBe(true);
@@ -262,7 +262,7 @@ describe('Integration Testing Suite', () => {
                 body: JSON.stringify(generateTestBooking())
             });
 
-            const bookingData = await bookingResponse.json();
+            const bookingData = await bookingResponse.json() as any;
 
             expect(bookingResponse.status).toBe(201);
             expect(bookingData.success).toBe(true);
@@ -272,7 +272,7 @@ describe('Integration Testing Suite', () => {
 
             // Step 3: Verify booking was created
             const bookingsResponse = await fetch('/api/bookings');
-            const bookingsData = await bookingsResponse.json();
+            const bookingsData = await bookingsResponse.json() as any;
 
             expect(bookingsResponse.status).toBe(200);
             expect(bookingsData.success).toBe(true);
@@ -292,7 +292,7 @@ describe('Integration Testing Suite', () => {
                 body: JSON.stringify(generateTestBooking())
             });
 
-            const bookingData = await bookingResponse.json();
+            const bookingData = await bookingResponse.json() as any;
             const appointmentId = bookingData.data.appointment.id;
 
             // Step 2: Cancel booking
@@ -300,7 +300,7 @@ describe('Integration Testing Suite', () => {
                 method: 'DELETE'
             });
 
-            const cancelData = await cancelResponse.json();
+            const cancelData: any = await cancelResponse.json() as any;
 
             expect(cancelResponse.status).toBe(200);
             expect(cancelData.success).toBe(true);
@@ -309,7 +309,7 @@ describe('Integration Testing Suite', () => {
 
             // Step 3: Verify cancellation in booking list
             const bookingsResponse = await fetch('/api/bookings');
-            const bookingsData = await bookingsResponse.json();
+            const bookingsData = await bookingsResponse.json() as any;
 
             expect(bookingsData.data.items).not.toContainEqual(
                 expect.objectContaining({
@@ -333,12 +333,12 @@ describe('Integration Testing Suite', () => {
                 body: JSON.stringify(initialBooking)
             });
 
-            const bookingData = await bookingResponse.json();
+            const bookingData = await bookingResponse.json() as any;
             const appointmentId = bookingData.data.appointment.id;
 
             // Step 2: Check availability for new time
             const availabilityResponse = await fetch('/api/availability?date=2026-01-15&serviceId=service_1');
-            const availabilityData = await availabilityResponse.json();
+            const availabilityData = await availabilityResponse.json() as any;
 
             expect(availabilityResponse.status).toBe(200);
             expect(availabilityData.success).toBe(true);
@@ -356,7 +356,7 @@ describe('Integration Testing Suite', () => {
                 body: JSON.stringify(newBooking)
             });
 
-            const rescheduleData = await rescheduleResponse.json();
+            const rescheduleData: any = await rescheduleResponse.json() as any;
 
             expect(rescheduleResponse.status).toBe(201);
             expect(rescheduleData.success).toBe(true);
@@ -373,7 +373,7 @@ describe('Integration Testing Suite', () => {
 
             // Step 2: Handle OAuth callback
             const callbackResponse = await fetch('/api/google-calendar/callback?code=test_auth_code');
-            const callbackData = await callbackResponse.json();
+            const callbackData: any = await callbackResponse.json() as any;
 
             expect(callbackResponse.status).toBe(200);
             expect(callbackData.success).toBe(true);
@@ -382,7 +382,7 @@ describe('Integration Testing Suite', () => {
 
             // Step 3: Check calendar status
             const statusResponse = await fetch('/api/google-calendar/status');
-            const statusData = await statusResponse.json();
+            const statusData: any = await statusResponse.json() as any;
 
             expect(statusResponse.status).toBe(200);
             expect(statusData.success).toBe(true);
@@ -408,7 +408,7 @@ describe('Integration Testing Suite', () => {
                 })
             });
 
-            const webhookData = await webhookResponse.json();
+            const webhookData: any = await webhookResponse.json() as any;
 
             expect(webhookResponse.status).toBe(200);
             expect(webhookData.success).toBe(true);
@@ -417,7 +417,7 @@ describe('Integration Testing Suite', () => {
 
             // Step 2: Check sync status
             const syncStatusResponse = await fetch('/api/calendar/sync-status');
-            const syncStatusData = await syncStatusResponse.json();
+            const syncStatusData: any = await syncStatusResponse.json() as any;
 
             expect(syncStatusResponse.status).toBe(200);
             expect(syncStatusData.success).toBe(true);
@@ -436,7 +436,7 @@ describe('Integration Testing Suite', () => {
                 body: JSON.stringify(generateTestBooking())
             });
 
-            const bookingData = await bookingResponse.json();
+            const bookingData = await bookingResponse.json() as any;
 
             expect(bookingResponse.status).toBe(201);
             expect(bookingData.success).toBe(true);
@@ -489,11 +489,11 @@ describe('Integration Testing Suite', () => {
             // Verify each tenant only sees their own data
             const tenant1Bookings = await (await fetch('/api/bookings', {
                 headers: { 'tenantId': 'tenant1' }
-            })).json();
+            })).json() as any;
 
             const tenant2Bookings = await (await fetch('/api/bookings', {
                 headers: { 'tenantId': 'tenant2' }
-            })).json();
+            })).json() as any;
 
             expect(tenant1Bookings.data.items.length).toBe(1);
             expect(tenant2Bookings.data.items.length).toBe(1);
@@ -537,11 +537,11 @@ describe('Integration Testing Suite', () => {
 
             const tenant1Status = await (await fetch('/api/google-calendar/status', {
                 headers: { 'tenantId': 'tenant1' }
-            })).json();
+            })).json() as any;
 
             const tenant2Status = await (await fetch('/api/google-calendar/status', {
                 headers: { 'tenantId': 'tenant2' }
-            })).json();
+            })).json() as any;
 
             expect(tenant1Status.data.connected).toBe(true);
             expect(tenant2Status.data.connected).toBe(false);
@@ -581,7 +581,7 @@ describe('Integration Testing Suite', () => {
                 body: JSON.stringify(generateTestBooking())
             });
 
-            const data = await response.json();
+            const data = await response.json() as any;
 
             expect(response.status).toBe(201);
             expect(data.success).toBe(true);
@@ -684,12 +684,12 @@ describe('Integration Testing Suite', () => {
                 body: JSON.stringify(generateTestBooking())
             });
 
-            const bookingData = await bookingResponse.json();
+            const bookingData = await bookingResponse.json() as any;
             const appointmentId = bookingData.data.appointment.id;
 
             // Verify booking exists
             let bookingsResponse = await fetch('/api/bookings');
-            let bookingsData = await bookingsResponse.json();
+            let bookingsData = await bookingsResponse.json() as any;
             expect(bookingsData.data.items).toContainEqual(
                 expect.objectContaining({ id: appointmentId })
             );
@@ -701,7 +701,7 @@ describe('Integration Testing Suite', () => {
 
             // Verify cancellation
             bookingsResponse = await fetch('/api/bookings');
-            bookingsData = await bookingsResponse.json();
+            bookingsData = await bookingsResponse.json() as any;
             expect(bookingsData.data.items).not.toContainEqual(
                 expect.objectContaining({
                     id: appointmentId,
@@ -756,7 +756,7 @@ describe('Integration Testing Suite', () => {
 
             // No double bookings should exist
             const finalBookingsResponse = await fetch('/api/bookings');
-            const finalBookingsData = await finalBookingsResponse.json();
+            const finalBookingsData = await finalBookingsResponse.json() as any;
 
             const tenAmBookings = finalBookingsData.data.items.filter(
                 (booking: any) => booking.time === '10:00'

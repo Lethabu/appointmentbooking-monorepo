@@ -559,11 +559,11 @@ export class TestEnvironment {
         console.log('Initializing test environment...');
 
         // Set test environment variables
-        process.env.NODE_ENV = 'test';
-        process.env.LOG_LEVEL = 'error'; // Reduce test noise
-        process.env.DATABASE_URL = testConfig.database.url;
-        process.env.REDIS_URL = testConfig.redis.url;
-        process.env.JWT_SECRET = testConfig.security.jwtSecret;
+        (process.env as any).NODE_ENV = 'test';
+        (process.env as any).LOG_LEVEL = 'error'; // Reduce test noise
+        (process.env as any).DATABASE_URL = testConfig.database.url;
+        (process.env as any).REDIS_URL = testConfig.redis.url;
+        (process.env as any).JWT_SECRET = testConfig.security.jwtSecret;
 
         // Setup test database
         await DatabaseTestHelper.setupTestDatabase();
@@ -603,9 +603,7 @@ export class MockServices {
 
     static setupEmailMocks(): void {
         // Mock email service
-        const originalSendEmail = require('../utils/notifications/email-service').EmailService.prototype.sendEmail;
-
-        jest.fn().mockImplementation(async function () {
+        require('../utils/notifications/email-service').EmailService.prototype.sendEmail = jest.fn().mockImplementation(async function (this: any) {
             console.log('Mock email sent:', this.to);
             return true;
         });
@@ -673,17 +671,4 @@ export const customMatchers = {
                 `Expected ${received} to be within ${tolerance} of ${expected}`
         };
     }
-};
-
-// Export all helpers
-export {
-    DatabaseTestHelper,
-    ApiTestHelper,
-    AuthTestHelper,
-    CalendarTestHelper,
-    PerformanceTestHelper,
-    ErrorTestHelper,
-    TestEnvironment,
-    MockServices,
-    customMatchers
 };

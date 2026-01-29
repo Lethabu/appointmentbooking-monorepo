@@ -7,8 +7,8 @@ on:
     branches: [ main, develop ]
 
 env:
-  NODE_VERSION: '18'
-  PNPM_VERSION: '8'
+  NODE_VERSION: '20'
+  PNPM_VERSION: '10.14.0'
 
 jobs:
   quality-gates:
@@ -21,18 +21,21 @@ jobs:
         with:
           fetch-depth: 0  # Full history for better analysis
 
+      - name: ⚙️ Configure Git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: 📦 Setup pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}
 
       - name: 💾 Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.pnpm-store
@@ -73,7 +76,7 @@ jobs:
         run: pnpm run quality:report
 
       - name: 📈 Upload Quality Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: quality-report
@@ -113,7 +116,7 @@ jobs:
         continue-on-error: false
 
       - name: 📦 Upload Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: build-artifacts
@@ -213,7 +216,7 @@ jobs:
     
     steps:
       - name: 📊 Download Quality Reports
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: quality-report
           path: reports/

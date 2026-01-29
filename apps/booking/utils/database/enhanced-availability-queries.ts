@@ -119,8 +119,8 @@ export class EnhancedAvailabilityQueries {
 
             // Generate potential time slots
             const potentialSlots = this.generateTimeSlots(
-                workSchedule.startTime,
-                workSchedule.endTime,
+                workSchedule.startTime as string,
+                workSchedule.endTime as string,
                 serviceDuration,
                 bufferTime
             );

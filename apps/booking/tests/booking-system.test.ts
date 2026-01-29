@@ -1,39 +1,22 @@
-/**
- * Comprehensive Test Suite for Appointment Booking System
- * Tests all core functionality including scheduling, validation, and notifications
- */
-
-// Mock console.log to avoid noise in tests
-const originalConsoleLog = console.log;
-
-beforeEach(() => {
-    console.log = jest.fn();
-});
-
-afterEach(() => {
-    console.log = originalConsoleLog;
-});
-
-// Import Jest globals (these are available in Jest environment)
-const describe = global.describe;
-const it = global.it;
-const expect = global.expect;
-const beforeEach = global.beforeEach;
-const afterEach = global.afterEach;
-
-// Mock console.log to avoid noise in tests
-const originalConsoleLog = console.log;
-beforeEach(() => {
-    console.log = jest.fn();
-});
-
-afterEach(() => {
-    console.log = originalConsoleLog;
-});
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { SchedulingEngine } from '../utils/scheduling';
 import { TimezoneManager } from '../utils/timezone';
 import { EmailService } from '../utils/notifications/email-service';
 import { createBookingRequestSchema, validateBookingData } from '../utils/validation';
+
+// Fix for global jest usage
+const jest = vi;
+
+// Mock console.log to avoid noise in tests
+const originalConsoleLog = console.log;
+
+beforeEach(() => {
+    console.log = vi.fn();
+});
+
+afterEach(() => {
+    console.log = originalConsoleLog;
+});
 
 // Mock data for testing
 const mockTenantConfig = {

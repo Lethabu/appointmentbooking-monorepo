@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
             conditions = and(conditions, eq(availabilityOverrides.employeeId, employeeId)) as any;
         }
 
-        const results = await db.select().from(availabilityOverrides).where(conditions);
+        const results = await db.select().from(availabilityOverrides as any).where(conditions);
 
         return NextResponse.json({ success: true, overrides: results });
     } catch (error) {
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
         const logger = new AuditLogger((process.env as any).DB);
 
         const id = uuidv4();
-        await db.insert(availabilityOverrides).values({
+        await db.insert(availabilityOverrides as any).values({
             id,
             tenantId,
             employeeId,

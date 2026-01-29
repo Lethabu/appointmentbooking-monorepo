@@ -17,7 +17,7 @@ process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-role-key';
 const handlers = [
     // Mock booking creation
     http.post('/api/bookings', async ({ request }) => {
-        const body = await request.json();
+        const body = await request.json() as any;
 
         // Test validation scenarios
         if (!body.serviceId) {
@@ -185,7 +185,7 @@ const handlers = [
 
     // Mock calendar webhooks
     http.post('/api/calendar/webhooks/google', async ({ request }) => {
-        const body = await request.json();
+        const body = await request.json() as any;
 
         return HttpResponse.json({
             success: true,
@@ -198,7 +198,7 @@ const handlers = [
     }),
 
     http.post('/api/calendar/webhooks/outlook', async ({ request }) => {
-        const body = await request.json();
+        const body = await request.json() as any;
 
         return HttpResponse.json({
             success: true,
@@ -242,7 +242,7 @@ describe('API Endpoints Testing Suite', () => {
                     })
                 });
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(201);
                 expect(data.success).toBe(true);
@@ -265,7 +265,7 @@ describe('API Endpoints Testing Suite', () => {
                     })
                 });
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(400);
                 expect(data.success).toBe(false);
@@ -288,7 +288,7 @@ describe('API Endpoints Testing Suite', () => {
                     })
                 });
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(409);
                 expect(data.success).toBe(false);
@@ -328,7 +328,7 @@ describe('API Endpoints Testing Suite', () => {
             it('should retrieve bookings with pagination', async () => {
                 const response = await fetch('/api/bookings?page=1&limit=10');
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(200);
                 expect(data.success).toBe(true);
@@ -341,7 +341,7 @@ describe('API Endpoints Testing Suite', () => {
             it('should filter bookings by customer ID', async () => {
                 const response = await fetch('/api/bookings?customerId=cust_1');
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(200);
                 expect(data.success).toBe(true);
@@ -351,7 +351,7 @@ describe('API Endpoints Testing Suite', () => {
             it('should filter bookings by date', async () => {
                 const response = await fetch('/api/bookings?date=2026-01-15');
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(200);
                 expect(data.success).toBe(true);
@@ -361,7 +361,7 @@ describe('API Endpoints Testing Suite', () => {
             it('should handle invalid pagination parameters', async () => {
                 const response = await fetch('/api/bookings?page=invalid&limit=invalid');
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(200);
                 expect(data.success).toBe(true);
@@ -372,7 +372,7 @@ describe('API Endpoints Testing Suite', () => {
             it('should cancel appointment successfully', async () => {
                 const response = await fetch('/api/bookings?id=apt_123');
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(200);
                 expect(data.success).toBe(true);
@@ -383,7 +383,7 @@ describe('API Endpoints Testing Suite', () => {
             it('should require appointment ID', async () => {
                 const response = await fetch('/api/bookings');
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(400);
                 expect(data.success).toBe(false);
@@ -393,7 +393,7 @@ describe('API Endpoints Testing Suite', () => {
             it('should handle non-existent appointment', async () => {
                 const response = await fetch('/api/bookings?id=not-found');
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(404);
                 expect(data.success).toBe(false);
@@ -407,7 +407,7 @@ describe('API Endpoints Testing Suite', () => {
             it('should retrieve available slots successfully', async () => {
                 const response = await fetch('/api/availability?date=2026-01-15&serviceId=service_1');
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(200);
                 expect(data.success).toBe(true);
@@ -420,7 +420,7 @@ describe('API Endpoints Testing Suite', () => {
             it('should validate required parameters', async () => {
                 const response = await fetch('/api/availability');
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(400);
                 expect(data.success).toBe(false);
@@ -430,7 +430,7 @@ describe('API Endpoints Testing Suite', () => {
             it('should handle missing date parameter', async () => {
                 const response = await fetch('/api/availability?serviceId=service_1');
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(400);
                 expect(data.success).toBe(false);
@@ -439,7 +439,7 @@ describe('API Endpoints Testing Suite', () => {
             it('should handle missing service ID parameter', async () => {
                 const response = await fetch('/api/availability?date=2026-01-15');
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(400);
                 expect(data.success).toBe(false);
@@ -448,7 +448,7 @@ describe('API Endpoints Testing Suite', () => {
             it('should include employee information in slots', async () => {
                 const response = await fetch('/api/availability?date=2026-01-15&serviceId=service_1');
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(200);
                 expect(data.data.slots[0]).toHaveProperty('employeeId');
@@ -470,7 +470,7 @@ describe('API Endpoints Testing Suite', () => {
             it('should handle OAuth callback with valid code', async () => {
                 const response = await fetch('/api/google-calendar/callback?code=test_auth_code');
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(200);
                 expect(data.success).toBe(true);
@@ -481,7 +481,7 @@ describe('API Endpoints Testing Suite', () => {
             it('should reject OAuth callback without code', async () => {
                 const response = await fetch('/api/google-calendar/callback');
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(400);
                 expect(data.success).toBe(false);
@@ -505,7 +505,7 @@ describe('API Endpoints Testing Suite', () => {
                     })
                 });
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(200);
                 expect(data.success).toBe(true);
@@ -528,7 +528,7 @@ describe('API Endpoints Testing Suite', () => {
                     })
                 });
 
-                const data = await response.json();
+                const data = await response.json() as any;
 
                 expect(response.status).toBe(200);
                 expect(data.success).toBe(true);
