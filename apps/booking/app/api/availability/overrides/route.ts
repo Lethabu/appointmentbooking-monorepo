@@ -3,7 +3,7 @@ import { drizzle } from 'drizzle-orm/d1';
 import { availabilityOverrides } from '@repo/db/schema';
 import { eq, and } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
-import { AuditLogger } from '../../../../utils/security/audit-logger';
+import { AuditLogger } from '@/utils/security/audit-logger';
 
 export const runtime = 'edge';
 
@@ -19,31 +19,40 @@ export async function GET(req: NextRequest) {
     const db = drizzle((process.env as any).DB);
 
     try {
-        const query = db.select().from(availabilityOverrides).where(eq(availabilityOverrides.tenantId, tenantId));
+        let conditions = eq(availabilityOverrides.tenantId, tenantId);
 
-        // Filter by employee if provided
-        const results = employeeId
-            ? await query.where(and(eq(availabilityOverrides.tenantId, tenantId), eq(availabilityOverrides.employeeId, employeeId)))
-            : await query;
+        if (employeeId) {
+            conditions = and(conditions, eq(availabilityOverrides.employeeId, employeeId)) as any;
+        }
+
+        const results = await db.select().from(availabilityOverrides).where(conditions);
 
         return NextResponse.json({ success: true, overrides: results });
     } catch (error) {
+        console.error('Error fetching overrides:', error);
         return NextResponse.json({ error: 'Failed to fetch overrides' }, { status: 500 });
     }
 }
 
 export async function POST(req: NextRequest) {
-    const body = await req.json();
-    const { tenantId, employeeId, date, startTime, endTime, isWorking } = body;
-
-    if (!tenantId || !employeeId || !date) {
-        return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
-
-    const db = drizzle((process.env as any).DB);
-    const logger = new AuditLogger((process.env as any).DB);
-
     try {
+        const body = await req.json() as {
+            tenantId: string;
+            employeeId: string;
+            date: string;
+            startTime: string;
+            endTime: string;
+            isWorking?: boolean;
+        };
+        const { tenantId, employeeId, date, startTime, endTime, isWorking } = body;
+
+        if (!tenantId || !employeeId || !date) {
+            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+        }
+
+        const db = drizzle((process.env as any).DB);
+        const logger = new AuditLogger((process.env as any).DB);
+
         const id = uuidv4();
         await db.insert(availabilityOverrides).values({
             id,
@@ -60,7 +69,7 @@ export async function POST(req: NextRequest) {
                 tenantId,
                 ipAddress: req.headers.get('x-forwarded-for') || 'unknown'
             },
-            'booking',
+            'availability_override',
             'create',
             { overrideId: id, employeeId, date },
             'info'
@@ -68,6 +77,7 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ success: true, id });
     } catch (error) {
+        console.error('Error creating override:', error);
         return NextResponse.json({ error: 'Failed to create override' }, { status: 500 });
     }
 }

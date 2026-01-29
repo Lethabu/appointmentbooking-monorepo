@@ -50,7 +50,11 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
     try {
-        const body = await request.json();
+        const body = await request.json() as {
+            email?: string;
+            password?: string;
+            provider?: string;
+        };
         const { email, password, provider } = body;
 
         // Simple demo authentication
