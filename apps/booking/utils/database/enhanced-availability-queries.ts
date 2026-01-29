@@ -6,6 +6,7 @@ import {
     employeeSchedules,
     holidays,
     blockedSlots,
+    availabilityOverrides,
     calendarConnections,
     calendarSyncEvents
 } from '@repo/db/schema';
@@ -80,22 +81,41 @@ export class EnhancedAvailabilityQueries {
         const availableSlots: AvailabilitySlot[] = [];
 
         for (const employee of filteredEmployees) {
-            // Get employee's working schedule for the day
-            const dayOfWeek = new Date(date).getDay();
-            const schedule = await this.db
+            // Check for date-specific overrides first
+            const override = await this.db
                 .select()
-                .from(employeeSchedules)
+                .from(availabilityOverrides)
                 .where(and(
-                    eq(employeeSchedules.employeeId, employee.id),
-                    eq(employeeSchedules.dayOfWeek, dayOfWeek),
-                    eq(employeeSchedules.isActive, true)
+                    eq(availabilityOverrides.employeeId, employee.id),
+                    eq(availabilityOverrides.date, date)
                 ))
                 .limit(1);
 
-            if (schedule.length === 0) continue;
+            let workSchedule;
 
-            const workSchedule = schedule[0];
-            if (!workSchedule.startTime || !workSchedule.endTime) continue;
+            if (override.length > 0) {
+                const dayOverride = override[0];
+                if (!dayOverride.isWorking || !dayOverride.startTime || !dayOverride.endTime) {
+                    continue; // Employee is not working on this specific date
+                }
+                workSchedule = dayOverride;
+            } else {
+                // Get employee's standard working schedule for the day
+                const dayOfWeek = new Date(date).getDay();
+                const schedule = await this.db
+                    .select()
+                    .from(employeeSchedules)
+                    .where(and(
+                        eq(employeeSchedules.employeeId, employee.id),
+                        eq(employeeSchedules.dayOfWeek, dayOfWeek),
+                        eq(employeeSchedules.isActive, true)
+                    ))
+                    .limit(1);
+
+                if (schedule.length === 0) continue;
+                workSchedule = schedule[0];
+                if (!workSchedule.startTime || !workSchedule.endTime) continue;
+            }
 
             // Generate potential time slots
             const potentialSlots = this.generateTimeSlots(
@@ -347,12 +367,44 @@ export class EnhancedAvailabilityQueries {
                         location: event.location?.displayName
                     });
                 }
+            } else if (provider === 'apple') {
+                // Fetch Apple Calendar events (CalDAV)
+                const appleEvents = await this.fetchAppleCalendarEvents(
+                    connection,
+                    startTime,
+                    endTime
+                );
+
+                for (const event of appleEvents) {
+                    events.push({
+                        id: event.id,
+                        start: event.start,
+                        end: event.end,
+                        summary: event.summary,
+                        source: 'apple' as any,
+                        location: event.location
+                    });
+                }
             }
         } catch (error) {
             console.error(`Error fetching ${provider} calendar events:`, error);
         }
 
         return events;
+    }
+
+    /**
+     * Fetch Apple Calendar events (CalDAV)
+     */
+    private async fetchAppleCalendarEvents(
+        connection: any,
+        startTime: Date,
+        endTime: Date
+    ): Promise<CalendarConflict[]> {
+        // CalDAV implementation would go here
+        // For Phase 3, we provide the architectural hook
+        console.log('Apple Calendar Sync (CalDAV) hook triggered');
+        return [];
     }
 
     /**

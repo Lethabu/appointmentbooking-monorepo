@@ -1,0 +1,12 @@
+services:
+  booking-app:
+    build:
+      context: .
+      args:
+        - NEXT_PUBLIC_APP_URL=http://localhost:3000
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    restart: always

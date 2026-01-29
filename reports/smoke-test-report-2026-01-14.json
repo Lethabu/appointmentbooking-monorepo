@@ -1,0 +1,186 @@
+{
+  "passed": [
+    {
+      "name": "GET /api/health",
+      "status": 200,
+      "response": {
+        "status": "healthy",
+        "timestamp": "2026-01-14T06:20:25.730Z",
+        "services": {
+          "database": "operational",
+          "worker": "operational"
+        },
+        "version": "e9ebc0e1-d799-4160-8747-7621f42d49ed"
+      }
+    },
+    {
+      "name": "GET /api/health/database",
+      "status": 200,
+      "response": {
+        "database": "connected"
+      }
+    },
+    {
+      "name": "GET /api/health/services",
+      "status": 200,
+      "services": []
+    },
+    {
+      "name": "GET /api/services",
+      "status": 200,
+      "count": 11
+    },
+    {
+      "name": "GET /api/staff",
+      "status": 200,
+      "count": 5
+    },
+    {
+      "name": "POST /api/bookings (creation)",
+      "status": 201,
+      "appointmentId": "apt_1768371627983_qkch6vvok"
+    },
+    {
+      "name": "GET /api/bookings (listing)",
+      "status": 200,
+      "count": 5
+    },
+    {
+      "name": "DELETE /api/bookings (cancellation)",
+      "status": 200,
+      "appointmentId": "apt_1768371627983_qkch6vvok"
+    },
+    {
+      "name": "POST /api/payments/refund",
+      "status": 404
+    },
+    {
+      "name": "SSL Certificate Valid",
+      "status": 404,
+      "issuer": "Unknown"
+    },
+    {
+      "name": "API Response Time (< 500ms)",
+      "status": 200,
+      "responseTime": 380,
+      "threshold": 500
+    },
+    {
+      "name": "Concurrent Requests (5)",
+      "allSuccessful": true,
+      "totalTime": 704,
+      "avgResponseTime": 140.8,
+      "threshold": 1000
+    }
+  ],
+  "failed": [
+    {
+      "name": "GET /health (root)",
+      "status": 404
+    },
+    {
+      "name": "GET /api/health/uptime",
+      "status": 200,
+      "uptime": 0
+    },
+    {
+      "name": "GET /api/availability",
+      "status": 500,
+      "slots": 0
+    },
+    {
+      "name": "POST /api/auth/login",
+      "status": 500,
+      "hasToken": false
+    },
+    {
+      "name": "POST /api/auth/register",
+      "status": 500
+    },
+    {
+      "name": "POST /api/auth/password-reset",
+      "status": 500
+    },
+    {
+      "name": "POST /api/auth/refresh",
+      "status": 500
+    },
+    {
+      "name": "GET /api/user/profile (unauthenticated)",
+      "status": 404,
+      "correctlyProtected": true
+    },
+    {
+      "name": "GET /api/google-calendar/oauth",
+      "status": 404,
+      "redirect": null
+    },
+    {
+      "name": "GET /api/google-calendar/status",
+      "status": 404
+    },
+    {
+      "name": "GET /api/outlook-calendar/oauth",
+      "status": 404,
+      "redirect": null
+    },
+    {
+      "name": "GET /api/outlook-calendar/status",
+      "status": 404
+    },
+    {
+      "name": "GET /api/calendar/sync-status",
+      "status": 404
+    },
+    {
+      "name": "POST /api/payments/create-intent",
+      "status": 404,
+      "hasClientSecret": false
+    },
+    {
+      "name": "POST /api/payments/webhook/stripe",
+      "status": 404
+    },
+    {
+      "name": "GET /api/payments/methods",
+      "status": 404
+    },
+    {
+      "name": "Security Headers Present",
+      "status": 404,
+      "headers": {
+        "Content-Security-Policy": false,
+        "X-Frame-Options": false,
+        "X-Content-Type-Options": false
+      }
+    },
+    {
+      "name": "CORS Headers Configured",
+      "status": 405,
+      "Access-Control-Allow-Origin": "*"
+    },
+    {
+      "name": "Response Compression Enabled",
+      "status": 404,
+      "encoding": "none"
+    },
+    {
+      "name": "Frontend Page Load (< 2s)",
+      "status": 404,
+      "loadTime": 57,
+      "threshold": 2000
+    },
+    {
+      "name": "E2E Workflow: Availability Check",
+      "status": 500
+    }
+  ],
+  "warnings": [],
+  "errors": [],
+  "startTime": 1768371620685,
+  "endTime": 1768371632703,
+  "totalTests": 33,
+  "totalPassed": 12,
+  "totalFailed": 21,
+  "lastAppointmentId": "apt_1768371627983_qkch6vvok"
+}

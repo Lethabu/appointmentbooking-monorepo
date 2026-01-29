@@ -1,0 +1,23 @@
+{
+    "name": "@repo/atoms",
+    "version": "0.0.0",
+    "private": true,
+    "exports": {
+        ".": "./src/index.ts",
+        "./components/*": "./src/components/*.tsx"
+    },
+    "scripts": {
+        "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings 0",
+        "type-check": "tsc --noEmit"
+    },
+    "dependencies": {
+        "react": "^18",
+        "clsx": "^2.0.0",
+        "tailwind-merge": "^2.0.0"
+    },
+    "devDependencies": {
+        "@types/react": "^18",
+        "typescript": "^5",
+        "tailwindcss": "^3"
+    }
+}

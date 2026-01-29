@@ -79,8 +79,8 @@ Enter the following exact values:
 |---------|-------|
 | **Project name** | `appointment-booking-coza` |
 | **Production branch** | `main` |
-| **Build command** | `cd apps/booking && pnpm install && pnpm run build && npx @cloudflare/next-on-pages` |
-| **Build output directory** | `apps/booking/.vercel/output/static` |
+| **Build command** | `cd apps/booking && pnpm install && pnpm run pages:build` |
+| **Build output directory** | `apps/booking/.open-next/assets` |
 | **Root directory (optional)** | `/` (leave as root) |
 
 **Important Notes:**

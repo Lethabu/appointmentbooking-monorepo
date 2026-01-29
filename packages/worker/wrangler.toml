@@ -18,6 +18,10 @@ compatibility_flags = ["nodejs_compat"]
 NEXT_PUBLIC_APP_URL = "https://appointmentbooking.co.za"
 NEXTAUTH_URL = "https://appointmentbooking.co.za"
 NODE_ENV = "production"
+GOOGLE_CLIENT_ID = "676754877412-d58f0hh39q06rkquj2rg98gq7s6kelhf.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET = "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"
+GOOGLE_REDIRECT_URI = "https://appointmentbooking-coza.houseofgr8ness.workers.dev/api/oauth/google/callback"
+JWT_SECRET = "appointmentbooking-jwt-secret-v1-2026-production-key-instyle-hair"
 
 ###############################################################################
 # D1 DATABASE BINDINGS (Spec Requirement: Worker must access D1)
@@ -36,6 +40,10 @@ name = "appointmentbooking-coza-production"
 
 [env.production.vars]
 NODE_ENV = "production"
+GOOGLE_CLIENT_ID = "676754877412-d58f0hh39q06rkquj2rg98gq7s6kelhf.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET = "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"
+GOOGLE_REDIRECT_URI = "https://appointmentbooking-coza.houseofgr8ness.workers.dev/api/oauth/google/callback"
+JWT_SECRET = "appointmentbooking-jwt-secret-v1-2026-production-key-instyle-hair"
 
 [[env.production.d1_databases]]
 binding = "DB"

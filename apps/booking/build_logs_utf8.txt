@@ -1,0 +1,18 @@
+﻿
+> booking@0.1.0 pages:build C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking
+> npx @opennextjs/cloudflare build
+
+node.exe : npm warn Unknown env config "auto-install-peers". This will stop working in the next major version of npm.
+At C:\Users\Adrin\AppData\Roaming\npm\pnpm.ps1:24 char:5
++     & "node$exe"  "$basedir/node_modules/pnpm/bin/pnpm.cjs" $args
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn Unknow...version of npm.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+npm warn Unknown env config "prefer-saved-config". This will stop working in the next major version of npm.
+npm warn Unknown env config "resolution-mode". This will stop working in the next major version of npm.
+npm warn Unknown env config "shamefully-hoist". This will stop working in the next major version of npm.
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
+npm warn config ignoring workspace config at 
+C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\booking/.npmrc

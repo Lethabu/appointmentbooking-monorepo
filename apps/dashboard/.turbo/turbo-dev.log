@@ -1,11 +1,9 @@
 
-> dashboard@0.1.0 dev
+> dashboard@0.1.0 dev C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\dashboard
 > next dev
 
- ⚠ Port 3000 is in use, trying 3001 instead.
- ⚠ Port 3001 is in use, trying 3002 instead.
-  ▲ Next.js 14.2.33
-  - Local:        http://localhost:3002
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
 
  ✓ Starting...
- ✓ Ready in 150.6s
+ ✓ Ready in 60.4s

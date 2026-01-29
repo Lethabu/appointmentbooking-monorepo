@@ -13,6 +13,9 @@ import { handleProductsEndpoint } from './products-endpoint';
 import { handleAvailabilityEndpoint } from './availability-endpoint';
 import { handleSchedulesEndpoint } from './schedules-endpoint';
 import { handleNotification } from './notifications';
+import { handleAuthEndpoint } from './auth-endpoint';
+import { handleGoogleOAuthEndpoint } from './oauth-endpoint';
+import { handleCalendarSyncEndpoint } from './calendar-sync';
 // import { Resend } from 'resend';
 // import { render } from 'react-email';
 // import { BookingConfirmationEmail } from './emails/BookingConfirmation';
@@ -85,16 +88,28 @@ export default {
             }
         }
 
-        // CORS headers
+        // CORS and Security headers
         const corsHeaders = {
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            'Access-Control-Max-Age': '86400',
         };
+
+        // Security headers - TIER 1 implementation
+        const securityHeaders = {
+            'X-Content-Type-Options': 'nosniff',
+            'X-Frame-Options': 'DENY',
+            'X-XSS-Protection': '1; mode=block',
+            'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+            'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' cdn.tailwindcss.com; img-src 'self' data: https:; font-src 'self' data:;",
+        };
+
+        const allHeaders = { ...corsHeaders, ...securityHeaders };
 
         // Handle preflight OPTIONS
         if (request.method === 'OPTIONS') {
-            return new Response(null, { headers: corsHeaders });
+            return new Response(null, { headers: allHeaders });
         }
 
         // Root route - serve marketing site for appointmentbooking.co.za
@@ -155,14 +170,14 @@ export default {
                 headers: {
                     'Content-Type': 'text/html; charset=utf-8',
                     'Cache-Control': 'public, max-age=300',
-                    ...corsHeaders
+                    ...allHeaders
                 }
             });
         }
 
         // Handle API routes
         if (path.startsWith('/api/')) {
-            return handleApiRoute(request, env);
+            return handleApiRoute(request, env, allHeaders);
         }
 
         // Default not found for other paths
@@ -171,14 +186,14 @@ export default {
 };
 
 // API Route Handler
-async function handleApiRoute(request: Request, env: any): Promise<Response> {
+async function handleApiRoute(request: Request, env: any, providedHeaders?: any): Promise<Response> {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    const corsHeaders = {
+    const corsHeaders = providedHeaders || {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         'Content-Type': 'application/json'
     };
 
@@ -411,6 +426,21 @@ async function handleApiRoute(request: Request, env: any): Promise<Response> {
         // AI endpoint - Handle AI conversations and analytics
         if (path === '/api/ai') {
             return handleAiEndpoint(request, env);
+        }
+
+        // Authentication endpoints - TIER 1 implementation
+        if (path.startsWith('/api/auth/')) {
+            return handleAuthEndpoint(request, env, corsHeaders);
+        }
+
+        // OAuth endpoints - TIER 2 implementation (Google OAuth)
+        if (path.startsWith('/api/oauth/')) {
+            return handleGoogleOAuthEndpoint(request, env, corsHeaders);
+        }
+
+        // Calendar sync endpoints - TIER 2 advanced (Google Calendar integration)
+        if (path.startsWith('/api/calendar/')) {
+            return handleCalendarSyncEndpoint(request, env, corsHeaders);
         }
 
         // Dashboard SSE stream - real-time updates (polling inside worker)

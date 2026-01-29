@@ -48,6 +48,13 @@ export async function getAvailability(
     if (s.end_time && s.end_time > latest) latest = s.end_time
   }
 
+  // Validate that we have valid times
+  if (earliest >= latest) {
+    // Fallback to standard business hours if times are invalid
+    earliest = '09:00'
+    latest = '17:00'
+  }
+
   // 2) Fetch appointments for that tenant on that date and join to services to get duration
   const apptStmt = await db.prepare(`
     SELECT a.scheduled_time as scheduled_time, s.duration_minutes as duration_minutes
@@ -72,27 +79,39 @@ export async function getAvailability(
 
   // 3) Generate candidate slots from earliest to latest using intervalMin stepping
   const available: TimeSlot[] = []
-  const startBase = new Date(`${date}T${earliest}:00`)
-  const endBase = new Date(`${date}T${latest}:00`)
+  
+  try {
+    const startBase = new Date(`${date}T${earliest}:00`)
+    const endBase = new Date(`${date}T${latest}:00`)
 
-  let cursor = startBase.getTime()
-  const serviceMs = serviceDurationMin * 60 * 1000
-  const stepMs = intervalMin * 60 * 1000
-
-  while (cursor + serviceMs <= endBase.getTime()) {
-    const slotStartUnix = Math.floor(cursor / 1000)
-    const slotEndUnix = Math.floor((cursor + serviceMs) / 1000)
-
-    const concurrent = overlaps(slotStartUnix, slotEndUnix)
-    if (concurrent < resourceCount) {
-      available.push({
-        start: new Date(cursor).toISOString(),
-        end: new Date(cursor + serviceMs).toISOString(),
-        staffId: null
-      })
+    // Safety check for invalid dates
+    if (isNaN(startBase.getTime()) || isNaN(endBase.getTime())) {
+      return []
     }
 
-    cursor += stepMs
+    let cursor = startBase.getTime()
+    const serviceMs = serviceDurationMin * 60 * 1000
+    const stepMs = intervalMin * 60 * 1000
+
+    while (cursor + serviceMs <= endBase.getTime()) {
+      const slotStartUnix = Math.floor(cursor / 1000)
+      const slotEndUnix = Math.floor((cursor + serviceMs) / 1000)
+
+      const concurrent = overlaps(slotStartUnix, slotEndUnix)
+      if (concurrent < resourceCount) {
+        available.push({
+          start: new Date(cursor).toISOString(),
+          end: new Date(cursor + serviceMs).toISOString(),
+          staffId: null
+        })
+      }
+
+      cursor += stepMs
+    }
+  } catch (e) {
+    // Return empty slots if there's any error in slot generation
+    console.error('Error generating availability slots:', e)
+    return []
   }
 
   return available

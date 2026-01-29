@@ -1,0 +1,59 @@
+{
+  "passed": [
+    "Main Website (GET /)",
+    "Main Page Load Time < 3s",
+    "SSL Certificate Valid"
+  ],
+  "failed": [
+    {
+      "name": "Booking Page (GET /book/instylehairboutique)",
+      "status": 404
+    },
+    {
+      "name": "Shop Page (GET /shop)",
+      "status": 404
+    },
+    {
+      "name": "GET /api/services",
+      "status": 404,
+      "services": 0
+    },
+    {
+      "name": "GET /api/staff",
+      "status": 404,
+      "staff": 0
+    },
+    {
+      "name": "GET /api/bookings",
+      "status": 404,
+      "bookings": 0
+    },
+    {
+      "name": "GET /api/availability",
+      "status": 404,
+      "slots": 0
+    },
+    {
+      "name": "GET /api/health",
+      "status": 404
+    },
+    {
+      "name": "GET /api/health/database",
+      "status": 404
+    },
+    {
+      "name": "Concurrent Requests (5x)",
+      "successful": "0/5"
+    },
+    {
+      "name": "Security Headers Present",
+      "headers": "x-matched-path, x-vercel-cache, x-vercel-id"
+    }
+  ],
+  "warnings": [],
+  "startTime": "2026-01-12T02:42:05.554Z",
+  "endTime": "2026-01-12T02:42:10.161Z",
+  "totalTests": 13,
+  "totalPassed": 3,
+  "totalFailed": 10
+}

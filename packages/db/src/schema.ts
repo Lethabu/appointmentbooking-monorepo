@@ -365,6 +365,28 @@ export const roleAuditLog = sqliteTable('role_audit_log', {
   resourceIdx: index('role_audit_resource_idx').on(table.resourceType, table.resourceId),
 }));
 
+// Comprehensive security audit log for HIPAA/GDPR compliance
+export const securityAuditLog = sqliteTable('security_audit_log', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull().references(() => tenants.id, { onDelete: 'cascade' }),
+  userId: text('user_id').references(() => users.id), // Acting user
+  resource: text('resource').notNull(), // 'booking', 'user', 'billing', 'integration', 'config'
+  action: text('action').notNull(), // 'create', 'read', 'update', 'delete', 'access_denied', 'export'
+  severity: text('severity').notNull().default('info'), // 'info', 'warning', 'critical'
+  details: text('details', { mode: 'json' }).$type<Record<string, any>>(),
+  ipAddress: text('ip_address'),
+  userAgent: text('user_agent'),
+  timestamp: integer('timestamp', { mode: 'timestamp' }).notNull().default(sql`(unixepoch())`),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  tenantIdx: index('security_audit_tenant_idx').on(table.tenantId),
+  userIdx: index('security_audit_user_idx').on(table.userId),
+  resourceIdx: index('security_audit_resource_idx').on(table.resource),
+  actionIdx: index('security_audit_action_idx').on(table.action),
+  severityIdx: index('security_audit_severity_idx').on(table.severity),
+  timestampIdx: index('security_audit_timestamp_idx').on(table.timestamp),
+}));
+
 // Default role templates for new tenants
 export const defaultRoles = {
   admin: {
@@ -467,6 +489,23 @@ export const blockedSlots = sqliteTable('blocked_slots', {
   tenantIdx: index('blocked_slots_tenant_idx').on(table.tenantId),
   employeeIdx: index('blocked_slots_employee_idx').on(table.employeeId),
   timeIdx: index('blocked_slots_time_idx').on(table.startTime, table.endTime),
+}));
+
+// Availability overrides for specific dates
+export const availabilityOverrides = sqliteTable('availability_overrides', {
+  id: text('id').primaryKey(),
+  tenantId: text('tenant_id').notNull().references(() => tenants.id, { onDelete: 'cascade' }),
+  employeeId: text('employee_id').notNull().references(() => employees.id, { onDelete: 'cascade' }),
+  date: text('date').notNull(), // YYYY-MM-DD format
+  startTime: text('start_time'), // HH:MM format (null if not working)
+  endTime: text('end_time'), // HH:MM format (null if not working)
+  isWorking: integer('is_working', { mode: 'boolean' }).default(true),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
+}, (table) => ({
+  tenantIdx: index('availability_overrides_tenant_idx').on(table.tenantId),
+  employeeIdx: index('availability_overrides_employee_idx').on(table.employeeId),
+  dateIdx: index('availability_overrides_date_idx').on(table.date),
 }));
 
 // ========================================

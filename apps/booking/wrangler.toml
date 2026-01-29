@@ -1,94 +1,27 @@
-###############################################################################
-# Cloudflare Pages Configuration - appointment-booking-coza
-# SPEC: Cloudflare Pages v1 + Next.js Integration
-# Generated: 2026-01-11 - Spec-Driven Development
-###############################################################################
+# Cloudflare Workers Configuration - appointmentbooking-coza
+# Optimized for OpenNext deployment (2025 Best Practice)
+# https://opennext.js.org/cloudflare
 
-name = "appointment-booking-coza"
-type = "service"
+name = "appointmentbooking-coza"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
-###############################################################################
-# PAGES CONFIGURATION (Primary Frontend Deployment)
-###############################################################################
-[pages]
-build_command = "pnpm run build"
-build_output_dir = ".next"
-pages_build_output_dir = ".next"
+# OpenNext build output for Pages deployment
+pages_build_output_dir = ".open-next/assets"
 
-###############################################################################
-# ENVIRONMENT VARIABLES
-###############################################################################
+# Environment variables
 [vars]
 NEXT_PUBLIC_APP_URL = "https://appointmentbooking.co.za"
 NEXTAUTH_URL = "https://appointmentbooking.co.za"
 NODE_ENV = "production"
 WORKER_URL = "https://appointmentbooking-coza.houseofgr8ness.workers.dev"
 
-###############################################################################
-# PRODUCTION ENVIRONMENT
-###############################################################################
-[env.production]
-name = "appointment-booking-coza-production"
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "appointmentbooking-db"
+database_id = "59c06cd2-8bd2-45cf-ab62-84d7a4919e11"
 
-[env.production.vars]
-NODE_ENV = "production"
-NEXT_PUBLIC_API_URL = "https://appointmentbooking-coza.houseofgr8ness.workers.dev"
-
-###############################################################################
-# BUILD CONFIGURATION (Spec: Memory optimization)
-###############################################################################
-[build]
-command = "pnpm run build"
-watch_paths = ["src/**/*.ts", "src/**/*.tsx", "public/**"]
-
-[limits]
-cpu_ms = 600000
-
-###############################################################################
-# ASSETS CONFIGURATION (Spec: Cache exclusion for large files)
-###############################################################################
-[assets]
-binding = "ASSETS"
-directory = ".next"
-ignore = [
-  ".next/cache/**",
-  ".next/server/**",
-  ".next/**/*.map",
-  ".next/**/*.wasm",
-  "node_modules/**"
-]
-
-###############################################################################
-# SECURITY HEADERS (SPEC: Required Security Headers)
-###############################################################################
-[[env.production.pages.headers]]
-path = "/*"
-[env.production.pages.headers.values]
-X-Frame-Options = "DENY"
-X-Content-Type-Options = "nosniff"
-X-XSS-Protection = "1; mode=block"
-Referrer-Policy = "strict-origin-when-cross-origin"
-Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
-Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-
-###############################################################################
-# CACHING CONFIGURATION (Spec: Cache optimization)
-###############################################################################
-[[env.production.pages.cache]]
-path = "/_next/static/*"
-ttl = 31536000
-
-[[env.production.pages.cache]]
-path = "/_next/image/*"
-ttl = 604800
-
-[[env.production.pages.cache]]
-path = "/static/*"
-ttl = 31536000
-
-###############################################################################
-# OBSERVABILITY
-###############################################################################
-observability = {enabled = true}
+# Observability
+[observability]
+enabled = true
