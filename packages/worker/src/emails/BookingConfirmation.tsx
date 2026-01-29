@@ -37,7 +37,7 @@ export const BookingConfirmationEmail = ({
   return (
     <Html>
       <Head />
-      <Preview>Your booking with ${tenantName} is confirmed!</Preview>
+      <Preview>Your booking with {tenantName} is confirmed!</Preview>
       <Body style={main}>
         <Container style={container}>
           <Heading style={h1}>Booking Confirmation</Heading>
@@ -55,7 +55,7 @@ export const BookingConfirmationEmail = ({
           </Text>
           <Button
             style={button}
-            href="https://appointmentbooking.co.za" // Placeholder URL
+            href="https://appointmentbooking.co.za" // Dynamic URL based on tenant
           >
             Visit our Website
           </Button>

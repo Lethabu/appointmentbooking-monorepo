@@ -1,5 +1,3 @@
-
-
 import { getAvailability } from './availability';
 import { handleDashboardBookings } from './dashboard-endpoint';
 import { handleDashboardSSE } from './dashboard-stream';
@@ -22,6 +20,9 @@ import { handleCalendarSyncEndpoint } from './calendar-sync';
 import { escapeHtml, formatPrice } from './helpers';
 import { logger } from './logger';
 import { handleError } from './errors';
+import { registerLiteEndpoints } from './lite-dashboard-endpoints';
+import { generatePricingResponse } from './pricing-middleware';
+import { handleAuditFunnelEndpoint } from './audit-tracking';
 
 // Cloudflare Worker for InStyle landing page
 export default {
@@ -112,9 +113,87 @@ export default {
             return new Response(null, { headers: allHeaders });
         }
 
-        // Root route - serve marketing site for appointmentbooking.co.za
-        if (path === '/' && (url.hostname === 'appointmentbooking.co.za' || url.hostname === 'www.appointmentbooking.co.za')) {
-            return new Response('<html><body><h1>Appointment Booking Coming Soon</h1></body></html>', {
+        // Root route - serve PLATFORM landing page for appointmentbooking.co.za
+        if (path === '/' || path === '/platform' || path === '/lethabu') {
+            const platformHtml = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Booking Platform | AppointmentBooking.co.za</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 font-sans">
+    <nav class="fixed w-full top-0 bg-white shadow-sm z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-blue-600">📅 AppointmentBooking.co.za</h1>
+            <a href="/api/health" class="px-4 py-2 text-gray-600 hover:text-blue-600">API Status</a>
+        </div>
+    </nav>
+    
+    <div class="min-h-screen flex items-center justify-center pt-20">
+        <div class="text-center max-w-4xl mx-auto px-4">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-gray-900">
+                The Operating System for Service Businesses
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-4">
+                Automate bookings, payments, and client relationships. Works for salons, spas, consultants, and traders.
+            </p>
+            <p class="text-lg text-gray-500 mb-12">
+                Global scale (USD) + Local impact (ZAR)
+            </p>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-white p-8 rounded-lg shadow">
+                    <h3 class="text-2xl font-bold mb-4 text-blue-600">💰 Revenue Automation</h3>
+                    <p class="text-gray-600">$297/mo - US Service Franchises</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow">
+                    <h3 class="text-2xl font-bold mb-4 text-green-600">🏪 Community Commerce</h3>
+                    <p class="text-gray-600">R150/mo - Local Traders & Spaza Shops</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow">
+                    <h3 class="text-2xl font-bold mb-4 text-purple-600">🚀 Enterprise</h3>
+                    <p class="text-gray-600">$497/mo - Multi-location + Impact</p>
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="/api/pricing" class="px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700">
+                    View Pricing
+                </a>
+                <a href="/api/health" class="px-8 py-4 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700">
+                    System Status
+                </a>
+            </div>
+            
+            <hr class="my-12">
+            
+            <h2 class="text-3xl font-bold mb-8">Featured Businesses</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-lg shadow text-left">
+                    <h3 class="text-2xl font-bold mb-4">InStyle Hair Boutique</h3>
+                    <p class="text-gray-600 mb-6">Premium hair services and products in Cape Town</p>
+                    <a href="/book/instylehairboutique" class="px-6 py-2 bg-orange-600 text-white rounded hover:bg-orange-700">
+                        📅 Book Appointment
+                    </a>
+                </div>
+                
+                <div class="bg-white p-8 rounded-lg shadow text-left">
+                    <h3 class="text-2xl font-bold mb-4">Add Your Business</h3>
+                    <p class="text-gray-600 mb-6">Join hundreds of service businesses on our platform</p>
+                    <button class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>`;
+            
+            return new Response(platformHtml, {
                 headers: {
                     'Content-Type': 'text/html; charset=utf-8',
                     'Cache-Control': 'public, max-age=300',
@@ -123,35 +202,38 @@ export default {
             });
         }
 
-        // Root route - serve InStyle landing page with updated branding
-        if (path === '/' || path === '/instyle' || path === '/instylehairboutique' || path === '/book/instylehairboutique') {
-            const tenant = await env.DB.prepare(
-                'SELECT id FROM tenants WHERE slug = ?'
-            ).bind('instylehairboutique').first();
+        // Tenant-specific booking pages (e.g., /book/instyle)
+        if (path.startsWith('/book/')) {
+            const tenantSlug = path.split('/')[2]; // Extract slug from /book/{slug}
+            
+            if (tenantSlug) {
+                const tenant = await env.DB.prepare(
+                    'SELECT id, name FROM tenants WHERE slug = ?'
+                ).bind(tenantSlug).first();
 
-            const tenantId = tenant ? tenant.id : 'ccb12b4d-ade6-467d-a614-7c9d198ddc70'; // fallback to old ID
-
-            // Simplified HTML response for landing page
-            const html = `
+                if (tenant) {
+                    const tenantId = tenant.id;
+                    
+                    const html = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InStyle Hair Boutique | Premium Hair Services Cape Town</title>
+    <title>${tenant.name} | Booking</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gradient-to-br from-orange-50 via-amber-50 to-stone-50 font-sans">
     <div class="min-h-screen flex items-center justify-center">
         <div class="text-center">
             <h1 class="text-4xl md:text-6xl font-bold font-serif mb-6 text-gray-900">
-                InStyle Hair Boutique
+                ${tenant.name}
             </h1>
             <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-10">
-                Premium hair services and products in Cape Town.
+                Premium services available
             </p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="/book/instylehairboutique" class="px-8 py-4 bg-orange-800 text-white font-semibold text-lg rounded-full shadow-xl hover:shadow-2xl transition-all">
+                <a href="/book/${tenantSlug}#booking" class="px-8 py-4 bg-orange-800 text-white font-semibold text-lg rounded-full shadow-xl hover:shadow-2xl transition-all">
                     📅 Book Appointment
                 </a>
                 <a href="https://wa.me/27699171527" target="_blank" class="px-8 py-4 bg-green-600 text-white font-semibold text-lg rounded-full shadow-lg">
@@ -160,19 +242,35 @@ export default {
             </div>
             <script>
                 const TENANT_ID = '${tenantId}';
+                const TENANT_SLUG = '${tenantSlug}';
             </script>
         </div>
     </div>
 </body>
 </html>`;
 
-            return new Response(html, {
-                headers: {
-                    'Content-Type': 'text/html; charset=utf-8',
-                    'Cache-Control': 'public, max-age=300',
-                    ...allHeaders
+                    return new Response(html, {
+                        headers: {
+                            'Content-Type': 'text/html; charset=utf-8',
+                            'Cache-Control': 'public, max-age=300',
+                            ...corsHeaders
+                        }
+                    });
                 }
-            });
+            }
+        }
+
+        // Tenant dashboard pages (e.g., /dashboard/instyle)
+        if (path.startsWith('/dashboard/')) {
+            const tenantSlug = path.split('/')[2];
+            if (tenantSlug) {
+                return new Response('<html><body><h1>Dashboard for ' + tenantSlug + '</h1><p>Dashboard UI would load here</p></body></html>', {
+                    headers: {
+                        'Content-Type': 'text/html; charset=utf-8',
+                        ...corsHeaders
+                    }
+                });
+            }
         }
 
         // Handle API routes
@@ -497,6 +595,35 @@ async function handleApiRoute(request: Request, env: any, providedHeaders?: any)
         if (path === '/api/health/uptime') {
             const uptime = Math.floor((Date.now() - (env.DEPLOY_START_TS || Date.now())) / 1000);
             return new Response(JSON.stringify({ uptime }), { status: 200, headers: corsHeaders });
+        }
+
+        // Lite Dashboard endpoints (Spaza Mode) - deferred dynamic imports
+        // Will be implemented with native D1 queries directly
+
+        // Pricing endpoint - Dynamic geo-based pricing with caching
+        if (path === '/api/pricing') {
+            try {
+                const country = request.headers.get('CF-IPCountry') || 'US';
+                const pricing = await generatePricingResponse(country);
+                return new Response(JSON.stringify(pricing), {
+                    status: 200,
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            } catch (err) {
+                logger.error('Pricing endpoint error', { error: err });
+                return new Response(JSON.stringify({ 
+                    error: 'Failed to fetch pricing',
+                    details: String(err)
+                }), {
+                    status: 500,
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+        }
+
+        // Audit Bot funnel metrics endpoint
+        if (path === '/api/audit/funnel') {
+            return handleAuditFunnelEndpoint(request, env);
         }
 
         // Public services endpoint

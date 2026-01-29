@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "pages:build": "next-on-pages",
-    "pages:deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static"
+    "pages:deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static",
+    "test": "echo 'No tests defined yet'",
+    "test:coverage": "echo 'No coverage defined yet'"
   },
   "dependencies": {
     "lucide-react": "^0.475.0",

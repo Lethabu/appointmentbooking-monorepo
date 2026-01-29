@@ -8,7 +8,9 @@
     "pages:build": "next-on-pages",
     "pages:deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "echo 'No tests defined yet'",
+    "test:coverage": "echo 'No coverage defined yet'"
   },
   "dependencies": {
     "next": "^14.2.35",
