@@ -459,5 +459,20 @@ THIRD-PARTY-NOTICES
 *.7z
 
 # =============================================================================
+# PROJECT SPECIFIC
+# =============================================================================
+build-output.txt
+type-check-errors.txt
+reports/
+Whatsapp/
+apps/dashboard/src/app/lite/
+scripts/revenue-audit-bot.py
+LIVE_ENDPOINTS.md
+LIVE_TEST_STATUS.md
+QUICKSTART.md
+ROUTING_ARCHITECTURE_FIXED.md
+SPACE_CREATION_PLAN.md
+
+# =============================================================================
 # END OF FILE
 # =============================================================================

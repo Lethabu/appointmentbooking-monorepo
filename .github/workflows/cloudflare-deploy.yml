@@ -122,9 +122,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build Next.js application
+      - name: Build for Cloudflare with OpenNext
         working-directory: apps/booking
-        run: pnpm run build
+        run: pnpm run pages:build
         env:
           NODE_ENV: production
           NODE_OPTIONS: '--max-old-space-size=4096'
@@ -132,9 +132,33 @@ jobs:
           NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
 
-      - name: Build for Cloudflare (OpenNext)
+      - name: Validate Build Output - Repeat 1
         working-directory: apps/booking
-        run: npx @opennextjs/cloudflare build
+        run: |
+          echo "🔍 Repeat 1: Validating build artifacts..."
+          
+          # Check OpenNext output exists
+          if [ ! -d ".open-next/assets" ]; then
+            echo "❌ Build output directory .open-next/assets not found"
+            exit 1
+          fi
+          echo "✅ Build output directory exists"
+          
+          # Check critical worker file
+          if [ ! -f ".open-next/assets/_worker.js" ]; then
+            echo "❌ Worker file _worker.js not found"
+            exit 1
+          fi
+          echo "✅ Worker file exists"
+          
+          # Check static assets
+          if [ ! -d ".open-next/assets/_next" ]; then
+            echo "⚠️ Warning: _next directory not found"
+          else
+            echo "✅ Static assets directory exists"
+          fi
+          
+          echo "✅ Build artifacts validation complete"
 
       - name: Deploy to Cloudflare
         id: deploy
@@ -167,17 +191,99 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Health Check
+      - name: Verify Deployment Health - Repeat 2
         run: |
+          echo "🔍 Repeat 2: Verifying deployment health..."
           echo "Waiting for deployment to propagate..."
           sleep 30
           
-          # Check main site
-          curl -sf https://appointmentbooking.co.za/ > /dev/null && echo "✅ Main site OK" || echo "⚠️ Main site check failed"
+          # Check main site with HTTP status
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://appointmentbooking.co.za/)
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "❌ Main site health check failed (HTTP $HTTP_CODE)"
+            exit 1
+          fi
+          echo "✅ Main site responding (HTTP $HTTP_CODE)"
           
-          # Check API health
-          curl -sf https://appointmentbooking-coza.houseofgr8ness.workers.dev/api/health && echo "✅ API OK" || echo "⚠️ API check failed"
-        continue-on-error: true
+          # Check health endpoint
+          HEALTH_RESPONSE=$(curl -s https://appointmentbooking.co.za/api/health || echo '{"status":"error"}')
+          HEALTH_STATUS=$(echo "$HEALTH_RESPONSE" | jq -r '.status // "unknown"' 2>/dev/null || echo "unknown")
+          if [ "$HEALTH_STATUS" = "healthy" ] || [ "$HEALTH_STATUS" = "ok" ]; then
+            echo "✅ Health endpoint OK: $HEALTH_STATUS"
+          else
+            echo "⚠️ Health endpoint returned: $HEALTH_STATUS"
+            echo "Response: $HEALTH_RESPONSE"
+          fi
+          
+          echo "✅ Deployment health verification complete"
+
+      - name: Run Smoke Tests - Repeat 3
+        run: |
+          echo "🔍 Repeat 3: Running functional smoke tests..."
+          
+          # Test 1: Home page loads
+          if curl -sf https://appointmentbooking.co.za/ > /dev/null; then
+            echo "✅ Test 1: Home page loads successfully"
+          else
+            echo "❌ Test 1 FAILED: Home page did not load"
+            exit 1
+          fi
+          
+          # Test 2: API health endpoint
+          if curl -sf https://appointmentbooking.co.za/api/health > /dev/null; then
+            echo "✅ Test 2: API health endpoint responds"
+          else
+            echo "❌ Test 2 FAILED: API health endpoint not responding"
+            exit 1
+          fi
+          
+          # Test 3: Auth providers endpoint
+          if curl -sf https://appointmentbooking.co.za/api/auth/providers > /dev/null; then
+            echo "✅ Test 3: Auth providers endpoint accessible"
+          else
+            echo "⚠️ Test 3: Auth endpoint check failed (may be expected in some configurations)"
+          fi
+          
+          # Test 4: Static asset loading
+          if curl -sf https://appointmentbooking.co.za/_next/static/ > /dev/null 2>&1; then
+            echo "✅ Test 4: Static assets accessible"
+          else
+            echo "⚠️ Test 4: Static assets check inconclusive"
+          fi
+          
+          echo ""
+          echo "✅ Smoke tests completed successfully"
+          echo "✅ All 'Repeat 3 Times' validation phases passed"
+
+      - name: Report Successful Deployment
+        if: success()
+        run: |
+          echo "## ✅ Deployment Successful" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Application URL**: https://appointmentbooking.co.za" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit**: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch**: \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Validation Results" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Repeat 1: Build artifacts validated" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Repeat 2: Deployment health verified" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Repeat 3: Smoke tests passed" >> $GITHUB_STEP_SUMMARY
+
+      - name: Report Deployment Failure
+        if: failure()
+        run: |
+          echo "## ❌ Deployment Failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Workflow**: ${{ github.workflow }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit**: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch**: \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Check the workflow logs above for detailed error information." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Troubleshooting" >> $GITHUB_STEP_SUMMARY
+          echo "1. Verify all GitHub secrets are configured" >> $GITHUB_STEP_SUMMARY
+          echo "2. Check Cloudflare Pages deployment logs" >> $GITHUB_STEP_SUMMARY
+          echo "3. Review build artifacts in workflow logs" >> $GITHUB_STEP_SUMMARY
 
   # =========================================================================
   # PR Preview Comment
