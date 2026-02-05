@@ -6,7 +6,7 @@ import './globals.css'
 // CLOUDFLARE EDGE RUNTIME CONFIGURATION
 // For @cloudflare/next-on-pages compatibility
 // ============================================================================
-// export const runtime = 'edge'
+export const runtime = 'edge'
 
 // Force dynamic rendering for multi-tenant support
 export const dynamic = 'force-dynamic'
