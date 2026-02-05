@@ -5,7 +5,8 @@ import InStyleLandingPage from '../../components/landing/InStyleLandingPage';
 import TenantHome from '../../components/tenant/TenantHome';
 
 // ISR: revalidate every 60 seconds
-export const revalidate = 60;
+export const runtime = 'edge';
+
 
 type Props = {
   params: { tenant: string };
