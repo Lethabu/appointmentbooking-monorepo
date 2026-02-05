@@ -36,3 +36,5 @@ export default function AtomsDemoPage() {
         </div>
     );
 }
+
+export const runtime = 'edge';

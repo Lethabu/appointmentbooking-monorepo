@@ -53,3 +53,5 @@ export default async function BookInStylePage() {
     return <InStyleLandingPage />;
   }
 }
+
+export const runtime = 'edge';

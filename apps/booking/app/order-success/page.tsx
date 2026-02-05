@@ -130,3 +130,5 @@ export default function OrderSuccessPage() {
     </Suspense>
   );
 }
+
+export const runtime = 'edge';

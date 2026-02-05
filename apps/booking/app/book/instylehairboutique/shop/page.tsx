@@ -10,3 +10,5 @@ export const metadata: Metadata = {
 export default function ShopPage() {
     return <EcommerceStore />;
 }
+
+export const runtime = 'edge';

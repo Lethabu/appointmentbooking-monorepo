@@ -199,3 +199,4 @@ export default function StatusPage() {
     </div>
   );
 }
+export const runtime = 'edge';

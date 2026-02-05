@@ -211,3 +211,5 @@ export default function ShopPage() {
         </div>
     )
 }
+
+export const runtime = 'edge';

@@ -13,3 +13,4 @@ export const metadata: Metadata = {
 export default function CompetitiveResponsePage() {
     return <StrategicAutomationDashboard />;
 }
+export const runtime = 'edge';
