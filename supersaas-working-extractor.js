@@ -1,5 +1,5 @@
-const https = require('https');
 const fs = require('fs');
+const https = require('https');
 
 // Working credentials from your successful API call
 const API_KEY = 'pVq0j8Sm2jAaLW6BrBkI5Q';

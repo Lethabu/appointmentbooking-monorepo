@@ -123,7 +123,7 @@ async function runGoLiveChecklist() {
   }
 
   // Final report
-  console.log('\n' + '='.repeat(60));
+  console.log(`\n${  '='.repeat(60)}`);
   console.log('📊 GO-LIVE SUMMARY');
   console.log('='.repeat(60));
   console.log(`✅ Completed: ${successCount}/${CHECKLIST.length} steps`);

@@ -1,7 +1,8 @@
 'use client';
 
-import type { Service } from '@/types';
 import { ServiceCard } from './service-card';
+
+import type { Service } from '@/types';
 
 interface ServiceListProps {
   services: Service[];

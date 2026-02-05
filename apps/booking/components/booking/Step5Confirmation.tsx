@@ -4,6 +4,7 @@
 'use client';
 
 import React from 'react';
+
 import { useBooking, formatPrice, formatDuration } from './BookingContext';
 
 export default function Step5Confirmation() {

@@ -10,8 +10,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings 0",
-    "lint:fix": "eslint \"./src/**/*.{ts,tsx}\" --fix",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

@@ -4,8 +4,9 @@ import {
   HarmBlockThreshold,
   Content,
 } from '@google/generative-ai';
-import { AgentType, MinimalChatMessage } from '../../lib/types';
+
 import { getAgentSystemInstruction } from '../../lib/constants';
+import { AgentType, MinimalChatMessage } from '../../lib/types';
 
 const API_KEY = process.env.GEMINI_API_KEY;
 

@@ -5,6 +5,12 @@ export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+
+import { CalendarSyncService } from '@/services/calendar-sync';
+import { BookingQueries } from '@/utils/database/booking-queries';
+import { SchedulingEngine, TenantConfig, StaffMember, ServiceInfo } from '@/utils/scheduling';
+import { withBookingSecurity } from '@/utils/security/enterprise-security-middleware';
+import { TimezoneManager } from '@/utils/timezone';
 import {
     createBookingRequestSchema,
     updateBookingRequestSchema,
@@ -12,11 +18,6 @@ import {
     validateBookingData,
     validateUpdateBookingData
 } from '@/utils/validation';
-import { SchedulingEngine, TenantConfig, StaffMember, ServiceInfo } from '@/utils/scheduling';
-import { TimezoneManager } from '@/utils/timezone';
-import { BookingQueries } from '@/utils/database/booking-queries';
-import { CalendarSyncService } from '@/services/calendar-sync';
-import { withBookingSecurity } from '@/utils/security/enterprise-security-middleware';
 
 // Mock database - in production, replace with actual database operations
 class MockDatabase {
@@ -191,9 +192,9 @@ export const GET = withBookingSecurity(async function GET(request: NextRequest) 
     try {
         const { searchParams } = new URL(request.url);
         const tenantId = searchParams.get('tenantId') || 'default';
-        const customerId = searchParams.get('customerId') || undefined;
-        const date = searchParams.get('date') || undefined;
-        const status = searchParams.get('status') || undefined;
+        const customerId = searchParams.get('customerId') || null;
+        const date = searchParams.get('date') || null;
+        const status = searchParams.get('status') || null;
         const page = parseInt(searchParams.get('page') || '1');
         const limit = parseInt(searchParams.get('limit') || '20');
 

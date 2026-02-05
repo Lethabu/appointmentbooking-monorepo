@@ -4,10 +4,11 @@
 // Strategic Performance Enhancement System
 // ========================================
 
-import { logger } from '../logger';
 import { ApiError } from '../errors';
-import PredictiveAnalyticsEngine from './predictive-analytics-engine';
+import { logger } from '../logger';
+
 import AnalyticsOrchestrator from './analytics-orchestrator';
+import PredictiveAnalyticsEngine from './predictive-analytics-engine';
 import RealTimeBusinessIntelligence from './realtime-business-intelligence';
 
 export interface PerformanceOptimizationConfig {

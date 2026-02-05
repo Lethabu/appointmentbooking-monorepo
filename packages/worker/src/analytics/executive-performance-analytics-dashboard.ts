@@ -4,13 +4,14 @@
 // South African Beauty Services Market Leadership Dashboard
 // ========================================
 
-import { logger } from '../logger';
 import { ApiError } from '../errors';
-import StrategicPerformanceMeasurementFramework from './strategic-performance-measurement-framework';
+import { logger } from '../logger';
+
 import AdvancedPerformanceOptimizationEngine from './advanced-performance-optimization-engine';
+import AnalyticsOrchestrator from './analytics-orchestrator';
 import PredictiveAnalyticsEngine from './predictive-analytics-engine';
 import RealTimeBusinessIntelligence from './realtime-business-intelligence';
-import AnalyticsOrchestrator from './analytics-orchestrator';
+import StrategicPerformanceMeasurementFramework from './strategic-performance-measurement-framework';
 
 export interface ExecutiveDashboard {
     dashboardId: string;
@@ -385,8 +386,8 @@ export class ExecutivePerformanceAnalyticsDashboard {
                 scoreTrend: this.determineScoreTrend(performanceScore),
                 categoryScores: this.formatCategoryScores(performanceScore.categories),
                 keyMetrics: this.extractKeyMetrics(businessMetrics),
-                alerts: alerts,
-                recommendations: recommendations,
+                alerts,
+                recommendations,
                 predictions: await this.getExecutivePredictions()
             };
 
@@ -550,13 +551,13 @@ export class ExecutivePerformanceAnalyticsDashboard {
                     keyHighlights: this.generateKeyHighlights(overview),
                     criticalIssues: overview.alerts.filter(a => a.severity === 'critical').length,
                     priorityActions: recommendations.filter(r => r.priority === 'critical').length,
-                    timeframe: timeframe,
+                    timeframe,
                     generatedAt: new Date()
                 },
                 performance: {
                     score: overview.overallScore,
                     categories: overview.categoryScores,
-                    kpis: kpis,
+                    kpis,
                     trends: performanceReport.trends,
                     insights: performanceReport.insights
                 },
@@ -572,9 +573,9 @@ export class ExecutivePerformanceAnalyticsDashboard {
                     benchmarks: marketIntel.industryBenchmarks,
                     competitive: marketIntel.competitivePosition
                 },
-                recommendations: recommendations,
-                actions: actions,
-                predictions: predictions,
+                recommendations,
+                actions,
+                predictions,
                 appendix: {
                     methodology: 'AI-powered analysis with predictive modeling',
                     dataSources: ['Business Intelligence', 'Market Intelligence', 'Competitive Analysis', 'Performance Monitoring'],

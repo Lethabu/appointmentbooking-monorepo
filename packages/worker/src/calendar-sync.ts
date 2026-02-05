@@ -74,12 +74,12 @@ export async function handleCalendarSyncEndpoint(request: Request, env: any, cor
 
                 // Fetch events from Google Calendar API
                 const calendarResponse = await fetch(
-                    `${GOOGLE_CALENDAR_API}/calendars/primary/events?` + new URLSearchParams({
+                    `${GOOGLE_CALENDAR_API}/calendars/primary/events?${  new URLSearchParams({
                         timeMin: new Date(startDate).toISOString(),
                         timeMax: new Date(endDate).toISOString(),
                         singleEvents: 'true',
                         orderBy: 'startTime'
-                    }).toString(),
+                    }).toString()}`,
                     {
                         headers: { 'Authorization': `Bearer ${accessToken}` }
                     }
@@ -322,11 +322,11 @@ export async function handleCalendarSyncEndpoint(request: Request, env: any, cor
 
                     if (oauth && oauth.access_token) {
                         const calendarResponse = await fetch(
-                            `${GOOGLE_CALENDAR_API}/calendars/primary/events?` + new URLSearchParams({
+                            `${GOOGLE_CALENDAR_API}/calendars/primary/events?${  new URLSearchParams({
                                 timeMin: startTime,
                                 timeMax: endTime,
                                 singleEvents: 'true'
-                            }).toString(),
+                            }).toString()}`,
                             { headers: { 'Authorization': `Bearer ${oauth.access_token}` } }
                         );
 
@@ -344,7 +344,7 @@ export async function handleCalendarSyncEndpoint(request: Request, env: any, cor
                     data: {
                         hasConflicts: hasConflicts || googleConflicts,
                         databaseConflicts: hasConflicts,
-                        googleConflicts: googleConflicts,
+                        googleConflicts,
                         conflictCount: conflictResult?.conflict_count || 0
                     }
                 }), { status: 200, headers: corsHeaders });

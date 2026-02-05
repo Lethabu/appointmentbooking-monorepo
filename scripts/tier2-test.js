@@ -4,8 +4,8 @@
  * Tests the new Google OAuth and Calendar Sync functionality
  */
 
-const https = require('https');
 const http = require('http');
+const https = require('https');
 
 const WORKER_URL = 'https://appointmentbooking-coza.houseofgr8ness.workers.dev';
 

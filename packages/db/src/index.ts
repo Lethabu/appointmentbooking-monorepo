@@ -1,6 +1,7 @@
 import { drizzle } from 'drizzle-orm/d1';
-import * as schema from './schema';
+
 import * as competitiveIntelligence from './competitive-intelligence-schema';
+import * as schema from './schema';
 
 // Merge schemas for database initialization
 export const fullSchema = {

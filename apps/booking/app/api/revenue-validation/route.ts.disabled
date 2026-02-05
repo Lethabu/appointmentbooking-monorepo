@@ -230,7 +230,7 @@ function calculateRevenueMetrics(inputs: TestScenario['inputs']): RevenueMetrics
         current: {
             monthlyRevenue: Math.round(adjustedRevenue),
             bookings: Math.round(totalBookings),
-            averageBookingValue: averageBookingValue,
+            averageBookingValue,
             conversionRate: Math.min(0.25, 0.05 + (whatsappAdoption * 0.15))
         },
         projected: {

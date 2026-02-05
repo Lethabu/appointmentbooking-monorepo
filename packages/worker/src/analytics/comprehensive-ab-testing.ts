@@ -1,8 +1,8 @@
 // Comprehensive A/B Testing Framework
 // Provides automated A/B testing for all customer touchpoints and conversion funnels
 
-import { logger } from '../logger';
 import { ApiError } from '../errors';
+import { logger } from '../logger';
 
 export interface ABTestConfig {
     id: string;

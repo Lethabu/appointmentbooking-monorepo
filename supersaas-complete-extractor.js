@@ -1,5 +1,5 @@
-const https = require('https');
 const fs = require('fs');
+const https = require('https');
 
 const API_KEY = 'pVq0j8Sm2jAaLW6BrBkI5Q';
 const ACCOUNT = 'InStyle_Hair_Boutique';

@@ -32,8 +32,8 @@ async function extractCompleteServiceData() {
         if (!serviceMap.has(key)) {
           serviceMap.set(key, {
             name: serviceName,
-            price: price,
-            duration: duration,
+            price,
+            duration,
             count: 0,
             bookings: []
           });
@@ -44,7 +44,7 @@ async function extractCompleteServiceData() {
         service.bookings.push({
           client: booking.full_name,
           date: booking.start,
-          duration: duration
+          duration
         });
       });
       

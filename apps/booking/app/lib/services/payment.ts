@@ -1,6 +1,6 @@
 // Payment service stub
 export const createPayment = (amount: number, currency = 'ZAR') => ({
-  id: 'pay_' + Math.random().toString(36).substr(2, 9),
+  id: `pay_${  Math.random().toString(36).substr(2, 9)}`,
   amount,
   currency,
   status: 'pending',
@@ -14,7 +14,7 @@ export const verifyPayment = (paymentId: string) => ({
 });
 
 export const createPaystackPayment = (amount: number, email: string) => ({
-  id: 'pay_' + Math.random().toString(36).substr(2, 9),
+  id: `pay_${  Math.random().toString(36).substr(2, 9)}`,
   amount,
   email,
   status: 'pending',

@@ -1,5 +1,6 @@
-import { AIClient, AIProviderError } from './client';
 import { z } from 'zod';
+
+import { AIClient, AIProviderError } from './client';
 
 /**
  * Booking history entry schema

@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { LayoutGrid, Plus, Globe, Video, CreditCard, MessageSquare, ExternalLink, ShieldCheck } from 'lucide-react';
+import { useState } from 'react';
 
 interface Integration {
     id: string;

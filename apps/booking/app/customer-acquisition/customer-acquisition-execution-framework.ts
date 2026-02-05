@@ -1246,7 +1246,7 @@ export class CustomerAcquisitionExecutionFramework {
         // Update current value (this would be more sophisticated in a real implementation)
         metric.trends.push({
             period: new Date().toISOString().substring(0, 7), // YYYY-MM
-            value: value,
+            value,
             change: 0, // Would calculate change from previous period
             direction: 'up',
             significance: 1.0

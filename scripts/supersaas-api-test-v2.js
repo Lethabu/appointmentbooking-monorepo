@@ -8,7 +8,7 @@ async function testSuperSaaSAPI() {
   
   const authMethods = [
     { name: 'Bearer Token', headers: { 'Authorization': `Bearer ${API_KEY}` } },
-    { name: 'Basic Auth', headers: { 'Authorization': `Basic ${Buffer.from(API_KEY + ':').toString('base64')}` } },
+    { name: 'Basic Auth', headers: { 'Authorization': `Basic ${Buffer.from(`${API_KEY  }:`).toString('base64')}` } },
     { name: 'API Key Header', headers: { 'X-API-Key': API_KEY } },
     { name: 'Query Parameter', url: `${BASE_URL}/schedules.json?api_key=${API_KEY}`, headers: {} }
   ];

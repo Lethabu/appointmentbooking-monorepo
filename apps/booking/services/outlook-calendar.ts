@@ -1,5 +1,4 @@
-import { calendarConnections, calendarSyncEvents } from '@repo/db';
-import { getDb } from '@repo/db';
+import { calendarConnections, calendarSyncEvents , getDb } from '@repo/db';
 import { eq } from 'drizzle-orm';
 
 // Microsoft Graph API configuration

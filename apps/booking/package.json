@@ -14,7 +14,7 @@
     "clean": "rm -rf .next out",
     "build:clean": "pnpm run clean && pnpm run build",
     "test": "vitest",
-    "test:unit": "vitest run tests/(booking-system|api-endpoints|test-setup).test.ts",
+    "test:unit": "vitest run tests/booking-system.test.ts tests/api-endpoints.test.ts",
     "test:integration": "vitest run tests/integration.test.ts",
     "test:api": "vitest run tests/api-endpoints.test.ts",
     "test:security": "vitest run tests/security.test.ts",
@@ -179,7 +179,7 @@
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.0",
     "typescript": "^5.6.3",
-    "vitest": "^2.1.8",
+    "vitest": "^2.1.9",
     "webpack-bundle-analyzer": "^4.10.2",
     "whatwg-fetch": "^3.6.20"
   },

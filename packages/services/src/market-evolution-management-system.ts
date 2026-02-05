@@ -280,9 +280,9 @@ export class MarketEvolutionManager extends EventEmitter {
 
         return {
             speed: adaptationSpeed,
-            effectiveness: effectiveness,
-            resourceAllocation: resourceAllocation,
-            timeline: timeline
+            effectiveness,
+            resourceAllocation,
+            timeline
         };
     }
 

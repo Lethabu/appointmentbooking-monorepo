@@ -4,6 +4,7 @@
 export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from 'next/server';
+
 import { POST as bookingsPOST } from '../bookings/route';
 
 /**

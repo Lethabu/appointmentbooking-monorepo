@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import SimpleCalendar from './SimpleCalendar'; // Assume this exists or create it
+import { useRouter, useParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
+
 import BookingForm from './BookingForm'; // From app/book
+import SimpleCalendar from './SimpleCalendar'; // Assume this exists or create it
 
 interface Service {
   id: string;

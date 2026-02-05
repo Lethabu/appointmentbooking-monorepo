@@ -6,9 +6,9 @@
  * Run: node scripts/smoke-test.js
  */
 
+const fs = require('fs');
 const http = require('http');
 const https = require('https');
-const fs = require('fs');
 const path = require('path');
 
 // Configuration
@@ -820,7 +820,7 @@ function generateReport() {
     const duration = testResults.endTime - testResults.startTime;
     const passRate = ((testResults.totalPassed / testResults.totalTests) * 100).toFixed(2);
 
-    let report = `
+    const report = `
 ╔══════════════════════════════════════════════════════════════════════════╗
 ║     POST-DEPLOYMENT SMOKE TEST REPORT - appointmentbooking.co.za        ║
 ╚══════════════════════════════════════════════════════════════════════════╝
@@ -845,7 +845,7 @@ ${testResults.passed.map(t => `✓ ${t.name}`).join('\n') || 'No tests passed'}
 
 📋 FAILED TESTS (${testResults.failed.length})
 ─────────────────────────────────────────────────────────────────────────────
-${testResults.failed.map(t => `✗ ${t.name}${t.error ? ': ' + t.error : ''}`).join('\n') || 'No tests failed'}
+${testResults.failed.map(t => `✗ ${t.name}${t.error ? `: ${  t.error}` : ''}`).join('\n') || 'No tests failed'}
 
 ⚠️ WARNINGS
 ─────────────────────────────────────────────────────────────────────────────

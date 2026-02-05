@@ -52,7 +52,7 @@ export async function handleAuthEndpoint(request: Request, env: any, corsHeaders
                         token,
                         user: {
                             id: userId,
-                            email: email,
+                            email,
                             role: 'user',
                             tenantId: tenantIdToUse
                         }

@@ -3,8 +3,6 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useBooking } from './BookingContext';
 import {
     User,
     Mail,
@@ -21,6 +19,9 @@ import {
     Gift,
     Info
 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { useBooking } from './BookingContext';
 
 interface CustomerPreferences {
     preferredStaff: string[];

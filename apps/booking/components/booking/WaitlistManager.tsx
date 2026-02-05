@@ -3,7 +3,6 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
 import {
     Clock,
     Users,
@@ -19,6 +18,7 @@ import {
     UserPlus,
     Zap
 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 
 interface WaitlistEntry {
     id: string;

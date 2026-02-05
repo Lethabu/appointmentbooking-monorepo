@@ -100,7 +100,7 @@ function formatBytes(bytes) {
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))  } ${  sizes[i]}`;
 }
 
 /**
@@ -245,7 +245,7 @@ function findCleanupCandidates() {
  * Generate cleanup report
  */
 function generateReport() {
-    console.log('\n' + '='.repeat(70));
+    console.log(`\n${  '='.repeat(70)}`);
     console.log('  DISK USAGE ANALYSIS AND CLEANUP REPORT');
     console.log('='.repeat(70));
 
@@ -253,7 +253,7 @@ function generateReport() {
 
     // Directory usage
     console.log('\n--- DIRECTORY USAGE ---');
-    console.log('Directory'.padEnd(40) + 'Size'.padEnd(15) + 'Files'.padEnd(10) + 'Dirs');
+    console.log(`${'Directory'.padEnd(40) + 'Size'.padEnd(15) + 'Files'.padEnd(10)  }Dirs`);
     console.log('-'.repeat(75));
 
     const sortedDirs = Object.entries(results.diskUsage)
@@ -261,7 +261,7 @@ function generateReport() {
         .sort((a, b) => b[1].size - a[1].size);
 
     for (const [dirName, data] of sortedDirs) {
-        const name = dirName.length > 38 ? dirName.substring(0, 35) + '...' : dirName;
+        const name = dirName.length > 38 ? `${dirName.substring(0, 35)  }...` : dirName;
         console.log(
             name.padEnd(40) +
             data.sizeFormatted.padEnd(15) +
@@ -457,7 +457,7 @@ async function performCleanup(dryRun = true) {
  * Main execution
  */
 async function main() {
-    console.log('\n' + '='.repeat(70));
+    console.log(`\n${  '='.repeat(70)}`);
     console.log('  DISK USAGE ANALYSIS FOR APPOINTMENTBOOKING MONOREPO');
     console.log('='.repeat(70));
 

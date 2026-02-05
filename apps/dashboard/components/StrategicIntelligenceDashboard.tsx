@@ -6,6 +6,23 @@
 
 'use client';
 
+import {
+    TrendingUp,
+    TrendingDown,
+    AlertTriangle,
+    Target,
+    Users,
+    DollarSign,
+    Eye,
+    Shield,
+    Award,
+    Calendar,
+    Clock,
+    MapPin,
+    Smartphone,
+    Brain,
+    Zap
+} from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import {
     BarChart,
@@ -26,23 +43,6 @@ import {
     PolarRadiusAxis,
     Radar
 } from 'recharts';
-import {
-    TrendingUp,
-    TrendingDown,
-    AlertTriangle,
-    Target,
-    Users,
-    DollarSign,
-    Eye,
-    Shield,
-    Award,
-    Calendar,
-    Clock,
-    MapPin,
-    Smartphone,
-    Brain,
-    Zap
-} from 'lucide-react';
 
 interface DashboardData {
     marketOverview: {

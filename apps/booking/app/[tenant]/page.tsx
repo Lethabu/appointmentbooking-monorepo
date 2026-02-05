@@ -1,7 +1,8 @@
 // @ts-nocheck
 import React from 'react';
-import TenantHome from '../../components/tenant/TenantHome';
+
 import InStyleLandingPage from '../../components/landing/InStyleLandingPage';
+import TenantHome from '../../components/tenant/TenantHome';
 
 // ISR: revalidate every 60 seconds
 export const revalidate = 60;

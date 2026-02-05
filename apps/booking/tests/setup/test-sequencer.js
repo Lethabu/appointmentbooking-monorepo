@@ -3,8 +3,9 @@
  * Determines the order in which tests are executed
  */
 
-const { Sequencer } = require('@jest/test-sequencer');
 const path = require('path');
+
+const { Sequencer } = require('@jest/test-sequencer');
 
 class CustomTestSequencer extends Sequencer {
     /**

@@ -77,7 +77,7 @@ class QualityMetricsGenerator {
             violationsByFile[filePath] = {
                 errors: fileErrors,
                 warnings: fileWarnings,
-                messages: messages
+                messages
             };
 
             messages.forEach(message => {

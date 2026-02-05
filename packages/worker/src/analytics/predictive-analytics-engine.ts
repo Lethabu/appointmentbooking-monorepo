@@ -1,8 +1,8 @@
 // Predictive Analytics for Strategic Optimization
 // Provides 85%+ accuracy in demand forecasting and strategic business insights
 
-import { logger } from '../logger';
 import { ApiError } from '../errors';
+import { logger } from '../logger';
 
 export interface PredictiveModel {
     id: string;

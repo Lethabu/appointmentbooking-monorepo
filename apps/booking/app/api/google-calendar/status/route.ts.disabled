@@ -4,6 +4,7 @@
 export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from 'next/server';
+
 import { getCalendarConnectionStatus } from '@/services/google-calendar';
 
 /**

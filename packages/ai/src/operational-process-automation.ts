@@ -3,8 +3,8 @@
  * Implements workflow management, reporting automation, quality assurance, and performance optimization
  */
 
-import { z } from 'zod';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { z } from 'zod';
 
 // Operational Process Automation Types
 export interface WorkflowAutomation {

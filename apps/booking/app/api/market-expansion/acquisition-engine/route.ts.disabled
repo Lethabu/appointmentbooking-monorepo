@@ -454,7 +454,7 @@ async function executeEnterpriseTargeting(request: EnterpriseTargetingRequest) {
         type: request.companyType,
         approach: request.approach,
         valueProposition: request.valueProposition,
-        prospects: prospects,
+        prospects,
         totalDealValue: prospects.reduce((sum, p) => sum + (p?.dealSize || 0), 0),
         expectedCloseRate: prospects.length > 0 ? 65 : 0,
         timeline: 120, // days
@@ -471,7 +471,7 @@ async function executePartnershipExpansion(request: PartnershipExpansionRequest)
         if (!opportunity) return null;
 
         return {
-            partner: partner,
+            partner,
             ...opportunity,
             partnershipModel: request.partnershipModel,
             revenueShare: request.revenueShare,
@@ -488,7 +488,7 @@ async function executePartnershipExpansion(request: PartnershipExpansionRequest)
         type: request.partnerType,
         model: request.partnershipModel,
         revenueShare: request.revenueShare,
-        partnerships: partnerships,
+        partnerships,
         totalInvestment: partnerships.reduce((sum, p) => sum + (p?.expansion.investmentRequired || 0), 0),
         expectedReferrals: partnerships.reduce((sum, p) => sum + (p?.monthlyReferrals || 0), 0) * 12,
         expectedRevenue: partnerships.reduce((sum, p) => sum + (p?.monthlyReferrals || 0), 0) * 12 * 4200,

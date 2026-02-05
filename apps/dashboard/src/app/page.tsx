@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemo, useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
+import { useMemo, useState, useEffect } from 'react';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface Booking {
@@ -164,7 +164,7 @@ export default function Dashboard() {
     });
 
     Object.keys(buckets).forEach((dateKey) => {
-      const d = new Date(dateKey + 'T00:00:00');
+      const d = new Date(`${dateKey}T00:00:00`);
       result.push({ date: d.toLocaleDateString('en-ZA', { month: 'short', day: 'numeric' }), revenue: buckets[dateKey].revenue, appointments: buckets[dateKey].appointments });
     });
 

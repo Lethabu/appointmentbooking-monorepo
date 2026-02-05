@@ -1,8 +1,8 @@
 // Real-Time Business Intelligence Analytics Engine
 // Provides comprehensive KPI tracking with <1 minute data latency
 
-import { logger } from '../logger';
 import { ApiError } from '../errors';
+import { logger } from '../logger';
 
 export interface BusinessMetrics {
     // Customer Acquisition Metrics

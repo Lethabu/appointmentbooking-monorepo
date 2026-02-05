@@ -198,7 +198,7 @@ export async function POST(request: NextRequest) {
         const tier = SUBSCRIPTION_TIERS[validatedData.tier.toUpperCase() as keyof typeof SUBSCRIPTION_TIERS];
 
         // Calculate pricing with discounts
-        let basePrice = tier.price;
+        const basePrice = tier.price;
         let discount = 0;
 
         // Apply promotional codes if provided

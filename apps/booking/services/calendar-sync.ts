@@ -1,8 +1,9 @@
-import { calendarConnections, calendarSyncEvents, appointments } from '@repo/db';
-import { getDb } from '@repo/db';
+import { calendarConnections, calendarSyncEvents, appointments , getDb } from '@repo/db';
 import { eq, and, sql } from 'drizzle-orm';
+
 import { createCalendarEvent as createGoogleEvent, updateCalendarEvent as updateGoogleEvent, deleteCalendarEvent as deleteGoogleEvent } from './google-calendar';
 import { createCalendarEvent as createOutlookEvent, updateCalendarEvent as updateOutlookEvent, deleteCalendarEvent as deleteOutlookEvent } from './outlook-calendar';
+
 import { BookingQueries } from '@/utils/database/booking-queries';
 
 export interface CalendarEventData {

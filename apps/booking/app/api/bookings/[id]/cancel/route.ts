@@ -4,8 +4,9 @@
 export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from 'next/server';
-import { BookingQueries } from '@/utils/database/booking-queries';
+
 import { CalendarSyncService } from '@/services/calendar-sync';
+import { BookingQueries } from '@/utils/database/booking-queries';
 import { validateUpdateBookingData } from '@/utils/validation';
 
 /**

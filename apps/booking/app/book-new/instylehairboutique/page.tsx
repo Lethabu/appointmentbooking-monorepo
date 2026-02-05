@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+
 import BookingWizard from '@/components/booking/BookingWizard';
 
 export const metadata: Metadata = {

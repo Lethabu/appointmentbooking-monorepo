@@ -4,9 +4,9 @@
  */
 
 // Import testing utilities
-import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from 'vitest';
-import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
+import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from 'vitest';
 
 // Security testing utilities
 interface SecurityTestResult {
@@ -1031,7 +1031,7 @@ describe('Security Testing Suite', () => {
             expect(report).toContain('Critical Vulnerabilities:');
             expect(report).toContain('Overall Risk Level:');
 
-            console.log('\n' + report);
+            console.log(`\n${  report}`);
         });
 
         it('should categorize vulnerabilities by severity', () => {

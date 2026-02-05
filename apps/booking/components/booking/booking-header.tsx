@@ -1,5 +1,6 @@
-import type { Tenant } from '@/types';
 import Image from 'next/image';
+
+import type { Tenant } from '@/types';
 
 interface BookingHeaderProps {
   tenant: Tenant;

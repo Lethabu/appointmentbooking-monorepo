@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { enterpriseAuth } from './enterprise-auth-framework';
-import { sessionManager } from './enterprise-session-manager';
-import { calendarSecurity } from './enterprise-calendar-security';
+
 import { apiAuth } from './enterprise-api-auth';
+import { enterpriseAuth } from './enterprise-auth-framework';
+import { calendarSecurity } from './enterprise-calendar-security';
+import { sessionManager } from './enterprise-session-manager';
 
 /**
  * Enterprise OAuth Integration Security

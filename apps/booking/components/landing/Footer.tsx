@@ -1,5 +1,3 @@
-import React from 'react';
-import Image from 'next/image';
 import {
     MapPin,
     Phone,
@@ -7,6 +5,8 @@ import {
     Instagram,
     Facebook
 } from 'lucide-react';
+import Image from 'next/image';
+import React from 'react';
 import { FaTiktok } from 'react-icons/fa';
 
 interface FooterProps {

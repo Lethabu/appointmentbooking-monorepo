@@ -1,14 +1,16 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+
+import { AppointmentSummary } from './appointment-summary';
+import { BookingHeader } from './booking-header';
+import { ProductShowcase } from './product-showcase';
+import { ServiceList } from './service-list';
+
+import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { useTenantContext } from '@/contexts/tenant-context';
 import { useTheme } from '@/contexts/theme-context';
-import { BookingHeader } from './booking-header';
-import { ServiceList } from './service-list';
-import { ProductShowcase } from './product-showcase';
-import { AppointmentSummary } from './appointment-summary';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { api } from '@/lib/api';
 import type { Service, Product, BookingFormData } from '@/types';
 

@@ -2,6 +2,7 @@
 // Executive interface for strategic automation and market domination
 
 import { Metadata } from 'next';
+
 import StrategicAutomationDashboard from '@/components/competitive-response/StrategicAutomationDashboard';
 
 export const metadata: Metadata = {

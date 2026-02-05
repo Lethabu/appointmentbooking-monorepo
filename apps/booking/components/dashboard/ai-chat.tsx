@@ -1,8 +1,11 @@
 'use client';
 
+import { Send, Bot, User, Loader2 } from 'lucide-react';
 import type React from 'react';
-
 import { useState, useEffect, useRef } from 'react';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -10,8 +13,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Select,
   SelectContent,
@@ -19,9 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Send, Bot, User, Loader2 } from 'lucide-react';
 import { useTenantContext } from '@/contexts/tenant-context';
 import { api } from '@/lib/api';
 import type { ChatMessage, AIAgent } from '@/types';

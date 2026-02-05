@@ -1,12 +1,13 @@
 // Advanced Analytics Orchestrator - Central Control System
 // Integrates all analytics components for unified intelligence and automated optimization
 
-import { logger } from '../logger';
 import { ApiError } from '../errors';
-import RealTimeBusinessIntelligence from './realtime-business-intelligence';
+import { logger } from '../logger';
+
 import AutomatedAlertSystem from './automated-alert-system';
 import ComprehensiveABTestingFramework from './comprehensive-ab-testing';
 import PredictiveAnalyticsEngine from './predictive-analytics-engine-clean';
+import RealTimeBusinessIntelligence from './realtime-business-intelligence';
 
 export interface AnalyticsOrchestratorConfig {
     tenantId: string;

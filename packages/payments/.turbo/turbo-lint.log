@@ -1,19 +1,5 @@
 
 > @repo/payments@0.0.0 lint C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\payments
-> eslint "./src/**/*.{ts,tsx}" --max-warnings 0
+> eslint . --max-warnings 0
 
-
-Oops! Something went wrong! :(
-
-ESLint: 8.57.1
-
-You are linting "./src/**/*.{ts,tsx}", but all of the files matching the glob pattern "./src/**/*.{ts,tsx}" are ignored.
-
-If you don't want to lint these files, remove the pattern "./src/**/*.{ts,tsx}" from the list of arguments passed to ESLint.
-
-If you do want to lint these files, try the following solutions:
-
-* Check your .eslintignore file, or the eslintIgnore property in package.json, to ensure that the files are not configured to be ignored.
-* Explicitly list the files from this glob that you'd like to lint on the command-line, rather than providing a glob as an argument.
-
- ELIFECYCLE  Command failed with exit code 2.
+Warning: React version was set to "detect" in eslint-plugin-react settings, but the "react" package is not installed. Assuming latest React version for linting.

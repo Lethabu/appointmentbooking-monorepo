@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+
 import InStyleLandingPage from '@/components/landing/InStyleLandingPage';
 
 export const metadata: Metadata = {

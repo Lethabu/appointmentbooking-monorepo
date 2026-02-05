@@ -584,7 +584,7 @@ export class CustomerAdvocacyAutomation {
         try {
             let spotlightsCreated = 0;
             let recognitionCampaigns = 0;
-            let engagementMetrics = {
+            const engagementMetrics = {
                 totalReach: 0,
                 totalEngagement: 0,
                 totalConversions: 0

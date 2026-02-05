@@ -2,6 +2,7 @@
 // South African privacy compliance for competitive differentiation
 
 import { createClient } from '@supabase/supabase-js';
+
 import { ConsentManager } from '../utils/security/privacy-compliance';
 
 export interface RBACSystem {

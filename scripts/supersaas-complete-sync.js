@@ -70,7 +70,7 @@ async function getCompleteServiceData() {
       serviceData.push({
         id: resource.id,
         name: resource.name,
-        price: price,
+        price,
         duration: Math.round(duration),
         bookings: serviceBookings.length
       });

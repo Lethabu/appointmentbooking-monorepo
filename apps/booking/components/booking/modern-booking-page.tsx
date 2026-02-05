@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from 'react';
 import {
   Calendar,
   Clock,
@@ -13,6 +12,7 @@ import {
   Palette,
   Sparkles,
 } from 'lucide-react';
+import { useState } from 'react';
 
 interface ModernService {
   id: number;

@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
 import { BookingWidget } from '@repo/atoms';
+import React from 'react';
 
 export default function AtomsDemoPage() {
     return (

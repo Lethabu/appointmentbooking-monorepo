@@ -9,10 +9,9 @@ export class NetcashGateway implements PaymentRouter {
         this.merchantId = config.merchantId;
     }
 
-    async processDeposit(bookingId: string, amount: number, currency: string, bookingDetails: any): Promise<PaymentResult> {
+    async processDeposit(bookingId: string, amount: number): Promise<PaymentResult> {
         // Implement Netcash Pay Now URL construction
         // Netcash usually uses a redirect to their Pay Now page
-        const returnUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/payments/webhook?gateway=netcash&bookingId=${bookingId}`;
 
         // This is a simplified "redirect" simulation
         // In reality, you'd construct the full URL with parameters like:
@@ -33,8 +32,9 @@ export class NetcashGateway implements PaymentRouter {
         };
     }
 
-    async handleWebhook(event: Request): Promise<void> {
+    async handleWebhook(): Promise<void> {
         // Netcash IPN verification logic
+        // eslint-disable-next-line no-console
         console.log("Netcash Webhook received");
     }
 }

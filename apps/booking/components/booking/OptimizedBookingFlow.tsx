@@ -1,8 +1,9 @@
 // Performance-optimized lazy-loaded booking page
 "use client";
 
-import { lazy, Suspense, useState } from 'react';
 import { motion } from 'framer-motion';
+import { lazy, Suspense, useState } from 'react';
+
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 // Lazy load heavy components

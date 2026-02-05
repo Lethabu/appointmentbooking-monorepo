@@ -51,33 +51,8 @@ const nextConfig = {
     // Disable webpack cache for Cloudflare build environments to avoid size issues
     config.cache = false;
 
-    // Optimize bundle size for client-side
-    if (!isServer) {
-      config.optimization = {
-        ...config.optimization,
-        splitChunks: {
-          chunks: 'all',
-          cacheGroups: {
-            default: false,
-            vendors: false,
-            vendor: {
-              name: 'vendor',
-              chunks: 'all',
-              test: /node_modules/,
-              priority: 20
-            },
-            common: {
-              name: 'common',
-              minChunks: 2,
-              chunks: 'all',
-              priority: 10,
-              reuseExistingChunk: true,
-              enforce: true
-            }
-          }
-        }
-      };
-    }
+    // NOTE: splitChunks configuration removed to fix 'ReferenceError: self is not defined' 
+    // in Cloudflare Edge runtime. Default Next.js splitting is preferred.
 
     return config;
   },

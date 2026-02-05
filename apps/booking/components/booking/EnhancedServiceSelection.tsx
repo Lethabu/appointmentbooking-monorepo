@@ -3,10 +3,6 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useBooking, Service } from './BookingContext';
-import { formatPrice, formatDuration, getTotalDuration } from './BookingContext';
-import { useToast } from '@/hooks/use-toast';
 import {
     Star,
     Clock,
@@ -22,6 +18,11 @@ import {
     Minus,
     Info
 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { useBooking, Service , formatPrice, formatDuration, getTotalDuration } from './BookingContext';
+
+import { useToast } from '@/hooks/use-toast';
 
 // Local enhanced Service interface for display purposes
 interface EnhancedService {

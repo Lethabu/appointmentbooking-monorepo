@@ -6,14 +6,14 @@ const axe = require('axe-core');
 const BASE = process.env.DEPLOY_URL || 'https://www.instylehairboutique.co.za';
 
 async function run() {
-  console.log('Running accessibility check against', BASE + '/shop');
-  const res = await fetch(BASE + '/shop');
+  console.log('Running accessibility check against', `${BASE  }/shop`);
+  const res = await fetch(`${BASE  }/shop`);
   if (!res.ok) {
     console.error('Failed to fetch /shop', res.status);
     process.exit(2);
   }
   const html = await res.text();
-  const dom = new JSDOM(html, { url: BASE + '/shop', runScripts: 'dangerously', resources: 'usable' });
+  const dom = new JSDOM(html, { url: `${BASE  }/shop`, runScripts: 'dangerously', resources: 'usable' });
   const { window } = dom;
 
   // Inject axe by loading the minified axe script from the package

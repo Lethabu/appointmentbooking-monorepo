@@ -524,7 +524,7 @@ export class ErrorTestHelper {
         const boundaryValues: Record<string, any> = {
             emptyString: '',
             null: null,
-            undefined: undefined,
+            undefined,
             zero: 0,
             negative: -1,
             veryLarge: 999999999,

@@ -2,11 +2,11 @@
 // MIND-BODY COMMERCE DATABASE CONNECTION
 // ========================================
 
-import { drizzle } from 'drizzle-orm/d1';
 import { getRequestContext } from '@cloudflare/next-on-pages';
 
 // Import schema from the db package
 import * as schema from '@repo/db/schema';
+import { drizzle } from 'drizzle-orm/d1';
 
 // Get the database instance from Cloudflare context
 export function getDb() {

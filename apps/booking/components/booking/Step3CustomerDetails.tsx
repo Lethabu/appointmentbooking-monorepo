@@ -4,6 +4,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+
 import { useBooking, CustomerDetails } from './BookingContext';
 
 interface FormErrors {

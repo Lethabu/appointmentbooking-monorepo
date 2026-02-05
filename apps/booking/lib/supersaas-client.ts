@@ -62,8 +62,8 @@ export async function getSuperSaaSAppointments(
   const url = `${SUPERSAAS_BASE_URL}/bookings.json`;
 
   const params = new URLSearchParams({
-    'from': from,
-    'to': to,
+    from,
+    to,
     'schedule_id': scheduleId
   });
 
@@ -96,8 +96,8 @@ export async function getSuperSaaSAvailability(
   const url = `${SUPERSAAS_BASE_URL}/free.json`;
 
   const params = new URLSearchParams({
-    'from': from,
-    'to': to,
+    from,
+    to,
     'schedule_id': scheduleId
   });
 

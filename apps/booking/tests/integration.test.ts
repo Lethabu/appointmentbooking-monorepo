@@ -4,9 +4,9 @@
  */
 
 // Import testing utilities
-import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from 'vitest';
-import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
+import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from 'vitest';
 
 // Mock environment
 process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co';

@@ -14,7 +14,7 @@ function makeRequest(endpoint, params = {}) {
         
         const options = {
             hostname: 'www.supersaas.com',
-            path: path,
+            path,
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -36,7 +36,7 @@ function makeRequest(endpoint, params = {}) {
                         const result = JSON.parse(data);
                         resolve({ success: true, data: result });
                     } catch (e) {
-                        resolve({ success: true, data: data });
+                        resolve({ success: true, data });
                     }
                 } else {
                     console.log(`   Error: ${data}`);

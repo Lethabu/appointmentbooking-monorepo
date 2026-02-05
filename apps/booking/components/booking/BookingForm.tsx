@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface Service {
   id: string;
@@ -41,7 +41,7 @@ export default function BookingForm({ tenantId }: BookingFormProps) {
       .from('bookings')
       .insert({
         tenant_id: tenantId,
-        service: service,
+        service,
         scheduled_time: time,
         client_name: name,
         status: 'confirmed',
@@ -49,7 +49,7 @@ export default function BookingForm({ tenantId }: BookingFormProps) {
 
     setLoading(false);
     if (submitError) {
-      setError('Booking failed: ' + submitError.message);
+      setError(`Booking failed: ${  submitError.message}`);
     } else {
       router.push('/order-success');
     }

@@ -1,8 +1,8 @@
 // Comprehensive Customer Success Automation System
 // Advanced retention and expansion automation for appointmentbooking.co.za
 
-import { CustomerProfile, BusinessContext, Service, Product } from '../../types';
 import CustomerProfiler from '../../services/customer-profiler';
+import { CustomerProfile, BusinessContext, Service, Product } from '../../types';
 
 export interface CustomerHealthScore {
     overall: number; // 0-100

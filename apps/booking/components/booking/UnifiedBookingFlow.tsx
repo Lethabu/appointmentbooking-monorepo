@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { ChevronRight, ChevronLeft, Check, Star, Shield, Users, Clock, Calendar, MapPin, Phone, Mail, AlertCircle, Loader2, Heart } from 'lucide-react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { ChevronRight, ChevronLeft, Check, Star, Shield, Users, Clock, Calendar, MapPin, Phone, Mail, AlertCircle, Loader2, Heart } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 // Enhanced Service Interface
 interface Service {

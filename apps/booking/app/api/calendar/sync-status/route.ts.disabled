@@ -3,10 +3,10 @@
 // ============================================================================
 export const runtime = 'edge';
 
-import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@repo/db';
 import { calendarConnections, calendarSyncEvents } from '@repo/db/schema';
 import { eq, and, desc, sql, count } from 'drizzle-orm';
+import { NextRequest, NextResponse } from 'next/server';
 
 /**
  * Calendar Sync Status Monitoring
@@ -189,7 +189,7 @@ export async function POST(request: NextRequest) {
         const db = getDb({ DB: env.DB || (global as any).DB });
 
         // Get failed sync events
-        let query = db
+        const query = db
             .select()
             .from(calendarSyncEvents)
             .where(and(

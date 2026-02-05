@@ -3,15 +3,15 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useBooking } from './BookingContext';
-import { Service } from './BookingContext';
-import EnhancedServiceSelection from './EnhancedServiceSelection';
-import AdvancedDateTimeSelection from './AdvancedDateTimeSelection';
-import EnhancedCustomerDetails from './EnhancedCustomerDetails';
-import AdvancedPaymentSummary from './AdvancedPaymentSummary';
-import EnhancedConfirmation from './EnhancedConfirmation';
 import { Calendar, Clock, User, CreditCard, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import AdvancedDateTimeSelection from './AdvancedDateTimeSelection';
+import AdvancedPaymentSummary from './AdvancedPaymentSummary';
+import { useBooking , Service } from './BookingContext';
+import EnhancedConfirmation from './EnhancedConfirmation';
+import EnhancedCustomerDetails from './EnhancedCustomerDetails';
+import EnhancedServiceSelection from './EnhancedServiceSelection';
 
 // Enhanced progress indicator with validation states
 function EnhancedProgressIndicator() {

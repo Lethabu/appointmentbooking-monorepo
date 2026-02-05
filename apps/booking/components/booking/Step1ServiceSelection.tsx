@@ -3,8 +3,9 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import React, { useState, useEffect } from 'react';
+
 import { useBooking, Service, formatPrice, formatDuration, getTotalDuration } from './BookingContext';
 
 export default function Step1ServiceSelection() {

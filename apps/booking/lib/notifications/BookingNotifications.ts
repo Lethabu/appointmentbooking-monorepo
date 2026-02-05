@@ -1,8 +1,9 @@
 // Booking Notifications Service
 // File: apps/booking/lib/notifications/BookingNotifications.ts
 
-import { whatsappClient, WhatsAppTemplates } from '../whatsapp/AISensyClient';
 import { createClient } from '@supabase/supabase-js';
+
+import { whatsappClient, WhatsAppTemplates } from '../whatsapp/AISensyClient';
 
 // Types
 export interface Booking {

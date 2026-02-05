@@ -4,6 +4,12 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { detectXss, detectSqlInjection, generateSecurityHeaders, validateAndSanitize } from '../utils/security/sanitization';
+import { enhancedBookingRequestSchema } from '../utils/security/validation-schemas';
+import { SecurityMiddleware } from '../utils/security/security-middleware';
+import { VulnerabilityType, SeverityLevel } from '../utils/security/security-audit';
+import { PCIComplianceEngine, ComplianceStatus } from '../utils/security/pci-compliance';
+import { UserRightsManager, ConsentManager, ProcessingPurpose, GDPRComplianceValidator, DataCategory } from '../utils/security/privacy-compliance';
 
 // Fix for global jest usage
 const jest = vi;
@@ -65,8 +71,6 @@ describe('Security Framework Integration Tests', () => {
     describe('Input Validation and Sanitization', () => {
 
         it('should detect XSS attempts', () => {
-            const { detectXss } = require('../utils/security/sanitization');
-
             const xssPayloads = [
                 '<script>alert("xss")</script>',
                 'javascript:alert("xss")',
@@ -81,8 +85,6 @@ describe('Security Framework Integration Tests', () => {
         });
 
         it('should detect SQL injection attempts', () => {
-            const { detectSqlInjection } = require('../utils/security/sanitization');
-
             const sqlPayloads = [
                 "' OR '1'='1",
                 "'; DROP TABLE users; --",
@@ -97,8 +99,6 @@ describe('Security Framework Integration Tests', () => {
         });
 
         it('should validate booking requests correctly', () => {
-            const { enhancedBookingRequestSchema, validateAndSanitize } = require('../utils/security/validation-schemas');
-
             const validBooking = {
                 serviceId: 'service_1',
                 staffId: 'staff_1',
@@ -118,8 +118,6 @@ describe('Security Framework Integration Tests', () => {
         });
 
         it('should generate security headers', () => {
-            const { generateSecurityHeaders } = require('../utils/security/sanitization');
-
             const headers = generateSecurityHeaders();
 
             expect(headers['X-Content-Type-Options']).toBe('nosniff');
@@ -138,8 +136,6 @@ describe('Security Framework Integration Tests', () => {
         });
 
         it('should allow valid requests through security middleware', async () => {
-            const { SecurityMiddleware } = require('../utils/security/security-middleware');
-
             const request = new MockNextRequest({
                 method: 'GET',
                 headers: {
@@ -156,8 +152,6 @@ describe('Security Framework Integration Tests', () => {
         });
 
         it('should detect malicious content', async () => {
-            const { SecurityMiddleware } = require('../utils/security/security-middleware');
-
             const request = new MockNextRequest({
                 method: 'POST',
                 body: {
@@ -181,8 +175,6 @@ describe('Security Framework Integration Tests', () => {
     describe('Security Audit Engine', () => {
 
         it('should identify vulnerability types', async () => {
-            const { VulnerabilityType, SeverityLevel } = require('../utils/security/security-audit');
-
             // This test would need actual vulnerable code to detect
             // For now, we test the structure
             expect(VulnerabilityType.SQL_INJECTION).toBe('sql_injection');
@@ -196,8 +188,6 @@ describe('Security Framework Integration Tests', () => {
     describe('PCI-DSS Compliance', () => {
 
         it('should assess PCI compliance requirements', async () => {
-            const { PCIComplianceEngine, ComplianceStatus } = require('../utils/security/pci-compliance');
-
             const results = await PCIComplianceEngine.assessCompliance();
 
             expect(results).toBeDefined();
@@ -217,18 +207,14 @@ describe('Security Framework Integration Tests', () => {
     describe('GDPR and Privacy Compliance', () => {
 
         it('should process data subject access requests', async () => {
-            const { UserRightsManager } = require('../utils/security/privacy-compliance');
-
             const result = await UserRightsManager.processAccessRequest('test@example.com');
 
             expect(result.requestId).toBeDefined();
             expect(result.estimatedCompletion).toBeDefined();
-            expect(new Date(result.estimatedCompletion)).toBeAfter(new Date());
+            expect(new Date(result.estimatedCompletion).getTime()).toBeGreaterThan(new Date().getTime());
         });
 
         it('should record and manage consent', () => {
-            const { ConsentManager, ProcessingPurpose } = require('../utils/security/privacy-compliance');
-
             const consentId = ConsentManager.recordConsent({
                 userId: 'user123',
                 purpose: ProcessingPurpose.MARKETING,
@@ -248,8 +234,6 @@ describe('Security Framework Integration Tests', () => {
         });
 
         it('should validate GDPR compliance', async () => {
-            const { GDPRComplianceValidator, DataCategory, ProcessingPurpose } = require('../utils/security/privacy-compliance');
-
             const data = {
                 dataCategories: [DataCategory.PERSONAL_IDENTIFIERS],
                 processingPurposes: [ProcessingPurpose.SERVICE_PROVISION],
@@ -272,8 +256,6 @@ describe('Security Framework Integration Tests', () => {
     describe('Security Headers and Configuration', () => {
 
         it('should generate comprehensive security headers', () => {
-            const { generateSecurityHeaders } = require('../utils/security/sanitization');
-
             const headers = generateSecurityHeaders();
 
             // Test specific security headers
@@ -297,8 +279,6 @@ describe('Security Framework Integration Tests', () => {
     describe('Error Handling and Logging', () => {
 
         it('should handle validation errors gracefully', () => {
-            const { enhancedBookingRequestSchema, validateAndSanitize } = require('../utils/security/validation-schemas');
-
             const invalidData = { invalid: 'data' };
             const result = validateAndSanitize(invalidData, enhancedBookingRequestSchema);
 
@@ -311,8 +291,6 @@ describe('Security Framework Integration Tests', () => {
     describe('Performance and Load Testing', () => {
 
         it('should handle concurrent requests efficiently', async () => {
-            const { SecurityMiddleware } = require('../utils/security/security-middleware');
-
             const requests = Array.from({ length: 20 }, (_, i) =>
                 new MockNextRequest({
                     method: 'GET',

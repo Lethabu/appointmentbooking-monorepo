@@ -23,8 +23,8 @@ export async function POST(req: NextRequest) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: model,
-        prompt: prompt,
+        model,
+        prompt,
         stream: true, // We will handle the streaming response
       }),
     });

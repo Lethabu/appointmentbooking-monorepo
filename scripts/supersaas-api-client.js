@@ -21,7 +21,7 @@ async function testSuperSaaSAccess() {
       const resources = await resourcesResponse.json();
       console.log(`✅ SUCCESS! Found ${resources.length} resource(s):`);
       resources.forEach((resource, index) => {
-        console.log(`   ${index + 1}. ${resource.name} - ${resource.price ? 'R' + resource.price : 'No price'} (${resource.duration || 'No duration'})`);
+        console.log(`   ${index + 1}. ${resource.name} - ${resource.price ? `R${  resource.price}` : 'No price'} (${resource.duration || 'No duration'})`);
       });
     } else {
       const errorText = await resourcesResponse.text();

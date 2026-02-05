@@ -10,7 +10,7 @@ function makeAuthenticatedRequest(path) {
         
         const options = {
             hostname: 'www.supersaas.com',
-            path: path,
+            path,
             method: 'GET',
             headers: {
                 'Authorization': `Basic ${auth}`,

@@ -1,12 +1,12 @@
 // Lazy-loaded service selection component
 "use client";
 
-import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, Check } from 'lucide-react';
 
 // Optimized icons - only import what's needed
 import { Scissors, Palette, Sparkles } from 'lucide-react';
+import { memo } from 'react';
 
 interface Service {
     id: number;

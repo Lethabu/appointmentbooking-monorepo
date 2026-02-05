@@ -3,8 +3,9 @@
  * Handles priority-based assignment and multi-channel integration
  */
 
-import { customerSupportAI } from './customer-support-ai';
 import { z } from 'zod';
+
+import { customerSupportAI } from './customer-support-ai';
 
 // Multi-Channel Support Types
 export interface ChannelMessage {

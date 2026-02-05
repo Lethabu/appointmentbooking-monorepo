@@ -2,3 +2,5 @@
 > dashboard@0.1.0 lint C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\dashboard
 > next lint
 
+
+ ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/basic-features/eslint#migrating-existing-config

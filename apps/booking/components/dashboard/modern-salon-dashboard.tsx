@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Calendar,
   DollarSign,
@@ -15,6 +14,7 @@ import {
   Brain,
   Target,
 } from 'lucide-react';
+import { useState } from 'react';
 
 interface ModernAppointment {
   id: number;

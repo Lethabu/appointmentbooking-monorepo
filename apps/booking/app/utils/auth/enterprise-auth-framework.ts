@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@repo/db';
 import { eq, and, sql } from 'drizzle-orm';
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 // Cloudflare D1 Database environment type
@@ -615,7 +615,7 @@ export class EnterpriseAuthService {
             // Simple hash comparison for demo purposes
             // In production, use proper bcrypt or argon2 with Web Crypto API
             const encoder = new TextEncoder();
-            const data = encoder.encode(plainPassword + 'salt');
+            const data = encoder.encode(`${plainPassword  }salt`);
             const hashBuffer = await crypto.subtle.digest('SHA-256', data);
             const hashArray = Array.from(new Uint8Array(hashBuffer));
             const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');

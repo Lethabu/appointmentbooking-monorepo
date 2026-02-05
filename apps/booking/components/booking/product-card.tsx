@@ -1,7 +1,9 @@
-import type { Product } from '@/types';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import type { Product } from '@/types';
+
 
 interface ProductCardProps {
   product: Product;

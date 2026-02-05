@@ -3,8 +3,6 @@
  * Centralized database operations with D1/Drizzle ORM integration
  */
 
-import { drizzle } from 'drizzle-orm/d1';
-import { eq, and, gte, lte, sql } from 'drizzle-orm';
 import {
     appointments,
     users,
@@ -15,6 +13,8 @@ import {
     blockedSlots,
     notifications,
 } from '@repo/db/schema';
+import { eq, and, gte, lte, sql } from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/d1';
 
 export interface CreateAppointmentData {
     customerId: string;

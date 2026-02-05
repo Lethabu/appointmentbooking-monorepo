@@ -3,8 +3,8 @@
  * Implements predictive analytics, decision support, risk assessment, capacity planning, vendor management, and continuous improvement
  */
 
-import { z } from 'zod';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { z } from 'zod';
 
 // Operational Intelligence Types
 export interface OperationalPerformanceAnalytics {

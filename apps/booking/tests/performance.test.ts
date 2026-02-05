@@ -178,7 +178,7 @@ const simulateApiRequest = async (handler: any): Promise<Response> => {
             success: true,
             data: {
                 appointment: {
-                    id: 'apt_' + Date.now(),
+                    id: `apt_${  Date.now()}`,
                     status: 'confirmed',
                     createdAt: new Date().toISOString()
                 }

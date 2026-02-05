@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
 import StrategicIntelligenceDashboard from '../../components/StrategicIntelligenceDashboard';
 
 export default function StrategicIntelligencePage() {

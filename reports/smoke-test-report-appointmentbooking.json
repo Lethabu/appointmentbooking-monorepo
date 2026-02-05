@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-01-11T14:47:35.877Z",
+  "timestamp": "2026-02-05T05:28:24.600Z",
   "url": "https://appointmentbooking.co.za",
   "tests": {
     "coreFunctionality": [
@@ -7,10 +7,10 @@
         "name": "Homepage Loads",
         "url": "https://appointmentbooking.co.za",
         "expectedStatus": 200,
-        "actualStatus": 200,
-        "passed": true,
+        "actualStatus": 404,
+        "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:37.535Z"
+        "timestamp": "2026-02-05T05:28:25.351Z"
       },
       {
         "name": "Health Check API",
@@ -19,34 +19,34 @@
         "actualStatus": 200,
         "passed": true,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:38.033Z"
+        "timestamp": "2026-02-05T05:28:26.679Z"
       },
       {
         "name": "Services API",
         "url": "https://appointmentbooking.co.za/api/services",
         "expectedStatus": 200,
-        "actualStatus": 404,
-        "passed": false,
+        "actualStatus": 200,
+        "passed": true,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:38.223Z"
+        "timestamp": "2026-02-05T05:28:26.873Z"
       },
       {
         "name": "Staff API",
         "url": "https://appointmentbooking.co.za/api/staff",
         "expectedStatus": 200,
-        "actualStatus": 404,
-        "passed": false,
+        "actualStatus": 200,
+        "passed": true,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:38.423Z"
+        "timestamp": "2026-02-05T05:28:27.075Z"
       },
       {
         "name": "Availability API",
         "url": "https://appointmentbooking.co.za/api/availability?date=2026-01-15",
         "expectedStatus": 200,
-        "actualStatus": 404,
+        "actualStatus": 500,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:38.623Z"
+        "timestamp": "2026-02-05T05:28:27.113Z"
       },
       {
         "name": "Tenants API",
@@ -55,7 +55,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:38.821Z"
+        "timestamp": "2026-02-05T05:28:27.154Z"
       }
     ],
     "authentication": [
@@ -63,55 +63,55 @@
         "name": "Auth Login Endpoint",
         "url": "https://appointmentbooking.co.za/api/auth/login",
         "expectedStatus": 400,
-        "actualStatus": 404,
+        "actualStatus": 500,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:39.011Z"
+        "timestamp": "2026-02-05T05:28:27.216Z"
       },
       {
         "name": "Auth Register Endpoint",
         "url": "https://appointmentbooking.co.za/api/auth/register",
         "expectedStatus": 400,
-        "actualStatus": 404,
+        "actualStatus": 500,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:39.203Z"
+        "timestamp": "2026-02-05T05:28:27.245Z"
       },
       {
         "name": "Auth Forgot Password",
         "url": "https://appointmentbooking.co.za/api/auth/forgot-password",
         "expectedStatus": 400,
-        "actualStatus": 404,
+        "actualStatus": 500,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:39.406Z"
+        "timestamp": "2026-02-05T05:28:27.280Z"
       },
       {
         "name": "Auth Refresh Token",
         "url": "https://appointmentbooking.co.za/api/auth/refresh",
         "expectedStatus": 400,
-        "actualStatus": 404,
+        "actualStatus": 500,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:39.604Z"
+        "timestamp": "2026-02-05T05:28:27.313Z"
       },
       {
         "name": "Google OAuth Init",
         "url": "https://appointmentbooking.co.za/api/auth/google",
         "expectedStatus": 200,
-        "actualStatus": 404,
+        "actualStatus": 500,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:39.793Z"
+        "timestamp": "2026-02-05T05:28:27.340Z"
       },
       {
         "name": "Microsoft OAuth Init",
         "url": "https://appointmentbooking.co.za/api/auth/microsoft",
         "expectedStatus": 200,
-        "actualStatus": 404,
+        "actualStatus": 500,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:39.991Z"
+        "timestamp": "2026-02-05T05:28:27.474Z"
       }
     ],
     "bookingWorkflow": [
@@ -119,19 +119,19 @@
         "name": "Create Booking Endpoint",
         "url": "https://appointmentbooking.co.za/api/bookings",
         "expectedStatus": 400,
-        "actualStatus": 404,
+        "actualStatus": 200,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:40.179Z"
+        "timestamp": "2026-02-05T05:28:27.695Z"
       },
       {
         "name": "List Bookings Endpoint",
         "url": "https://appointmentbooking.co.za/api/bookings",
         "expectedStatus": 401,
-        "actualStatus": 404,
+        "actualStatus": 200,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:40.370Z"
+        "timestamp": "2026-02-05T05:28:27.892Z"
       },
       {
         "name": "Cancel Booking Endpoint",
@@ -140,7 +140,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:40.558Z"
+        "timestamp": "2026-02-05T05:28:27.924Z"
       },
       {
         "name": "Reschedule Booking Endpoint",
@@ -149,7 +149,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:40.749Z"
+        "timestamp": "2026-02-05T05:28:27.961Z"
       },
       {
         "name": "Booking Status Endpoint",
@@ -158,7 +158,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:40.944Z"
+        "timestamp": "2026-02-05T05:28:27.999Z"
       },
       {
         "name": "Booking Reminders API",
@@ -167,7 +167,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:41.140Z"
+        "timestamp": "2026-02-05T05:28:28.029Z"
       }
     ],
     "paymentProcessing": [
@@ -178,7 +178,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:41.327Z"
+        "timestamp": "2026-02-05T05:28:28.076Z"
       },
       {
         "name": "Stripe Webhook",
@@ -187,7 +187,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:41.520Z"
+        "timestamp": "2026-02-05T05:28:28.141Z"
       },
       {
         "name": "Paystack Initialize",
@@ -196,7 +196,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:41.708Z"
+        "timestamp": "2026-02-05T05:28:28.211Z"
       },
       {
         "name": "Paystack Webhook",
@@ -205,7 +205,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:41.898Z"
+        "timestamp": "2026-02-05T05:28:28.248Z"
       },
       {
         "name": "Refund Endpoint",
@@ -214,7 +214,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:42.088Z"
+        "timestamp": "2026-02-05T05:28:28.301Z"
       },
       {
         "name": "Payment Methods API",
@@ -223,7 +223,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:42.283Z"
+        "timestamp": "2026-02-05T05:28:28.335Z"
       }
     ],
     "calendarIntegrations": [
@@ -234,7 +234,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:42.478Z"
+        "timestamp": "2026-02-05T05:28:28.367Z"
       },
       {
         "name": "Google Calendar Status",
@@ -243,7 +243,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:42.679Z"
+        "timestamp": "2026-02-05T05:28:28.452Z"
       },
       {
         "name": "Google Calendar Events",
@@ -252,7 +252,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:42.869Z"
+        "timestamp": "2026-02-05T05:28:28.494Z"
       },
       {
         "name": "Outlook Calendar OAuth",
@@ -261,7 +261,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:43.057Z"
+        "timestamp": "2026-02-05T05:28:28.542Z"
       },
       {
         "name": "Outlook Calendar Status",
@@ -270,7 +270,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:43.246Z"
+        "timestamp": "2026-02-05T05:28:28.575Z"
       },
       {
         "name": "Calendar Sync Status",
@@ -279,7 +279,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:43.436Z"
+        "timestamp": "2026-02-05T05:28:28.612Z"
       }
     ],
     "emailNotifications": [
@@ -290,7 +290,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:43.628Z"
+        "timestamp": "2026-02-05T05:28:28.650Z"
       },
       {
         "name": "Email Templates API",
@@ -299,7 +299,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:43.830Z"
+        "timestamp": "2026-02-05T05:28:28.688Z"
       },
       {
         "name": "Email Logs API",
@@ -308,7 +308,7 @@
         "actualStatus": 404,
         "passed": false,
         "responseTime": "N/A",
-        "timestamp": "2026-01-11T14:47:44.028Z"
+        "timestamp": "2026-02-05T05:28:28.760Z"
       }
     ],
     "security": {
@@ -319,45 +319,45 @@
         "xContentTypeOptions": false,
         "strictTransportSecurity": false,
         "xssProtection": false,
-        "referrerPolicy": false
+        "referrerPolicy": true
       },
-      "passed": 1,
-      "failed": 6
+      "passed": 2,
+      "failed": 5
     },
     "performance": {
       "endpoints": {
         "https://appointmentbooking.co.za": {
-          "avg": 191,
-          "min": 186,
-          "max": 200,
-          "p95": 200
+          "avg": 35,
+          "min": 31,
+          "max": 45,
+          "p95": 45
         },
         "https://appointmentbooking.co.za/api/health": {
-          "avg": 212,
-          "min": 203,
-          "max": 222,
-          "p95": 222
+          "avg": 214,
+          "min": 197,
+          "max": 248,
+          "p95": 248
         },
         "https://appointmentbooking.co.za/api/services": {
-          "avg": 196,
-          "min": 185,
-          "max": 206,
-          "p95": 206
+          "avg": 200,
+          "min": 188,
+          "max": 217,
+          "p95": 217
         }
       },
       "concurrency": {
         "totalRequests": 10,
         "successful": 10,
-        "totalTime": 1815,
-        "avgTimePerRequest": 182,
+        "totalTime": 515,
+        "avgTimePerRequest": 52,
         "allSuccessful": true
       }
     }
   },
   "summary": {
     "total": 44,
-    "passed": 7,
-    "failed": 37,
+    "passed": 9,
+    "failed": 35,
     "warnings": 0
   }
 }

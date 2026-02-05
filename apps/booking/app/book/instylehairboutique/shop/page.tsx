@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+
 import EcommerceStore from '@/components/ecommerce/ProductStore';
 
 export const metadata: Metadata = {

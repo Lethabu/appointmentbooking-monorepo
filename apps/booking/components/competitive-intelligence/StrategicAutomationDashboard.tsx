@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
 import {
     Activity,
     Target,
@@ -22,6 +21,7 @@ import {
     Rocket,
     Award
 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 
 // Types for the dashboard data
 interface AutomationMetrics {

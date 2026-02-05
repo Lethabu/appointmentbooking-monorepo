@@ -1,6 +1,7 @@
 'use client';
 
 import { CalendarDaysIcon, CheckCircleIcon, XCircleIcon } from 'lucide-react';
+
 import type { Appointment } from '@/types';
 
 interface AppointmentCardProps {

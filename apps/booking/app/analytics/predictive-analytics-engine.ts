@@ -2,11 +2,11 @@
 // Advanced AI-powered analytics for appointmentbooking.co.za
 
 import { CustomerProfile, Service, Product, BusinessContext } from '../../types';
+import CustomerAdvocacyAutomation from '../advocacy/customer-advocacy-automation';
 import CustomerSuccessAutomation from '../customer-success/customer-success-automation';
 import UsageBasedExpansionAutomation from '../expansion/usage-based-expansion-automation';
-import LoyaltyProgramAutomation from '../loyalty/loyalty-program-automation';
-import CustomerAdvocacyAutomation from '../advocacy/customer-advocacy-automation';
 import CustomerLifecycleManagement from '../lifecycle/customer-lifecycle-management';
+import LoyaltyProgramAutomation from '../loyalty/loyalty-program-automation';
 
 export interface PredictiveModel {
     id: string;

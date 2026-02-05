@@ -1,8 +1,8 @@
 // Lazy-loaded booking summary component
 "use client";
 
-import { memo } from 'react';
 import { motion } from 'framer-motion';
+import { memo } from 'react';
 
 interface BookingSummaryProps {
     data: {

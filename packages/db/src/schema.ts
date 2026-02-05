@@ -1,5 +1,5 @@
-import { sqliteTable, text, integer, index } from 'drizzle-orm/sqlite-core';
 import { sql } from 'drizzle-orm';
+import { sqliteTable, text, integer, index } from 'drizzle-orm/sqlite-core';
 
 // Tenants table (migrated from your SQL)
 export const tenants = sqliteTable('tenants', {

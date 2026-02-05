@@ -4,8 +4,8 @@
  * Tests connectivity to appointmentbooking.co.za endpoints
  */
 
-const https = require('https');
 const http = require('http');
+const https = require('https');
 
 const BASE_URL = 'https://appointmentbooking.co.za';
 

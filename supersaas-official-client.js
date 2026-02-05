@@ -35,7 +35,7 @@ class SuperSaaSClient {
             const options = {
                 hostname: this.host,
                 path: requestPath,
-                method: method,
+                method,
                 headers: {
                     'Accept': 'application/json',
                     'User-Agent': 'SuperSaaS/NodeJS'

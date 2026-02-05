@@ -3,8 +3,8 @@
  * Implements intelligent infrastructure scaling, cost optimization, and performance tuning
  */
 
-import { z } from 'zod';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { z } from 'zod';
 
 // Resource Optimization Types
 export interface ResourceMetrics {

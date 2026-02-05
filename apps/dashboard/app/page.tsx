@@ -1,9 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import StatCard from '../components/StatCard'
+
 import AppointmentTable from '../components/AppointmentTable'
 import SimpleChart from '../components/SimpleChart'
+import StatCard from '../components/StatCard'
 
 interface DashboardData {
   tenant: {

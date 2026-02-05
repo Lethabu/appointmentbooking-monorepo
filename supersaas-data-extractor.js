@@ -1,6 +1,6 @@
 // SuperSaaS Data Extractor - Use after fixing API credentials
-const https = require('https');
 const fs = require('fs');
+const https = require('https');
 
 class SuperSaaSDataExtractor {
     constructor(accountName, apiKey, scheduleId) {

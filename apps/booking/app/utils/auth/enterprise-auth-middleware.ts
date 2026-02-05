@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { enterpriseAuth } from './enterprise-auth-framework';
-import { csrfProtection } from '../csrf';
+
 import { apiSecurityMiddleware } from '../api-security';
+import { csrfProtection } from '../csrf';
+
+import { enterpriseAuth } from './enterprise-auth-framework';
 
 /**
  * Enterprise Authentication Middleware
@@ -119,7 +121,7 @@ export async function enterpriseAuthMiddleware(request: NextRequest) {
             'suspicious_activity',
             {
                 error: error instanceof Error ? error.message : 'Unknown error',
-                path: path,
+                path,
                 method: request.method,
                 timestamp: new Date().toISOString()
             },
@@ -219,7 +221,7 @@ async function checkRateLimit(request: NextRequest): Promise<NextResponse | null
             'suspicious_activity',
             {
                 reason: 'rate_limit_exceeded',
-                path: path,
+                path,
                 count: record.count,
                 limit: config.maxRequests
             },

@@ -1,8 +1,8 @@
 // packages/worker/src/book-endpoint.ts
 
-import type { BookingRequest } from './types';
 import { ApiError } from './errors';
 import { logger } from './logger';
+import type { BookingRequest } from './types';
 
 export async function handleBookEndpoint(request: Request, env: any, corsHeaders: any): Promise<Response> {
     const bodyData = await request.json();

@@ -3,9 +3,9 @@
  * Global setup for Vitest testing environment
  */
 
-import { vi } from 'vitest';
-import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
+import { vi } from 'vitest';
 
 // Extend global types
 declare global {
@@ -43,7 +43,6 @@ process.env.MICROSOFT_CLIENT_ID = 'test-microsoft-client-id';
 process.env.MICROSOFT_CLIENT_SECRET = 'test-microsoft-client-secret';
 
 // Mock global objects
-global.fetch = vi.fn();
 global.console = {
     ...console,
     log: vi.fn(),

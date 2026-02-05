@@ -4,6 +4,7 @@
 'use client';
 
 import React, { useState } from 'react';
+
 import { useBooking, formatPrice, formatDuration } from './BookingContext';
 
 export default function Step4PaymentSummary() {

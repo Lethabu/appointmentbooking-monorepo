@@ -1,11 +1,12 @@
-import { ROIWidget } from '@/components/marketing/ROIWidget';
-import { ExitIntentModal } from '@/components/marketing/ExitIntentModal';
 import Link from 'next/link';
 import {
   WithContext,
   WebSite,
   FAQPage,
 } from 'schema-dts';
+
+import { ExitIntentModal } from '@/components/marketing/ExitIntentModal';
+import { ROIWidget } from '@/components/marketing/ROIWidget';
 import { jsonLd } from '@/lib/jsonLd';
 
 const faqQuestions = [

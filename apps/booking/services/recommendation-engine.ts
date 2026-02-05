@@ -2,6 +2,7 @@
 // Advanced AI-powered service recommendations for competitive differentiation
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
+
 import { CustomerProfile, Service, BusinessContext, ServiceRecommendation } from '../types';
 
 export class ServiceRecommendationEngine {

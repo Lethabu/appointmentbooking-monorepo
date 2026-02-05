@@ -4,10 +4,11 @@
 export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from 'next/server';
+
 import { AvailabilityQueries } from '@/utils/database/availability-queries';
 import { EnhancedAvailabilityQueries } from '@/utils/database/enhanced-availability-queries';
-import { validateAvailabilityRequest } from '@/utils/validation';
 import { withBookingSecurity } from '@/utils/security/enterprise-security-middleware';
+import { validateAvailabilityRequest } from '@/utils/validation';
 
 /**
  * GET /api/availability
@@ -80,9 +81,9 @@ export const GET = withBookingSecurity(async function GET(request: NextRequest) 
             success: true,
             data: {
                 slots,
-                date: date,
-                serviceId: serviceId,
-                timezone: timezone,
+                date,
+                serviceId,
+                timezone,
             },
             message: 'Available slots retrieved successfully',
         });

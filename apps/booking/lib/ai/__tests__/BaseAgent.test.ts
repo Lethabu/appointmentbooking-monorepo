@@ -2,6 +2,7 @@
 // File: apps/booking/lib/ai/__tests__/BaseAgent.test.ts
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+
 import { BaseAgent, AgentConfig } from '../BaseAgent';
 
 // Mock OpenAI

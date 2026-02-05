@@ -69,7 +69,7 @@ async function main() {
     if (success) successCount++;
   }
   
-  console.log('\n' + '='.repeat(60));
+  console.log(`\n${  '='.repeat(60)}`);
   console.log('📊 DEPLOYMENT SUMMARY');
   console.log('='.repeat(60));
   console.log(`✅ Completed: ${successCount}/${steps.length} steps`);

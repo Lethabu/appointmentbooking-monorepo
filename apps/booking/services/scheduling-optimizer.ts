@@ -2,6 +2,7 @@
 // Advanced scheduling optimization for competitive differentiation
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
+
 import { CustomerProfile, BusinessContext, TimeSlot, OptimalTimeSlot, SchedulingOptimization } from '../types';
 
 export class SchedulingOptimizer {
@@ -146,7 +147,7 @@ export class SchedulingOptimizer {
         const endTime = new Date(date);
         endTime.setHours(closeHour, closeMinute, 0, 0);
 
-        let currentTime = new Date(startTime);
+        const currentTime = new Date(startTime);
 
         while (currentTime.getTime() + (serviceDuration * 60 * 1000) <= endTime.getTime()) {
             const slotTime = currentTime.toTimeString().substring(0, 5);
@@ -283,7 +284,7 @@ export class SchedulingOptimizer {
         for (const slot of optimizedSlots) {
             // Apply minimum advance booking notice
             const minNotice = businessContext.policies.minimumBookingNotice;
-            const slotDate = new Date(slot.date + 'T' + slot.startTime);
+            const slotDate = new Date(`${slot.date  }T${  slot.startTime}`);
             const now = new Date();
             const hoursDifference = (slotDate.getTime() - now.getTime()) / (1000 * 60 * 60);
 

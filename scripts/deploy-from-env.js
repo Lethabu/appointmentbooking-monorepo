@@ -37,13 +37,13 @@ class CloudflareEnvDeployer {
     // Load root .env if exists
     if (fs.existsSync(rootEnvPath)) {
       this.log('✅ Found root .env file');
-      envContent += fs.readFileSync(rootEnvPath, 'utf8') + '\n';
+      envContent += `${fs.readFileSync(rootEnvPath, 'utf8')  }\n`;
     }
     
     // Load booking .env if exists
     if (fs.existsSync(bookingEnvPath)) {
       this.log('✅ Found apps/booking/.env file');
-      envContent += fs.readFileSync(bookingEnvPath, 'utf8') + '\n';
+      envContent += `${fs.readFileSync(bookingEnvPath, 'utf8')  }\n`;
     }
     
     // Parse environment variables

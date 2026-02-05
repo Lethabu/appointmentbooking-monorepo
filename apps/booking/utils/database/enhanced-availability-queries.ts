@@ -1,5 +1,3 @@
-import { drizzle } from 'drizzle-orm/d1';
-import { eq, and, gte, lte, sql, or, not } from 'drizzle-orm';
 import {
     appointments,
     employees,
@@ -10,6 +8,8 @@ import {
     calendarConnections,
     calendarSyncEvents
 } from '@repo/db/schema';
+import { eq, and, gte, lte, sql, or, not } from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/d1';
 
 /**
  * Enhanced Availability Queries

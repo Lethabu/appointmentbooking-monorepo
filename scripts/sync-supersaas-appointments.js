@@ -1,6 +1,6 @@
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
-const crypto = require('crypto');
 
 // Configuration
 const API_KEY = 'pVq0j8Sm2jAaLW6BrBkI5Q';

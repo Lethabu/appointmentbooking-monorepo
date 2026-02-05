@@ -1,8 +1,8 @@
 // Automated Alert Systems for Performance Optimization
 // Provides real-time monitoring with 95%+ accuracy in opportunity identification
 
-import { logger } from '../logger';
 import { ApiError } from '../errors';
+import { logger } from '../logger';
 
 export interface AlertRule {
     id: string;

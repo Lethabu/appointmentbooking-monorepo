@@ -3,7 +3,6 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
 import {
     Calendar,
     Clock,
@@ -28,6 +27,7 @@ import {
     Upload,
     X
 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 
 interface RecurringPattern {
     frequency: 'daily' | 'weekly' | 'biweekly' | 'monthly' | 'custom';

@@ -7,7 +7,8 @@ export class YocoGateway implements PaymentRouter {
         this.secretKey = config.secretKey;
     }
 
-    async processDeposit(bookingId: string, amount: number, currency: string, bookingDetails: any): Promise<PaymentResult> {
+    async processDeposit(_bookingId: string, _amount: number): Promise<PaymentResult> {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         // Yoco can be inline (frontend) or backend charge if tokenized.
         // Assuming we might generate a payment page or intent.
 
@@ -17,7 +18,8 @@ export class YocoGateway implements PaymentRouter {
         };
     }
 
-    async handleWebhook(event: Request): Promise<void> {
+    async handleWebhook(): Promise<void> {
+        // eslint-disable-next-line no-console
         console.log("Yoco Webhook received");
     }
 }

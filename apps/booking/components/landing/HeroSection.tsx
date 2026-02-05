@@ -1,5 +1,5 @@
-import React from 'react';
 import { Calendar, ShoppingBag } from 'lucide-react';
+import React from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
 
 interface HeroSectionProps {

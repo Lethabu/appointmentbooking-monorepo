@@ -1,9 +1,10 @@
 'use client';
 
-import type { Service } from '@/types';
-import { Card, CardContent } from '@/components/ui/card';
 import { Check, Clock, DollarSign } from 'lucide-react';
+
+import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import type { Service } from '@/types';
 
 interface ServiceCardProps {
   service: Service;

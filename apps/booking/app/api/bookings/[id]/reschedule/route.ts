@@ -4,11 +4,13 @@
 export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from 'next/server';
-import { BookingQueries } from '@/utils/database/booking-queries';
+import { z } from 'zod';
+
 import { CalendarSyncService } from '@/services/calendar-sync';
+import { BookingQueries } from '@/utils/database/booking-queries';
 import { EnhancedAvailabilityQueries } from '@/utils/database/enhanced-availability-queries';
 import { validateUpdateBookingData } from '@/utils/validation';
-import { z } from 'zod';
+
 
 /**
  * Booking Rescheduling Endpoint
@@ -319,7 +321,7 @@ export async function GET(
             // Return mock alternative slots
             const mockAlternatives: AlternativeSlot[] = [
                 {
-                    date: date,
+                    date,
                     time: '14:00',
                     employeeId: 'staff_1',
                     employeeName: 'Sarah Johnson',
@@ -328,7 +330,7 @@ export async function GET(
                     availabilityScore: 0.9
                 },
                 {
-                    date: date,
+                    date,
                     time: '15:30',
                     employeeId: 'staff_2',
                     employeeName: 'Michael Chen',
@@ -432,7 +434,7 @@ async function findAlternativeSlots(
                 date: dateStr,
                 serviceId: service.id,
                 serviceDuration: service.durationMinutes,
-                employeeId: employeeId,
+                employeeId,
                 tenantId,
                 bufferTime: 15,
                 timezone: 'Africa/Johannesburg',

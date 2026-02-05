@@ -3,9 +3,6 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useBooking } from './BookingContext';
-import { formatPrice, getTotalDuration } from './BookingContext';
 import {
     CreditCard,
     Shield,
@@ -26,6 +23,10 @@ import {
     Smartphone,
     Lock
 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { useBooking , formatPrice, getTotalDuration } from './BookingContext';
+
 
 interface PaymentMethod {
     id: string;

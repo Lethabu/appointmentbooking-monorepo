@@ -1,8 +1,8 @@
 // Lazy-loaded customer details form component
 "use client";
 
-import { memo } from 'react';
 import { motion } from 'framer-motion';
+import { memo } from 'react';
 
 interface CustomerDetailsProps {
     data: {

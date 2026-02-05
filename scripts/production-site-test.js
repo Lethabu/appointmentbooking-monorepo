@@ -6,8 +6,8 @@
  * Run: node scripts/production-site-test.js
  */
 
-const https = require('https');
 const fs = require('fs');
+const https = require('https');
 const path = require('path');
 
 // Production Configuration
@@ -302,7 +302,7 @@ async function runTests() {
         });
     }
 
-    console.log('\n' + '═'.repeat(62) + '\n');
+    console.log(`\n${  '═'.repeat(62)  }\n`);
 
     if (passRate >= 80) {
         console.log('🎉 PRODUCTION WEBSITE: HEALTHY');
@@ -312,7 +312,7 @@ async function runTests() {
         console.log('🚨 PRODUCTION WEBSITE: CRITICAL ISSUES DETECTED');
     }
 
-    console.log('═'.repeat(62) + '\n');
+    console.log(`${'═'.repeat(62)  }\n`);
 
     // Save report
     const reportPath = path.join(__dirname, '../reports/production-test-report.json');

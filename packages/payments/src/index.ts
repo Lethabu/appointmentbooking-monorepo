@@ -23,14 +23,14 @@ export interface PaymentResult {
 }
 
 export interface PaymentRouter {
-    processDeposit(bookingId: string, amount: number, currency: string, bookingDetails: any): Promise<PaymentResult>;
-    handleWebhook(event: Request): Promise<void>;
+    processDeposit(bookingId: string, amount: number): Promise<PaymentResult>;
+    handleWebhook(): Promise<void>;
 }
 
 export interface TenantConfig {
     currency: string;
     country: string;
-    paymentConfig?: any;
+    paymentConfig?: Record<string, unknown>;
 }
 
 export const getPaymentGateway = (tenant: TenantConfig): PaymentGateway => {

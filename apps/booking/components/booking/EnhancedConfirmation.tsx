@@ -3,9 +3,6 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useBooking } from './BookingContext';
-import { formatPrice, formatDuration } from './BookingContext';
 import {
     CheckCircle,
     Calendar,
@@ -32,6 +29,10 @@ import {
     Award,
     Heart
 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { useBooking , formatPrice, formatDuration } from './BookingContext';
+
 
 interface BookingConfirmation {
     id: string;

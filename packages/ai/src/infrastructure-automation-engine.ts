@@ -3,8 +3,8 @@
  * Implements auto-scaling, deployment pipelines, infrastructure as code, and microservices orchestration
  */
 
-import { z } from 'zod';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { z } from 'zod';
 
 // Infrastructure Automation Types
 export interface InfrastructureScalingPolicy {

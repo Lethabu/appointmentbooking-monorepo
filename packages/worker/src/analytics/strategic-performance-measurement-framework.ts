@@ -4,8 +4,8 @@
 // South African Beauty Services Market Performance Intelligence
 // ========================================
 
-import { logger } from '../logger';
 import { ApiError } from '../errors';
+import { logger } from '../logger';
 
 export interface StrategicPerformanceFramework {
     frameworkId: string;
@@ -386,11 +386,11 @@ export class StrategicPerformanceMeasurementFramework {
                 operational: this.generateOperationalReport(),
                 strategic: this.generateStrategicReport(score, insights),
                 kpis: this.generateKPIReport(),
-                insights: insights,
-                recommendations: recommendations,
-                actions: actions,
-                score: score,
-                timeframe: timeframe,
+                insights,
+                recommendations,
+                actions,
+                score,
+                timeframe,
                 generatedAt: new Date()
             };
         } catch (error) {

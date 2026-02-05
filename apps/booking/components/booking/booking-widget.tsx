@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
@@ -66,7 +67,7 @@ function BookingWidget({ tenantId, services, branding }: BookingWidgetProps) {
       if (result.success) {
         setRedirectUrl(result.paymentUrl)
       } else {
-        alert('Booking failed: ' + result.error)
+        alert(`Booking failed: ${  result.error}`)
       }
     } catch (error) {
       alert('Booking failed. Please try again.')

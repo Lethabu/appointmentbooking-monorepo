@@ -3,8 +3,6 @@
  * Calculate available time slots considering employee schedules, holidays, and blocked slots
  */
 
-import { drizzle } from 'drizzle-orm/d1';
-import { eq, and, gte, lte, sql } from 'drizzle-orm';
 import {
     employees,
     employeeSchedules,
@@ -12,6 +10,8 @@ import {
     blockedSlots,
     appointments,
 } from '@repo/db/schema';
+import { eq, and, gte, lte, sql } from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/d1';
 
 export interface AvailabilityOptions {
     date: string;
@@ -44,6 +44,7 @@ export class AvailabilityQueries {
      */
     async getAvailableSlots(options: AvailabilityOptions): Promise<TimeSlot[]> {
         const { date, serviceId, serviceDuration, employeeId, tenantId, bufferTime = 15 } = options;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
         // Check if date is a holiday
         const isHoliday = await this.isHoliday(date, tenantId);

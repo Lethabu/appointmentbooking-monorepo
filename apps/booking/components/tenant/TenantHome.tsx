@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { CalendarDaysIcon } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
-import { CalendarDaysIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
 import type { Service, Product, Appointment } from '@/types';
 
 const ServicesGrid = dynamic(() => import('./ServicesGrid'), { ssr: false });

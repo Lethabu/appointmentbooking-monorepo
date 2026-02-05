@@ -26,7 +26,7 @@ const colors = {
   blue: '\x1b[34m',
 };
 
-let testResults = {
+const testResults = {
   total: 0,
   passed: 0,
   failed: 0,

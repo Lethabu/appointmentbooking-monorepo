@@ -3,11 +3,12 @@
 // ============================================================================
 export const runtime = 'edge';
 
-import { NextRequest, NextResponse } from 'next/server';
-import { CalendarSyncService } from '@/services/calendar-sync';
 import { getDb } from '@repo/db';
-import { eq } from 'drizzle-orm';
 import { calendarConnections } from '@repo/db/schema';
+import { eq } from 'drizzle-orm';
+import { NextRequest, NextResponse } from 'next/server';
+
+import { CalendarSyncService } from '@/services/calendar-sync';
 
 /**
  * Microsoft Outlook Calendar Webhook Handler

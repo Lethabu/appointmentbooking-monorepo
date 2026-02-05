@@ -1,12 +1,14 @@
 'use client';
 
-import type { Service } from '@/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Clock, DollarSign, User, Phone } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { Clock, DollarSign, User, Phone } from 'lucide-react';
+import type { Service } from '@/types';
+
 
 interface AppointmentSummaryProps {
   selectedServices: Service[];

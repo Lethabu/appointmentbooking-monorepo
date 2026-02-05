@@ -3,8 +3,8 @@
 // components/dashboard/ServicesManager.tsx
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
 import { AlertCircle, RefreshCw, Plus, Edit, Trash2 } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 interface Service {
   id: string;

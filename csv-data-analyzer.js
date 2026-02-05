@@ -534,8 +534,8 @@ function analyzeCSVData() {
     let totalMiddleSide = 0;
     let totalMaphondo = 0;
     let activeDays = 0;
-    let peakDays = [];
-    let monthlyStats = {};
+    const peakDays = [];
+    const monthlyStats = {};
     
     console.log('📊 INSTYLE HAIR BOUTIQUE - CSV DATA ANALYSIS');
     console.log('==============================================\n');
@@ -555,7 +555,7 @@ function analyzeCSVData() {
         
         if (totalDay >= 5) {
             peakDays.push({
-                day: day,
+                day,
                 middle: middleCount,
                 maphondo: maphondoCount,
                 total: totalDay

@@ -13,7 +13,7 @@ export class PayFastGateway implements PaymentRouter {
         this.sandbox = config.sandbox ?? false;
     }
 
-    async processDeposit(bookingId: string, amount: number, currency: string, bookingDetails: any): Promise<PaymentResult> {
+    async processDeposit(bookingId: string, amount: number): Promise<PaymentResult> {
         // PayFast is a redirect-based gateway
         // We need to generate the signature and return the redirect URL
 
@@ -28,8 +28,9 @@ export class PayFastGateway implements PaymentRouter {
         };
     }
 
-    async handleWebhook(event: Request): Promise<void> {
+    async handleWebhook(): Promise<void> {
         // Verify signature and update booking status
+        // eslint-disable-next-line no-console
         console.log("PayFast Webhook received");
     }
 }

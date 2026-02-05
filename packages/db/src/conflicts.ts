@@ -1,4 +1,5 @@
 import { and, eq, lte, gte, or, sql } from 'drizzle-orm';
+
 import { appointments, services } from './schema';
 
 export class ConflictDetector {

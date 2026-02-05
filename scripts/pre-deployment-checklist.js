@@ -84,7 +84,7 @@ function log(message, color = 'reset') {
 }
 
 function logSection(title) {
-    console.log('\n' + '='.repeat(60));
+    console.log(`\n${  '='.repeat(60)}`);
     log(`  ${title}`, 'bold');
     console.log('='.repeat(60));
 }
@@ -346,9 +346,9 @@ function generateSummary() {
 
 // Main execution
 function main() {
-    log('\n' + '='.repeat(60), 'blue');
+    log(`\n${  '='.repeat(60)}`, 'blue');
     log('  INSTYLE HAIR BOUTIQUE - PRE-DEPLOYMENT CHECKLIST', 'bold');
-    log('='.repeat(60) + '\n', 'blue');
+    log(`${'='.repeat(60)  }\n`, 'blue');
 
     checkEnvironmentVariables();
     checkFilesExist();

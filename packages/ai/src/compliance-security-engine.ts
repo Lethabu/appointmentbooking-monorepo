@@ -3,8 +3,8 @@
  * Implements POPIA compliance, threat detection, vulnerability management, and incident response
  */
 
-import { z } from 'zod';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { z } from 'zod';
 
 // Compliance and Security Types
 export interface POPIAComplianceStatus {

@@ -279,7 +279,7 @@ async function testPerformance() {
 function generateReport() {
     const passRate = ((results.summary.passed / results.summary.total) * 100).toFixed(1);
 
-    console.log('\n' + '='.repeat(70));
+    console.log(`\n${  '='.repeat(70)}`);
     console.log('  SMOKE TEST REPORT - APPOINTMENTBOOKING.CO.ZA');
     console.log('='.repeat(70));
 
@@ -316,9 +316,9 @@ function generateReport() {
  * Main Execution
  */
 async function main() {
-    console.log('\n' + '='.repeat(70));
+    console.log(`\n${  '='.repeat(70)}`);
     console.log('  APPOINTMENTBOOKING.CO.ZA SMOKE TEST SUITE');
-    console.log('='.repeat(70) + '\n');
+    console.log(`${'='.repeat(70)  }\n`);
 
     try {
         await testCoreFunctionality();

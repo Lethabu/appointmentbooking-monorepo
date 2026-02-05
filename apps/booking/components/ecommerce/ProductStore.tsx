@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { ShoppingCart, Plus, Minus, Heart, Star, Search, Filter } from 'lucide-react';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 
 interface Product {
     id: string;

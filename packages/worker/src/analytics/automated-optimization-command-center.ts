@@ -4,8 +4,8 @@
 // AI-Powered Automation & Scaling Command Interface
 // ========================================
 
-import { logger } from '../logger';
 import { ApiError } from '../errors';
+import { logger } from '../logger';
 
 export interface OptimizationCommand {
     id: string;

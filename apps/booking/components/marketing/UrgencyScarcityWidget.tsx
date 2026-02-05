@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
 import { Clock, Users, Zap, AlertTriangle, CheckCircle, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 
 interface UrgencyData {
     message: string;

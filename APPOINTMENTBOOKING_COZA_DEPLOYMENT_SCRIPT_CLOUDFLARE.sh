@@ -1,7 +1,7 @@
 #!/bin/bash
 # AppointmentBooking.co.za Cloudflare Pages Deployment Script
-# Automated deployment with error handling and rollback capabilities
-# Cloudflare Pages Migration - January 3, 2026
+# Automated deployment using OpenNext for Cloudflare
+# Cloudflare Pages Migration - January 2026
 
 set -euo pipefail
 
@@ -134,9 +134,9 @@ install_dependencies() {
     fi
 }
 
-# Build application for Cloudflare Pages
+# Build application for Cloudflare Pages via OpenNext
 build_application() {
-    log "Building application for Cloudflare Pages..."
+    log "Building application for Cloudflare Pages (OpenNext)..."
     
     cd "$APP_DIR"
     
@@ -144,19 +144,18 @@ build_application() {
     export NODE_ENV=production
     export NEXT_PUBLIC_APP_URL="https://$DOMAIN"
     
-    # Run build with Cloudflare Pages optimizations
-    if npm run build; then
+    # Run build with OpenNext optimization
+    log "Running npm run pages:build..."
+    if npm run pages:build; then
         log_success "Application built successfully for Cloudflare Pages"
         
-        # Verify build output
-        if [ ! -d ".next" ]; then
-            log_error "Build output directory .next not found"
+        # Verify OpenNext build output
+        if [ ! -d ".open-next/assets" ]; then
+            log_error "Build output directory .open-next/assets not found. OpenNext build may have failed."
             return 1
         fi
         
-        # Copy build files to root for Cloudflare Pages
-        log "Preparing build output for Cloudflare Pages..."
-        cp -r .next ../.next || log_warning "Could not copy .next to root"
+        log "Build verification passed."
     else
         log_error "Build failed"
         return 1
@@ -178,51 +177,13 @@ configure_domain() {
     sed -i "s|MICROSOFT_REDIRECT_URI=.*|MICROSOFT_REDIRECT_URI=https://$DOMAIN/api/auth/callback/microsoft|g" "$ENV_FILE"
     
     # Update wrangler.toml with domain
-    sed -i "s|name = .*|name = \"$PROJECT_NAME\"|g" "../wrangler.toml"
-    sed -i "s|NEXT_PUBLIC_APP_URL = \".*\"|NEXT_PUBLIC_APP_URL = \"https://$DOMAIN\"|g" "../wrangler.toml"
-    sed -i "s|NEXTAUTH_URL = \".*\"|NEXTAUTH_URL = \"https://$DOMAIN\"|g" "../wrangler.toml"
+    if [ -f "../wrangler.toml" ]; then
+        sed -i "s|name = .*|name = \"$PROJECT_NAME\"|g" "../wrangler.toml"
+        sed -i "s|NEXT_PUBLIC_APP_URL = \".*\"|NEXT_PUBLIC_APP_URL = \"https://$DOMAIN\"|g" "../wrangler.toml"
+        sed -i "s|NEXTAUTH_URL = \".*\"|NEXTAUTH_URL = \"https://$DOMAIN\"|g" "../wrangler.toml"
+    fi
     
     log_success "Domain configuration updated for Cloudflare Pages"
-}
-
-# Setup Cloudflare Pages functions
-setup_pages_functions() {
-    log "Setting up Cloudflare Pages functions..."
-    
-    # Create functions directory
-    mkdir -p "functions"
-    
-    # Create _worker.js for API routes
-    cat > functions/_worker.js << 'EOF'
-export default {
-  async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-    
-    // Handle API routes
-    if (url.pathname.startsWith('/api/')) {
-      // Forward to Next.js API routes
-      return new Response('API route handled by Next.js', {
-        status: 200,
-        headers: { 'Content-Type': 'text/plain' }
-      });
-    }
-    
-    // Handle all other routes - serve static files
-    return fetch(request);
-  }
-};
-EOF
-    
-    # Create _routes.json for routing
-    cat > functions/_routes.json << 'EOF'
-{
-  "version": 1,
-  "include": ["/*"],
-  "exclude": ["/api/*"]
-}
-EOF
-    
-    log_success "Cloudflare Pages functions configured"
 }
 
 # Deploy to Cloudflare Pages
@@ -243,9 +204,9 @@ deploy_to_cloudflare() {
         return 1
     fi
     
-    # Deploy to Cloudflare Pages
-    log "Starting Cloudflare Pages deployment..."
-    if wrangler pages deploy .next --project-name="$PROJECT_NAME" --branch=main; then
+    # Deploy to Cloudflare Pages using OpenNext assets
+    log "Starting Cloudflare Pages deployment from .open-next/assets..."
+    if wrangler pages deploy .open-next/assets --project-name="$PROJECT_NAME" --branch=main; then
         log_success "Deployed to Cloudflare Pages successfully"
         
         # Get deployment URL
@@ -278,7 +239,7 @@ update_dns() {
     log "DNS configuration for Cloudflare Pages..."
     
     echo ""
-    echo "📋 DNS Configuration for Cloudflare Pages:"
+    echo "✅ DNS Configuration for Cloudflare Pages:"
     echo "Domain: $DOMAIN"
     echo "Cloudflare Pages automatically manages DNS when custom domain is added."
     echo ""
@@ -296,8 +257,8 @@ update_dns() {
     echo "Name: api"
     echo "Value: [Cloudflare Pages will provide this]"
     echo ""
-    echo "⚡ Cloudflare Pages manages DNS automatically when you add a custom domain."
-    echo "⏰ SSL certificates are automatically provisioned by Cloudflare."
+    echo "ℹ️ Cloudflare Pages manages DNS automatically when you add a custom domain."
+    echo "🔒 SSL certificates are automatically provisioned by Cloudflare."
 }
 
 # Post-deployment validation
@@ -391,21 +352,21 @@ main() {
     install_dependencies
     build_application
     configure_domain
-    setup_pages_functions
+    # setup_pages_functions removed - handled by OpenNext
     
     if deploy_to_cloudflare; then
         configure_custom_domain
         update_dns
         post_deployment_validation
         
-        log_success "🎉 Cloudflare Pages deployment completed successfully!"
+        log_success "✅ Cloudflare Pages deployment completed successfully!"
         log "Website should be available at: https://$DOMAIN"
         log "Project: $PROJECT_NAME"
         log "Backup location: $BACKUP_DIR"
         log "Log file: $LOG_FILE"
         
         echo ""
-        echo "🔗 Next Steps:"
+        echo "ℹ️ Next Steps:"
         echo "1. Update OAuth redirect URIs in Google/Azure dashboards:"
         echo "   - https://$DOMAIN/api/auth/callback/google"
         echo "   - https://$DOMAIN/api/auth/callback/microsoft"

@@ -25,7 +25,7 @@ class DirectCloudflareDeployer {
     
     // Write to deployment log file
     const logFile = `direct-deployment-${this.deploymentId}.log`;
-    fs.appendFileSync(logFile, logEntry + '\n');
+    fs.appendFileSync(logFile, `${logEntry  }\n`);
   }
 
   loadEnvFromFile() {

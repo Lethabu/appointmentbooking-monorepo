@@ -3,10 +3,10 @@
 // ============================================================================
 export const runtime = 'edge';
 
-import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@repo/db';
 import { calendarConnections, calendarSyncEvents } from '@repo/db/schema';
 import { eq, and } from 'drizzle-orm';
+import { NextRequest, NextResponse } from 'next/server';
 
 /**
  * Google Calendar Disconnection

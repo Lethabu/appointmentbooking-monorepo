@@ -11,7 +11,7 @@ export async function handleAvailabilityEndpoint(request: Request, env: any, cor
         const segments = path.split('/').filter(Boolean);
         
         // segments[0] = 'api', segments[1] = 'tenant', segments[2] = tenantId, segments[3] = 'availability'
-        let tenantId = segments[2];
+        const tenantId = segments[2];
         
         const date = url.searchParams.get('date');
         const serviceId = url.searchParams.get('serviceId');

@@ -1,12 +1,13 @@
 "use client"
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Calendar, CalendarDays, RefreshCw, Settings, AlertTriangle, CheckCircle, XCircle, ExternalLink, Trash2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface CalendarConnection {
     id: string;
@@ -61,7 +62,7 @@ export default function CalendarManagementPage() {
             setLoading(true);
             const response = await fetch('/api/calendar/sync-status', {
                 headers: {
-                    'tenantId': tenantId
+                    tenantId
                 }
             });
 
@@ -86,7 +87,7 @@ export default function CalendarManagementPage() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'tenantId': tenantId
+                    tenantId
                 },
                 body: JSON.stringify({ maxRetries: 10 })
             });
@@ -102,7 +103,7 @@ export default function CalendarManagementPage() {
 
             alert(`Retry completed: ${(data as { data: { successful: number; failed: number } }).data.successful} successful, ${(data as { data: { successful: number; failed: number } }).data.failed} failed`);
         } catch (err) {
-            alert('Failed to retry syncs: ' + (err instanceof Error ? err.message : 'Unknown error'));
+            alert(`Failed to retry syncs: ${err instanceof Error ? err.message : 'Unknown error'}`);
         } finally {
             setRetrying(false);
         }
@@ -125,7 +126,7 @@ export default function CalendarManagementPage() {
             const response = await fetch('/api/google-calendar/disconnect', {
                 method: 'POST',
                 headers: {
-                    'tenantId': tenantId
+                    tenantId
                 }
             });
 
@@ -136,7 +137,7 @@ export default function CalendarManagementPage() {
             // Refresh sync status
             await fetchSyncStatus();
         } catch (err) {
-            alert('Failed to disconnect calendar: ' + (err instanceof Error ? err.message : 'Unknown error'));
+            alert(`Failed to disconnect calendar: ${err instanceof Error ? err.message : 'Unknown error'}`);
         }
     };
 

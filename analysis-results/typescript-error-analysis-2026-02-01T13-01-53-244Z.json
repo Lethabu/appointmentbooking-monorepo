@@ -1,0 +1,95 @@
+{
+  "errors": {
+    "CRITICAL": [],
+    "HIGH": [],
+    "MEDIUM": [],
+    "LOW": []
+  },
+  "report": {
+    "summary": {
+      "totalErrors": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0,
+      "packages": 10
+    },
+    "byPackage": {},
+    "byPattern": {},
+    "topErrors": [],
+    "recommendations": []
+  },
+  "actionPlan": {
+    "phases": [
+      {
+        "name": "Phase 1: Critical Fixes",
+        "priority": "CRITICAL",
+        "errors": 0,
+        "tasks": [],
+        "estimatedDuration": "2-3 days"
+      },
+      {
+        "name": "Phase 2: High Priority Fixes",
+        "priority": "HIGH",
+        "errors": 0,
+        "tasks": [],
+        "estimatedDuration": "1-2 days"
+      },
+      {
+        "name": "Phase 3: Medium Priority Fixes",
+        "priority": "MEDIUM",
+        "errors": 0,
+        "tasks": [],
+        "estimatedDuration": "0.5-1 day"
+      },
+      {
+        "name": "Phase 4: Low Priority Fixes",
+        "priority": "LOW",
+        "errors": 0,
+        "tasks": [
+          {
+            "title": "Code Quality Improvements",
+            "description": "Address 0 low-priority code quality issues",
+            "estimatedTime": "0.25 day"
+          }
+        ],
+        "estimatedDuration": "0.25-0.5 day"
+      }
+    ],
+    "totalEstimatedDuration": "3.75-6.5 days"
+  },
+  "validations": [
+    {
+      "totalErrors": 0,
+      "categoryDistribution": {
+        "CRITICAL": 0,
+        "HIGH": 0,
+        "MEDIUM": 0,
+        "LOW": 0
+      },
+      "packageCoverage": [],
+      "patternCoverage": [
+        "MISSING_MODULE",
+        "REACT_TYPE_CONFLICT",
+        "UNKNOWN_PROPERTY",
+        "IMPLICIT_ANY",
+        "DUPLICATE_IMPLEMENTATION",
+        "MISSING_INITIALIZER",
+        "TYPE_ASSIGNMENT",
+        "MODULE_RESOLUTION",
+        "VERSION_CONFLICT"
+      ]
+    },
+    {
+      "packagesWithErrors": {},
+      "sharedDependencies": {},
+      "errorClusters": {}
+    },
+    {
+      "deploymentRisk": "LOW",
+      "functionalityRisk": "LOW",
+      "developmentRisk": "LOW",
+      "overallRisk": "LOW"
+    }
+  ]
+}

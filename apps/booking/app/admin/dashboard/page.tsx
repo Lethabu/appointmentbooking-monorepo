@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
 import { useAuth } from '@/app/ConvexClientProvider';
 import { db } from '@/lib/firebase';
 // Firebase imports stubbed - using local implementations

@@ -1,8 +1,8 @@
+import { getDb , users, tenants } from "@repo/db";
+import { eq } from "drizzle-orm";
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { getDb } from "@repo/db";
-import { eq } from "drizzle-orm";
-import { users, tenants } from "@repo/db";
+
 
 export interface AuthEnv {
   DB: D1Database;

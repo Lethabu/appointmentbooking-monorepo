@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, Clock, Check, AlertCircle } from 'lucide-react';
+import React, { useState, useCallback } from 'react';
 
 interface TimeSlot {
     time: string;

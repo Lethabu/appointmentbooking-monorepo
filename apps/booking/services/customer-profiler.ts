@@ -2,6 +2,7 @@
 // Advanced customer intelligence for competitive differentiation
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
+
 import { CustomerProfile, BusinessContext, Service, Product } from '../types';
 
 export class CustomerProfiler {

@@ -4,15 +4,16 @@
 // Comprehensive Performance Optimization Orchestration
 // ========================================
 
-import { logger } from '../logger';
 import { ApiError } from '../errors';
+import { logger } from '../logger';
+
 import AdvancedPerformanceOptimizationEngine from './advanced-performance-optimization-engine';
-import StrategicPerformanceMeasurementFramework from './strategic-performance-measurement-framework';
-import ExecutivePerformanceAnalyticsDashboard from './executive-performance-analytics-dashboard';
-import AutomatedOptimizationCommandCenter from './automated-optimization-command-center';
-import PredictiveAnalyticsEngine from './predictive-analytics-engine';
 import AnalyticsOrchestrator from './analytics-orchestrator';
+import AutomatedOptimizationCommandCenter from './automated-optimization-command-center';
+import ExecutivePerformanceAnalyticsDashboard from './executive-performance-analytics-dashboard';
+import PredictiveAnalyticsEngine from './predictive-analytics-engine';
 import RealTimeBusinessIntelligence from './realtime-business-intelligence';
+import StrategicPerformanceMeasurementFramework from './strategic-performance-measurement-framework';
 // Strategic system imports - will be properly integrated in production
 // import { automatedMonitoringSystem } from '../../../services/src/automated-monitoring-system';
 // import { executiveReportingEngine } from '../../../services/src/executive-reporting-engine';
@@ -572,7 +573,7 @@ export class StrategicPerformanceIntegrationLayer {
             operational: operationalReport,
             technical: {
                 systemHealth: overview.health,
-                performance: performance,
+                performance,
                 integration: overview.integration,
                 alerts: this.strategicSystem.monitoring.alerts
             },

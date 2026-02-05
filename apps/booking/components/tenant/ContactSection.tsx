@@ -44,8 +44,8 @@ export default function ContactSection({ config }: ContactSectionProps) {
               </p>
               <p>
                 <strong>Email:</strong>{' '}
-                <Link href={`mailto:${config.contact?.email || 'bookings@' + config.name.toLowerCase().replace(/\s+/g, '') + '.co.za'}`}>
-                  {config.contact?.email || 'bookings@' + config.name.toLowerCase().replace(/\s+/g, '') + '.co.za'}
+                <Link href={`mailto:${config.contact?.email || `bookings@${  config.name.toLowerCase().replace(/\s+/g, '')  }.co.za`}`}>
+                  {config.contact?.email || `bookings@${  config.name.toLowerCase().replace(/\s+/g, '')  }.co.za`}
                 </Link>
               </p>
             </div>

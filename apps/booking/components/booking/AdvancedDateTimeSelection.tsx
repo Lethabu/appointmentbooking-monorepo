@@ -3,8 +3,6 @@
 
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
-import { useBooking } from './BookingContext';
 import { format, addDays, startOfWeek, endOfWeek, isSameDay, parseISO, getDay } from 'date-fns';
 import {
     Calendar,
@@ -19,6 +17,9 @@ import {
     ChevronRight,
     Zap
 } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+
+import { useBooking } from './BookingContext';
 
 interface TimeSlot {
     time: string; // HH:mm format

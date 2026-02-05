@@ -5,8 +5,8 @@
  * Generates marketing content and tracks performance
  */
 
-const https = require('https');
 const fs = require('fs');
+const https = require('https');
 
 const DOMAIN = 'https://www.instylehairboutique.co.za';
 const TENANT_ID = 'ccb12b4d-ade6-467d-a614-7c9d198ddc70';

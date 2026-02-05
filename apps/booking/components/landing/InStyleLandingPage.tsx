@@ -2,16 +2,18 @@
 
 /* eslint-disable react/no-unescaped-entities */
 
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
 import {
     Calendar, ShoppingBag, Star, Clock, MapPin, Phone, Mail,
     Heart, ShoppingCart, Menu, X, Check, ArrowRight, Instagram, Facebook, MessageCircle, Send, Bot
 } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import { FaTiktok, FaWhatsapp } from 'react-icons/fa';
-import BookingWizard from '@/components/booking/BookingWizard';
+
 import { useAI } from '../../../../packages/ui/src/store';
+
+import BookingWizard from '@/components/booking/BookingWizard';
 
 // Using CSS Variables for Consistent Branding
 
