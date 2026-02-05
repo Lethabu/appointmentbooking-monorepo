@@ -1,10 +1,11 @@
 // ============================================================================
 // Edge Runtime Configuration for Cloudflare Pages
-// ============================================================================
-export const runtime = 'edge';
+// Temporarily disabled due to TypeScript path alias resolution issues during OpenNext build
+// export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+
 import {
     PREMIUM_ADDONS,
     MARKETPLACE_INTEGRATIONS,
