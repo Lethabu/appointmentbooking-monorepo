@@ -522,4 +522,4 @@ export default function CalendarManagementPage() {
         </div>
     );
 }
-export const runtime = 'edge';
+

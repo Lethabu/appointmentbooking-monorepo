@@ -15,4 +15,4 @@ export default function NewBookingPage() {
     );
 }
 
-export const runtime = 'edge';
+

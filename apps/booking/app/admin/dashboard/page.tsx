@@ -166,4 +166,4 @@ export default function AdminDashboard() {
   );
 }
 
-export const runtime = 'edge';
+

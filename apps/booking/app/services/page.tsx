@@ -39,4 +39,4 @@ export default async function ServicesPage({ params }: { params?: { tenant?: str
   );
 }
 
-export const runtime = 'edge';
+

@@ -131,4 +131,4 @@ export default function OrderSuccessPage() {
   );
 }
 
-export const runtime = 'edge';
+

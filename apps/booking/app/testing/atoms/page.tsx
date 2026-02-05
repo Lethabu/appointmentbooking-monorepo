@@ -37,4 +37,4 @@ export default function AtomsDemoPage() {
     );
 }
 
-export const runtime = 'edge';
+

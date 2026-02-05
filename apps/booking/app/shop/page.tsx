@@ -212,4 +212,4 @@ export default function ShopPage() {
     )
 }
 
-export const runtime = 'edge';
+

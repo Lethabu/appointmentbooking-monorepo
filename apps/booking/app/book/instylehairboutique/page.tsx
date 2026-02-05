@@ -54,4 +54,4 @@ export default async function BookInStylePage() {
   }
 }
 
-export const runtime = 'edge';
+
