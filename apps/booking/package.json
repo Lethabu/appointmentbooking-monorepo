@@ -30,7 +30,7 @@
     "compile-scripts": "tsc scripts/bootstrapTenant.ts --outDir dist --target es2020 --module commonjs --esModuleInterop",
     "bootstrap-tenant": "npm run compile-scripts && node dist/scripts/bootstrapTenant.js",
     "deploy:worker": "wrangler deploy",
-    "pages:build": "npx @opennextjs/cloudflare build",
+    "pages:build": "npx @opennextjs/cloudflare build --dangerouslyUseUnsupportedNextVersion",
     "pages:deploy": "npm run pages:build && wrangler pages deploy .open-next/assets --project-name=appointmentbooking-coza",
     "deploy:all": "npm run pages:deploy",
     "format": "prettier --write .",
