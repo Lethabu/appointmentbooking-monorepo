@@ -20,7 +20,7 @@ export interface PaymentGatewayConfig {
         webhookSupport: boolean;
         fraudDetection: boolean;
     };
-    integration: Record<string, any>;
+    integration: Record<string, unknown>;
 }
 
 // Enhanced payment gateway configurations for South African market
@@ -301,7 +301,7 @@ const paymentRequestSchema = z.object({
     returnUrl: z.string().url(),
     cancelUrl: z.string().url(),
     notifyUrl: z.string().url(),
-    customFields: z.record(z.any()).optional()
+    customFields: z.record(z.unknown()).optional()
 });
 
 // Main payment processing endpoint
@@ -328,7 +328,15 @@ export async function processPaymentRequest(request: Request): Promise<Response>
         );
 
         // Generate payment request based on gateway type
-        let paymentRequest: any = {
+        let paymentRequest: {
+            amount: number;
+            currency: string;
+            bookingId: string;
+            customerId: string;
+            commission: any;
+            gateway: string;
+            [key: string]: any;
+        } = {
             amount: validatedData.amount,
             currency: validatedData.currency,
             bookingId: validatedData.bookingId,
@@ -361,6 +369,7 @@ export async function processPaymentRequest(request: Request): Promise<Response>
         );
 
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Payment processing error:', error);
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         return new Response(
@@ -371,7 +380,7 @@ export async function processPaymentRequest(request: Request): Promise<Response>
 }
 
 // Gateway-specific payment creation functions
-async function createRedirectPayment(gateway: any, data: any, commission: any) {
+async function createRedirectPayment(gateway: PaymentGatewayConfig, data: z.infer<typeof paymentRequestSchema>, commission: any) {
     // PayFast, Ozow, Traditional Cards redirect flow
     return {
         redirectUrl: `${gateway.integration.sandboxUrl || gateway.integration.liveUrl}`,
@@ -395,7 +404,7 @@ async function createRedirectPayment(gateway: any, data: any, commission: any) {
     };
 }
 
-async function createEmbeddedPayment(gateway: any, data: any, commission: any) {
+async function createEmbeddedPayment(gateway: PaymentGatewayConfig, data: z.infer<typeof paymentRequestSchema>, _commission: any) {
     // SnapScan embedded flow
     return {
         qrCode: `${gateway.integration.qrCodeUrl}${gateway.integration.merchantId}`,
@@ -406,7 +415,7 @@ async function createEmbeddedPayment(gateway: any, data: any, commission: any) {
     };
 }
 
-async function createApiPayment(gateway: any, data: any, commission: any) {
+async function createApiPayment(gateway: PaymentGatewayConfig, data: z.infer<typeof paymentRequestSchema>, commission: any) {
     // Yoco API direct charge
     return {
         apiEndpoint: gateway.integration.apiUrl,

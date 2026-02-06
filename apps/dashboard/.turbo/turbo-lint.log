@@ -4,3 +4,56 @@
 
 
  ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/basic-features/eslint#migrating-existing-config
+
+./app/page.tsx
+23:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/schedules/page.tsx
+28:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+32:9  Warning: Unexpected console statement.  no-console
+40:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+64:7  Warning: Unexpected console statement.  no-console
+83:13  Error: A form label must be associated with a control.  jsx-a11y/label-has-associated-control
+89:13  Error: A form label must be associated with a control.  jsx-a11y/label-has-associated-control
+96:13  Error: A form label must be associated with a control.  jsx-a11y/label-has-associated-control
+
+./components/AppointmentTable.tsx
+8:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+44:88  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./components/StrategicIntelligenceDashboard.tsx
+19:5  Error: 'Calendar' is defined but never used.  @typescript-eslint/no-unused-vars
+28:5  Error: 'BarChart' is defined but never used.  @typescript-eslint/no-unused-vars
+29:5  Error: 'Bar' is defined but never used.  @typescript-eslint/no-unused-vars
+599:48  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+689:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/audit/page.tsx
+3:18  Error: 'Clock' is defined but never used.  @typescript-eslint/no-unused-vars
+11:14  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+36:17  Warning: Unexpected console statement.  no-console
+
+./src/app/dashboard/page.tsx
+5:8  Error: 'ModernSalonDashboard' is defined but never used.  @typescript-eslint/no-unused-vars
+33:12  Error: 'filter' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+33:20  Error: 'setFilter' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/integrations/page.tsx
+11:11  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/lite/page.tsx
+3:10  Error: 'formatDistanceToNow' is defined but never used.  @typescript-eslint/no-unused-vars
+3:37  Error: Unable to resolve path to module 'date-fns'.  import/no-unresolved
+46:10  Error: 'tenantId' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+72:7  Warning: Unexpected console statement.  no-console
+156:72  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./src/app/overrides/page.tsx
+37:13  Warning: Unexpected console statement.  no-console
+59:29  Error: A form label must be associated with a control.  jsx-a11y/label-has-associated-control
+74:29  Error: A form label must be associated with a control.  jsx-a11y/label-has-associated-control
+97:37  Error: A form label must be associated with a control.  jsx-a11y/label-has-associated-control
+109:37  Error: A form label must be associated with a control.  jsx-a11y/label-has-associated-control
+144:104  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./src/app/page.tsx

@@ -70,7 +70,7 @@ function handleGetAddons(tenantId: string) {
     // Filter add-ons based on tenant's current subscription tier
     // This would normally check the tenant's subscription from database
 
-    const availableAddons = PREMIUM_ADDONS.filter(addon => {
+    const availableAddons = PREMIUM_ADDONS.filter((addon: PremiumAddOn) => {
         // Business logic to determine available add-ons
         return addon.active;
     });
@@ -78,8 +78,8 @@ function handleGetAddons(tenantId: string) {
     return NextResponse.json({
         success: true,
         addons: availableAddons,
-        categories: Array.from(new Set(availableAddons.map(a => a.category))),
-        popular: availableAddons.filter(a => a.popularity === 'high')
+        categories: Array.from(new Set(availableAddons.map((a: PremiumAddOn) => a.category))),
+        popular: availableAddons.filter((a: PremiumAddOn) => a.popularity === 'high')
     });
 }
 
@@ -110,7 +110,7 @@ function handleGetEnterpriseSolutions() {
 
 // Handle add-on purchase
 function handlePurchaseAddon(tenantId: string, addOnId: string, billingCycle: 'monthly' | 'annually') {
-    const addon = PREMIUM_ADDONS.find(a => a.id === addOnId);
+    const addon = PREMIUM_ADDONS.find((a: PremiumAddOn) => a.id === addOnId);
 
     if (!addon) {
         return NextResponse.json(

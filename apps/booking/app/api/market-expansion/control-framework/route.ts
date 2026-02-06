@@ -430,9 +430,9 @@ async function getAssociationInfluence() {
 
     return {
         totalAssociations: associations.length,
-        leadershipRoles: associations.filter(a => ['board', 'chair', 'founder'].includes(a.role)).length,
-        totalInvestment: associations.reduce((sum, a) => sum + a.investment, 0),
-        averageControl: associations.reduce((sum, a) => sum + a.control, 0) / associations.length,
+        leadershipRoles: associations.filter((a: any) => ['board', 'chair', 'founder'].includes(a.role)).length,
+        totalInvestment: associations.reduce((sum: number, a: any) => sum + a.investment, 0),
+        averageControl: associations.reduce((sum: number, a: any) => sum + a.control, 0) / associations.length,
         associations
     };
 }

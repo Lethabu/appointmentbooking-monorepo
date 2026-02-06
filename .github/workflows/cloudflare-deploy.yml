@@ -60,11 +60,11 @@ jobs:
 
       - name: Type check
         run: pnpm --filter booking run type-check
-        continue-on-error: true
+        continue-on-error: false
 
       - name: Lint
         run: pnpm --filter booking run lint
-        continue-on-error: true
+        continue-on-error: false
 
   # =========================================================================
   # Build and Deploy - OpenNext + Cloudflare Workers

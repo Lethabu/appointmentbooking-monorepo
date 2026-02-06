@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 
-import { getCustomerFeedback, getCustomerNeedsAnalysis } from '@/lib/customer-feedback';
+import { getCustomerFeedback, getCustomerNeedsAnalysis, type CustomerFeedback } from '@/lib/customer-feedback';
 
 interface CustomerCoInnovationSession {
     id: string;
@@ -61,7 +61,7 @@ class CustomerCoInnovationEngine {
         // Get customer feedback data for this segment
         const feedbackData = await getCustomerFeedback();
         const segmentFeedback = feedbackData.feedback_data.filter(
-            feedback => feedback.business_type === customerSegment
+            (feedback: CustomerFeedback) => feedback.business_type === customerSegment
         );
 
         const session: CustomerCoInnovationSession = {

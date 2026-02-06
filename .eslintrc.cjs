@@ -32,7 +32,7 @@ module.exports = {
     ],
     rules: {
         // TypeScript specific rules
-        '@typescript-eslint/no-unused-vars': 'error',
+        '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
         '@typescript-eslint/no-explicit-any': 'warn',
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -102,6 +102,11 @@ module.exports = {
         'import/resolver': {
             typescript: {
                 alwaysTryTypes: true,
+                project: [
+                    'tsconfig.json',
+                    'apps/*/tsconfig.json',
+                    'packages/*/tsconfig.json'
+                ]
             },
         },
     },

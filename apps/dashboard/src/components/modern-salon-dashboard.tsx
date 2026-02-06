@@ -24,8 +24,8 @@ interface DashboardStats {
 
 export default function ModernSalonDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [_loading, setLoading] = useState(true);
+  const [_error, setError] = useState<string | null>(null);
 
   const TENANT_ID = 'ccb12b4d-ade6-467d-a614-7c9d198ddc70';
 
@@ -240,7 +240,7 @@ export default function ModernSalonDashboard() {
                 <div className="p-6 border-b border-gray-100">
                   <div className="flex items-center justify-between">
                     <h2 className="text-xl font-bold text-gray-900">
-                      Today's Appointments
+                      Today&apos;s Appointments
                     </h2>
                     <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-medium">
                       {stats.recentAppointments.length} active
