@@ -7,7 +7,16 @@
  * Cloudflare Worker backend (appointmentbooking-coza.workers.dev)
  */
 
-export async function onRequest(context) {
+// Cloudflare Pages Function context type
+interface PagesContext {
+  request: Request;
+  env: Record<string, unknown>;
+  params: Record<string, string>;
+  next: () => Promise<Response>;
+  waitUntil: (promise: Promise<unknown>) => void;
+}
+
+export async function onRequest(context: PagesContext): Promise<Response> {
   const { request } = context;
   const url = new URL(request.url);
 
@@ -29,7 +38,8 @@ export async function onRequest(context) {
         });
         return await fetch(pagesRequest);
       } catch (err) {
-        return new Response(JSON.stringify({ error: 'Pages proxy error', message: err.message }), { status: 502, headers: { 'Content-Type': 'application/json' } });
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+        return new Response(JSON.stringify({ error: 'Pages proxy error', message: errorMessage }), { status: 502, headers: { 'Content-Type': 'application/json' } });
       }
     }
 
@@ -52,10 +62,11 @@ export async function onRequest(context) {
       return response;
     } catch (error) {
       // Fallback error response
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       return new Response(
         JSON.stringify({
           error: 'API Gateway Error',
-          message: error.message,
+          message: errorMessage,
           timestamp: new Date().toISOString(),
         }),
         {
