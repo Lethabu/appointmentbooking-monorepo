@@ -192,7 +192,7 @@ const createSecurityTestHandlers = () => [
         const filename = params.filename;
 
         // Vulnerable: no path sanitization
-        if (filename.includes('../')) {
+        if (filename && filename.includes('../')) {
             return HttpResponse.json({
                 success: true,
                 data: {
@@ -941,6 +941,7 @@ describe('Security Testing Suite', () => {
 
             if (setCookieHeaders && setCookieHeaders.length > 0) {
                 for (const cookie of setCookieHeaders) {
+                    if (!cookie) continue; // Type guard
                     const cookieName = cookie.split('=')[0];
 
                     // Check for secure flag
@@ -1000,7 +1001,7 @@ describe('Security Testing Suite', () => {
             };
 
             for (const [headerName, expectedValue] of Object.entries(expectedHeaders)) {
-                const actualValue = securityHeaders[headerName];
+                const actualValue = securityHeaders[headerName as keyof typeof securityHeaders];
 
                 if (actualValue !== expectedValue) {
                     scanner.addVulnerability({

@@ -427,7 +427,7 @@ export class CalendarTestHelper {
         return {
             events: [
                 {
-                    id: this.generateId('event'),
+                    id: TestUtils.generateId('event'),
                     type: eventType,
                     summary: `Test ${eventType} event`,
                     description: 'Test webhook event for calendar sync',
