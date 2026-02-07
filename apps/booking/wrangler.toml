@@ -1,13 +1,13 @@
 # Cloudflare Workers Configuration - appointmentbooking-coza
-# Optimized for OpenNext deployment (2025 Best Practice)
-# https://opennext.js.org/cloudflare
+# Optimized for next-on-pages deployment (2025 Best Practice)
+# https://developers.cloudflare.com/pages/framework-guides/deploy-a-nextjs-site/
 
 name = "appointmentbooking-coza"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
-# OpenNext build output for Pages deployment
-pages_build_output_dir = ".open-next/assets"
+# next-on-pages build output for Pages deployment
+pages_build_output_dir = ".vercel/output/static"
 
 # Environment variables
 [vars]
