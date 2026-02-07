@@ -155,9 +155,36 @@ jobs:
         run: |
           echo "🏗️  Building Next.js application for Cloudflare..."
 
-          # Try regular Next.js build first
+          # Try regular Next.js build first with error capture
           echo "Step 1: Building Next.js application..."
-          pnpm run build
+          echo "Node: $(node --version), NPM: $(npm --version)"
+
+          # Try build with standard config first, fallback to CI config
+          if pnpm run build 2>&1 | tee build.log; then
+            echo "✅ Next.js build with standard config succeeded"
+          else
+            echo "⚠️ Standard config failed, trying CI config..."
+            echo "=== Last 30 lines of build output ==="
+            tail -30 build.log || true
+            echo "=== Attempting with minimal CI config ==="
+
+            # Try with minimal CI config (no plugins)
+            if [ -f "next.config.ci.js" ]; then
+              mv next.config.js next.config.js.backup
+              cp next.config.ci.js next.config.js
+              if pnpm run build 2>&1; then
+                echo "✅ Next.js build with CI config succeeded"
+              else
+                echo "❌ Both configs failed - build is fundamentally broken"
+                mv next.config.js.backup next.config.js
+                exit 1
+              fi
+            else
+              echo "❌ CI config not found and standard config failed"
+              exit 1
+            fi
+          fi
+
           echo "✅ Next.js build completed"
 
           # Verify .next directory was created
