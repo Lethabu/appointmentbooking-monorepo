@@ -38,4 +38,43 @@ Short goal: help an AI engineer be productive quickly in this monorepo. Focus on
   - Global build configuration (`turbo.json`, `pnpm-workspace.yaml`) and Cloudflare account config — these affect CI and deploys.
   - Database primary keys and tenant-related constraints — changing schema may break existing tenants.
 
-If anything above is unclear, tell me which area to expand (Worker routes, migration conventions, or frontend patterns) and I will iterate. 
+If anything above is unclear, tell me which area to expand (Worker routes, migration conventions, or frontend patterns) and I will iterate.
+
+---
+
+## 🚀 App Modernization & Deployment Strategy
+
+For comprehensive app modernization guidance, including:
+- **3x Retry Deployment Strategy**: Automatic retry with progressive backoff
+- **Platform-Wide Deployment**: Multi-phase validation (build → health → E2E)
+- **Best Practice Patterns**: API modernization, migrations, security
+- **Monitoring & Rollback**: Real-time metrics and automated rollback
+
+**See**: [Copilot App Modernization Playbook](.github/copilot-app-modernization.md)
+
+### Quick Deployment Commands
+```bash
+# Pre-deployment validation
+pnpm run validate:pre-deploy
+
+# Deploy with automatic 3x retry
+pnpm run deploy:retry
+
+# Monitor and collect metrics
+pnpm run monitor:collect
+
+# Generate deployment report
+pnpm run monitor:report
+```
+
+### Deployment Phases (3x Retry at Each Level)
+1. **Phase 1**: Pre-deployment validation (contracts, schemas, migrations)
+2. **Phase 2**: Build and deploy (Worker + Pages with retry)
+3. **Phase 3**: Health validation (endpoints, APIs with retry)
+4. **Phase 4**: E2E and performance tests
+5. **Phase 5**: Continuous monitoring (3 rounds of metrics)
+
+**Success Criteria**: Deployment score ≥ 80/100, all health checks pass within 3 attempts, P95 latency < 500ms.
+
+**Rollback**: Automatic on validation failure, manual via `npx wrangler pages deployment create --commit-hash=<prev-hash>`
+
