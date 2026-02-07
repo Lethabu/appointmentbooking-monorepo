@@ -1,13 +1,23 @@
 # Enterprise CI/CD Pipeline with Quality Gates
 # Implements comprehensive testing, security scanning, and deployment
+#
+# This is the comprehensive pipeline for production releases.
+# It includes matrix testing, security scans, and compliance checks.
+#
+# Runs on:
+# - Push to main or staging: Full pipeline with deployment
+# - Pull requests to main: Full validation without deployment
+# - Daily at 2 AM UTC: Scheduled security scans
+#
+# For faster PR checks, see quality-gates.yml
 
 name: Enterprise CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop, staging ]
+    branches: [ main, staging ]  # Only run full pipeline on main and staging
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main ]  # Run on PRs to main
   schedule:
     # Run security scans daily at 2 AM UTC
     - cron: '0 2 * * *'

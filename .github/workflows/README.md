@@ -94,6 +94,20 @@ To configure the required secrets for these workflows:
 You can check workflow status at:
 - `https://github.com/<owner>/<repo>/actions`
 
+## Validating Workflows
+
+Before committing workflow changes, run the validation script:
+
+```bash
+pnpm run validate:workflows
+```
+
+This will check:
+- All referenced scripts exist in package.json
+- All referenced script files exist in the scripts directory
+- Workflow files are properly formatted
+- Required secrets are documented
+
 ## Troubleshooting
 
 ### Common Issues

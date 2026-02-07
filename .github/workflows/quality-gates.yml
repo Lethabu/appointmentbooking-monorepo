@@ -1,10 +1,21 @@
+# 🔍 Code Quality Gates
+#
+# Fast quality checks for quick feedback on pull requests and develop branch.
+# This workflow is optimized for speed (15 min timeout) to provide rapid feedback.
+#
+# Runs on:
+# - Pull requests to main or develop
+# - Pushes to develop branch
+#
+# The enterprise-ci-cd.yml handles comprehensive checks for main branch.
+
 name: 🔍 Code Quality Gates
 
 on:
   pull_request:
     branches: [ main, develop ]
   push:
-    branches: [ main, develop ]
+    branches: [ develop ]  # Only run on develop pushes, not main (enterprise-ci-cd handles main)
 
 env:
   NODE_VERSION: '20'
@@ -12,8 +23,9 @@ env:
 
 jobs:
   quality-gates:
-    name: 🛡️ Quality Gates
+    name: 🛡️ Quick Quality Checks
     runs-on: ubuntu-latest
+    timeout-minutes: 15  # Fast feedback - fail fast if taking too long
     
     steps:
       - name: 📥 Checkout code

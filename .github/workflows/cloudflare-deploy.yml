@@ -1,6 +1,17 @@
 # Cloudflare Pages Deployment with OpenNext
 # Best Practice Configuration - 2025
 # Consolidates: cloudflare-deploy.yml, deploy-pages.yml, deploy-next.yml
+#
+# This workflow handles production deployments to Cloudflare Pages and Workers.
+# It runs comprehensive validation in three phases:
+# - Phase 1: Build artifact and spec validation
+# - Phase 2: Health and API availability checks
+# - Phase 3: E2E contract tests and smoke tests
+#
+# Triggers:
+# - Push to main: Full production deployment
+# - Pull requests: Preview deployment
+# - Manual dispatch: On-demand deployment
 
 name: Deploy to Cloudflare
 
