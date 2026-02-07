@@ -320,15 +320,42 @@ jobs:
 
           echo "✅ Assets verified and ready for deployment"
 
-      - name: Deploy to Cloudflare
+      - name: Deploy to Cloudflare Pages (Attempt 21 - Direct wrangler)
         id: deploy
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: apps/booking
-          command: pages deploy .vercel/output/static --project-name=appointmentbooking-coza
+        working-directory: apps/booking
+        run: |
+          echo "🚀 Deploying to Cloudflare Pages..."
+          echo "================================================"
+
+          echo "Account ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"
+          echo "Project: appointmentbooking-coza"
+          echo "Directory: .vercel/output/static"
+
+          echo ""
+          echo "Running wrangler pages deploy..."
+
+          # Deploy with full output capture
+          if npx wrangler pages deploy .vercel/output/static \
+            --project-name=appointmentbooking-coza \
+            --branch=main 2>&1 | tee deployment.log; then
+            echo ""
+            echo "✅ Deployment command completed"
+            echo ""
+            echo "=== Deployment Summary ==="
+            tail -30 deployment.log || true
+          else
+            echo ""
+            echo "❌ Deployment command failed"
+            echo ""
+            echo "=== Last 50 lines of deployment output ==="
+            tail -50 deployment.log || true
+            exit 1
+          fi
+
+          echo ""
+          echo "✅ Cloudflare Pages deployment completed"
         env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Verify deployment completed
