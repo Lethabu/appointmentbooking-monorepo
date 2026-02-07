@@ -335,6 +335,7 @@ jobs:
           workingDirectory: apps/booking
           command: pages deploy .open-next/assets --project-name=appointmentbooking-coza --commit-dirty=true
         env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Verify deployment completed
