@@ -132,23 +132,26 @@ jobs:
         run: |
           echo "🔨 Building workspace packages (dependencies for booking app)..."
 
-          # Build packages that booking app depends on
+          # Build packages that booking app depends on - MUST succeed
           echo "Building @repo/db..."
-          pnpm --filter @repo/db run build || echo "⚠️ @repo/db build had issues"
+          pnpm --filter @repo/db run build
+          echo "✅ @repo/db built successfully"
 
           echo "Building @repo/auth..."
-          pnpm --filter @repo/auth run build || echo "⚠️ @repo/auth build had issues"
+          pnpm --filter @repo/auth run build
+          echo "✅ @repo/auth built successfully"
 
-          echo "Building @repo/atoms..."
-          pnpm --filter @repo/atoms run build || echo "✅ @repo/atoms (no build needed)"
+          # These packages may not have build scripts
+          echo "Checking @repo/atoms..."
+          pnpm --filter @repo/atoms run build 2>/dev/null || echo "  (no build script, skipping)"
 
-          echo "Building @repo/ui..."
-          pnpm --filter @repo/ui run build || echo "✅ @repo/ui (no build needed)"
+          echo "Checking @repo/ui..."
+          pnpm --filter @repo/ui run build 2>/dev/null || echo "  (no build script, skipping)"
 
-          echo "Building @repo/payments..."
-          pnpm --filter @repo/payments run build || echo "✅ @repo/payments (no build needed)"
+          echo "Checking @repo/payments..."
+          pnpm --filter @repo/payments run build 2>/dev/null || echo "  (no build script, skipping)"
 
-          echo "✅ Workspace packages built"
+          echo "✅ All required workspace packages built"
 
       - name: Build for Cloudflare with OpenNext
         working-directory: apps/booking
