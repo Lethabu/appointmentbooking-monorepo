@@ -51,6 +51,8 @@
     "monitor:watch": "node scripts/post-deployment-monitoring.js 60 30",
     "monitor:github": "node scripts/monitor-github-deployment.js",
     "deploy:retry": "node scripts/deploy-with-retry.js",
+    "deploy:until-success": "node scripts/deploy-until-success.js",
+    "deploy:auto": "node scripts/deploy-until-success.js",
     "deploy:continue": "node scripts/continue-deployment.js",
     "deploy:check": "node scripts/continue-deployment.js",
     "predeploy": "pnpm run validate:pre-deploy",
