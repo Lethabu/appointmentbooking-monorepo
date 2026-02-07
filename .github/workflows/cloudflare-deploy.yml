@@ -164,64 +164,27 @@ jobs:
 
           echo "✅ All required workspace packages built"
 
-      - name: Verify OpenNext Configuration (Attempt 18 Diagnostic)
+      - name: Build for Cloudflare with next-on-pages (Attempt 19)
         working-directory: apps/booking
         run: |
-          echo "🔍 Verifying OpenNext Configuration Before Build..."
-          echo "=================================================="
+          echo "🏗️  Building Next.js application for Cloudflare with next-on-pages..."
 
-          echo ""
-          echo "📄 Content of open-next.config.ts:"
-          cat open-next.config.ts
+          # Clear previous builds
+          echo "🧹 Clearing previous build artifacts..."
+          rm -rf .next .vercel .open-next || true
 
-          echo ""
-          echo "📦 OpenNext package version:"
-          pnpm list @opennextjs/cloudflare || true
-
-          echo ""
-          echo "🧹 Clearing build caches to ensure clean build..."
-          rm -rf .next .open-next || true
-          echo "✅ Caches cleared"
-
-          echo ""
-          echo "✅ Configuration verified, ready for build"
-
-      - name: Build for Cloudflare with OpenNext
-        working-directory: apps/booking
-        run: |
-          echo "🏗️  Building Next.js application for Cloudflare..."
-
-          # Try regular Next.js build first with error capture
+          # Step 1: Build Next.js application
           echo "Step 1: Building Next.js application..."
           echo "Node: $(node --version), NPM: $(npm --version)"
 
-          # Try build with standard config first, fallback to CI config
           if pnpm run build 2>&1 | tee build.log; then
-            echo "✅ Next.js build with standard config succeeded"
+            echo "✅ Next.js build succeeded"
           else
-            echo "⚠️ Standard config failed, trying CI config..."
+            echo "❌ Next.js build failed"
             echo "=== Last 30 lines of build output ==="
             tail -30 build.log || true
-            echo "=== Attempting with minimal CI config ==="
-
-            # Try with minimal CI config (no plugins)
-            if [ -f "next.config.ci.js" ]; then
-              mv next.config.js next.config.js.backup
-              cp next.config.ci.js next.config.js
-              if pnpm run build 2>&1; then
-                echo "✅ Next.js build with CI config succeeded"
-              else
-                echo "❌ Both configs failed - build is fundamentally broken"
-                mv next.config.js.backup next.config.js
-                exit 1
-              fi
-            else
-              echo "❌ CI config not found and standard config failed"
-              exit 1
-            fi
+            exit 1
           fi
-
-          echo "✅ Next.js build completed"
 
           # Verify .next directory was created
           if [ ! -d ".next" ]; then
@@ -230,55 +193,42 @@ jobs:
           fi
           echo "✅ .next directory exists"
 
-          # Then try OpenNext conversion with error handling and verbose output
-          echo "Step 2: Converting to OpenNext format..."
-          echo "Running: npx @opennextjs/cloudflare build --dangerouslyUseUnsupportedNextVersion"
+          # Step 2: Convert to Cloudflare Pages format using next-on-pages
+          echo ""
+          echo "Step 2: Converting to Cloudflare Pages format with next-on-pages..."
+          echo "Running: npx @cloudflare/next-on-pages"
 
-          if pnpm run pages:build 2>&1 | tee opennext.log; then
-            echo "✅ OpenNext build with dangerous flag succeeded"
-            echo "Build output summary:"
-            tail -50 opennext.log || true
-          elif npx @opennextjs/cloudflare build --dangerouslyUseUnsupportedNextVersion 2>&1 | tee opennext-retry.log; then
-            echo "✅ OpenNext build succeeded on retry"
-            tail -50 opennext-retry.log || true
-          elif npx @opennextjs/cloudflare build 2>&1 | tee opennext-safe.log; then
-            echo "✅ OpenNext build succeeded without dangerous flag"
-            tail -50 opennext-safe.log || true
+          if npx @cloudflare/next-on-pages 2>&1 | tee next-on-pages.log; then
+            echo "✅ next-on-pages conversion succeeded"
+            echo ""
+            echo "=== Conversion summary ==="
+            tail -20 next-on-pages.log || true
           else
-            echo "❌ All OpenNext builds failed!"
+            echo "❌ next-on-pages conversion failed"
             echo ""
-            echo "=== Last 50 lines of OpenNext output ==="
-            tail -50 opennext.log opennext-retry.log opennext-safe.log 2>/dev/null || true
-            echo ""
-            echo "⚠️  Trying alternative export method..."
-            # Use Next.js export as fallback for Cloudflare Pages
-            # This creates a static export that can be deployed to Pages
-            if [ -d ".next" ]; then
-              echo "Using .next build output as deployment source"
-              mkdir -p .open-next/assets
-              # Copy .next static export to .open-next/assets
-              cp -r .next/* .open-next/assets/ || {
-                echo "❌ Failed to prepare deployment assets"
-                exit 1
-              }
-              echo "✅ Created deployment assets from Next.js build"
-            else
-              echo "❌ No build output available"
-              exit 1
-            fi
+            echo "=== Last 50 lines of conversion output ==="
+            tail -50 next-on-pages.log || true
+            exit 1
           fi
 
           # Verify build artifacts were created
-          if [ ! -d ".open-next/assets" ]; then
-            echo "❌ Build failed - no .open-next/assets directory"
+          if [ ! -d ".vercel/output/static" ]; then
+            echo "❌ Conversion failed - no .vercel/output/static directory"
             exit 1
           fi
-          echo "✅ Deployment assets directory exists"
+          echo "✅ Cloudflare Pages artifacts directory exists"
 
           # List what was created for debugging
+          echo ""
           echo "📦 Build artifacts:"
-          ls -la .open-next/assets/ | head -20
+          ls -la .vercel/output/static/ | head -20
 
+          FILE_COUNT=$(find .vercel/output/static -type f | wc -l)
+          echo ""
+          echo "📊 Total files: $FILE_COUNT"
+          echo "📊 Total size: $(du -sh .vercel/output/static | cut -f1)"
+
+          echo ""
           echo "✅ Build completed successfully"
         env:
           NODE_ENV: production
@@ -296,19 +246,19 @@ jobs:
           # Step 1.1: Build Artifacts Validation
           echo ""
           echo "Step 1.1: Validating build artifacts..."
-          if [ ! -d ".open-next/assets" ]; then
+          if [ ! -d ".vercel/output/static" ]; then
             echo "❌ Build output directory not found"
             exit 1
           fi
 
           # Check that directory has content
-          FILE_COUNT=$(find .open-next/assets -type f | wc -l)
+          FILE_COUNT=$(find .vercel/output/static -type f | wc -l)
           if [ "$FILE_COUNT" -lt 5 ]; then
             echo "❌ Build output is nearly empty ($FILE_COUNT files)"
             exit 1
           fi
 
-          echo "✅ Build artifacts exist ($FILE_COUNT files in .open-next/assets)"
+          echo "✅ Build artifacts exist ($FILE_COUNT files in .vercel/output/static)"
 
           # Step 1.2: OpenAPI Contract Validation
           echo ""
@@ -332,7 +282,7 @@ jobs:
           # Step 1.5: Bundle Size Check
           echo ""
           echo "Step 1.5: Checking bundle sizes..."
-          node scripts/check-bundle-size.js apps/booking/.open-next/assets || echo "⚠️ Bundle size check had issues but continuing"
+          node scripts/check-bundle-size.js apps/booking/.vercel/output/static || echo "⚠️ Bundle size check had issues but continuing"
           echo "✅ Bundle size check complete"
 
           echo ""
@@ -343,27 +293,27 @@ jobs:
         run: |
           echo "📦 Verifying deployment assets before Cloudflare upload..."
 
-          if [ ! -d ".open-next/assets" ]; then
+          if [ ! -d ".vercel/output/static" ]; then
             echo "❌ No assets directory found!"
             exit 1
           fi
 
-          echo "Contents of .open-next/assets:"
-          ls -lah .open-next/assets/
+          echo "Contents of .vercel/output/static:"
+          ls -lah .vercel/output/static/
 
           echo ""
           echo "Total size:"
-          du -sh .open-next/assets/
+          du -sh .vercel/output/static/
 
           echo ""
           echo "File count:"
-          find .open-next/assets -type f | wc -l
+          find .vercel/output/static -type f | wc -l
 
           echo ""
           echo "Checking for _worker.js:"
-          if [ -f ".open-next/assets/_worker.js" ]; then
-            echo "✅ _worker.js exists ($(wc -l < .open-next/assets/_worker.js) lines)"
-            head -20 .open-next/assets/_worker.js
+          if [ -f ".vercel/output/static/_worker.js" ]; then
+            echo "✅ _worker.js exists ($(wc -l < .vercel/output/static/_worker.js) lines)"
+            head -20 .vercel/output/static/_worker.js
           else
             echo "⚠️  No _worker.js found (will use default Pages routing)"
           fi
@@ -377,7 +327,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: apps/booking
-          command: pages deploy .open-next/assets --project-name=appointmentbooking-coza
+          command: pages deploy .vercel/output/static --project-name=appointmentbooking-coza
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
