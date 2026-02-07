@@ -49,6 +49,10 @@
     "monitor:report": "node scripts/generate-deployment-report.js",
     "monitor:continuous": "node scripts/post-deployment-monitoring.js 30 60",
     "monitor:watch": "node scripts/post-deployment-monitoring.js 60 30",
+    "monitor:github": "node scripts/monitor-github-deployment.js",
+    "deploy:retry": "node scripts/deploy-with-retry.js",
+    "deploy:continue": "node scripts/continue-deployment.js",
+    "deploy:check": "node scripts/continue-deployment.js",
     "predeploy": "pnpm run validate:pre-deploy",
     "postdeploy": "pnpm run monitor:collect-quick"
   },
