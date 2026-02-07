@@ -1,0 +1,41 @@
+{
+  "performanceThresholds": {
+    "api": {
+      "p95": 500,
+      "p99": 1000,
+      "avgResponseTime": 200
+    },
+    "pages": {
+      "fcp": 1800,
+      "lcp": 2500,
+      "cls": 0.1,
+      "pageLoadTime": 3000
+    },
+    "worker": {
+      "maxCpuTime": 50,
+      "maxMemoryMb": 128
+    }
+  },
+  "bundleSizeLimits": {
+    "mainJs": 512000,
+    "css": 102400,
+    "totalPage": 2097152
+  },
+  "healthCheckEndpoints": [
+    "https://appointmentbooking-coza.houseofgr8ness.workers.dev/api/health",
+    "https://appointmentbooking.co.za/api/health",
+    "https://dashboard.appointmentbooking.co.za/api/health"
+  ],
+  "criticalEndpoints": [
+    "/api/book",
+    "/api/tenant",
+    "/api/public/services",
+    "/api/dashboard",
+    "/api/health"
+  ],
+  "monitoringConfig": {
+    "errorRateThreshold": 0.05,
+    "availabilityThreshold": 0.999,
+    "alertWindowMinutes": 10
+  }
+}

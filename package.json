@@ -26,7 +26,31 @@
     "setup": "node scripts/setup-project.js",
     "setup:hooks": "npx husky install && npx husky add .husky/pre-commit \"pnpm run quality:check\"",
     "quality:report": "echo 'Quality report generation...'",
-    "pre-commit": "pnpm run lint && pnpm run type-check"
+    "pre-commit": "pnpm run lint && pnpm run type-check",
+    "validate:openapi": "node scripts/validate-openapi-contract.js",
+    "validate:schema": "node scripts/validate-database-schema.js",
+    "validate:zod": "node scripts/validate-zod-schemas.js",
+    "validate:migrations": "node scripts/validate-migrations.js",
+    "validate:env": "node scripts/validate-env.js",
+    "validate:bundle": "node scripts/check-bundle-size.js apps/booking/.open-next/assets",
+    "validate:health": "node scripts/health-check-production.js",
+    "validate:endpoints": "node scripts/validate-endpoint-availability.js",
+    "validate:e2e": "node scripts/e2e-contract-tests.js",
+    "validate:zod-runtime": "node scripts/validate-zod-runtime.js",
+    "validate:performance": "node scripts/performance-baseline-tests.js",
+    "validate:phase1": "pnpm run validate:openapi && pnpm run validate:schema && pnpm run validate:zod && pnpm run validate:migrations",
+    "validate:phase2": "pnpm run validate:health && pnpm run validate:endpoints",
+    "validate:phase3": "pnpm run validate:e2e && pnpm run validate:zod-runtime && pnpm run validate:performance",
+    "validate:all": "pnpm run validate:phase1 && pnpm run validate:phase2 && pnpm run validate:phase3",
+    "validate:pre-deploy": "node scripts/pre-deployment-validation.js",
+    "validate:test-scripts": "node scripts/test-validation-scripts.js",
+    "monitor:collect": "node scripts/collect-deployment-metrics.js full",
+    "monitor:collect-quick": "node scripts/collect-deployment-metrics.js quick",
+    "monitor:report": "node scripts/generate-deployment-report.js",
+    "monitor:continuous": "node scripts/post-deployment-monitoring.js 30 60",
+    "monitor:watch": "node scripts/post-deployment-monitoring.js 60 30",
+    "predeploy": "pnpm run validate:pre-deploy",
+    "postdeploy": "pnpm run monitor:collect-quick"
   },
   "devDependencies": {
     "@cloudflare/next-on-pages": "^1.13.16",
@@ -49,7 +73,8 @@
     "lint-staged": "^15.2.0",
     "prettier": "^3.0.0",
     "turbo": "^2.6.0",
-    "wrangler": "^4.59.0"
+    "wrangler": "^4.59.0",
+    "yaml": "^2.3.4"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.28.0",
