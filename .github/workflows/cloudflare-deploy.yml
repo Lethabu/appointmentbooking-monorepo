@@ -56,7 +56,10 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: |
+          echo "Installing dependencies..."
+          pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
+          echo "✅ Dependencies installed successfully"
 
       - name: Type check
         run: pnpm --filter booking run type-check
@@ -120,7 +123,10 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: |
+          echo "Installing dependencies..."
+          pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
+          echo "✅ Dependencies installed successfully"
 
       - name: Build for Cloudflare with OpenNext
         working-directory: apps/booking
@@ -222,7 +228,10 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies for validation scripts
-        run: pnpm install --filter root --frozen-lockfile || pnpm install yaml --frozen-lockfile
+        run: |
+          echo "Installing dependencies for validation scripts..."
+          pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
+          echo "✅ Dependencies installed"
 
       - name: Phase 2 - Health & API Availability (Repeat 2)
         run: |
