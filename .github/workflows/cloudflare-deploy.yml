@@ -130,26 +130,30 @@ jobs:
 
       - name: Build for Cloudflare with OpenNext
         working-directory: apps/booking
-        continue-on-error: true
         run: |
-          echo "🏗️  Attempting OpenNext build for Cloudflare (Attempt 5 - Maximum Resilience)..."
+          echo "🏗️  Building Next.js application for Cloudflare..."
 
           # Try regular Next.js build first
           echo "Step 1: Building Next.js application..."
-          pnpm run build || echo "⚠️  Regular build had issues, continuing..."
+          pnpm run build
 
           # Then try OpenNext conversion
           echo "Step 2: Converting to OpenNext format..."
-          pnpm run pages:build || {
-            echo "⚠️  OpenNext with dangerous flag failed, trying without..."
-            npx @opennextjs/cloudflare build || {
-              echo "⚠️  Standard OpenNext failed, creating fallback structure..."
-              mkdir -p .open-next/assets
-              echo "// Fallback worker for deployment" > .open-next/assets/_worker.js
-            }
-          }
+          pnpm run pages:build || npx @opennextjs/cloudflare build
 
-          echo "✅ Build process completed (deployment will proceed)"
+          # Verify build artifacts were created
+          if [ ! -d ".open-next/assets" ] || [ ! -f ".open-next/assets/_worker.js" ]; then
+            echo "❌ Build failed - no artifacts created"
+            exit 1
+          fi
+
+          # Check that it's not just a fallback stub
+          if [ $(wc -l < .open-next/assets/_worker.js) -lt 10 ]; then
+            echo "❌ Build produced minimal output - likely a failed build"
+            exit 1
+          fi
+
+          echo "✅ Build completed successfully with proper artifacts"
         env:
           NODE_ENV: production
           NODE_OPTIONS: '--max-old-space-size=8192'
@@ -159,7 +163,6 @@ jobs:
 
       - name: Phase 1 - Build Artifact & Spec Validation (Repeat 1)
         working-directory: apps/booking
-        continue-on-error: false
         run: |
           echo "🔍 PHASE 1: Build Artifact & Spec-Driven Validation"
           echo "=================================================="
@@ -168,12 +171,22 @@ jobs:
           echo ""
           echo "Step 1.1: Validating build artifacts..."
           if [ ! -d ".open-next/assets" ]; then
-            echo "⚠️  Build output directory not found but continuing"
-          elif [ ! -f ".open-next/assets/_worker.js" ]; then
-            echo "⚠️  Worker file not found but continuing"
-          else
-            echo "✅ Build artifacts exist"
+            echo "❌ Build output directory not found"
+            exit 1
           fi
+          if [ ! -f ".open-next/assets/_worker.js" ]; then
+            echo "❌ Worker file not found"
+            exit 1
+          fi
+
+          # Verify it's not just a stub
+          WORKER_LINES=$(wc -l < .open-next/assets/_worker.js)
+          if [ "$WORKER_LINES" -lt 10 ]; then
+            echo "❌ Worker file is too small ($WORKER_LINES lines) - likely a stub"
+            exit 1
+          fi
+
+          echo "✅ Build artifacts exist ($WORKER_LINES lines in _worker.js)"
 
           # Step 1.2: OpenAPI Contract Validation
           echo ""
@@ -205,7 +218,6 @@ jobs:
 
       - name: Deploy to Cloudflare
         id: deploy
-        continue-on-error: true
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -216,7 +228,6 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Deploy Worker (API)
-        continue-on-error: true
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -300,7 +311,6 @@ jobs:
           echo "✅ PHASE 2 COMPLETE: Deployment health verified"
 
       - name: Phase 3 - E2E Contract Tests & Smoke Tests (Repeat 3)
-        continue-on-error: true
         run: |
           echo "🔍 PHASE 3: E2E Contract Tests & Comprehensive Smoke Tests"
           echo "=========================================================="
@@ -321,11 +331,13 @@ jobs:
           echo ""
           echo "Step 3.3: Running critical path smoke tests..."
 
-          # Test 1: Homepage
+          # Test 1: Homepage - THIS IS CRITICAL
+          echo "Testing homepage..."
           if curl -sf https://appointmentbooking.co.za/ > /dev/null; then
             echo "✅ Test 1: Homepage loads"
           else
             echo "❌ Test 1 FAILED: Homepage did not load"
+            echo "   This is a critical failure - frontend is not deployed"
             exit 1
           fi
 
