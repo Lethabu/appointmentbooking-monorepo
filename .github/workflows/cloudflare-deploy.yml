@@ -164,6 +164,28 @@ jobs:
 
           echo "✅ All required workspace packages built"
 
+      - name: Verify OpenNext Configuration (Attempt 18 Diagnostic)
+        working-directory: apps/booking
+        run: |
+          echo "🔍 Verifying OpenNext Configuration Before Build..."
+          echo "=================================================="
+
+          echo ""
+          echo "📄 Content of open-next.config.ts:"
+          cat open-next.config.ts
+
+          echo ""
+          echo "📦 OpenNext package version:"
+          pnpm list @opennextjs/cloudflare || true
+
+          echo ""
+          echo "🧹 Clearing build caches to ensure clean build..."
+          rm -rf .next .open-next || true
+          echo "✅ Caches cleared"
+
+          echo ""
+          echo "✅ Configuration verified, ready for build"
+
       - name: Build for Cloudflare with OpenNext
         working-directory: apps/booking
         run: |
@@ -208,16 +230,27 @@ jobs:
           fi
           echo "✅ .next directory exists"
 
-          # Then try OpenNext conversion with error handling
+          # Then try OpenNext conversion with error handling and verbose output
           echo "Step 2: Converting to OpenNext format..."
-          if pnpm run pages:build; then
+          echo "Running: npx @opennextjs/cloudflare build --dangerouslyUseUnsupportedNextVersion"
+
+          if pnpm run pages:build 2>&1 | tee opennext.log; then
             echo "✅ OpenNext build with dangerous flag succeeded"
-          elif npx @opennextjs/cloudflare build --dangerouslyUseUnsupportedNextVersion; then
+            echo "Build output summary:"
+            tail -50 opennext.log || true
+          elif npx @opennextjs/cloudflare build --dangerouslyUseUnsupportedNextVersion 2>&1 | tee opennext-retry.log; then
             echo "✅ OpenNext build succeeded on retry"
-          elif npx @opennextjs/cloudflare build; then
+            tail -50 opennext-retry.log || true
+          elif npx @opennextjs/cloudflare build 2>&1 | tee opennext-safe.log; then
             echo "✅ OpenNext build succeeded without dangerous flag"
+            tail -50 opennext-safe.log || true
           else
-            echo "⚠️  All OpenNext builds failed, trying alternative export method..."
+            echo "❌ All OpenNext builds failed!"
+            echo ""
+            echo "=== Last 50 lines of OpenNext output ==="
+            tail -50 opennext.log opennext-retry.log opennext-safe.log 2>/dev/null || true
+            echo ""
+            echo "⚠️  Trying alternative export method..."
             # Use Next.js export as fallback for Cloudflare Pages
             # This creates a static export that can be deployed to Pages
             if [ -d ".next" ]; then
