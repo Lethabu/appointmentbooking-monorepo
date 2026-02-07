@@ -38,6 +38,7 @@
     "validate:e2e": "node scripts/e2e-contract-tests.js",
     "validate:zod-runtime": "node scripts/validate-zod-runtime.js",
     "validate:performance": "node scripts/performance-baseline-tests.js",
+    "validate:workflows": "node scripts/validate-workflows.js",
     "validate:phase1": "pnpm run validate:openapi && pnpm run validate:schema && pnpm run validate:zod && pnpm run validate:migrations",
     "validate:phase2": "pnpm run validate:health && pnpm run validate:endpoints",
     "validate:phase3": "pnpm run validate:e2e && pnpm run validate:zod-runtime && pnpm run validate:performance",
