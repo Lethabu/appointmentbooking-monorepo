@@ -1,28 +1,28 @@
-import { handleAiEndpoint } from './ai-endpoint';
-import { handleAuditFunnelEndpoint } from './audit-tracking';
-import { handleAuthEndpoint } from './auth-endpoint';
 import { getAvailability } from './availability';
+import { handleDashboardBookings } from './dashboard-endpoint';
+import { handleDashboardSSE } from './dashboard-stream';
+import { handleAiEndpoint } from './ai-endpoint';
+import { handleTenantEndpoint } from './tenant-endpoint';
+import { handleBookEndpoint } from './book-endpoint';
+import { handleDashboardStatsEndpoint } from './dashboard-stats-endpoint';
+import { handleHealthEndpoint } from './health-endpoint';
+import { handlePublicServicesEndpoint } from './public-services-endpoint';
 import { handleProductsEndpoint } from './products-endpoint';
 import { handleAvailabilityEndpoint } from './availability-endpoint';
-import { handleBookEndpoint } from './book-endpoint';
 import { handleSchedulesEndpoint } from './schedules-endpoint';
+import { handleNotification } from './notifications';
+import { handleAuthEndpoint } from './auth-endpoint';
 import { handleGoogleOAuthEndpoint } from './oauth-endpoint';
 import { handleCalendarSyncEndpoint } from './calendar-sync';
-import { handleDashboardBookings } from './dashboard-endpoint';
-import { handleDashboardStatsEndpoint } from './dashboard-stats-endpoint';
-import { handleDashboardSSE } from './dashboard-stream';
 // import { Resend } from 'resend';
 // import { render } from 'react-email';
 // import { BookingConfirmationEmail } from './emails/BookingConfirmation';
-import { handleError } from './errors';
-import { handleHealthEndpoint } from './health-endpoint';
 import { escapeHtml, formatPrice } from './helpers';
-import { registerLiteEndpoints } from './lite-dashboard-endpoints';
 import { logger } from './logger';
-import { handleNotification } from './notifications';
+import { handleError } from './errors';
+import { registerLiteEndpoints } from './lite-dashboard-endpoints';
 import { generatePricingResponse } from './pricing-middleware';
-import { handlePublicServicesEndpoint } from './public-services-endpoint';
-import { handleTenantEndpoint } from './tenant-endpoint';
+import { handleAuditFunnelEndpoint } from './audit-tracking';
 
 // Cloudflare Worker for InStyle landing page
 export default {
@@ -264,7 +264,7 @@ export default {
         if (path.startsWith('/dashboard/')) {
             const tenantSlug = path.split('/')[2];
             if (tenantSlug) {
-                return new Response(`<html><body><h1>Dashboard for ${  tenantSlug  }</h1><p>Dashboard UI would load here</p></body></html>`, {
+                return new Response('<html><body><h1>Dashboard for ' + tenantSlug + '</h1><p>Dashboard UI would load here</p></body></html>', {
                     headers: {
                         'Content-Type': 'text/html; charset=utf-8',
                         ...corsHeaders
@@ -511,7 +511,7 @@ async function handleApiRoute(request: Request, env: any, providedHeaders?: any)
                 return new Response(JSON.stringify({
                     success: true,
                     data: {
-                        appointmentId
+                        appointmentId: appointmentId
                     }
                 }), { status: 200, headers: corsHeaders });
             } catch (error) {
@@ -653,7 +653,7 @@ async function handleApiRoute(request: Request, env: any, providedHeaders?: any)
                 const result = await env.DB.prepare(
                     'INSERT INTO appointments (user_id, service_id, staff_id, scheduled_time, status, created_at) VALUES (?, ?, ?, ?, ?, ?)'
                 ).bind(
-                    body.userId || `guest-${  Math.random().toString(36).substring(7)}`,
+                    body.userId || 'guest-' + Math.random().toString(36).substring(7),
                     body.serviceId || 1,
                     body.staffId || 1,
                     body.scheduledTime || new Date().toISOString(),

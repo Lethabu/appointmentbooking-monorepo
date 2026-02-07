@@ -3,3 +3,15 @@
 > eslint . --max-warnings 0
 
 Warning: React version was set to "detect" in eslint-plugin-react settings, but the "react" package is not installed. Assuming latest React version for linting.
+
+C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\packages\payments\src\sa-payment-gateways.ts
+  336:25   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  338:28   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  383:125  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  407:126  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  418:120  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 5 problems (0 errors, 5 warnings)
+
+ESLint found too many warnings (maximum: 0).
+ ELIFECYCLE  Command failed with exit code 1.
