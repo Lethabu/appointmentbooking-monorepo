@@ -665,9 +665,9 @@ describe('Integration Testing Suite', () => {
                 responses.map(response => response.json())
             );
 
-            responsesData.forEach(data => {
+            responsesData.forEach((data: any) => {
                 expect(data.success).toBe(true);
-                expect(data.data.slots).toBeDefined();
+                expect((data as any).data.slots).toBeDefined();
             });
         });
     });

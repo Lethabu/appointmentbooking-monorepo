@@ -3,10 +3,19 @@
 
 import * as matchers from '@testing-library/jest-dom/matchers';
 import { cleanup } from '@testing-library/react';
-import { expect, afterEach } from 'vitest';
+import { expect, afterEach, describe, it, beforeEach, afterAll, beforeAll } from 'vitest';
 
 // Extend Vitest's expect with jest-dom matchers
 expect.extend(matchers);
+
+// Expose test utilities globally for compatibility
+(global as any).expect = expect;
+(global as any).describe = describe;
+(global as any).it = it;
+(global as any).beforeEach = beforeEach;
+(global as any).afterEach = afterEach;
+(global as any).beforeAll = beforeAll;
+(global as any).afterAll = afterAll;
 
 // Cleanup after each test
 afterEach(() => {

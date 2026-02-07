@@ -279,4 +279,32 @@ export class BaseAgent {
             };
         }
     }
+
+    /**
+     * Public getter for config (for testing purposes)
+     */
+    public getConfig(): AgentConfig {
+        return { ...this.config };
+    }
+
+    /**
+     * Calculate confidence score based on message content
+     * Used for testing and metrics
+     */
+    protected calculateConfidence(message: string, context?: Record<string, any>): number {
+        // Simple confidence calculation based on message length and context
+        let confidence = 0.5; // Base confidence
+        
+        if (message && message.length > 10) {
+            confidence += 0.2;
+        }
+        if (context && Object.keys(context).length > 0) {
+            confidence += 0.2;
+        }
+        if (message && message.includes('?')) {
+            confidence -= 0.1; // Less confident with questions
+        }
+        
+        return Math.max(0, Math.min(1, confidence));
+    }
 }

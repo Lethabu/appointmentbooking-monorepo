@@ -392,6 +392,8 @@ rollback-*
 compliance/
 audit/
 security/
+!apps/*/utils/security/
+!packages/*/utils/security/
 *.compliance.json
 *.security.json
 
