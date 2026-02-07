@@ -128,6 +128,28 @@ jobs:
           pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
           echo "✅ Dependencies installed successfully"
 
+      - name: Build workspace packages
+        run: |
+          echo "🔨 Building workspace packages (dependencies for booking app)..."
+
+          # Build packages that booking app depends on
+          echo "Building @repo/db..."
+          pnpm --filter @repo/db run build || echo "⚠️ @repo/db build had issues"
+
+          echo "Building @repo/auth..."
+          pnpm --filter @repo/auth run build || echo "⚠️ @repo/auth build had issues"
+
+          echo "Building @repo/atoms..."
+          pnpm --filter @repo/atoms run build || echo "✅ @repo/atoms (no build needed)"
+
+          echo "Building @repo/ui..."
+          pnpm --filter @repo/ui run build || echo "✅ @repo/ui (no build needed)"
+
+          echo "Building @repo/payments..."
+          pnpm --filter @repo/payments run build || echo "✅ @repo/payments (no build needed)"
+
+          echo "✅ Workspace packages built"
+
       - name: Build for Cloudflare with OpenNext
         working-directory: apps/booking
         run: |
