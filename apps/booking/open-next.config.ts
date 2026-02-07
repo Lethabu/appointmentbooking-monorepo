@@ -2,7 +2,7 @@ export default {
   default: {
     override: {
       wrapper: "cloudflare-node",
-      converter: "node",
+      converter: "edge",  // Fixed: Changed from "node" to "edge" for cloudflare-node compatibility
       proxyExternalRequest: "fetch",
       incrementalCache: "dummy",
       tagCache: "dummy",
