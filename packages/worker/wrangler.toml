@@ -1,71 +1,18 @@
-###############################################################################
-# Cloudflare Worker Configuration - appointmentbooking-coza
-# SPEC: Cloudflare Workers v4 + D1 Database Bindings
-# Generated: 2026-01-11 - Spec-Driven Development
-###############################################################################
-
-# Core Configuration
-name = "appointmentbooking-coza"
-type = "service"
+# Minimal Cloudflare Worker Configuration
+name = "appointmentbooking-worker"
 main = "src/index.ts"
 compatibility_date = "2024-01-01"
 compatibility_flags = ["nodejs_compat"]
 
-###############################################################################
-# ENVIRONMENT VARIABLES (Production)
-###############################################################################
-[vars]
-NEXT_PUBLIC_APP_URL = "https://appointmentbooking.co.za"
-NEXTAUTH_URL = "https://appointmentbooking.co.za"
-NODE_ENV = "production"
-GOOGLE_CLIENT_ID = "676754877412-d58f0hh39q06rkquj2rg98gq7s6kelhf.apps.googleusercontent.com"
-GOOGLE_CLIENT_SECRET = "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"
-GOOGLE_REDIRECT_URI = "https://appointmentbooking-coza.houseofgr8ness.workers.dev/api/oauth/google/callback"
-JWT_SECRET = "appointmentbooking-jwt-secret-v1-2026-production-key-instyle-hair"
+# Account Configuration
+account_id = "9e96c83268cae3e0f27168ed50c92033"
 
-###############################################################################
-# D1 DATABASE BINDINGS (Spec Requirement: Worker must access D1)
-###############################################################################
-# SPEC: Binding name must be 'DB' to match env.DB in worker code
+# Environment Variables
+[vars]
+NODE_ENV = "production"
+
+# D1 Database
 [[d1_databases]]
 binding = "DB"
 database_name = "appointmentbooking-db"
 database_id = "59c06cd2-8bd2-45cf-ab62-84d7a4919e11"
-
-###############################################################################
-# PRODUCTION ENVIRONMENT CONFIGURATION
-###############################################################################
-[env.production]
-name = "appointmentbooking-coza-production"
-
-[env.production.vars]
-NODE_ENV = "production"
-GOOGLE_CLIENT_ID = "676754877412-d58f0hh39q06rkquj2rg98gq7s6kelhf.apps.googleusercontent.com"
-GOOGLE_CLIENT_SECRET = "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"
-GOOGLE_REDIRECT_URI = "https://appointmentbooking-coza.houseofgr8ness.workers.dev/api/oauth/google/callback"
-JWT_SECRET = "appointmentbooking-jwt-secret-v1-2026-production-key-instyle-hair"
-
-[[env.production.d1_databases]]
-binding = "DB"
-database_name = "appointmentbooking-db"
-database_id = "59c06cd2-8bd2-45cf-ab62-84d7a4919e11"
-
-###############################################################################
-# ROUTES CONFIGURATION (Spec: Edge computing route pattern)
-###############################################################################
-route = "appointmentbooking-coza.houseofgr8ness.workers.dev/api/*"
-zone_name = "houseofgr8ness.workers.dev"
-
-###############################################################################
-# BUILD CONFIGURATION
-###############################################################################
-[build]
-command = "npm run build"
-cwd = "."
-main = "src/index.ts"
-
-###############################################################################
-# OBSERVABILITY & MONITORING
-###############################################################################
-# Logpush integration for analytics
-observability = {enabled = true}

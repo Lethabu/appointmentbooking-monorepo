@@ -383,6 +383,12 @@ export async function processPaymentRequest(request: Request): Promise<Response>
 async function createRedirectPayment(gateway: PaymentGatewayConfig, data: z.infer<typeof paymentRequestSchema>, commission: any) {
     // PayFast, Ozow, Traditional Cards redirect flow
     return {
+        amount: data.amount,
+        currency: data.currency,
+        bookingId: data.bookingId,
+        customerId: data.customerId,
+        commission,
+        gateway: data.paymentMethod,
         redirectUrl: `${gateway.integration.sandboxUrl || gateway.integration.liveUrl}`,
         method: 'POST',
         formData: {
@@ -404,11 +410,16 @@ async function createRedirectPayment(gateway: PaymentGatewayConfig, data: z.infe
     };
 }
 
-async function createEmbeddedPayment(gateway: PaymentGatewayConfig, data: z.infer<typeof paymentRequestSchema>, _commission: any) {
+async function createEmbeddedPayment(gateway: PaymentGatewayConfig, data: z.infer<typeof paymentRequestSchema>, commission: any) {
     // SnapScan embedded flow
     return {
-        qrCode: `${gateway.integration.qrCodeUrl}${gateway.integration.merchantId}`,
         amount: data.amount,
+        currency: data.currency,
+        bookingId: data.bookingId,
+        customerId: data.customerId,
+        commission,
+        gateway: data.paymentMethod,
+        qrCode: `${gateway.integration.qrCodeUrl}${gateway.integration.merchantId}`,
         reference: data.bookingId,
         callbackUrl: data.notifyUrl,
         embedded: true
@@ -418,6 +429,12 @@ async function createEmbeddedPayment(gateway: PaymentGatewayConfig, data: z.infe
 async function createApiPayment(gateway: PaymentGatewayConfig, data: z.infer<typeof paymentRequestSchema>, commission: any) {
     // Yoco API direct charge
     return {
+        amount: data.amount,
+        currency: data.currency,
+        bookingId: data.bookingId,
+        customerId: data.customerId,
+        commission,
+        gateway: data.paymentMethod,
         apiEndpoint: gateway.integration.apiUrl,
         method: 'POST',
         headers: {

@@ -1,3 +1,45 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    
+    // GitHub Copilot Configuration
+    "github.copilot.enable": {
+        "*": true,
+        "yaml": true,
+        "markdown": true,
+        "typescript": true,
+        "javascript": true
+    },
+    
+    // Reference to custom instructions for AI assistants
+    "github.copilot.advanced": {
+        "inlineSuggestCount": 3,
+        "enableAutoCompletions": true
+    },
+    
+    // TypeScript & JavaScript
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    
+    // Editor
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
+    
+    // Files
+    "files.exclude": {
+        "**/.turbo": true,
+        "**/node_modules": true,
+        "**/.next": true,
+        "**/dist": true
+    },
+    
+    // Search
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/.next": true,
+        "**/dist": true,
+        "**/.turbo": true,
+        "**/pnpm-lock.yaml": true
+    }
 }

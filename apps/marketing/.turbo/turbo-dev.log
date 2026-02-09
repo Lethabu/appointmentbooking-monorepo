@@ -1,10 +1,21 @@
 
-> marketing@0.1.0 dev C:\Users\Adrin\Documents\MyProjects\appointmentbooking-monorepo\apps\marketing
+> marketing@0.1.0 dev C:\Users\Adrin\OneDrive\Documents\appointmentbooking-monorepo\apps\marketing
 > next dev
 
- ⚠ Port 3000 is in use, trying 3001 instead.
   ▲ Next.js 14.2.35
-  - Local:        http://localhost:3001
+  - Local:        http://localhost:3000
 
  ✓ Starting...
- ✓ Ready in 59.8s
+ ✓ Ready in 6.9s
+ ○ Compiling / ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ✓ Compiled / in 12s (572 modules)
+ GET / 200 in 170ms
+ GET / 200 in 55ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 1269ms (575 modules)
+ GET /shop 404 in 1577ms
+ GET /api/products 404 in 46ms
+ GET /api/health 404 in 55ms
+ GET /shop 404 in 33ms
+ GET / 200 in 104ms
