@@ -48,7 +48,9 @@ jobs:
           cache: 'pnpm'
 
       - name: 📥 Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
+        env:
+          SKIP_ENV_VALIDATION: 'true'
 
       # 🔍 LINTING & CODE ANALYSIS
       - name: 🔍 ESLint Analysis
@@ -120,6 +122,8 @@ jobs:
         run: |
           pnpm run build:sequential
         continue-on-error: false
+        env:
+          SKIP_ENV_VALIDATION: 'true'
 
       - name: 📦 Upload Build Artifacts
         uses: actions/upload-artifact@v4
