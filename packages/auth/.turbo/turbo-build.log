@@ -1,4 +1,4 @@
 
-> @repo/auth@0.0.1 build C:\Users\Adrin\OneDrive\Documents\appointmentbooking-monorepo\packages\auth
+> @repo/auth@0.0.1 build /home/runner/work/appointmentbooking-monorepo/appointmentbooking-monorepo/packages/auth
 > tsc
 
