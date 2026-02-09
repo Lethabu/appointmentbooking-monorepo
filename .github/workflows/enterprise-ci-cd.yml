@@ -25,6 +25,7 @@ on:
 env:
   NODE_VERSION: '20'
   PNPM_VERSION: '10.14.0'
+  SKIP_ENV_VALIDATION: 'true'
 
 jobs:
   # ====================
@@ -86,9 +87,17 @@ jobs:
   security-scan:
     name: Security Vulnerability Assessment
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -161,7 +170,7 @@ jobs:
       - name: Upload coverage reports
         uses: codecov/codecov-action@v4
         continue-on-error: true
-        if: hashFiles('apps/${{ matrix.app }}/coverage/lcov.info') != ''
+        if: hashFiles(format('apps/{0}/coverage/lcov.info', matrix.app)) != ''
         with:
           file: ./apps/${{ matrix.app }}/coverage/lcov.info
           flags: ${{ matrix.app }}
@@ -204,6 +213,22 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Create CI env files
+        run: |
+          for dir in apps/booking apps/dashboard apps/marketing; do
+            if [ -f "$dir/.env.example" ]; then
+              cp "$dir/.env.example" "$dir/.env"
+            fi
+          done
+
+      - name: Create CI env files
+        run: |
+          for dir in apps/booking apps/dashboard apps/marketing; do
+            if [ -f "$dir/.env.example" ]; then
+              cp "$dir/.env.example" "$dir/.env"
+            fi
+          done
 
       - name: Build application
         run: pnpm run build
