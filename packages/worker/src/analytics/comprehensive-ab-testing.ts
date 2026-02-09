@@ -1109,13 +1109,14 @@ export class ComprehensiveABTestingFramework {
                         return true;
                     }
                     break;
-                case 'sample_size_reached':
+                case 'sample_size_reached': {
                     const totalSample = results.reduce((sum, r) => sum + r.visitors, 0);
                     if (this.compareValues(totalSample, condition.threshold, condition.comparison)) {
                         return true;
                     }
                     break;
-                case 'negative_impact':
+                }
+                case 'negative_impact': {
                     const controlResult = results.find(r => r.variantId === 'control');
                     if (controlResult) {
                         const worstVariant = results.reduce((worst, current) =>
@@ -1127,6 +1128,7 @@ export class ComprehensiveABTestingFramework {
                         }
                     }
                     break;
+                }
             }
         }
 

@@ -692,7 +692,7 @@ export class AnalyticsOrchestrator {
      */
     private async updatePredictiveModels() {
         // Get latest data for model updates
-        const latestData = await this.getRealTimeMetrics();
+        const _latestData = await this.getRealTimeMetrics();
 
         // Update model training data
         // This would involve retraining models with new data

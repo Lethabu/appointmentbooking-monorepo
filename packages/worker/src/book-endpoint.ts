@@ -1,6 +1,6 @@
 // packages/worker/src/book-endpoint.ts
 
-import { ApiError } from './errors';
+// import { ApiError } from './errors';
 import { logger } from './logger';
 import type { BookingRequest } from './types';
 
