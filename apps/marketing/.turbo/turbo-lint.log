@@ -1,6 +1,12 @@
 
-> marketing@0.1.0 lint C:\Users\Adrin\OneDrive\Documents\appointmentbooking-monorepo\apps\marketing
+> marketing@0.1.0 lint /home/runner/work/appointmentbooking-monorepo/appointmentbooking-monorepo/apps/marketing
 > next lint
 
 
  ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/basic-features/eslint#migrating-existing-config
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+✔ No ESLint warnings or errors
