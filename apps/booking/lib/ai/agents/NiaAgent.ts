@@ -359,5 +359,28 @@ We look forward to seeing you! 💖
     }
 }
 
-// Export singleton instance
-export const niaAgent = new NiaAgent();
+// Lazy initialization to avoid build-time environment variable issues
+let _niaAgentInstance: NiaAgent | null = null;
+
+export function getNiaAgent(tenantId?: string): NiaAgent {
+    if (!_niaAgentInstance) {
+        _niaAgentInstance = new NiaAgent(tenantId);
+    }
+    return _niaAgentInstance;
+}
+
+// Export the getter function as niaAgent for backwards compatibility
+export const niaAgent = {
+    handleBookingIntent: async (userId: string, message: string, context?: any) => {
+        return getNiaAgent().handleBookingIntent(userId, message, context);
+    },
+    checkAvailability: async (date: string, serviceId: string) => {
+        return getNiaAgent().checkAvailability(date, serviceId);
+    },
+    createBooking: async (details: BookingDetails) => {
+        return getNiaAgent().createBooking(details);
+    },
+    getServices: async () => {
+        return getNiaAgent().getServices();
+    },
+};
