@@ -36,16 +36,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: 'apps/booking/package-lock.json'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Install dependencies  
         working-directory: ./apps/booking
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build Next.js app
         working-directory: ./apps/booking
-        run: npm run build
+        run: pnpm run build
         env:
           NODE_ENV: production
           NODE_OPTIONS: '--max-old-space-size=4096'
@@ -59,7 +62,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy apps/booking/.vercel/output/static --project-name=appointmentbooking-booking --commit-dirty=true
+          command: pages deploy ./apps/booking/.vercel/output/static --project-name=appointmentbooking-booking --commit-dirty=true
 
       - name: Deployment Summary
         run: |
@@ -82,16 +85,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: 'apps/dashboard/package-lock.json'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Install dependencies
         working-directory: ./apps/dashboard
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build Next.js app
         working-directory: ./apps/dashboard
-        run: npm run build --  --no-lint
+        run: pnpm run build -- --no-lint
         env:
           NODE_ENV: production
           NODE_OPTIONS: '--max-old-space-size=8192'
@@ -105,7 +111,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy apps/dashboard/.vercel/output/static --project-name=appointmentbooking-dashboard --commit-dirty=true
+          command: pages deploy ./apps/dashboard/.vercel/output/static --project-name=appointmentbooking-dashboard --commit-dirty=true
 
       - name: Deployment Summary
         run: |
