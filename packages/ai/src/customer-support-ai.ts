@@ -4,7 +4,6 @@
  */
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { z } from 'zod';
 
 // Customer Support Types
 export interface SupportTicket {
@@ -315,7 +314,7 @@ export class CustomerSupportAI {
         return hasTrigger || ticket.priority === 'critical';
     }
 
-    private parsePredictedIssues(text: string): Array<{ issue: string; probability: number; prevention: string[] }> {
+    private parsePredictedIssues(_text: string): Array<{ issue: string; probability: number; prevention: string[] }> {
         // Parse AI response to extract predicted issues
         return [
             { issue: 'Payment processing delay', probability: 75, prevention: ['Verify payment method', 'Check network connection'] },
@@ -324,11 +323,11 @@ export class CustomerSupportAI {
         ];
     }
 
-    private extractProactiveActions(text: string): string[] {
+    private extractProactiveActions(_text: string): string[] {
         return ['send_preventive_tip', 'offer_assistance', 'schedule_checkin'];
     }
 
-    private extractRecommendedOutreach(text: string): string {
+    private extractRecommendedOutreach(_text: string): string {
         return 'Hi! We noticed you might need help with [predicted issue]. Here\'s a quick tip to make your experience smoother...';
     }
 
@@ -364,7 +363,7 @@ export class CustomerSupportAI {
         ];
     }
 
-    private extractPersonalizedGuidance(text: string): Record<string, string> {
+    private extractPersonalizedGuidance(_text: string): Record<string, string> {
         return {
             welcome: 'Welcome to appointmentbooking.co.za! Let\'s get you set up in just a few steps.',
             encouragement: 'Great progress! You\'re almost there.',

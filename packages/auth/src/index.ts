@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import { getDb , users, tenants } from "@repo/db";
 import { eq } from "drizzle-orm";
 import { NextAuthOptions } from "next-auth";

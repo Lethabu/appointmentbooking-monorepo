@@ -4,7 +4,6 @@
  */
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { z } from 'zod';
 
 // Infrastructure Automation Types
 export interface InfrastructureScalingPolicy {
@@ -507,7 +506,7 @@ export class InfrastructureAutomationEngine {
     }
 
     private async generateIntelligentScalingPolicies(
-        currentCapacity: any[]
+        _currentCapacity: any[]
     ): Promise<InfrastructureScalingPolicy[]> {
         const policies: InfrastructureScalingPolicy[] = [];
 
@@ -595,8 +594,8 @@ export class InfrastructureAutomationEngine {
     }
 
     private async calculateScalingCostImpact(
-        currentCapacity: any[],
-        policies: InfrastructureScalingPolicy[]
+        _currentCapacity: any[],
+        _policies: InfrastructureScalingPolicy[]
     ): Promise<{
         current: number;
         optimized: number;

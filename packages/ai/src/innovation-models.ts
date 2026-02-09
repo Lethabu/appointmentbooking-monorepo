@@ -68,7 +68,7 @@ export const neuralNetworkAnalyzer = {
         // Xavier initialization for stable training
         for (let i = 0; i < this.model.layers.length; i++) {
             const layer = this.model.layers[i];
-            const weightCount = layer.inputSize * layer.outputSize;
+            // const _weightCount = layer.inputSize * layer.outputSize;
 
             // Xavier initialization
             const std = Math.sqrt(2.0 / (layer.inputSize + layer.outputSize));

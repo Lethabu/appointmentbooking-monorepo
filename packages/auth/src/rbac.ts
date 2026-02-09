@@ -152,7 +152,7 @@ export async function assignRole(
     userId: string,
     roleId: string,
     assignedBy: string,
-    context?: RBACContext
+    _context?: RBACContext
 ): Promise<boolean> {
     // Simplified - always return true for now
     return true;
@@ -166,7 +166,7 @@ export async function revokeRole(
     userId: string,
     roleId: string,
     revokedBy: string,
-    context?: RBACContext
+    _context?: RBACContext
 ): Promise<boolean> {
     // Simplified - always return true for now
     return true;
@@ -182,7 +182,7 @@ export async function createRole(
     description: string,
     permissions: string[],
     createdBy: string,
-    context?: RBACContext
+    _context?: RBACContext
 ): Promise<string | null> {
     // Simplified - return a mock ID for now
     return crypto.randomUUID();
