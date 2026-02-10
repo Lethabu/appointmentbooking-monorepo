@@ -187,7 +187,17 @@ cd apps/booking && npx @cloudflare/next-on-pages
 - **Cause**: next-on-pages conversion failed
 - **Fix**: Check Next.js build logs, ensure app builds successfully locally
 
-**Issue**: Worker deployment fails
+**Issue**: Worker deployment fails with "Invalid target es2024"
+- **Cause**: esbuild version too old (< 0.19) doesn't support ES2024
+- **Fix**: Update esbuild to 0.19+ in package.json overrides
+- **Example**: `"esbuild": "0.19.12"` in pnpm.overrides
+
+**Issue**: Dashboard build fails with "ReferenceError: self is not defined"
+- **Cause**: Using `export const runtime = 'edge'` with static export
+- **Fix**: Remove edge runtime declaration from layout.tsx when using `output: 'export'`
+- **Note**: next-on-pages handles Cloudflare Workers adapter automatically
+
+**Issue**: Worker deployment fails (authentication)
 - **Cause**: Wrangler authentication or missing secrets
 - **Fix**: Verify `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets
 
