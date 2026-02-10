@@ -92,9 +92,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: quality-gate
     timeout-minutes: 20
-    environment:
-      name: ${{ github.event_name == 'pull_request' && 'preview' || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
-      url: ${{ steps.deploy.outputs.deployment-url }}
+    # Only use environment for main branch deployments (requires approval)
+    # PR deployments run without environment to avoid action_required status
+    environment: ${{ github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' && 'production' || 'staging') || '' }}
     
     steps:
       - name: Checkout
@@ -399,9 +399,9 @@ jobs:
     permissions:
       contents: read
       deployments: write
-    environment:
-      name: ${{ github.event_name == 'pull_request' && 'preview' || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
-      url: ${{ steps.deploy-dash.outputs.deployment-url }}
+    # Only use environment for main branch deployments (requires approval)
+    # PR deployments run without environment to avoid action_required status
+    environment: ${{ github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' && 'production' || 'staging') || '' }}
     
     steps:
       - name: Checkout
@@ -502,9 +502,9 @@ jobs:
     permissions:
       contents: read
       deployments: write
-    environment:
-      name: ${{ github.event_name == 'pull_request' && 'preview' || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
-      url: ${{ steps.deploy-mkt.outputs.deployment-url }}
+    # Only use environment for main branch deployments (requires approval)
+    # PR deployments run without environment to avoid action_required status
+    environment: ${{ github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' && 'production' || 'staging') || '' }}
     
     steps:
       - name: Checkout
