@@ -59,6 +59,21 @@ jobs:
         env:
           SKIP_ENV_VALIDATION: 'true'
 
+      - name: Create CI env files
+        run: |
+          for dir in apps/booking apps/dashboard apps/marketing; do
+            if [ -f "$dir/.env.example" ]; then
+              cp "$dir/.env.example" "$dir/.env"
+              echo "✓ Created $dir/.env from .env.example"
+            fi
+          done
+
+      - name: Build packages
+        run: pnpm run build --filter='./packages/*'
+        continue-on-error: false
+        env:
+          SKIP_ENV_VALIDATION: 'true'
+
       - name: ESLint Code Quality Check
         run: pnpm run lint
         continue-on-error: true
@@ -162,6 +177,15 @@ jobs:
         run: pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
         env:
           SKIP_ENV_VALIDATION: 'true'
+
+      - name: Create CI env files
+        run: |
+          for dir in apps/booking apps/dashboard apps/marketing; do
+            if [ -f "$dir/.env.example" ]; then
+              cp "$dir/.env.example" "$dir/.env"
+              echo "✓ Created $dir/.env from .env.example"
+            fi
+          done
 
       - name: Run Jest tests for ${{ matrix.app }}
         run: |
@@ -388,6 +412,15 @@ jobs:
         run: pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
         env:
           SKIP_ENV_VALIDATION: 'true'
+
+      - name: Create CI env files
+        run: |
+          for dir in apps/booking apps/dashboard apps/marketing; do
+            if [ -f "$dir/.env.example" ]; then
+              cp "$dir/.env.example" "$dir/.env"
+              echo "✓ Created $dir/.env from .env.example"
+            fi
+          done
 
       - name: Build all applications
         run: pnpm run build

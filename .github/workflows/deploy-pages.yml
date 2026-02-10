@@ -42,9 +42,20 @@ jobs:
         with:
           version: 8
 
-      - name: Install dependencies  
-        working-directory: ./apps/booking
+      - name: Install dependencies (monorepo root)
         run: pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
+        env:
+          SKIP_ENV_VALIDATION: 'true'
+
+      - name: Create CI env files
+        run: |
+          if [ -f "apps/booking/.env.example" ]; then
+            cp "apps/booking/.env.example" "apps/booking/.env"
+            echo "✓ Created apps/booking/.env"
+          fi
+
+      - name: Build shared packages
+        run: pnpm run build --filter='./packages/*'
         env:
           SKIP_ENV_VALIDATION: 'true'
 
@@ -94,9 +105,20 @@ jobs:
         with:
           version: 10.14.0
 
-      - name: Install dependencies
-        working-directory: ./apps/dashboard
+      - name: Install dependencies (monorepo root)
         run: pnpm install --frozen-lockfile || pnpm install --no-frozen-lockfile
+        env:
+          SKIP_ENV_VALIDATION: 'true'
+
+      - name: Create CI env files
+        run: |
+          if [ -f "apps/dashboard/.env.example" ]; then
+            cp "apps/dashboard/.env.example" "apps/dashboard/.env"
+            echo "✓ Created apps/dashboard/.env"
+          fi
+
+      - name: Build shared packages
+        run: pnpm run build --filter='./packages/*'
         env:
           SKIP_ENV_VALIDATION: 'true'
 
