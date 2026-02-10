@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import { getDb , users, tenants } from "@repo/db";
 import { eq } from "drizzle-orm";
 import { NextAuthOptions } from "next-auth";
@@ -78,7 +79,7 @@ export function getAuthOptions(env: AuthEnv): NextAuthOptions {
         (session as any).accessToken = token.accessToken;
         return session;
       },
-      async jwt({ token, user, account, profile }) {
+      async jwt({ token, user, account, profile: _profile }) {
         if (user && account) {
           // This is the first sign-in
           token.accessToken = account.access_token;

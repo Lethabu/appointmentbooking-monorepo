@@ -4,7 +4,6 @@
  */
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { z } from 'zod';
 
 // Operational Intelligence Types
 export interface OperationalPerformanceAnalytics {
@@ -674,7 +673,7 @@ export class OperationalIntelligenceEngine {
         };
     }
 
-    private async generateOptimizationRecommendations(analytics: OperationalPerformanceAnalytics): Promise<Array<{
+    private async generateOptimizationRecommendations(_analytics: OperationalPerformanceAnalytics): Promise<Array<{
         area: string;
         current_performance: number;
         target_performance: number;
@@ -716,7 +715,7 @@ export class OperationalIntelligenceEngine {
         ];
     }
 
-    private async generatePredictiveInsights(analytics: OperationalPerformanceAnalytics): Promise<Array<{
+    private async generatePredictiveInsights(_analytics: OperationalPerformanceAnalytics): Promise<Array<{
         metric: string;
         prediction: string;
         confidence: number;
@@ -1305,7 +1304,7 @@ export class OperationalIntelligenceEngine {
         };
     }
 
-    private async generateImprovementInitiatives(excellence_metrics: OperationalExcellenceMetrics): Promise<Array<{
+    private async generateImprovementInitiatives(_excellence_metrics: OperationalExcellenceMetrics): Promise<Array<{
         initiative: string;
         impact: number;
         effort: number;

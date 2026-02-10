@@ -139,7 +139,7 @@ export async function hasAllPermissions(
 /**
  * Get all roles for a tenant
  */
-export async function getTenantRoles(db: Database, tenantId: string) {
+export async function getTenantRoles(_db: Database, _tenantId: string) {
     // Simplified - return empty array for now
     return [];
 }
@@ -148,11 +148,11 @@ export async function getTenantRoles(db: Database, tenantId: string) {
  * Assign a role to a user
  */
 export async function assignRole(
-    db: Database,
-    userId: string,
-    roleId: string,
-    assignedBy: string,
-    context?: RBACContext
+    _db: Database,
+    _userId: string,
+    _roleId: string,
+    _assignedBy: string,
+    _context?: RBACContext
 ): Promise<boolean> {
     // Simplified - always return true for now
     return true;
@@ -162,11 +162,11 @@ export async function assignRole(
  * Revoke a role from a user
  */
 export async function revokeRole(
-    db: Database,
-    userId: string,
-    roleId: string,
-    revokedBy: string,
-    context?: RBACContext
+    _db: Database,
+    _userId: string,
+    _roleId: string,
+    _revokedBy: string,
+    _context?: RBACContext
 ): Promise<boolean> {
     // Simplified - always return true for now
     return true;
@@ -176,13 +176,13 @@ export async function revokeRole(
  * Create a new custom role
  */
 export async function createRole(
-    db: Database,
-    tenantId: string,
-    name: string,
-    description: string,
-    permissions: string[],
-    createdBy: string,
-    context?: RBACContext
+    _db: Database,
+    _tenantId: string,
+    _name: string,
+    _description: string,
+    _permissions: string[],
+    _createdBy: string,
+    _context?: RBACContext
 ): Promise<string | null> {
     // Simplified - return a mock ID for now
     return crypto.randomUUID();

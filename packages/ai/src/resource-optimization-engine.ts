@@ -4,7 +4,6 @@
  */
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { z } from 'zod';
 
 // Resource Optimization Types
 export interface ResourceMetrics {
@@ -277,8 +276,8 @@ export class ResourceOptimizationEngine {
             actions: string[];
         };
     }> {
-        const backupMetrics = await this.getBackupMetrics();
-        const recoveryMetrics = await this.getRecoveryMetrics();
+        // const _backupMetrics = await this.getBackupMetrics();
+        // const _recoveryMetrics = await this.getRecoveryMetrics();
 
         return {
             backupStrategy: {
@@ -893,7 +892,7 @@ export class ResourceOptimizationEngine {
         };
     }
 
-    private calculateOptimalDistribution(servers: any[], traffic: any): Array<{
+    private calculateOptimalDistribution(servers: any[], _traffic: any): Array<{
         server: string;
         recommendedLoad: number;
         trafficPercentage: number;

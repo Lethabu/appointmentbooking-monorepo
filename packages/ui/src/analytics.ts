@@ -14,6 +14,7 @@ export async function trackEvent(eventName: string, props: Record<string, any> =
     // This is a best-effort dynamic import to avoid hard dependency.
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
+    // eslint-disable-next-line import/no-unresolved
     const analytics = await import('@vercel/analytics');
     if (analytics && typeof analytics.track === 'function') {
       analytics.track(eventName, props);

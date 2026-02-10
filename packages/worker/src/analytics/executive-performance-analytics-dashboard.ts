@@ -481,7 +481,7 @@ export class ExecutivePerformanceAnalyticsDashboard {
             });
 
             // Market share predictions
-            const marketOpportunities = await this.predictiveAnalytics?.identifyMarketOpportunities(this.dashboard.tenantId) || {};
+            const _marketOpportunities = await this.predictiveAnalytics?.identifyMarketOpportunities(this.dashboard.tenantId) || {};
             predictions.push({
                 timeframe: '6_months',
                 category: 'Market Share',

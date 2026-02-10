@@ -1155,10 +1155,11 @@ export class PredictiveAnalyticsEngine {
                 case 'elasticity_based':
                     optimizedPrice = Number(currentPrice) * (1 + (elasticity.services[service] || 0) * 0.1);
                     break;
-                case 'competitive':
+                case 'competitive': {
                     const competitorPrice = competitorAnalysis[0]?.services?.[service] || Number(currentPrice);
                     optimizedPrice = Math.min(Number(currentPrice) * 1.05, Number(competitorPrice) * 0.95);
                     break;
+                }
             }
 
             optimizedPrices[service] = Math.round(optimizedPrice);

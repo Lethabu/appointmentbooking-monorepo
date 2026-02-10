@@ -412,7 +412,7 @@ export class AdvancedPerformanceOptimizationEngine {
     // OPTIMIZATION EXECUTION ENGINE
     // ========================================
 
-    private async executeScalingOptimization(action: OptimizationAction): Promise<OptimizationResult> {
+    private async executeScalingOptimization(_action: OptimizationAction): Promise<OptimizationResult> {
         // Simulate scaling optimization
         await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate execution time
 
@@ -429,7 +429,7 @@ export class AdvancedPerformanceOptimizationEngine {
         };
     }
 
-    private async executeCachingOptimization(action: OptimizationAction): Promise<OptimizationResult> {
+    private async executeCachingOptimization(_action: OptimizationAction): Promise<OptimizationResult> {
         // Simulate caching optimization
         await new Promise(resolve => setTimeout(resolve, 1500));
 
@@ -446,7 +446,7 @@ export class AdvancedPerformanceOptimizationEngine {
         };
     }
 
-    private async executeDatabaseOptimization(action: OptimizationAction): Promise<OptimizationResult> {
+    private async executeDatabaseOptimization(_action: OptimizationAction): Promise<OptimizationResult> {
         // Simulate database optimization
         await new Promise(resolve => setTimeout(resolve, 3000));
 
@@ -463,7 +463,7 @@ export class AdvancedPerformanceOptimizationEngine {
         };
     }
 
-    private async executeCDNOptimization(action: OptimizationAction): Promise<OptimizationResult> {
+    private async executeCDNOptimization(_action: OptimizationAction): Promise<OptimizationResult> {
         // Simulate CDN optimization
         await new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -480,7 +480,7 @@ export class AdvancedPerformanceOptimizationEngine {
         };
     }
 
-    private async executeCodeOptimization(action: OptimizationAction): Promise<OptimizationResult> {
+    private async executeCodeOptimization(_action: OptimizationAction): Promise<OptimizationResult> {
         // Simulate code optimization
         await new Promise(resolve => setTimeout(resolve, 4000));
 
@@ -497,7 +497,7 @@ export class AdvancedPerformanceOptimizationEngine {
         };
     }
 
-    private async executeInfrastructureOptimization(action: OptimizationAction): Promise<OptimizationResult> {
+    private async executeInfrastructureOptimization(_action: OptimizationAction): Promise<OptimizationResult> {
         // Simulate infrastructure optimization
         await new Promise(resolve => setTimeout(resolve, 5000));
 

@@ -3,7 +3,6 @@
  * Handles priority-based assignment and multi-channel integration
  */
 
-import { z } from 'zod';
 
 import { customerSupportAI } from './customer-support-ai';
 
@@ -180,7 +179,8 @@ export class IntelligentTicketRouting {
         requiresHuman: boolean;
         suggestedActions: string[];
     }> {
-        const knowledgePrompt = `
+        /* Unused knowledge prompt - kept for future reference
+        const _knowledgePrompt = `
       Generate a comprehensive self-service response for this customer query:
       
       Query: ${query}
@@ -196,6 +196,7 @@ export class IntelligentTicketRouting {
       
       Focus on appointmentbooking.co.za specific solutions.
     `;
+    */
 
         try {
             const result = await customerSupportAI.generateFirstContactResponse(
@@ -296,7 +297,7 @@ export class IntelligentTicketRouting {
         return availableAgents[0]?.id;
     }
 
-    private calculateResponseTime(classification: any, assignedAgent?: string): number {
+    private calculateResponseTime(classification: any, _assignedAgent?: string): number {
         let baseTime = 2; // 2 minutes base
 
         // Adjust based on priority
@@ -360,7 +361,7 @@ export class IntelligentTicketRouting {
         };
     }
 
-    private async handlePhoneMessage(message: ChannelMessage): Promise<{
+    private async handlePhoneMessage(_message: ChannelMessage): Promise<{
         response: string;
         channel: string;
         escalation: boolean;
@@ -396,7 +397,7 @@ export class IntelligentTicketRouting {
         };
     }
 
-    private async handleSocialMediaMessage(message: ChannelMessage): Promise<{
+    private async handleSocialMediaMessage(_message: ChannelMessage): Promise<{
         response: string;
         channel: string;
         escalation: boolean;
@@ -484,7 +485,7 @@ export class IntelligentTicketRouting {
         return 'moderate';
     }
 
-    private ruleMatches(rule: RoutingRule, classification: any): boolean {
+    private ruleMatches(_rule: RoutingRule, _classification: any): boolean {
         // Check if rule conditions match the classification
         return true; // Simplified - implement full rule matching logic
     }
@@ -527,21 +528,21 @@ export class IntelligentTicketRouting {
         ];
     }
 
-    private async generateProactiveResponses(triggers: any[]): Promise<string[]> {
+    private async generateProactiveResponses(_triggers: any[]): Promise<string[]> {
         return [
             'Hi! We noticed you might need help with your booking. Here\'s a quick tip...',
             'We see you had a payment issue. Here\'s how to resolve it...',
         ];
     }
 
-    private async generateEscalationAlerts(triggers: any[]): Promise<string[]> {
+    private async generateEscalationAlerts(_triggers: any[]): Promise<string[]> {
         return [
             'VIP customer abandonment alert: Customer_123',
             'Payment error cluster detected: 3 customers affected',
         ];
     }
 
-    private async findRelatedArticles(query: string): Promise<Array<{ title: string; url: string; relevance: number }>> {
+    private async findRelatedArticles(_query: string): Promise<Array<{ title: string; url: string; relevance: number }>> {
         return [
             { title: 'How to Book Your First Appointment', url: '/help/booking-guide', relevance: 0.9 },
             { title: 'Payment Troubleshooting', url: '/help/payment-issues', relevance: 0.8 },
