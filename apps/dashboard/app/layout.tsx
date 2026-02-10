@@ -1,5 +1,8 @@
 import './globals.css'
 
+// Configure for Cloudflare Pages Edge Runtime
+export const runtime = 'edge'
+
 export const metadata = {
   title: 'InStyle Hair Boutique - Dashboard',
   description: 'Admin dashboard for InStyle Hair Boutique booking management',

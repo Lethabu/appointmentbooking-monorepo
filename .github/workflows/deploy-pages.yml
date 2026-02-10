@@ -61,10 +61,8 @@ jobs:
 
       - name: Build Next.js app
         working-directory: ./apps/booking
-        run: pnpm run build
+        run: NODE_ENV=production NODE_OPTIONS='--max-old-space-size=4096' pnpm run build
         env:
-          NODE_ENV: production
-          NODE_OPTIONS: '--max-old-space-size=4096'
           SKIP_ENV_VALIDATION: 'true'
 
       - name: Convert to Cloudflare Pages format
@@ -124,10 +122,8 @@ jobs:
 
       - name: Build Next.js app
         working-directory: ./apps/dashboard
-        run: pnpm run build -- --no-lint
+        run: NODE_ENV=production NODE_OPTIONS='--max-old-space-size=8192' pnpm run build
         env:
-          NODE_ENV: production
-          NODE_OPTIONS: '--max-old-space-size=8192'
           SKIP_ENV_VALIDATION: 'true'
 
       - name: Convert to Cloudflare Pages format

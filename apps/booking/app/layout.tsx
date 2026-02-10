@@ -6,6 +6,8 @@ import './globals.css'
 // For @cloudflare/next-on-pages compatibility
 // ============================================================================
 
+// Configure for Cloudflare Pages Edge Runtime
+export const runtime = 'edge'
 
 // Force dynamic rendering for multi-tenant support
 export const dynamic = 'force-dynamic'
