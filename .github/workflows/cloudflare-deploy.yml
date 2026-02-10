@@ -396,6 +396,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: quality-gate
     timeout-minutes: 20
+    permissions:
+      contents: read
+      deployments: write
     environment:
       name: ${{ github.event_name == 'pull_request' && 'preview' || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
       url: ${{ steps.deploy-dash.outputs.deployment-url }}
@@ -496,6 +499,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: quality-gate
     timeout-minutes: 20
+    permissions:
+      contents: read
+      deployments: write
     environment:
       name: ${{ github.event_name == 'pull_request' && 'preview' || (github.ref == 'refs/heads/main' && 'production' || 'staging') }}
       url: ${{ steps.deploy-mkt.outputs.deployment-url }}
