@@ -1,7 +1,7 @@
 // packages/worker/src/availability-endpoint.ts
 
 import { getAvailability } from './availability';
-// import { ApiError } from './errors';
+import { ApiError } from './errors';
 
 export async function handleAvailabilityEndpoint(request: Request, env: any, corsHeaders: any): Promise<Response> {
     try {

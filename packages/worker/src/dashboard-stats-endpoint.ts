@@ -1,4 +1,4 @@
-// import { ApiError } from './errors';
+import { ApiError } from './errors';
 import { logger } from './logger';
 
 export async function handleDashboardStatsEndpoint(request: Request, env: any, corsHeaders: any): Promise<Response> {
