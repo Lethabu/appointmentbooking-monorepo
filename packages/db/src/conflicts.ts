@@ -1,4 +1,4 @@
-import { and, eq, lte, gte, or, sql } from 'drizzle-orm';
+import { and, eq, or, sql } from 'drizzle-orm';
 
 import { appointments, services } from './schema';
 

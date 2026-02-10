@@ -53,7 +53,10 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({
 
                 <button
                     className="w-full py-4 px-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold rounded-2xl hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all shadow-md"
-                    onClick={() => alert(`Strategic Booking Pulse: Searching experts for tenant ${tenantId}...`)}
+                    onClick={() => {
+                        const alertFn = (globalThis as { alert?: (message: string) => void }).alert;
+                        alertFn?.(`Strategic Booking Pulse: Searching experts for tenant ${tenantId}...`);
+                    }}
                 >
                     Schedule Now
                 </button>

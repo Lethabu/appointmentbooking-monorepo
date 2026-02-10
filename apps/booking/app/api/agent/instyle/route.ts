@@ -1,7 +1,8 @@
 // ============================================================================
-// Edge Runtime Configuration for Cloudflare Pages
+// API Route for Nia Agent
+// Note: Using Node.js runtime due to dependencies (Supabase, Google AI)
 // ============================================================================
-export const runtime = 'edge';
+// export const runtime = 'edge'; // Disabled - incompatible dependencies
 
 import { NextRequest, NextResponse } from 'next/server';
 

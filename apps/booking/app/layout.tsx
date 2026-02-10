@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
 
 // ============================================================================
@@ -7,11 +6,14 @@ import './globals.css'
 // For @cloudflare/next-on-pages compatibility
 // ============================================================================
 
+// Configure for Cloudflare Pages Edge Runtime
+export const runtime = 'edge'
 
 // Force dynamic rendering for multi-tenant support
 export const dynamic = 'force-dynamic'
 
-const inter = Inter({ subsets: ['latin'] })
+// Use system fonts as fallback for CI/offline environments
+const fontFamily = 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
 
 export const metadata: Metadata = {
   title: 'Appointment Booking',
@@ -25,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body style={{ fontFamily }}>
         {children}
       </body>
     </html>

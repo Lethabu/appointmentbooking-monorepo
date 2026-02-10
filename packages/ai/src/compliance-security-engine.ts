@@ -4,7 +4,6 @@
  */
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { z } from 'zod';
 
 // Compliance and Security Types
 export interface POPIAComplianceStatus {
@@ -641,7 +640,7 @@ export class ComplianceSecurityEngine {
         ];
     }
 
-    private async executeAutomatedResponses(threats: SecurityThreat[]): Promise<Array<{
+    private async executeAutomatedResponses(_threats: SecurityThreat[]): Promise<Array<{
         trigger: string;
         action: string;
         status: string;
@@ -660,7 +659,7 @@ export class ComplianceSecurityEngine {
         ];
     }
 
-    private calculateSecurityScore(threats: SecurityThreat[], intelligence: any[]): number {
+    private calculateSecurityScore(threats: SecurityThreat[], _intelligence: any[]): number {
         let score = 100;
 
         // Deduct for active threats

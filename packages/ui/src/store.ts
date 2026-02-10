@@ -99,7 +99,7 @@ interface AppStore {
 export const useAppStore = create<AppStore>()(
   devtools(
     persist(
-      (set, get) => ({
+      (set, _get) => ({
         // Auth state
         user: null,
         isAuthenticated: false,

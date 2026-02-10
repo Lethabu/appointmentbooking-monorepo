@@ -77,12 +77,12 @@ export async function handleGoogleOAuthEndpoint(request: Request, env: any, cors
                 }
 
                 // Verify JWT and get user
-                const jwtSecret = env.JWT_SECRET || 'dev-secret-key-change-in-production';
+                const _jwtSecret = env.JWT_SECRET || 'dev-secret-key-change-in-production';
                 let payload;
                 try {
                     const parts = token.split('.');
                     if (parts.length !== 3) throw new Error('Invalid token');
-                    let padded = parts[1].replace(/\-/g, '+').replace(/_/g, '/');
+                    let padded = parts[1].replace(/-/g, '+').replace(/_/g, '/');
                     while (padded.length % 4) padded += '=';
                     const payloadStr = atob(padded);
                     payload = JSON.parse(payloadStr);
@@ -185,7 +185,7 @@ export async function handleGoogleOAuthEndpoint(request: Request, env: any, cors
                 try {
                     const parts = token.split('.');
                     if (parts.length !== 3) throw new Error('Invalid token');
-                    let padded = parts[1].replace(/\-/g, '+').replace(/_/g, '/');
+                    let padded = parts[1].replace(/-/g, '+').replace(/_/g, '/');
                     while (padded.length % 4) padded += '=';
                     const payloadStr = atob(padded);
                     payload = JSON.parse(payloadStr);

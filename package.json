@@ -53,7 +53,11 @@
     "monitor:github": "node scripts/monitor-github-deployment.js",
     "deploy:retry": "node scripts/deploy-with-retry.js",
     "deploy:until-success": "node scripts/deploy-until-success.js",
-    "deploy:auto": "node scripts/deploy-until-success.js",
+    "deploy:auto": "node scripts/production-deploy-auto.js",
+    "deploy:auto:staging": "DEPLOY_ENV=staging node scripts/production-deploy-auto.js",
+    "deploy:auto:skip-e2e": "node scripts/production-deploy-auto.js --skip-e2e",
+    "deploy:auto:dry-run": "node scripts/production-deploy-auto.js --dry-run",
+    "deploy:auto:verbose": "node scripts/production-deploy-auto.js --verbose",
     "deploy:continue": "node scripts/continue-deployment.js",
     "deploy:check": "node scripts/continue-deployment.js",
     "predeploy": "pnpm run validate:pre-deploy",
@@ -64,29 +68,29 @@
     "@types/node": "^20.10.0",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "axe-core": "^4.7.2",
-    "drizzle-kit": "^0.31.8",
+    "@typescript-eslint/eslint-plugin": "^8.55.0",
+    "@typescript-eslint/parser": "^8.55.0",
+    "axe-core": "^4.11.1",
+    "drizzle-kit": "^0.31.9",
     "eslint": "^8.53.0",
     "eslint-config-next": "^14.0.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-import": "^2.29.0",
-    "eslint-plugin-jsx-a11y": "^6.8.0",
-    "eslint-plugin-react": "^7.33.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.3",
     "jsdom": "^22.1.0",
-    "lint-staged": "^15.2.0",
-    "prettier": "^3.0.0",
-    "turbo": "^2.6.0",
-    "wrangler": "^4.59.0",
-    "yaml": "^2.3.4"
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.8.1",
+    "turbo": "^2.8.3",
+    "wrangler": "^4.64.0",
+    "yaml": "^2.8.2"
   },
   "dependencies": {
-    "@sentry/nextjs": "^10.28.0",
-    "@tanstack/react-query": "^5.90.7",
-    "lucide-react": "0.468.0",
+    "@sentry/nextjs": "^10.38.0",
+    "@tanstack/react-query": "^5.90.20",
+    "lucide-react": "0.563.0",
     "node-fetch": "^3.3.2",
     "recharts": "^2.15.4"
   },
@@ -94,7 +98,7 @@
     "overrides": {
       "drizzle-orm": "0.45.1",
       "@cloudflare/workers-types": "4.20251121.0",
-      "esbuild": "0.16.17"
+      "esbuild": "0.19.12"
     }
   }
 }

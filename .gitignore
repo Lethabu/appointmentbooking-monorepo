@@ -51,6 +51,7 @@ dist/
 build/
 dist/
 lib/
+!apps/*/lib/
 *.tsbuildinfo
 .cache/
 .parcel-cache/

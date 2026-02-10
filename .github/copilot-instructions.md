@@ -45,6 +45,7 @@ If anything above is unclear, tell me which area to expand (Worker routes, migra
 ## 🚀 App Modernization & Deployment Strategy
 
 For comprehensive app modernization guidance, including:
+
 - **3x Retry Deployment Strategy**: Automatic retry with progressive backoff
 - **Platform-Wide Deployment**: Multi-phase validation (build → health → E2E)
 - **Best Practice Patterns**: API modernization, migrations, security
@@ -78,3 +79,22 @@ pnpm run monitor:report
 
 **Rollback**: Automatic on validation failure, manual via `npx wrangler pages deployment create --commit-hash=<prev-hash>`
 
+**See**: [Copilot App Modernization Playbook](copilot-app-modernization.md)
+
+### Quick Deployment Commands
+
+```bash
+# Deploy with automatic 3x retry
+pnpm run deploy:worker --retry=3
+pnpm run deploy:booking --retry=3
+pnpm run deploy:dashboard --retry=3
+
+# Validate deployment health
+pnpm run validate:health --retry=3
+
+# Monitor deployment metrics
+pnpm run monitor:deployment
+
+# Rollback if needed
+wrangler rollback <deployment-id>
+```

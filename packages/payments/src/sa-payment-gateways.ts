@@ -275,6 +275,14 @@ export function calculateBookingCommission(
     };
 }
 
+// Type for booking commission calculation result
+export type BookingCommission = {
+    platformFee: number;
+    paymentGatewayFee: number;
+    totalCommission: number;
+    netAmount: number;
+};
+
 // ZAR currency formatting
 export function formatZAR(amount: number): string {
     return new Intl.NumberFormat('en-ZA', {
@@ -333,9 +341,9 @@ export async function processPaymentRequest(request: Request): Promise<Response>
             currency: string;
             bookingId: string;
             customerId: string;
-            commission: any;
+            commission: BookingCommission;
             gateway: string;
-            [key: string]: any;
+            [key: string]: unknown;
         } = {
             amount: validatedData.amount,
             currency: validatedData.currency,
@@ -380,9 +388,15 @@ export async function processPaymentRequest(request: Request): Promise<Response>
 }
 
 // Gateway-specific payment creation functions
-async function createRedirectPayment(gateway: PaymentGatewayConfig, data: z.infer<typeof paymentRequestSchema>, commission: any) {
+async function createRedirectPayment(gateway: PaymentGatewayConfig, data: z.infer<typeof paymentRequestSchema>, commission: BookingCommission) {
     // PayFast, Ozow, Traditional Cards redirect flow
     return {
+        amount: data.amount,
+        currency: data.currency,
+        bookingId: data.bookingId,
+        customerId: data.customerId,
+        commission,
+        gateway: data.paymentMethod,
         redirectUrl: `${gateway.integration.sandboxUrl || gateway.integration.liveUrl}`,
         method: 'POST',
         formData: {
@@ -404,20 +418,31 @@ async function createRedirectPayment(gateway: PaymentGatewayConfig, data: z.infe
     };
 }
 
-async function createEmbeddedPayment(gateway: PaymentGatewayConfig, data: z.infer<typeof paymentRequestSchema>, _commission: any) {
+async function createEmbeddedPayment(gateway: PaymentGatewayConfig, data: z.infer<typeof paymentRequestSchema>, commission: BookingCommission) {
     // SnapScan embedded flow
     return {
-        qrCode: `${gateway.integration.qrCodeUrl}${gateway.integration.merchantId}`,
         amount: data.amount,
+        currency: data.currency,
+        bookingId: data.bookingId,
+        customerId: data.customerId,
+        commission,
+        gateway: data.paymentMethod,
+        qrCode: `${gateway.integration.qrCodeUrl}${gateway.integration.merchantId}`,
         reference: data.bookingId,
         callbackUrl: data.notifyUrl,
         embedded: true
     };
 }
 
-async function createApiPayment(gateway: PaymentGatewayConfig, data: z.infer<typeof paymentRequestSchema>, commission: any) {
+async function createApiPayment(gateway: PaymentGatewayConfig, data: z.infer<typeof paymentRequestSchema>, commission: BookingCommission) {
     // Yoco API direct charge
     return {
+        amount: data.amount,
+        currency: data.currency,
+        bookingId: data.bookingId,
+        customerId: data.customerId,
+        commission,
+        gateway: data.paymentMethod,
         apiEndpoint: gateway.integration.apiUrl,
         method: 'POST',
         headers: {

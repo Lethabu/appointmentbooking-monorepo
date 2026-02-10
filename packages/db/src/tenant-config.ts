@@ -2,8 +2,6 @@
 // MIND-BODY COMMERCE TENANT CONFIGURATION V13
 // ========================================
 
-import { sql } from 'drizzle-orm';
-
 // Tenant Industry Types
 export enum IndustryType {
     SALON = 'salon',

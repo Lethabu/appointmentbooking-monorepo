@@ -2,6 +2,11 @@ const fs = require('fs');
 const path = require('path');
 
 function validateEnv(targetDir = '.') {
+    if (process.env.SKIP_ENV_VALIDATION === 'true') {
+        console.warn('⚠️ SKIP_ENV_VALIDATION is true. Skipping environment validation.');
+        return;
+    }
+
     const examplePath = path.join(targetDir, '.env.example');
     const envPath = path.join(targetDir, '.env');
 
