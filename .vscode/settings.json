@@ -16,6 +16,20 @@
         "enableAutoCompletions": true
     },
     
+    // TypeScript and validation settings
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    
+    // Editor settings for code quality
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    
+    // File associations
+    "files.associations": {
+        "*.md": "markdown",
+        ".github/copilot-*.md": "markdown"
     // TypeScript & JavaScript
     "typescript.tsdk": "node_modules/typescript/lib",
     "typescript.enablePromptUseWorkspaceTsdk": true,
