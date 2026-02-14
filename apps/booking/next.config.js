@@ -5,23 +5,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable static export for Cloudflare Pages (bypassing next-on-pages Windows issues)
-  // output: 'export',
-  // Use default mode (not 'export') for Cloudflare Pages Functions
-  // This allows dynamic routes and server-side rendering via Pages Functions
-  // Enable standalone output for Docker containerization
-  // output: 'standalone',
-
+  // Enable static export for Cloudflare Pages - Split Architecture
+  // Frontend: Static on Pages | Backend: Worker API
+  output: 'export',
+  
+  // Disable image optimization for static export
   images: {
     unoptimized: true,
-    domains: [
-      'images.unsplash.com',
-      'instylehairboutique.co.za',
-      'www.instylehairboutique.co.za',
-      'fonts.gstatic.com',
-      'fonts.googleapis.com'
-    ],
-    formats: ['image/webp', 'image/avif'],
   },
 
   // Increase build timeout for slow machines
