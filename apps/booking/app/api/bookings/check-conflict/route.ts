@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-// export const runtime = 'edge'; // Commented out for Cloudflare Pages compatibility
+// // export const runtime = 'edge'; // Disabled for OpenNext compatibility // Commented out for Cloudflare Pages compatibility
 // import { getDb } from '../../../../lib/db';
 // import { checkConflict } from '@repo/db/conflicts';
 

@@ -1,7 +1,7 @@
 // ============================================================================
 // Edge Runtime Configuration for Cloudflare Pages
 // ============================================================================
-export const runtime = 'edge';
+// export const runtime = 'edge'; // Disabled for OpenNext compatibility
 
 // Dynamic Pricing Engine API
 // Real-time competitor pricing monitoring and automated price adjustments

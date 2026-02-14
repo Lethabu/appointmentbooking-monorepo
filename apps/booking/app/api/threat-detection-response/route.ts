@@ -1,7 +1,7 @@
 // ============================================================================
 // Edge Runtime Configuration for Cloudflare Pages
 // ============================================================================
-export const runtime = 'edge';
+// export const runtime = 'edge'; // Disabled for OpenNext compatibility
 
 // Threat Detection & Response Framework API
 // Automated monitoring and response to competitive threats

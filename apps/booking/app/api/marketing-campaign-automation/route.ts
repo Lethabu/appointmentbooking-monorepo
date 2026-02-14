@@ -1,7 +1,7 @@
 // ============================================================================
 // Edge Runtime Configuration for Cloudflare Pages
 // ============================================================================
-export const runtime = 'edge';
+// export const runtime = 'edge'; // Disabled for OpenNext compatibility
 
 // Automated Marketing Campaign Deployment Engine API
 // Intelligent campaign creation, deployment, and optimization for competitive advantage

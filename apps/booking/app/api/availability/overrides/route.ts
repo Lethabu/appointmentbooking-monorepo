@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { AuditLogger } from '@/utils/security/audit-logger';
 
-export const runtime = 'edge';
+// export const runtime = 'edge'; // Disabled for OpenNext compatibility
 
 export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);

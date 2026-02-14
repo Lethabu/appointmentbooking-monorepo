@@ -1,7 +1,7 @@
 // ============================================================================
 // Edge Runtime Configuration for Cloudflare Pages
 // ============================================================================
-export const runtime = 'edge';
+// export const runtime = 'edge'; // Disabled for OpenNext compatibility
 
 // Simplified innovation idea generator (deployment optimization)
 import { NextRequest, NextResponse } from 'next/server';

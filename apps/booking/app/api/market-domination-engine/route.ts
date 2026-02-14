@@ -1,7 +1,7 @@
 // ============================================================================
 // Edge Runtime Configuration for Cloudflare Pages
 // ============================================================================
-export const runtime = 'edge';
+// export const runtime = 'edge'; // Disabled for OpenNext compatibility
 
 // Market Domination & Aggressive Acquisition Engine API
 // Strategic mechanisms for market leadership through aggressive competitive positioning

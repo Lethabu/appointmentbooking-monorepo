@@ -1,7 +1,7 @@
 // ============================================================================
 // Edge Runtime Configuration for Cloudflare Pages
 // ============================================================================
-export const runtime = 'edge';
+// export const runtime = 'edge'; // Disabled for OpenNext compatibility
 
 // Feature Parity Tracker & Development Prioritization Engine API
 // Intelligent tracking of competitor features and strategic development prioritization
