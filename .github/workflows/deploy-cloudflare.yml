@@ -37,10 +37,20 @@ jobs:
           cd apps/booking
           npx @opennextjs/cloudflare build --dangerouslyUseUnsupportedNextVersion
 
-      - name: Deploy to Cloudflare Pages with Wrangler
+      - name: Create wrangler.toml for OpenNext deployment
         working-directory: apps/booking
         run: |
-          npx wrangler pages deploy .open-next --project-name=appointmentbooking-booking --commit-dirty=true --compatibility-date=2023-12-01
+          cat > .open-next/wrangler.toml << 'EOF'
+          name = "appointmentbooking-booking"
+          compatibility_date = "2023-12-01"
+          compatibility_flags = ["nodejs_compat"]
+          pages_build_output_dir = "."
+          EOF
+
+      - name: Deploy to Cloudflare Pages with Wrangler
+        working-directory: apps/booking/.open-next
+        run: |
+          npx wrangler pages deploy . --project-name=appointmentbooking-booking --commit-dirty=true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
