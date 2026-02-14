@@ -50,7 +50,7 @@ jobs:
       - name: Deploy to Cloudflare Pages with Wrangler
         working-directory: apps/booking/.open-next
         run: |
-          npx wrangler pages deploy . --project-name=appointmentbooking-booking --commit-dirty=true
+          npx wrangler@3.78.0 pages deploy . --project-name=appointmentbooking-booking --commit-dirty=true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
