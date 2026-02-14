@@ -1,57 +1,59 @@
 // @ts-nocheck
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 
 import InStyleLandingPage from '../../components/landing/InStyleLandingPage';
 import TenantHome from '../../components/tenant/TenantHome';
-
-// Force Node.js runtime to avoid OpenNext edge runtime conflict
-export const runtime = 'nodejs';
-
-// ISR: revalidate every 60 seconds
-
-// Generate static params for known tenants
-export async function generateStaticParams() {
-  // Return list of known tenants
-  // In production, fetch this from your database or config
-  return [
-    { tenant: 'instylehairboutique' },
-  ];
-}
-
-
 
 type Props = {
   params: { tenant: string };
 };
 
-async function fetchTenantData(slug: string) {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/tenant?slug=${slug}`, {
-      cache: 'no-store' // Ensure fresh data for ISR
-    });
-
-    if (!response.ok) {
-      return { tenant: null, services: [], products: [] };
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (err) {
-    console.error('Error fetching tenant data:', err);
-    return { tenant: null, services: [], products: [] };
-  }
-}
-
-export default async function TenantPage({ params }: Props) {
+export default function TenantPage({ params }: Props) {
   const { tenant: slug } = params;
-  const { tenant, services, products } = await fetchTenantData(slug);
+  const [tenantData, setTenantData] = useState<{
+    tenant: any | null;
+    services: any[];
+    products: any[];
+  }>({ tenant: null, services: [], products: [] });
+  const [loading, setLoading] = useState(true);
 
-  if (!tenant) return <div className="p-8">Tenant not found.</div>;
+  useEffect(() => {
+    const fetchTenantData = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://appointmentbooking-worker.houseofgr8ness.workers.dev';
+        const response = await fetch(`${apiUrl}/api/tenant?slug=${slug}`);
+
+        if (!response.ok) {
+          setTenantData({ tenant: null, services: [], products: [] });
+          return;
+        }
+
+        const data = await response.json();
+        setTenantData(data);
+      } catch (err) {
+        console.error('Error fetching tenant data:', err);
+        setTenantData({ tenant: null, services: [], products: [] });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTenantData();
+  }, [slug]);
+
+  if (loading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  }
+
+  if (!tenantData.tenant) {
+    return <div className="p-8">Tenant not found.</div>;
+  }
 
   // Use InStyleLandingPage for instylehairboutique, TenantHome for others
   if (slug === 'instylehairboutique') {
-    return <InStyleLandingPage services={services} products={products} config={tenant} />;
+    return <InStyleLandingPage services={tenantData.services} products={tenantData.products} config={tenantData.tenant} />;
   }
 
-  return <TenantHome config={tenant} services={services} products={products} />;
+  return <TenantHome config={tenantData.tenant} services={tenantData.services} products={tenantData.products} />;
 }
