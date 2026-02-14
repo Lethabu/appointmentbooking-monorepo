@@ -37,13 +37,12 @@ jobs:
           cd apps/booking
           npx @opennextjs/cloudflare build --dangerouslyUseUnsupportedNextVersion
 
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: 9e96c83268cae3e0f27168ed50c92033
-          projectName: appointmentbooking-booking
-          directory: apps/booking/.open-next/worker
+      - name: Deploy to Cloudflare Pages with Wrangler
+        working-directory: apps/booking
+        run: |
+          npx wrangler pages deploy .open-next --project-name=appointmentbooking-booking --commit-dirty=true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
       - name: Deploy Worker
         working-directory: packages/worker
