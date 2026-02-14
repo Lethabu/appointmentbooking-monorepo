@@ -44,7 +44,6 @@ jobs:
           accountId: 9e96c83268cae3e0f27168ed50c92033
           projectName: appointmentbooking-booking
           directory: apps/booking/.open-next/worker
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy Worker
         working-directory: packages/worker
