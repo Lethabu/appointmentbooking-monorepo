@@ -55,5 +55,5 @@ const nextConfig = {
   },
 };
 
-// Re-export with wrappers
-module.exports = withBundleAnalyzer(withNextIntl(nextConfig));
+// Re-export with wrappers - next-intl disabled for static export
+module.exports = withBundleAnalyzer(nextConfig);
