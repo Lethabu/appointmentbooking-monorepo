@@ -2,7 +2,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-import InStyleLandingPage from '../components/landing/InStyleLandingPage';
+import InStyleLandingPage from '../../components/landing/InStyleLandingPage';
 
 export default function InstyleHairBoutiquePage() {
   const [tenantData, setTenantData] = useState<{
