@@ -5,6 +5,13 @@ import React, { useEffect, useState } from 'react';
 import InStyleLandingPage from '../../components/landing/InStyleLandingPage';
 import TenantHome from '../../components/tenant/TenantHome';
 
+// Required for static export even with client components
+export async function generateStaticParams() {
+  return [
+    { tenant: 'instylehairboutique' },
+  ];
+}
+
 type Props = {
   params: { tenant: string };
 };
