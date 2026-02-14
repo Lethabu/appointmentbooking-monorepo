@@ -7,6 +7,10 @@ export default {
       incrementalCache: "dummy",
       tagCache: "dummy",
       queue: "direct",
+      // Fix esbuild ES2024 target error - use ES2022 instead
+      esbuildOptions: {
+        target: 'es2022',
+      },
     },
   },
   edgeExternals: ["node:crypto"],
