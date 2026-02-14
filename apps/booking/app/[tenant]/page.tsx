@@ -9,6 +9,15 @@ export const runtime = 'nodejs';
 
 // ISR: revalidate every 60 seconds
 
+// Generate static params for known tenants
+export async function generateStaticParams() {
+  // Return list of known tenants
+  // In production, fetch this from your database or config
+  return [
+    { tenant: 'instylehairboutique' },
+  ];
+}
+
 
 
 type Props = {
