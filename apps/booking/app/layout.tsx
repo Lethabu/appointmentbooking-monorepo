@@ -2,12 +2,13 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 // ============================================================================
-// CLOUDFLARE EDGE RUNTIME CONFIGURATION
+// CLOUDFLARE EDGE RUNTIME CONFIGURATION  
 // For @cloudflare/next-on-pages compatibility
 // ============================================================================
 
-// Configure for Cloudflare Pages Edge Runtime
-export const runtime = 'edge'
+// DISABLED: OpenNext requires edge runtime functions to be in separate files
+// API routes can still use edge runtime individually
+// export const runtime = 'edge'
 
 // Force dynamic rendering for multi-tenant support
 export const dynamic = 'force-dynamic'

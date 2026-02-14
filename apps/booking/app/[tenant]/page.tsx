@@ -4,6 +4,9 @@ import React from 'react';
 import InStyleLandingPage from '../../components/landing/InStyleLandingPage';
 import TenantHome from '../../components/tenant/TenantHome';
 
+// Force Node.js runtime to avoid OpenNext edge runtime conflict
+export const runtime = 'nodejs';
+
 // ISR: revalidate every 60 seconds
 
 
