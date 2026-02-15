@@ -4,11 +4,10 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable static export for Cloudflare Pages - Split Architecture
-  // Frontend: Static on Pages | Backend: Worker API
-  output: 'export',
+  // Cloudflare Pages deployment using @cloudflare/next-on-pages
+  // Middleware and edge functions are supported
   
-  // Disable image optimization for static export
+  // Disable image optimization (use Cloudflare Images or unoptimized)
   images: {
     unoptimized: true,
   },
@@ -26,9 +25,6 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   poweredByHeader: false,
-
-  // Ensure proper URL handling
-  trailingSlash: true,
 
   // Build optimization
   compress: true,

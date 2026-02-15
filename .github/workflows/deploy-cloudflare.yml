@@ -27,15 +27,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Build booking app
+      - name: Build booking app with Cloudflare adapter
         run: |
           cd apps/booking
-          pnpm build
+          pnpm pages:build
 
-      - name: Deploy Static Export to Cloudflare Pages
+      - name: Deploy to Cloudflare Pages with Workers
         working-directory: apps/booking
         run: |
-          npx wrangler@3.78.0 pages deploy out --project-name=appointmentbooking-booking --commit-dirty=true
+          npx wrangler@3.78.0 pages deploy .vercel/output/static --project-name=appointmentbooking-coza --commit-dirty=true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
