@@ -5,8 +5,7 @@
 /api/* https://appointmentbooking-coza.houseofgr8ness.workers.dev/api/:splat 200
 
 # Legacy tenant routes
-/instylehairboutique/* /instyle/:splat 301
-/instyle-hair-boutique/* /instyle/:splat 301
+/instylehairboutique/* /instylehairboutique/:splat 301
+/instyle-hair-boutique/* /instylehairboutique/:splat 301
 
-# Root redirect to main tenant
-/ /instyle 301
+# Root path served by Next.js runtime routing and shared tenant resolver

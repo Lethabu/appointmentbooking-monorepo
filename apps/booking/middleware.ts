@@ -1,25 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import { DEFAULT_TENANT_CONFIG, resolveTenantByHost } from '@repo/services';
+
 // ============================================================================
 // CLOUDFLARE MIGRATION: Multi-Tenant Middleware with NextAuth
 // File: middleware.ts
 // Purpose: Handle tenant routing, authentication, and security headers
 // ============================================================================
-
-// Cloudflare KV or D1 based tenant resolution
-// For now using static mapping, but can be extended to use D1 database
-const TENANT_MAPPING: Record<string, string> = {
-  'www.instylehairboutique.co.za': 'instylehairboutique',
-  'instylehairboutique.co.za': 'instylehairboutique',
-  'instyle-hair-boutique.co.za': 'instylehairboutique',
-  'www.instyle-hair-boutique.co.za': 'instylehairboutique',
-  // Add more tenant mappings as needed
-};
-
-async function resolveTenant(hostname: string): Promise<string | null> {
-  const normalizedHost = hostname.replace(/^www\./, '');
-  return TENANT_MAPPING[normalizedHost] || null;
-}
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
@@ -35,28 +22,24 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Handle tenant routing for multi-tenant domains
-  const tenantSlug = await resolveTenant(hostname);
+  const tenant = resolveTenantByHost(hostname);
+  const isPlatformTenant = tenant.slug === DEFAULT_TENANT_CONFIG.slug;
 
-  if (tenantSlug) {
-    // Add tenant information to headers for downstream use
-    response.headers.set('x-tenant-id', tenantSlug);
-    response.headers.set('x-tenant-host', hostname);
+  response.headers.set('x-tenant-id', tenant.slug);
+  response.headers.set('x-tenant-host', hostname);
 
-    // For tenant-specific routes, rewrite to dynamic segment
-    if (!url.pathname.startsWith('/api')) {
-      const rewriteUrl = new URL(`/${tenantSlug}${url.pathname}`, request.url);
+  if (!isPlatformTenant && !url.pathname.startsWith('/api')) {
+    const tenantRoute = tenant.route.endsWith('/') && tenant.route !== '/' ? tenant.route.slice(0, -1) : tenant.route;
+    const normalizedPath = url.pathname === '/' ? '' : url.pathname;
+
+    if (!url.pathname.startsWith(tenantRoute)) {
+      const destinationPath = `${tenantRoute}${normalizedPath || ''}` || tenantRoute || '/';
+      const rewriteUrl = new URL(destinationPath.startsWith('/') ? destinationPath : `/${destinationPath}`, request.url);
       const rewriteResponse = NextResponse.rewrite(rewriteUrl);
-      rewriteResponse.headers.set('x-tenant-id', tenantSlug);
+      rewriteResponse.headers.set('x-tenant-id', tenant.slug);
       rewriteResponse.headers.set('x-tenant-host', hostname);
       response = rewriteResponse;
     }
-  } else if (
-    hostname === 'www.appointmentbooking.co.za' ||
-    hostname === 'appointmentbooking.co.za'
-  ) {
-    // For main platform domain, continue normally
-    response = NextResponse.next();
   }
 
   // ============================================================================

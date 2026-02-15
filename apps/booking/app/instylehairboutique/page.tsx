@@ -2,39 +2,46 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
+import { DEFAULT_TENANT_CONFIG, resolveTenantBySlug } from '@repo/services';
+
 import InStyleLandingPage from '../../components/landing/InStyleLandingPage';
 
 export default function InstyleHairBoutiquePage() {
+  const staticTenantConfig = resolveTenantBySlug('instylehairboutique') ?? DEFAULT_TENANT_CONFIG;
   const [tenantData, setTenantData] = useState<{
     tenant: any | null;
     services: any[];
     products: any[];
-  }>({ tenant: null, services: [], products: [] });
+  }>({ tenant: staticTenantConfig, services: [], products: [] });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTenantData = async () => {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://appointmentbooking-worker.houseofgr8ness.workers.dev';
-        const response = await fetch(`${apiUrl}/api/tenant?slug=instylehairboutique`);
+        const apiUrl = staticTenantConfig.apiBaseUrl;
+        const response = await fetch(`${apiUrl}/api/tenant?slug=${staticTenantConfig.slug}`);
 
         if (!response.ok) {
-          setTenantData({ tenant: null, services: [], products: [] });
+          setTenantData({ tenant: staticTenantConfig, services: [], products: [] });
           return;
         }
 
         const data = await response.json();
-        setTenantData(data);
+        setTenantData({
+          tenant: data.tenant ?? staticTenantConfig,
+          services: data.services ?? [],
+          products: data.products ?? [],
+        });
       } catch (err) {
         console.error('Error fetching tenant data:', err);
-        setTenantData({ tenant: null, services: [], products: [] });
+        setTenantData({ tenant: staticTenantConfig, services: [], products: [] });
       } finally {
         setLoading(false);
       }
     };
 
     fetchTenantData();
-  }, []);
+  }, [staticTenantConfig]);
 
   if (loading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;

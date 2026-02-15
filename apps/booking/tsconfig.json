@@ -53,6 +53,12 @@
       ],
       "@repo/payments/*": [
         "../../packages/payments/src/*"
+      ],
+      "@repo/services": [
+        "../../packages/services/src"
+      ],
+      "@repo/services/*": [
+        "../../packages/services/src/*"
       ]
     }
   },
