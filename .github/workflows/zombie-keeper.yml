@@ -1,0 +1,141 @@
+name: 🦅 Zombie Keeper Protocol
+
+# Sovereign keep-alive protocol to prevent cold starts and maintain operational status
+# Pings health endpoints every 6 hours to ensure the AppointmentBooking Node remains active
+
+on:
+  schedule:
+    # Run every 6 hours: 00:00, 06:00, 12:00, 18:00 UTC
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # Allow manual trigger
+    inputs:
+      target:
+        description: 'Target endpoint to ping'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - booking
+          - worker
+          - dashboard
+
+jobs:
+  keep-alive:
+    name: 🦅 Sovereign Keep-Alive
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: 🦅 Ping Sovereign Booking Node
+        if: github.event.inputs.target == 'all' || github.event.inputs.target == 'booking' || github.event.inputs.target == ''
+        run: |
+          echo "🦅 Pinging AppointmentBooking Sovereign Node..."
+          
+          RESPONSE=$(curl -s -w "\n%{http_code}" "https://appointmentbooking-coza.pages.dev/api/sovereign/self-check")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n-1)
+          
+          echo "Response Code: $HTTP_CODE"
+          echo "Response Body: $BODY"
+          
+          # Parse status from JSON response
+          STATUS=$(echo "$BODY" | jq -r '.status // "UNKNOWN"')
+          MODE=$(echo "$BODY" | jq -r '.mode // "UNKNOWN"')
+          HEARTBEAT=$(echo "$BODY" | jq -r '.heartbeat // "❓"')
+          LATENCY=$(echo "$BODY" | jq -r '.latency // "N/A"')
+          CACHED=$(echo "$BODY" | jq -r '.cached // false')
+          
+          echo "✅ Sovereign Node Status: $STATUS"
+          echo "🔧 Mode: $MODE"
+          echo "💚 Heartbeat: $HEARTBEAT"
+          echo "⚡ Latency: $LATENCY"
+          echo "📦 Cached: $CACHED"
+          
+          # Fail job if status is not OPERATIONAL
+          if [ "$STATUS" != "OPERATIONAL" ]; then
+            echo "⚠️ WARNING: Sovereign Node is $STATUS"
+            exit 1
+          fi
+          
+          echo "🦅 Sovereign Node is OPERATIONAL"
+
+      - name: 🔧 Ping Worker Backend
+        if: github.event.inputs.target == 'all' || github.event.inputs.target == 'worker' || github.event.inputs.target == ''
+        run: |
+          echo "🔧 Pinging Worker Backend..."
+          
+          RESPONSE=$(curl -s -w "\n%{http_code}" "https://appointmentbooking-worker.houseofgr8ness.workers.dev/api/health")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n-1)
+          
+          echo "Response Code: $HTTP_CODE"
+          echo "Response Body: $BODY"
+          
+          # Parse status
+          STATUS=$(echo "$BODY" | jq -r '.status // "UNKNOWN"')
+          DB_STATUS=$(echo "$BODY" | jq -r '.database // "UNKNOWN"')
+          
+          echo "✅ Worker Status: $STATUS"
+          echo "🗄️ Database: $DB_STATUS"
+          
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "⚠️ WARNING: Worker returned HTTP $HTTP_CODE"
+            exit 1
+          fi
+          
+          echo "🔧 Worker Backend is healthy"
+
+      - name: 📊 Log Keep-Alive Event
+        if: always()
+        run: |
+          echo "=================================="
+          echo "🦅 Zombie Keeper Protocol Complete"
+          echo "Timestamp: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          echo "Target: ${{ github.event.inputs.target || 'all' }}"
+          echo "Trigger: ${{ github.event_name }}"
+          echo "=================================="
+
+      - name: 🚨 Notify on Failure
+        if: failure()
+        run: |
+          echo "🚨 ALERT: Zombie Keeper detected degraded status!"
+          echo "The Sovereign Node or Worker Backend is not responding correctly."
+          echo "Manual intervention may be required."
+          echo ""
+          echo "Check:"
+          echo "  - Cloudflare Pages status: https://dash.cloudflare.com/"
+          echo "  - Worker logs: npx wrangler tail"
+          echo "  - Recent deployments: Review last deploy status"
+          # Future: Send notification to Discord/Slack/Email
+
+  report-status:
+    name: 📊 Status Report
+    needs: keep-alive
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: 📊 Generate Status Summary
+        run: |
+          echo "### 🦅 Zombie Keeper Status Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> $GITHUB_STEP_SUMMARY
+          echo "**Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.keep-alive.result }}" == "success" ]; then
+            echo "✅ **Status:** OPERATIONAL" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "All Sovereign endpoints responded successfully." >> $GITHUB_STEP_SUMMARY
+            echo "The AppointmentBooking Node is healthy and active." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ **Status:** DEGRADED" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "One or more endpoints failed to respond." >> $GITHUB_STEP_SUMMARY
+            echo "Review the job logs for details." >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Next Keep-Alive:** In 6 hours" >> $GITHUB_STEP_SUMMARY
+          echo "**Mode:** GOD_MODE 🦅" >> $GITHUB_STEP_SUMMARY
